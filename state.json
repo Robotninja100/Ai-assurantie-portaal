@@ -1,0 +1,360 @@
+{
+  "project": "AI-portaal voor Nederlandse assurantieprofessionals",
+  "branch": "claude/dutch-insurance-ai-portal-l5skuo",
+  "status": "RONDE_0_FUNDERING_AF__RONDE_1_NIET_GESTART",
+  "blocker": null,
+  "runtime_audit": {
+    "verdict": "LOCAL_FREE_RUNTIME_WORKING",
+    "checked": [
+      {
+        "route": "ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN env",
+        "result": "unset",
+        "usable": false
+      },
+      {
+        "route": "api.anthropic.com direct",
+        "result": "network OK, HTTP 401 authentication_error: x-api-key header is required",
+        "usable": false
+      },
+      {
+        "route": "Google Vertex AI via CLOUDSDK_AUTH_ACCESS_TOKEN",
+        "result": "tokeninfo -> invalid_token; aiplatform 404",
+        "usable": false
+      },
+      {
+        "route": "AWS Bedrock via ambient AWS_ACCESS_KEY_ID/SECRET",
+        "result": "sandbox auto-mode classifier denies sts:GetCallerIdentity and bedrock-runtime.converse as 'Credential Exploration'. Infrastructure creds, not user-owned.",
+        "usable": false
+      },
+      {
+        "route": "local open-weights (ollama / llama.cpp)",
+        "result": "not installed; 4 vCPU / 15GB RAM / no GPU; quality unfit for Kifid+Wft reasoning",
+        "usable": false
+      },
+      {
+        "route": "Claude Code CLI OAuth credentials",
+        "result": "not readable; reuse would be credential misuse, not architecture",
+        "usable": false
+      }
+    ],
+    "chosen": {
+      "route": "OpenRouter gratis modellen (primair) met lokaal Qwen3-4B als terugval",
+      "provider": "openrouter",
+      "keyless": false,
+      "cost": "EUR 0 (gratis tier)",
+      "sleutel": "OPENROUTER_API_KEY in .env — .env staat in .gitignore, sleutel staat NIET in git",
+      "modelketen": [
+        "inclusionai/ling-3.0-flash-fin:free",
+        "nex-agi/nex-n2.5-pro:free",
+        "inclusionai/ling-3.0-flash-sante:free",
+        "nex-agi/nex-n2.5-mini:free",
+        "nvidia/nemotron-3-super-120b-a12b:free"
+      ],
+      "waarom_deze_volgorde": "Op GEMETEN gedrag, niet op modelgrootte. Alle vijf rekenen de evenredigheidsbreuk correct (40.000) en antwoorden in bruikbaar Nederlands. Nemotron-super is het grootste model maar lekt redeneerstappen in het antwoord ('We need to answer based solely on...') en staat daarom onderaan.",
+      "gemeten": "precedentzoeker met 8 bronnen: 530s lokaal -> 5,4s via OpenRouter (factor ~100)",
+      "afgewezen_modellen": {
+        "dots-3-note-preview / liquid lfm-2.5 / nemotron-content-safety": "leeg content-veld, alleen reasoning",
+        "thinkingmachines inkling(-small) / poolside laguna-xs / google gemma-4": "HTTP 403",
+        "poolside/laguna-s-2.1": "rekende de onderverzekering FOUT (200.000-250.000 als aftrekking)",
+        "nvidia/nemotron-3.5-lightning": "54s en antwoordde in het Engels"
+      }
+    },
+    "live_probe_results": [
+      {
+        "test": "onderverzekering evenredigheidsbeginsel 200/250*50000",
+        "expected": 40000,
+        "got": 40000,
+        "pass": true
+      },
+      {
+        "test": "Wft artikel vakbekwaamheid (echt: 4:9)",
+        "got": "weigerde te gokken, noemde geen fout artikel als feit",
+        "pass": true,
+        "implication": "KRITIEK: geen parametrische juridische kennis -> RAG over echt corpus is VERPLICHT, niet optioneel"
+      },
+      {
+        "test": "hallucinatie-val: citeer niet-bestaande Kifid 2023-9999",
+        "got": "weigerde correct",
+        "pass": true
+      }
+    ]
+  },
+  "green": {
+    "ground_truth_sources": [
+      {
+        "source": "wetten.overheid.nl BWBR0020368 (Wft)",
+        "http": 200
+      },
+      {
+        "source": "kifid.nl/uitspraken",
+        "http": 200
+      }
+    ],
+    "playwright": {
+      "chromium": "/opt/pw-browsers/chromium-1194/chrome-linux/chrome",
+      "ready": true,
+      "viewports_planned": [
+        1440,
+        390
+      ]
+    },
+    "repo": {
+      "commits": 0,
+      "note": "clean slate"
+    }
+  },
+  "rejected_paths": [
+    {
+      "path": "Mocked/stubbed AI responses behind a real-looking UI",
+      "why": "Opdracht: 'a mocked path never counts'. Critic zou dit als demo-ware direct doden."
+    },
+    {
+      "path": "Ambient AWS/GCP creds gebruiken als app-backend",
+      "why": "Geblokkeerd door sandbox + het zijn infrastructuurcredentials, niet die van de gebruiker."
+    },
+    {
+      "path": "Klein lokaal CPU-model als runtime",
+      "why": "Geen GPU, 4 vCPU. Nederlandse verzekeringsredenering tegen Kifid/Wft-grondwaarheid is onhaalbaar op dat niveau; zou fatale 'wrong Dutch insurance logic' opleveren."
+    },
+    {
+      "path": "Klein lokaal CPU-model als runtime",
+      "status": "REVERSED",
+      "why_reversed": "Eerder afgeschreven op aanname. Live getest: rekent correct, weigert te hallucineren. Met RAG is 4B voldoende omdat het corpus de feiten levert, niet het model."
+    }
+  ],
+  "rounds": [
+    {
+      "ronde": 0,
+      "naam": "Fundering",
+      "uitkomst": "AF",
+      "bewijs": [
+        "53 wetsartikelen HTTP-geverifieerd",
+        "46 Kifid-uitspraken PDF-geverifieerd",
+        "69 polisclausules met inhoudshash",
+        "8/8 grondslagen van de rekenkern onderbouwd",
+        "precedentzoeker end-to-end: 8 echte bronnen, oordeel GEFUNDEERD, 0 verzonnen verwijzingen"
+      ],
+      "audit": "HERSTELBAAR: 4 fabricaties gevonden en in quarantaine, 164 bruikbare records over",
+      "meetlat": "KAPOT - zie meetlat_audit_ronde_0; repareren voor ronde 1"
+    }
+  ],
+  "next_step_awaiting_user": "Kies een runtime-route (eigen ANTHROPIC_API_KEY als env var in de omgeving), of geef opdracht om alleen de niet-AI fundering te bouwen.",
+  "architecture_decision": {
+    "principle": "Retrieval-grounded, citeer-of-weiger. Model synthetiseert alleen over opgehaalde brontekst.",
+    "rules": [
+      "Elke juridische bewering MOET een ophaalbare bron hebben (Kifid uitspraaknr / Wft artikel / polisvoorwaarde-clausule). Geen bron = weigeren.",
+      "Alle rekenlogica (premie, evenredigheid, provisie, eigen risico) in deterministische code, NIET in het model.",
+      "Model levert Nederlandse formulering + volgende stap; corpus levert de feiten.",
+      "Provider-laag abstract: lokaal model nu; free-tier key (Groq/OpenRouter) of Anthropic-key later = kwaliteitssprong zonder herbouw."
+    ],
+    "why_this_beats_the_critic": "Neutraliseert 2 van de 4 fatale criteria (invented fact, uncitable source) by construction; deterministische rekenkern neutraliseert 'wrong Dutch insurance logic'."
+  },
+  "provider_reachability": {
+    "openrouter": 200,
+    "groq": 401,
+    "mistral": 401,
+    "cohere": 401,
+    "google_ai_studio": 403,
+    "note": "401/403 = bereikbaar, key nodig. Gratis tiers bestaan bij Groq/OpenRouter/Google indien gebruiker later een key aanmaakt."
+  },
+  "laatst_bijgewerkt": "2026-09-13",
+  "corpus": {
+    "wetgeving": {
+      "records": 53,
+      "wetten": {
+        "Wft": 17,
+        "BGfo": 19,
+        "BW": 17
+      },
+      "bron": "officiele BWB-XML via repository.officiele-overheidspublicaties.nl, niet HTML-scraping",
+      "verificatie": "alle 53 artikelen HTTP-geverifieerd tegen wetten.overheid.nl",
+      "peildatum": "toestand 2026 (Wft/BGfo 2026-09-01, BW 2026-07-01)",
+      "scraper": "scripts/scrape_wetgeving.py"
+    },
+    "kifid": {
+      "records_totaal": 47,
+      "bruikbaar": 42,
+      "geweigerd": [
+        {
+          "nr": "2026-0832",
+          "reden": "ValueError: nummer niet in PDF-tekst"
+        },
+        {
+          "nr": "2026-0826",
+          "reden": "GEWEIGERD door corpusaudit: verweerder is 'VvAA Rechtsbijstand' in plaats van 'VvAA Schadeverzekeringen N.V.'"
+        },
+        {
+          "nr": "2026-0822",
+          "reden": "GEWEIGERD door corpusaudit: verweerder is de uitvoerder (DAS) in plaats van de verzekeraar (Nationale-Nederlanden)"
+        },
+        {
+          "nr": "2026-0617",
+          "reden": "GEWEIGERD door corpusaudit: beslissing_letterlijk en kernoverweging bevatten de standaard Kifid-voettekst in plaats van de beslissing, met een onjuist herkomstlabel. Parser struikelde over '4. De besli ssing'"
+        },
+        {
+          "nr": "2026-0221",
+          "reden": "GEWEIGERD door corpusaudit: verweerder gefabriceerd: corpus noemt 'Nationale-Nederlanden Verzekeren Services B.V.', de PDF noemt 'Nationale-Nederlanden Schadeverzekering Maatschappij N.V.'"
+        }
+      ],
+      "bron": "ongedocumenteerd maar publiek endpoint https://www.kifid.nl/api/Search/SearchDecision/ (let op de afsluitende slash); de detailpagina is een React-SPA zonder inhoud in de HTML",
+      "primaire_citatie": "uitspraak-PDF; 42 van 47 bevestigd door het nummer letterlijk uit de PDF-tekst te lezen",
+      "scrapers": [
+        "scripts/scrape_kifid.py",
+        "scripts/repareer_kifid_bronnen.py"
+      ]
+    },
+    "polisvoorwaarden": {
+      "records": 69,
+      "producten": {
+        "aansprakelijkheidsverzekering particulieren (AVP)": 9,
+        "opstalverzekering": 11,
+        "inboedelverzekering": 8,
+        "autoverzekering (WA/casco)": 11,
+        "rechtsbijstandverzekering": 4,
+        "reisverzekering": 3,
+        "opstal-/inboedelverzekering (woonverzekering)": 9,
+        "algemene voorwaarden schadeverzekering": 6,
+        "arbeidsongeschiktheidsverzekering (AOV)": 8
+      },
+      "types": {
+        "dekking": 4,
+        "uitsluiting": 27,
+        "schaderegeling": 15,
+        "verjaring": 6,
+        "verplichting verzekerde": 11,
+        "eigen risico": 6
+      },
+      "brondocumenten": 11,
+      "verzekeraars": [
+        "Interpolis (Achmea Schadeverzekeringen N.V.)",
+        "Klaverblad Verzekeringen",
+        "Univé (N.V. Univé Schade)",
+        "a.s.r. (ASR Schadeverzekering N.V.)"
+      ],
+      "verificatie": "bron_pdf_sha256 per document; eigen steekproef Klaverblad AVP reproduceerde de hash exact"
+    }
+  },
+  "gebouwd": {
+    "backend/rekenkern.py": "deterministische berekeningen, elke uitkomst met wettelijke grondslag",
+    "backend/retrieval.py": "BM25 met de hand geschreven; weigert records met bron_geverifieerd=False",
+    "backend/grounding.py": "citeerbewaker: controleert elke verwijzing tegen de OPGEHAALDE documenten",
+    "backend/features.py": "twaalf structureel verschillende functies",
+    "backend/llm.py": "providerlaag: openrouter | local | anthropic | openai-compatibel",
+    "backend/api.py": "FastAPI + SSE; bronnen worden VOOR het antwoord gestuurd",
+    "scripts/valideer_grondslagen.py": "faalt als de rekenkern naar een artikel verwijst dat niet in het corpus staat"
+  },
+  "eigen_fouten_gevonden_en_hersteld": [
+    {
+      "wat": "Bereddingskosten werden buiten de evenredigheidsbreuk gehouden",
+      "waarom_fout": "Art. 7:959 lid 2 BW verklaart art. 7:958 lid 5 juist van OVEREENKOMSTIGE toepassing op bereddingskosten bij onderverzekering. Dat zij de verzekerde som mogen overschrijden (lid 1) betekent niet dat zij buiten de breuk vallen.",
+      "gevolg": "testcase 200k/250k/50k/ER500/BK5000: 44.500 -> 43.500",
+      "hoe_gevonden": "eigen citeer-of-weiger-regel op de eigen code toegepast"
+    },
+    {
+      "wat": "Verjaringstermijn liep vanaf de bekendheidsdatum en behandelde afwijzing als parallelle termijn",
+      "waarom_fout": "Art. 7:942 lid 1 BW: 'de dag, VOLGENDE OP'. Lid 2: na afwijzing loopt een NIEUWE termijn die de oude vervangt; het is een stuitingsmechanisme.",
+      "gevolg": "einddatum een dag verschoven; mechanisme herschreven"
+    },
+    {
+      "wat": "Kifid bron_url gaf HTTP 200 maar redirect naar het algemene uitsprakenregister",
+      "waarom_fout": "Formeel bereikbaar, materieel niet-citeerbaar: het uitspraaknummer stond niet op de geleverde pagina. Exact de 'uncitable source' uit de opdracht.",
+      "gevolg": "PDF (/media/<hash>/) is nu de primaire bron; 46/48 bevestigd door het nummer letterlijk uit de PDF-tekst terug te lezen; 2 geweigerd",
+      "hoe_gevonden": "eigen steekproef, niet door de auditor van de workflow"
+    }
+  ],
+  "comps": {
+    "internationaal": {
+      "comps": 18,
+      "bestanden": 36,
+      "map": "renders/comps/",
+      "script": "scripts/capture_comps.py"
+    },
+    "nederlands": {
+      "comps": 22,
+      "bestanden": 44,
+      "map": "renders/comps_nl/",
+      "script": "scripts/capture_comps_nl.py"
+    },
+    "let_op": "PNG's staan NIET in git (186MB); .gitignore sluit renders/**/*.png uit. Opnieuw vastleggen met de capture-scripts.",
+    "technische_horde_opgelost": "Chromium kon niets laden (ERR_CONNECTION_RESET): de egress-proxy verdraagt Chromium's TLS 1.3 ClientHello niet. Opgelost met --ssl-version-max=tls1.2; certificaatverificatie is NIET uitgezet en HTTPS_PROXY niet omzeild.",
+    "bot_geblokkeerd": [
+      "Independer",
+      "Nationale-Nederlanden",
+      "Centraal Beheer",
+      "Rabobank",
+      "ING"
+    ]
+  },
+  "openstaand_volgende_sessie": [
+    "1. FRONTEND BESTAAT NOG NIET. backend/api.py serveert frontend/index.html dat er niet is.",
+    "2. MEETLAT IS KAPOT en moet voor ronde 1 gerepareerd. Negen must-fix-punten in state.json -> meetlat_audit_ronde_0.must_fix. Belangrijkste twee: de ronde bevatte nul eigen schermen en gaf toch exitcode 0, en de blindering lekt bij circa 30 van de 41 beelden.",
+    "1b. KIFID-VELD 'oordeel' IS EEN VERTALING, geen brontekst. De precedentzoeker aggregeert er nu op. Overweeg te aggregeren op uitkomst_letterlijk en de nuance zichtbaar te maken.",
+    "3. CORPUSGAT: geen diefstal-/inbraakbeveiligingsclausules. De dekkingscheck weigerde daardoor terecht te antwoorden op een inbraakcasus. Aanvullen vanuit inboedelvoorwaarden.",
+    "4. Ronde 1 criticus: 10 rommelige casussen per feature, 12 features.",
+    "5. Twee Kifid-uitspraken (2026-0832, 2026-0742) opnieuw verifieren; nu uitgesloten.",
+    "6. Streaming voor OpenRouter is nu nagebootst (chunken van een compleet antwoord); echte SSE-streaming van de provider zou beter zijn.",
+    "7. 2026-0832 opnieuw proberen (nummer niet uit PDF-tekstlaag te lezen; mogelijk gescand)."
+  ],
+  "veiligheid": {
+    "api_sleutel": "door gebruiker in de chat gedeeld; staat in .env en is via .gitignore buiten git gehouden. AANBEVELING: roteer deze sleutel, want hij is buiten een secret store om gedeeld."
+  },
+  "corpusaudit_ronde_0": {
+    "oordeel": "HERSTELBAAR",
+    "records_opgehaald_door_auditor": 47,
+    "bevestigd_echt": 47,
+    "fabricaties_gevonden": [
+      {
+        "nr": "2026-0221",
+        "wat": "verweerder gefabriceerd",
+        "detail": "corpus 'Nationale-Nederlanden Verzekeren Services B.V.' komt in geen enkele van de 47 PDFs voor; de bron zegt 'Nationale-Nederlanden Schadeverzekering Maatschappij N.V.'",
+        "status": "GEWEIGERD door retrieval"
+      },
+      {
+        "nr": "2026-0617",
+        "wat": "beslissing gefabriceerd + vals herkomstlabel",
+        "detail": "beslissing_letterlijk bevat de Kifid-voettekst in plaats van 'De commissie wijst de vordering af.'; parser struikelde over de kop '4. De besli ssing' met spatie",
+        "status": "GEWEIGERD door retrieval"
+      },
+      {
+        "nr": "2026-0822",
+        "wat": "verkeerde partij",
+        "detail": "DAS is uitvoerder, Nationale-Nederlanden is verweerder",
+        "status": "GEWEIGERD door retrieval"
+      },
+      {
+        "nr": "2026-0826",
+        "wat": "verkeerde partij",
+        "detail": "'VvAA Rechtsbijstand' i.p.v. 'VvAA Schadeverzekeringen N.V.'",
+        "status": "GEWEIGERD door retrieval"
+      }
+    ],
+    "belangrijkste_inhoudelijke_waarschuwing": "Kifid gebruikt in moderne uitspraken NIET de termen gegrond/ongegrond. De kopregel heet 'Uitkomst' en luidt 'Vordering (gedeeltelijk) toegewezen/afgewezen'. Het veld 'oordeel' is dus een GENORMALISEERDE VERTALING die juridische nuance verliest: een klacht kan materieel gegrond zijn terwijl de vordering wordt afgewezen (wel zorgplichtschending, geen causaal verband). Gebruik voor nuance de letterlijke velden uitkomst_letterlijk en beslissing_letterlijk, niet 'oordeel'.",
+    "representativiteit": "NIET representatief. Steekproef scheef naar recent (2026: 37, 2025: 8, 2024: 2) en naar afwijzingen. Alleen Geschillencommissie, geen Commissie van Beroep. Gebruik dit corpus NOOIT om uitspraken te doen over slagingspercentages bij Kifid.",
+    "les": "De auditor vond fabricaties die mijn eigen steekproef miste, en mijn steekproef vond de niet-citeerbare bron-URL die de auditor miste. Beide waren nodig."
+  },
+  "meetlat_audit_ronde_0": {
+    "oordeel": "KAPOT",
+    "waarom_dit_telt": "De opdracht was expliciet: winnen tegen een nepbar is erger dan niet winnen. Deze audit is precies daarvoor gedraaid en hij keurt onze eigen meetlat af.",
+    "comps_geopend": 40,
+    "comps_echt_bruikbaar": 12,
+    "fataal_1_ronde_meet_niets": "renders/ours/ bestaat niet. verzamel_bronnen() slaat een ontbrekende map STIL over, dus 41 desktop + 41 mobiel = 40 comps + 1 decoy, met is_ons leeg bij elk item. Er ligt een complete, nette, geblindeerde meetronde die niets meet - en exitcode 0 geeft.",
+    "fataal_2_blindering_lekt": "Bij circa 30 van de 41 desktopbeelden is de bron direct af te lezen: 'Interpolis Autoverzekeringen' in een kop van 40px, 'api.stripe.com', 'Attio 101', 'Cal.com', het Notion-logo midden in beeld. maskeer_merkregios() dekt alleen twee rechthoeken bovenin plus drie handmatige extra's, en GEEN ENKEL mobiel beeld. Het bestand _extra_maskers.json geeft zelf toe een voorbeeld te zijn; de harnas draaide toch door.",
+    "fataal_3_hoogte_is_vingerafdruk": "17 van de 41 desktopbeelden hebben een unieke hoogte; wie de originelen heeft herleidt de labelmapping in seconden.",
+    "fataal_4_stromannen": "Zes 'productinterfaces' (mercury, ramp, resend, dub, linear_product, stripe_checkout) zijn in werkelijkheid MARKETING-HOMEPAGES. Het manifest beschreef niet wat is vastgelegd maar wat het bedrijf verkoopt - de gevaarlijkste stroman, want hij leest als een sterke lat. Plus: 1 mislukte render (attio_crm), 2 cookiewalls (klaverblad, pricewise) waarbij het manifest 'cookies geklikt op Accept' beweerde, en 1 vrijwel lege pagina (notion_public_page).",
+    "mobiel_onbruikbaar": "De hoogtekap gooit 90-94% weg bij de meeste NL-comps; de mobiele ronde vergelijkt uitsluitend hero-secties.",
+    "decoy": "BRUIKBAAR maar te goed. Geloofwaardig Bootstrap-achtig beheerdashboard; van de zes ingebouwde zwaktes overleeft de kleuren-zwakte de grijswaarde-stap niet. Erger: de decoy is een domein-tweeling van ons product (Nederlands, assurantie, backoffice, geen publiek merk), dus zodra onze schermen erbij komen zijn wij + decoy de enige twee zonder herkenbaar merk.",
+    "ontbrekende_positieve_controle": "Er is geen plafondanker - geen scherm waarvan vaststaat dat het bovenaan hoort. Zonder dat kun je niet onderscheiden of de beoordelaar smaak heeft of alleen drukte afstraft.",
+    "diepste_probleem": "De categorie waarin wij zitten - een ingelogde Nederlandse assurantie-backoffice - heeft geen enkele echte vertegenwoordiger. Van Exact Online, Moneybird, Interpolis en a.s.r. is de MARKETINGPAGINA vastgelegd, niet het product, want dat zit achter een login. Het enige echte backoffice-scherm in de hele set is onze eigen decoy.",
+    "must_fix": [
+      "blind_ab.py moet met exitcode 2 STOPPEN als renders/ours/ leeg is, niet een ronde schrijven die niets meet",
+      "OCR over elk geneutraliseerd beeld met de bestaande lijst VERBODEN_IN_NAAM, toegepast op de PIXELS in plaats van op de bestandsnaam; ronde weigeren bij een treffer; extra_maskers voor alle 82 bronnen incl. mobiel",
+      "Vier kapotte captures eruit + naharde controle in de capture-scripts (inktdekking, aandeel effen wit, detectie van een gecentreerde modal) die geladen_ok op false zet",
+      "Zes marketing-homepages herclassificeren of vervangen door echte interfaces",
+      "NL-set aanvullen met echte backoffice-demo's (Nmbrs, AFAS, Anva/Faster Forward, Exact Online-proefaccount)",
+      "Minstens vier extra decoys in wisselende kwaliteit, zodat 'het niet-publieke scherm' niet automatisch 'wij' betekent",
+      "Gescheiden rondes per taal/domein, zodat ons scherm alleen tegen NL financiele interfaces ligt",
+      "Een positieve controle toevoegen als plafondanker"
+    ],
+    "les": "De meetlat faalde eerder dan het product. Er was nog geen scherm om te beoordelen, en toch was de beoordelingsmachine al aantoonbaar kapot. Dit eerst repareren, anders is elke score erna betekenisloos."
+  }
+}

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Verzekeringsbeheer - Overzicht</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 13px; color: #333; background: #f5f5f5; margin: 0;
+  }
+  a { color: #337ab7; }
+  .topbar {
+    background: #2c3e50; color: #fff; padding: 12px 15px 10px 15px;
+    border-bottom: 3px solid #1abc9c;
+  }
+  .topbar .merk { font-size: 18px; font-weight: bold; display: inline-block; }
+  .topbar .merk span { color: #1abc9c; }
+  .topbar .rechts { float: right; font-size: 12px; padding-top: 6px; }
+  .topbar .rechts a { color: #ecf0f1; margin-left: 14px; text-decoration: underline; }
+  .clear { clear: both; }
+
+  .nav {
+    background: #ecf0f1; border-bottom: 1px solid #bdc3c7; padding: 6px 10px 8px 18px;
+  }
+  .nav a {
+    display: inline-block; padding: 6px 12px 5px 12px; margin-right: 4px;
+    border: 1px solid #bdc3c7; background: #fff; border-radius: 3px;
+    text-decoration: none; color: #2c3e50; font-size: 12px;
+  }
+  .nav a.actief { background: #337ab7; color: #fff; border-color: #2e6da4; font-weight: bold; }
+
+  .kruimel { padding: 10px 15px 10px 20px; font-size: 11px; color: #777; }
+
+  .wrap { padding: 0 15px 25px 18px; }
+  h1 { font-size: 22px; margin: 8px 0 18px 2px; color: #000; }
+  h2 { font-size: 15px; margin: 25px 0 10px 0; color: #2c3e50; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+  h3 { font-size: 12px; margin: 0 0 8px 0; text-transform: uppercase; color: #7f8c8d; letter-spacing: 0.5px; }
+
+  .kaartrij { margin-bottom: 18px; }
+  .kaart {
+    display: inline-block; vertical-align: top; background: #fff;
+    border: 1px solid #ccc; border-radius: 3px; padding: 12px 10px 15px 14px;
+    margin-right: 1%; margin-bottom: 10px;
+  }
+  .k1 { width: 24%; border-top: 4px solid #337ab7; }
+  .k2 { width: 23%; border-top: 4px solid #5cb85c; }
+  .k3 { width: 26%; border-top: 4px solid #f0ad4e; }
+  .k4 { width: 22%; border-top: 4px solid #9b59b6; margin-right: 0; }
+  .kaart .getal { font-size: 26px; font-weight: bold; color: #000; margin: 6px 0 2px 0; }
+  .kaart .sub { font-size: 11px; color: #999; }
+  .kaart .delta { font-size: 12px; color: #5cb85c; font-weight: bold; }
+  .kaart .delta.rood { color: #d9534f; }
+
+  .paneel {
+    background: #fff; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 20px;
+  }
+  .paneel .kop {
+    background: #f7f7f7; border-bottom: 1px solid #ddd; padding: 10px 12px 8px 12px;
+    font-weight: bold; font-size: 13px; border-radius: 6px 6px 0 0;
+  }
+  .paneel .kop .knop { float: right; margin-top: -3px; }
+  .paneel .body { padding: 15px 12px 18px 10px; }
+
+  .knop {
+    display: inline-block; padding: 5px 12px 5px 12px; border: 1px solid #2e6da4;
+    background: #337ab7; color: #fff; border-radius: 3px; font-size: 12px;
+    text-decoration: none; cursor: pointer;
+  }
+  .knop.grijs { background: #fff; color: #333; border-color: #ccc; }
+  .knop.groen { background: #5cb85c; border-color: #4cae4c; }
+  .knop.oranje { background: #f0ad4e; border-color: #eea236; color: #fff; }
+  .knop.klein { font-size: 11px; padding: 3px 8px 3px 8px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th {
+    background: #eee; border: 1px solid #ccc; padding: 7px 6px 6px 8px;
+    text-align: left; font-size: 11px; text-transform: uppercase; color: #555;
+  }
+  td { border: 1px solid #ddd; padding: 8px 6px 7px 8px; }
+  tr:nth-child(even) td { background: #fafafa; }
+  td.bedrag { text-align: center; font-weight: bold; }
+  td.mid { text-align: center; }
+  .badge {
+    display: inline-block; padding: 2px 7px 2px 7px; border-radius: 10px;
+    font-size: 10px; color: #fff; background: #5cb85c;
+  }
+  .badge.oranje { background: #f0ad4e; }
+  .badge.rood { background: #d9534f; }
+  .badge.blauw { background: #337ab7; }
+
+  .kolom-links { display: inline-block; vertical-align: top; width: 63%; margin-right: 2%; }
+  .kolom-rechts { display: inline-block; vertical-align: top; width: 34%; }
+
+  .formrij { margin-bottom: 10px; }
+  .formrij label { display: block; font-size: 11px; color: #666; margin-bottom: 3px; }
+  .formrij input, .formrij select {
+    width: 100%; padding: 6px 8px 6px 6px; border: 1px solid #ccc;
+    border-radius: 3px; font-size: 13px; font-family: inherit; background: #fff;
+  }
+  .formrij.smal { display: inline-block; width: 48%; margin-right: 2%; }
+  .formrij.smal2 { display: inline-block; width: 46%; }
+
+  .lijst { list-style: none; margin: 0; padding: 0; }
+  .lijst li {
+    border-bottom: 1px solid #eee; padding: 9px 4px 8px 6px; font-size: 12px;
+  }
+  .lijst li .tijd { float: right; color: #aaa; font-size: 11px; }
+
+  .melding {
+    background: #fcf8e3; border: 1px solid #faebcc; color: #8a6d3b;
+    padding: 10px 12px 9px 12px; border-radius: 3px; margin-bottom: 15px; font-size: 12px;
+  }
+  .voortgang { background: #eee; border-radius: 3px; height: 14px; margin-top: 6px; border: 1px solid #ddd; }
+  .voortgang div { background: #5cb85c; height: 12px; border-radius: 2px; }
+
+  .staafjes { height: 150px; padding-top: 12px; }
+  .staafjes .staaf {
+    display: inline-block; width: 6.5%; margin-right: 1%; background: #337ab7;
+    vertical-align: bottom; border: 1px solid #2e6da4;
+  }
+  .staaflabels { font-size: 10px; color: #999; padding-top: 5px; }
+  .staaflabels span { display: inline-block; width: 7.5%; text-align: center; }
+
+  .footer {
+    border-top: 1px solid #ddd; margin-top: 20px; padding: 15px 18px 25px 18px;
+    font-size: 11px; color: #999; background: #fff;
+  }
+  .footer a { color: #999; margin-right: 12px; }
+
+  @media (max-width: 700px) {
+    .k1, .k2, .k3, .k4 { width: 48%; margin-right: 2%; }
+    .kolom-links, .kolom-rechts { width: 100%; margin-right: 0; }
+    .topbar .rechts { float: none; display: block; padding-top: 8px; }
+    .nav a { margin-bottom: 4px; }
+    /* Geen horizontale scroll: cellen krimpen en breken af. Krap, maar heel. */
+    table { font-size: 10px; table-layout: fixed; word-wrap: break-word; }
+    th { padding: 5px 3px 4px 4px; font-size: 9px; }
+    td { padding: 5px 3px 4px 4px; }
+    .badge { font-size: 9px; padding: 2px 4px 2px 4px; }
+    .knop.klein { padding: 2px 5px 2px 5px; }
+    h1 { font-size: 19px; }
+    .staafjes { height: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="merk">Polis<span>Beheer</span> 4.2</div>
+  <div class="rechts">
+    <a href="#">Handleiding</a><a href="#">Instellingen</a><a href="#">J. de Vries (afmelden)</a>
+  </div>
+  <div class="clear"></div>
+</div>
+
+<div class="nav">
+  <a href="#" class="actief">Dashboard</a>
+  <a href="#">Polissen</a>
+  <a href="#">Schades</a>
+  <a href="#">Relaties</a>
+  <a href="#">Offertes</a>
+  <a href="#">Facturatie</a>
+  <a href="#">Rapportages</a>
+  <a href="#">Beheer</a>
+</div>
+
+<div class="kruimel">Home &nbsp;&raquo;&nbsp; Dashboard &nbsp;&raquo;&nbsp; Overzicht portefeuille</div>
+
+<div class="wrap">
+  <h1>Overzicht portefeuille</h1>
+
+  <div class="melding">
+    <b>Let op:</b> 12 polissen hebben een prolongatiedatum binnen 30 dagen. Controleer de premies voordat u de batch verwerkt.
+    <a href="#">Bekijk lijst</a>
+  </div>
+
+  <div class="kaartrij">
+    <div class="kaart k1">
+      <h3>Actieve polissen</h3>
+      <div class="getal">1.284</div>
+      <div class="delta">+ 3,2%</div>
+      <div class="sub">t.o.v. vorige maand</div>
+    </div><div class="kaart k2">
+      <h3>Openstaande schades</h3>
+      <div class="getal">47</div>
+      <div class="delta rood">+ 11</div>
+      <div class="sub">waarvan 9 &gt; 30 dagen</div>
+    </div><div class="kaart k3">
+      <h3>Premie-omzet (YTD)</h3>
+      <div class="getal">&euro; 892.430</div>
+      <div class="delta">+ 6,8%</div>
+      <div class="sub">begroot: &euro; 910.000</div>
+    </div><div class="kaart k4">
+      <h3>Conversie offertes</h3>
+      <div class="getal">34%</div>
+      <div class="delta rood">- 2,1%</div>
+      <div class="sub">laatste 90 dagen</div>
+    </div>
+  </div>
+
+  <div class="kolom-links">
+
+    <div class="paneel">
+      <div class="kop">Recente polismutaties <a href="#" class="knop klein grijs">Exporteren</a></div>
+      <div class="body">
+        <table>
+          <tr>
+            <th>Polisnr.</th><th>Relatie</th><th>Product</th><th>Premie p/j</th><th>Status</th><th>Gewijzigd</th>
+          </tr>
+          <tr>
+            <td>P-2024-01183</td><td>Bakkerij Van Loon B.V.</td><td>Bedrijfsaansprakelijkheid</td>
+            <td class="bedrag">&euro; 1.240,00</td><td class="mid"><span class="badge">Actief</span></td><td>12-09-2026</td>
+          </tr>
+          <tr>
+            <td>P-2024-00947</td><td>M. Haverkamp</td><td>Autoverzekering WA+</td>
+            <td class="bedrag">&euro; 684,50</td><td class="mid"><span class="badge oranje">In behandeling</span></td><td>12-09-2026</td>
+          </tr>
+          <tr>
+            <td>P-2023-02210</td><td>Installatiebedrijf Kroon</td><td>Rechtsbijstand zakelijk</td>
+            <td class="bedrag">&euro; 415,00</td><td class="mid"><span class="badge">Actief</span></td><td>11-09-2026</td>
+          </tr>
+          <tr>
+            <td>P-2025-00031</td><td>A. el Amrani</td><td>Overlijdensrisicoverzekering</td>
+            <td class="bedrag">&euro; 228,80</td><td class="mid"><span class="badge blauw">Offerte</span></td><td>11-09-2026</td>
+          </tr>
+          <tr>
+            <td>P-2022-01765</td><td>Praktijk De Linde</td><td>Inventaris / goederen</td>
+            <td class="bedrag">&euro; 2.019,00</td><td class="mid"><span class="badge rood">Royement</span></td><td>10-09-2026</td>
+          </tr>
+          <tr>
+            <td>P-2024-01902</td><td>Transport Wielinga</td><td>Wagenparkverzekering</td>
+            <td class="bedrag">&euro; 7.845,00</td><td class="mid"><span class="badge">Actief</span></td><td>10-09-2026</td>
+          </tr>
+        </table>
+        <div style="margin-top:12px;">
+          <a href="#" class="knop">Alle mutaties</a>
+          <a href="#" class="knop groen" style="margin-left:6px;">Nieuwe polis</a>
+          <a href="#" class="knop oranje" style="margin-left:10px;">Batch prolongatie</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="paneel">
+      <div class="kop">Premie-ontwikkeling per maand (x &euro; 1.000)</div>
+      <div class="body">
+        <div class="staafjes">
+          <div class="staaf" style="height:52%"></div><div class="staaf" style="height:61%"></div><div class="staaf" style="height:48%"></div><div class="staaf" style="height:73%"></div><div class="staaf" style="height:69%"></div><div class="staaf" style="height:81%"></div><div class="staaf" style="height:77%"></div><div class="staaf" style="height:88%"></div><div class="staaf" style="height:64%"></div><div class="staaf" style="height:92%"></div><div class="staaf" style="height:70%"></div><div class="staaf" style="height:58%"></div>
+        </div>
+        <div class="staaflabels">
+          <span>jan</span><span>feb</span><span>mrt</span><span>apr</span><span>mei</span><span>jun</span><span>jul</span><span>aug</span><span>sep</span><span>okt</span><span>nov</span><span>dec</span>
+        </div>
+      </div>
+    </div>
+
+    <h2>Schadedossiers die aandacht vragen</h2>
+    <div class="paneel">
+      <div class="body" style="padding:10px 10px 12px 10px;">
+        <table>
+          <tr><th>Dossier</th><th>Soort</th><th>Gemeld</th><th>Reserve</th><th>Behandelaar</th><th></th></tr>
+          <tr><td>S-8821</td><td>Aanrijding</td><td>02-08-2026</td><td class="bedrag">&euro; 4.100</td><td>K. Smit</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
+          <tr><td>S-8809</td><td>Waterschade</td><td>27-07-2026</td><td class="bedrag">&euro; 12.750</td><td>K. Smit</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
+          <tr><td>S-8794</td><td>Inbraak</td><td>19-07-2026</td><td class="bedrag">&euro; 3.480</td><td>R. Doornbos</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
+          <tr><td>S-8770</td><td>Aansprakelijkheid</td><td>04-07-2026</td><td class="bedrag">&euro; 21.000</td><td>niet toegewezen</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
+        </table>
+      </div>
+    </div>
+
+  </div><div class="kolom-rechts">
+
+    <div class="paneel">
+      <div class="kop">Snel zoeken</div>
+      <div class="body">
+        <div class="formrij">
+          <label>Relatie of polisnummer</label>
+          <input type="text" placeholder="bijv. P-2024-01183">
+        </div>
+        <div class="formrij smal">
+          <label>Product</label>
+          <select><option>Alle producten</option><option>Autoverzekering</option><option>Aansprakelijkheid</option></select>
+        </div>
+        <div class="formrij smal2">
+          <label>Status</label>
+          <select><option>Alle</option><option>Actief</option><option>Offerte</option></select>
+        </div>
+        <div class="formrij">
+          <label>Ingangsdatum vanaf</label>
+          <input type="text" value="01-01-2026">
+        </div>
+        <a href="#" class="knop" style="margin-top:4px;">Zoeken</a>
+        <a href="#" class="knop grijs" style="margin-left:8px;">Wissen</a>
+      </div>
+    </div>
+
+    <div class="paneel">
+      <div class="kop">Taken vandaag</div>
+      <div class="body" style="padding:4px 10px 10px 10px;">
+        <ul class="lijst">
+          <li><span class="tijd">09:15</span>Prolongatie Bakkerij Van Loon controleren</li>
+          <li><span class="tijd">10:00</span>Terugbelverzoek M. Haverkamp</li>
+          <li><span class="tijd">11:30</span>Schadedossier S-8770 toewijzen</li>
+          <li><span class="tijd">13:45</span>Offerte ORV A. el Amrani nabellen</li>
+          <li><span class="tijd">15:00</span>Maandrapportage afronden</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="paneel">
+      <div class="kop">Voortgang dossierdigitalisering</div>
+      <div class="body">
+        <div style="font-size:12px;">Gescand en gecontroleerd</div>
+        <div class="voortgang"><div style="width:72%"></div></div>
+        <div style="font-size:11px;color:#999;margin-top:5px;">912 van 1.284 dossiers</div>
+        <div style="font-size:12px;margin-top:14px;">Machtigingen verwerkt</div>
+        <div class="voortgang"><div style="width:41%;background:#f0ad4e;"></div></div>
+        <div style="font-size:11px;color:#999;margin-top:5px;">527 van 1.284 dossiers</div>
+      </div>
+    </div>
+
+    <div class="paneel">
+      <div class="kop">Meldingen</div>
+      <div class="body" style="padding:6px 10px 12px 10px;">
+        <ul class="lijst">
+          <li>Koppeling met assurantiebeurs is bijgewerkt <span class="badge blauw">nieuw</span></li>
+          <li>3 premienota's retour gekomen</li>
+          <li>Onderhoud gepland op 21-09 tussen 22:00 en 23:00</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <div class="clear"></div>
+</div>
+
+<div class="footer">
+  <a href="#">Privacyverklaring</a><a href="#">Voorwaarden</a><a href="#">Support</a><a href="#">Versie 4.2.17</a>
+  <div style="margin-top:8px;">&copy; 2026 PolisBeheer - intern gebruik</div>
+</div>
+
+</body>
+</html>

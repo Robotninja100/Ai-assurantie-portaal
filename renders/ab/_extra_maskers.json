@@ -1,0 +1,17 @@
+{
+  "_leesmij": "Extra te maskeren rechthoeken per BRONBESTAND, in relatieve coordinaten [x0,y0,x1,y1] van het GENEUTRALISEERDE beeld (dus na bijsnijden en schalen; lees ze af op renders/ab/<ronde>/<viewport>/<label>.png). Nodig voor merknamen die in de broodtekst, in koppen of in een illustratie staan - die kan geen beeldfilter herkennen. Gebruik: --extra-maskers renders/ab/_extra_maskers.json. Dit bestand is een VOORBEELD met drie uitgewerkte gevallen; de overige comps hebben dezelfde behandeling nodig.",
+  "linear_docs_1440.png": [
+    [0.19, 0.075, 0.47, 0.135],
+    [0.27, 0.128, 0.63, 0.155]
+  ],
+  "vercel_geist_1440.png": [
+    [0.26, 0.095, 0.56, 0.16],
+    [0.31, 0.26, 0.53, 0.35],
+    [0.08, 0.28, 0.18, 0.48]
+  ],
+  "notion_public_page_1440.png": [
+    [0.15, 0.09, 0.45, 0.25],
+    [0.22, 0.30, 0.47, 0.40],
+    [0.22, 0.41, 0.58, 0.60]
+  ]
+}
