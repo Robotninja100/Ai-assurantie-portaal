@@ -4,6 +4,9 @@ __pycache__/
 node_modules/
 models/
 *.gguf
-renders/*.png
+renders/**/*.png
 .DS_Store
 .env
+
+# De A/B-sleutel mag nooit in de repo belanden: dan is de blindering weg.
+renders/ab/_sleutel.json

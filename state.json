@@ -134,7 +134,8 @@
         "8/8 grondslagen van de rekenkern onderbouwd",
         "precedentzoeker end-to-end: 8 echte bronnen, oordeel GEFUNDEERD, 0 verzonnen verwijzingen"
       ],
-      "audit": "HERSTELBAAR: 4 fabricaties gevonden en in quarantaine, 164 bruikbare records over"
+      "audit": "HERSTELBAAR: 4 fabricaties gevonden en in quarantaine, 164 bruikbare records over",
+      "meetlat": "KAPOT - zie meetlat_audit_ronde_0; repareren voor ronde 1"
     }
   ],
   "next_step_awaiting_user": "Kies een runtime-route (eigen ANTHROPIC_API_KEY als env var in de omgeving), of geef opdracht om alleen de niet-AI fundering te bouwen.",
@@ -262,18 +263,32 @@
     }
   ],
   "comps": {
-    "internationaal_pngs": 36,
-    "nederlands_pngs": 44,
-    "scripts": [
-      "scripts/capture_comps.py",
-      "scripts/capture_comps_nl.py"
-    ],
-    "let_op": "blinde A/B-harnas en decoy waren nog in aanbouw toen de sessie werd afgerond"
+    "internationaal": {
+      "comps": 18,
+      "bestanden": 36,
+      "map": "renders/comps/",
+      "script": "scripts/capture_comps.py"
+    },
+    "nederlands": {
+      "comps": 22,
+      "bestanden": 44,
+      "map": "renders/comps_nl/",
+      "script": "scripts/capture_comps_nl.py"
+    },
+    "let_op": "PNG's staan NIET in git (186MB); .gitignore sluit renders/**/*.png uit. Opnieuw vastleggen met de capture-scripts.",
+    "technische_horde_opgelost": "Chromium kon niets laden (ERR_CONNECTION_RESET): de egress-proxy verdraagt Chromium's TLS 1.3 ClientHello niet. Opgelost met --ssl-version-max=tls1.2; certificaatverificatie is NIET uitgezet en HTTPS_PROXY niet omzeild.",
+    "bot_geblokkeerd": [
+      "Independer",
+      "Nationale-Nederlanden",
+      "Centraal Beheer",
+      "Rabobank",
+      "ING"
+    ]
   },
   "openstaand_volgende_sessie": [
     "1. FRONTEND BESTAAT NOG NIET. backend/api.py serveert frontend/index.html dat er niet is.",
+    "2. MEETLAT IS KAPOT en moet voor ronde 1 gerepareerd. Negen must-fix-punten in state.json -> meetlat_audit_ronde_0.must_fix. Belangrijkste twee: de ronde bevatte nul eigen schermen en gaf toch exitcode 0, en de blindering lekt bij circa 30 van de 41 beelden.",
     "1b. KIFID-VELD 'oordeel' IS EEN VERTALING, geen brontekst. De precedentzoeker aggregeert er nu op. Overweeg te aggregeren op uitkomst_letterlijk en de nuance zichtbaar te maken.",
-    "2. Blinde A/B-harnas + decoy afmaken (scripts/blind_ab.py, scripts/maak_decoy.py).",
     "3. CORPUSGAT: geen diefstal-/inbraakbeveiligingsclausules. De dekkingscheck weigerde daardoor terecht te antwoorden op een inbraakcasus. Aanvullen vanuit inboedelvoorwaarden.",
     "4. Ronde 1 criticus: 10 rommelige casussen per feature, 12 features.",
     "5. Twee Kifid-uitspraken (2026-0832, 2026-0742) opnieuw verifieren; nu uitgesloten.",
@@ -316,5 +331,30 @@
     "belangrijkste_inhoudelijke_waarschuwing": "Kifid gebruikt in moderne uitspraken NIET de termen gegrond/ongegrond. De kopregel heet 'Uitkomst' en luidt 'Vordering (gedeeltelijk) toegewezen/afgewezen'. Het veld 'oordeel' is dus een GENORMALISEERDE VERTALING die juridische nuance verliest: een klacht kan materieel gegrond zijn terwijl de vordering wordt afgewezen (wel zorgplichtschending, geen causaal verband). Gebruik voor nuance de letterlijke velden uitkomst_letterlijk en beslissing_letterlijk, niet 'oordeel'.",
     "representativiteit": "NIET representatief. Steekproef scheef naar recent (2026: 37, 2025: 8, 2024: 2) en naar afwijzingen. Alleen Geschillencommissie, geen Commissie van Beroep. Gebruik dit corpus NOOIT om uitspraken te doen over slagingspercentages bij Kifid.",
     "les": "De auditor vond fabricaties die mijn eigen steekproef miste, en mijn steekproef vond de niet-citeerbare bron-URL die de auditor miste. Beide waren nodig."
+  },
+  "meetlat_audit_ronde_0": {
+    "oordeel": "KAPOT",
+    "waarom_dit_telt": "De opdracht was expliciet: winnen tegen een nepbar is erger dan niet winnen. Deze audit is precies daarvoor gedraaid en hij keurt onze eigen meetlat af.",
+    "comps_geopend": 40,
+    "comps_echt_bruikbaar": 12,
+    "fataal_1_ronde_meet_niets": "renders/ours/ bestaat niet. verzamel_bronnen() slaat een ontbrekende map STIL over, dus 41 desktop + 41 mobiel = 40 comps + 1 decoy, met is_ons leeg bij elk item. Er ligt een complete, nette, geblindeerde meetronde die niets meet - en exitcode 0 geeft.",
+    "fataal_2_blindering_lekt": "Bij circa 30 van de 41 desktopbeelden is de bron direct af te lezen: 'Interpolis Autoverzekeringen' in een kop van 40px, 'api.stripe.com', 'Attio 101', 'Cal.com', het Notion-logo midden in beeld. maskeer_merkregios() dekt alleen twee rechthoeken bovenin plus drie handmatige extra's, en GEEN ENKEL mobiel beeld. Het bestand _extra_maskers.json geeft zelf toe een voorbeeld te zijn; de harnas draaide toch door.",
+    "fataal_3_hoogte_is_vingerafdruk": "17 van de 41 desktopbeelden hebben een unieke hoogte; wie de originelen heeft herleidt de labelmapping in seconden.",
+    "fataal_4_stromannen": "Zes 'productinterfaces' (mercury, ramp, resend, dub, linear_product, stripe_checkout) zijn in werkelijkheid MARKETING-HOMEPAGES. Het manifest beschreef niet wat is vastgelegd maar wat het bedrijf verkoopt - de gevaarlijkste stroman, want hij leest als een sterke lat. Plus: 1 mislukte render (attio_crm), 2 cookiewalls (klaverblad, pricewise) waarbij het manifest 'cookies geklikt op Accept' beweerde, en 1 vrijwel lege pagina (notion_public_page).",
+    "mobiel_onbruikbaar": "De hoogtekap gooit 90-94% weg bij de meeste NL-comps; de mobiele ronde vergelijkt uitsluitend hero-secties.",
+    "decoy": "BRUIKBAAR maar te goed. Geloofwaardig Bootstrap-achtig beheerdashboard; van de zes ingebouwde zwaktes overleeft de kleuren-zwakte de grijswaarde-stap niet. Erger: de decoy is een domein-tweeling van ons product (Nederlands, assurantie, backoffice, geen publiek merk), dus zodra onze schermen erbij komen zijn wij + decoy de enige twee zonder herkenbaar merk.",
+    "ontbrekende_positieve_controle": "Er is geen plafondanker - geen scherm waarvan vaststaat dat het bovenaan hoort. Zonder dat kun je niet onderscheiden of de beoordelaar smaak heeft of alleen drukte afstraft.",
+    "diepste_probleem": "De categorie waarin wij zitten - een ingelogde Nederlandse assurantie-backoffice - heeft geen enkele echte vertegenwoordiger. Van Exact Online, Moneybird, Interpolis en a.s.r. is de MARKETINGPAGINA vastgelegd, niet het product, want dat zit achter een login. Het enige echte backoffice-scherm in de hele set is onze eigen decoy.",
+    "must_fix": [
+      "blind_ab.py moet met exitcode 2 STOPPEN als renders/ours/ leeg is, niet een ronde schrijven die niets meet",
+      "OCR over elk geneutraliseerd beeld met de bestaande lijst VERBODEN_IN_NAAM, toegepast op de PIXELS in plaats van op de bestandsnaam; ronde weigeren bij een treffer; extra_maskers voor alle 82 bronnen incl. mobiel",
+      "Vier kapotte captures eruit + naharde controle in de capture-scripts (inktdekking, aandeel effen wit, detectie van een gecentreerde modal) die geladen_ok op false zet",
+      "Zes marketing-homepages herclassificeren of vervangen door echte interfaces",
+      "NL-set aanvullen met echte backoffice-demo's (Nmbrs, AFAS, Anva/Faster Forward, Exact Online-proefaccount)",
+      "Minstens vier extra decoys in wisselende kwaliteit, zodat 'het niet-publieke scherm' niet automatisch 'wij' betekent",
+      "Gescheiden rondes per taal/domein, zodat ons scherm alleen tegen NL financiele interfaces ligt",
+      "Een positieve controle toevoegen als plafondanker"
+    ],
+    "les": "De meetlat faalde eerder dan het product. Er was nog geen scherm om te beoordelen, en toch was de beoordelingsmachine al aantoonbaar kapot. Dit eerst repareren, anders is elke score erna betekenisloos."
   }
 }

@@ -181,84 +181,205 @@ def _rijprofiel(img: Image.Image, breedte: int = 64) -> tuple[np.ndarray, np.nda
     return a.mean(axis=1), a.std(axis=1)
 
 
-def detecteer_browser_chrome(img: Image.Image, max_fractie: float = 0.18) -> tuple[int, str]:
-    """
-    Browser-chrome is een vlakke, egale balk bovenaan (tabbalk + adresbalk) die
-    eindigt met een harde horizontale rand. Playwright-screenshots hebben dit
-    normaal NIET; dit is er voor handmatig gemaakte schermafbeeldingen.
+def _bandstatistiek(img: Image.Image, y0: int, y1: int) -> dict:
+    strook = img.crop((0, y0, img.width, y1))
+    klein = strook.resize((96, max(1, min(strook.height, 400))), Image.BILINEAR)
+    _L, chroma = _naar_lab(np.asarray(klein.convert("RGB")))
+    gem, sp = _rijprofiel(strook)
+    return {
+        "chroma_gem": float(chroma.mean()),
+        "lum_gem": float(gem.mean()),
+        "spreiding_gem": float(sp.mean()),
+        "vlak_aandeel": float((sp < 6.0).mean()),
+    }
 
-    Retourneert (aantal_px_af_te_snijden, reden).
+
+def _heeft_adresbalk(img: Image.Image, r: int) -> tuple[bool, str]:
     """
-    h = img.height
-    grens = max(8, int(h * max_fractie))
-    gem, spreiding = _rijprofiel(img)
-    gem, spreiding = gem[:grens], spreiding[:grens]
-    if len(gem) < 12:
+    Zoekt in de balk 0..r naar het enige echt kenmerkende onderdeel van browser-
+    chrome: een LICHTE, links-ingesprongen adresbalk met over vele beeldrijen een
+    STABIELE linker- en rechterrand, die bovendien LICHTER is dan wat er direct
+    boven staat (de pil ligt op de werkbalk).
+
+    Die laatste eis is wat sitekoppen wegfiltert: daar is de 'lichte strook' juist
+    de witte achtergrond tussen logo en navigatie, met alleen maar wit erboven.
+    """
+    kol = 192
+    band = img.crop((0, 0, img.width, r)).convert("L").resize((kol, r), Image.BILINEAR)
+    a = np.asarray(band, dtype=np.float32)
+    y0 = r // 2
+
+    rijen: list[tuple[int, int] | None] = []
+    for y in range(y0, r):
+        rij = a[y]
+        # 25e percentiel, niet de mediaan: een brede adresbalk kan meer dan de
+        # helft van de rij beslaan en zou dan zelf de mediaan worden
+        basis = float(np.percentile(rij, 25))
+        idx = np.flatnonzero(rij > basis + 8.0)
+        if idx.size == 0:
+            rijen.append(None)
+            continue
+        segmenten = np.split(idx, np.flatnonzero(np.diff(idx) > 1) + 1)
+        seg = max(segmenten, key=len)
+        links, rechts, breedte = seg[0] / kol, seg[-1] / kol, len(seg) / kol
+        # een adresbalk begint linksvoor (na de navigatieknoppen) en loopt niet
+        # tot de rand; een zoekpil in een sitekop staat juist rechts van het midden
+        if breedte >= 0.30 and 0.015 < links < 0.25 and rechts < 0.95:
+            rijen.append((int(seg[0]), int(seg[-1])))
+        else:
+            rijen.append(None)
+
+    groep: list[tuple[int, int]] = []
+    start_y = 0
+    for i, rij in enumerate(rijen + [None]):
+        if rij is not None:
+            if not groep:
+                start_y = y0 + i
+            groep.append(rij)
+            continue
+        # de pil moet een geloofwaardig deel van de balkhoogte beslaan: te dun is
+        # een dividerlijn of een zoekveldje in een sitebalk, te dik is geen pil
+        if len(groep) >= 12 and 0.15 <= len(groep) / max(1, r) <= 0.55:
+            l = np.array([g[0] for g in groep], dtype=np.float32)
+            rr = np.array([g[1] for g in groep], dtype=np.float32)
+            if (l / kol).std() < 0.02 and (rr / kol).std() < 0.03:
+                c0, c1 = int(np.median(l)), int(np.median(rr)) + 1
+                pil = float(a[start_y:start_y + len(groep), c0:c1].mean())
+                bo = max(0, start_y - 6)
+                boven = float(a[bo:start_y, c0:c1].mean()) if start_y > bo else 255.0
+                if pil > boven + 8.0:
+                    return True, (f"adresbalk herkend: {len(groep)} rijen, stabiele "
+                                  f"randen, {pil - boven:.0f} lichter dan de werkbalk")
+        groep = []
+    return False, "geen adresbalk in de balk"
+
+
+def detecteer_browser_chrome(img: Image.Image,
+                             min_px: int = 80,
+                             max_px: int = 300) -> tuple[int, str]:
+    """
+    Snijdt de bovenrand weg als daar BROWSER-CHROME staat (tabbalk + adresbalk).
+
+    BEWUST STRENG. Een soepele variant sneed bij echte sites tot 2000 px weg -
+    complete hero-secties - omdat een donkere sitekop ook 'een vlakke balk met
+    een harde rand' is. Alles hieronder moet kloppen voordat er iets afgaat:
+
+      1. grens tussen 80 en 300 px (realistische chromehoogte, 1x tot 2x)
+      2. de balk is NEUTRAAL grijs (gemiddelde chroma < 3); een sitekop in
+         huisstijlkleur valt daarmee af
+      3. de balk is overwegend vlak (>= 55% van de rijen nagenoeg effen)
+      4. er staat een zichtbare helderheidsstap op de grens
+      5. onder de grens zit meer structuur dan erboven (daar begint de pagina)
+      6. de balk bevat een herkenbare ADRESBALK - dit is de doorslaggevende eis;
+         zonder adresbalk is het geen browser maar gewoon een sitekop
+
+    Gevalideerd: 0 vals alarm op alle 82 aanwezige opnames, wel herkenning op een
+    nagebootste browseropname. Retourneert (aantal_px, reden).
+    """
+    h, w = img.height, img.width
+    if h < max_px + 240 or w < 200:
         return 0, "beeld te klein voor chromedetectie"
 
-    beste_r, beste_score = 0, 0.0
-    for r in range(6, len(gem) - 4):
-        boven_spreiding = float(spreiding[:r].mean())
-        stap = abs(float(gem[r - 1]) - float(gem[min(r + 2, len(gem) - 1)]))
-        # chrome: rustig erboven (weinig detail), harde stap op de grens
-        if boven_spreiding < 26.0 and stap > 18.0:
-            score = stap - boven_spreiding * 0.4
-            if score > beste_score:
-                beste_score, beste_r = score, r
-    if beste_r:
-        return beste_r, f"vlakke balk boven rij {beste_r} met randcontrast {beste_score:.1f}"
-    return 0, "geen browser-chrome aangetroffen (schermafbeelding lijkt chroomloos)"
+    gem, sp = _rijprofiel(img)
+    beste = (0, 0.0, "")
+    for r in range(min_px, min(max_px, h - 220)):
+        stap = abs(float(gem[max(0, r - 3)]) - float(gem[min(r + 3, h - 1)]))
+        if stap < 6.0:
+            continue
+        boven = _bandstatistiek(img, 0, r)
+        if boven["chroma_gem"] >= 3.0 or boven["vlak_aandeel"] < 0.55:
+            continue
+        onder = _bandstatistiek(img, r, min(h, r + 200))
+        if onder["spreiding_gem"] <= boven["spreiding_gem"] + 4.0:
+            continue
+        ok, waarom = _heeft_adresbalk(img, r)
+        if not ok:
+            continue
+        # eerste geldige grens = de echte onderkant van de chrome; een latere
+        # grens zou een strook paginainhoud meenemen
+        beste = (r, stap, (f"browser-chrome tot rij {r}: {waarom}, "
+                               f"chroma {boven['chroma_gem']:.1f}, "
+                               f"vlak {boven['vlak_aandeel']:.0%}, stap {stap:.0f}"))
+        break
+    if beste[0]:
+        return beste[0], beste[2]
+    return 0, "geen browser-chrome aangetroffen (opname lijkt chroomloos)"
 
 
 def detecteer_bodembanner(img: Image.Image,
                           min_px: int = 40,
-                          max_fractie: float = 0.22) -> tuple[int, str]:
+                          max_fractie: float = 0.15) -> tuple[int, str]:
     """
-    Cookiebanner-rest: een egale strook aan de ONDERRAND, duidelijk afgescheiden
-    van de inhoud erboven en met weinig eigen structuur. Conservatief: een echte
-    footer heeft veel detail en wordt daarom niet weggesneden.
+    Snijdt aan de ONDERRAND een strook weg die geen inhoud is: een achtergebleven
+    cookiebanner-/overlayvlak of lege ruimte onder de pagina.
+
+    BEWUST STRENG, om dezelfde reden als bij de chromedetectie: een soepele versie
+    sneed bij 59 van de 82 aanwezige opnames de footer weg - tot 20% van de
+    pagina. Een footer heeft tekst, kolommen en links en is dus nooit effen. Er
+    gaat pas iets af als de strook praktisch EEN KLEUR is:
+
+      - hoogstens 15% van de paginahoogte, minimaal 40 px
+      - 97% van de pixels ligt binnen +/-4 helderheidsniveaus van de mediaan
+      - vrijwel geen rijstructuur (spreiding < 3)
+      - een duidelijke helderheidsstap (>= 20) ten opzichte van wat erboven staat
+
+    Of dat vlak nu een bannerrest is of gewoon lege ruimte maakt niet uit: in
+    beide gevallen is het geen ontwerp en hoort het niet meegewogen te worden.
     """
     h = img.height
     venster = max(min_px + 8, int(h * max_fractie))
-    if h < venster + 40:
+    if h < venster + 80:
         return 0, "beeld te kort voor bodemdetectie"
     gem, spreiding = _rijprofiel(img)
+    grijs = img.convert("L")
     start = h - venster
 
-    beste_r, beste_score = 0, 0.0
-    for r in range(start, h - min_px):
-        band_spreiding = float(spreiding[r:].mean())
+    beste, beste_score, beste_reden = 0, 0.0, ""
+    for r in range(start, h - min_px, 2):
+        if float(spreiding[r:].mean()) >= 3.0:
+            continue
         band_gem = float(gem[r:].mean())
-        boven_gem = float(gem[max(0, r - 60):r].mean())
+        boven_gem = float(gem[max(0, r - 80):r].mean())
         stap = abs(band_gem - boven_gem)
-        if band_spreiding < 12.0 and stap > 14.0:
-            score = stap - band_spreiding
-            if score > beste_score:
-                beste_score, beste_r = score, r
-    if beste_r:
-        return h - beste_r, (f"egale strook vanaf rij {beste_r} "
-                             f"(contrast {beste_score:.1f}) - vermoedelijk bannerrest")
-    return 0, "geen bannerrest aangetroffen"
+        if stap < 20.0:
+            continue
+        strook = np.asarray(grijs.crop((0, r, img.width, h)).resize(
+            (96, min(h - r, 400)), Image.BILINEAR), dtype=np.float32)
+        mediaan = float(np.median(strook))
+        uniform = float((np.abs(strook - mediaan) <= 4.0).mean())
+        if uniform < 0.97:
+            continue
+        score = stap * uniform
+        if score > beste_score:
+            beste, beste_score = r, score
+            beste_reden = (f"effen strook vanaf rij {r} ({uniform:.0%} van de pixels "
+                           f"in een kleur, stap {stap:.0f}) - geen inhoud")
+    if beste:
+        return h - beste, beste_reden
+    return 0, "geen effen bodemstrook aangetroffen"
 
 
 # ---------------------------------------------------------------------------
 # 5. Merkidentiteit maskeren
 # ---------------------------------------------------------------------------
-def detecteer_headerhoogte(img: Image.Image, standaard: int) -> int:
-    """Eerste harde horizontale scheiding in de bovenste 22% = onderkant header."""
-    grens = max(24, int(img.height * 0.22))
+def detecteer_headerhoogte(img: Image.Image, max_px: int) -> int:
+    """
+    Onderkant van de merkbalk: de eerste harde horizontale scheiding vanaf boven.
+
+    Streng begrensd op max_px. Zonder die grens pakt de detectie de scheiding
+    onder de navigatie, de kruimelpaden of zelfs onder de paginatitel - en dan
+    maskeer je de KOPTEKST weg, precies de typografie die beoordeeld moet worden.
+    """
+    grens = max(24, min(max_px, img.height - 1))
     gem, _ = _rijprofiel(img)
     gem = gem[:grens]
     if len(gem) < 24:
-        return min(standaard, img.height)
+        return min(max_px, img.height)
     verschil = np.abs(np.diff(gem))
-    zone = verschil[20:]
-    if len(zone) == 0:
-        return min(standaard, img.height)
-    idx = int(np.argmax(zone)) + 20
-    if float(zone.max()) > 8.0:
-        return max(40, min(idx + 2, grens))
-    return min(standaard, img.height)
+    zone = verschil[16:]
+    if len(zone) and float(zone.max()) > 8.0:
+        return max(32, min(int(np.argmax(zone)) + 18, grens))
+    return grens
 
 
 def _pixeleer(img: Image.Image, kader: tuple[int, int, int, int], blok: int = 14) -> None:
@@ -277,27 +398,38 @@ def _pixeleer(img: Image.Image, kader: tuple[int, int, int, int], blok: int = 14
 
 
 def maskeer_merkregios(img: Image.Image, viewport: str,
-                       maskeer_footer: bool = False) -> tuple[int, list[dict]]:
+                       maskeer_footer: bool = False,
+                       merkbalk_hoogte: int | None = None,
+                       extra: list[list[float]] | None = None) -> tuple[int, list[dict]]:
     """
     Maskeert de plekken waar merkidentiteit vrijwel altijd zit:
-      - linksboven in de header (woordmerk/logo)
-      - rechtsboven in de header (merkknoppen, accountmerk, taalkiezer)
-      - de allerbovenste strook linksbuiten de header (sticky mini-logo)
-    Optioneel de footer-linkerhoek.
+      - linksboven in de merkbalk (woordmerk/logo)
+      - rechtsboven in de merkbalk (accountmerk, taalkiezer, merkknoppen)
+    Optioneel de footer-linkerhoek, en handmatig opgegeven extra rechthoeken.
+
+    De maskerhoogte is VAST op 8% van de beeldbreedte (circa 115 css px), niet
+    gedetecteerd. Automatische detectie van 'de onderkant van de header' faalt
+    twee kanten op: bij een dunne meldingsbalk bovenaan stopt het masker te vroeg
+    en blijft het logo eronder gewoon staan, en bij een sitekop zonder scheiding
+    loopt het door tot over de paginatitel - precies de typografie die beoordeeld
+    moet worden. Een vaste, ruime maar begrensde band is voorspelbaarder.
     """
-    standaard = 110 if viewport != "mobile" else 72
-    header_h = detecteer_headerhoogte(img, standaard)
-    header_h = max(48, min(header_h, int(img.height * 0.22)))
+    header_h = merkbalk_hoogte or max(40, int(img.width * 0.08))
+    header_h = min(header_h, max(1, img.height))
     w = img.width
     regios: list[dict] = []
 
     kaders = [
-        ("header-links", (0, 0, int(w * 0.30), header_h)),
-        ("header-rechts", (int(w * 0.72), 0, w, header_h)),
+        ("merkbalk-links", (0, 0, int(w * 0.30), header_h)),
+        ("merkbalk-rechts", (int(w * 0.74), 0, w, header_h)),
     ]
     if maskeer_footer:
-        fy0 = int(img.height * 0.90)
+        fy0 = int(img.height * 0.92)
         kaders.append(("footer-links", (0, fy0, int(w * 0.34), img.height)))
+    for i, rel in enumerate(extra or []):
+        x0, y0, x1, y1 = rel
+        kaders.append((f"extra-{i}", (int(x0 * w), int(y0 * img.height),
+                                      int(x1 * w), int(y1 * img.height))))
 
     for naam, kader in kaders:
         _pixeleer(img, kader)
@@ -308,28 +440,52 @@ def maskeer_merkregios(img: Image.Image, viewport: str,
 # ---------------------------------------------------------------------------
 # 6. Merkkleur neutraliseren
 # ---------------------------------------------------------------------------
-def naar_neutraal_grijs(img: Image.Image, chroma_winst: float = 0.45,
-                        sigma: float = 2.0) -> tuple[Image.Image, str]:
+def _naar_lab(rgb: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     """
-    Grijswaarden op basis van CIE-L* (waarneembare lichtheid), plus een hoogdoorlaat
-    van de chroma. Daarmee blijven randen tussen kleuren met GELIJKE lichtheid
-    (denk: blauwe knop op grijze balk) zichtbaar als structuur, terwijl de kleur
-    zelf - en dus 'welk blauw is mooier' - volledig verdwijnt.
+    sRGB (uint8) -> (L*, chroma). Eigen implementatie: PIL's LAB-conversie geeft
+    afhankelijk van de toegangsweg (split() vs. asarray) een andere offset voor
+    a/b, en daar wil je geen meetlat op bouwen.
     """
-    lab = img.convert("RGB").convert("LAB")
-    L, A, B = lab.split()
-    l = np.asarray(L, dtype=np.float32)
-    a = np.asarray(A, dtype=np.float32) - 128.0
-    b = np.asarray(B, dtype=np.float32) - 128.0
+    x = rgb.astype(np.float32) / 255.0
+    lin = np.where(x <= 0.04045, x / 12.92, ((x + 0.055) / 1.055) ** 2.4)
+    r, g, b = lin[..., 0], lin[..., 1], lin[..., 2]
+    # sRGB D65 -> XYZ
+    X = 0.4124564 * r + 0.3575761 * g + 0.1804375 * b
+    Y = 0.2126729 * r + 0.7151522 * g + 0.0721750 * b
+    Z = 0.0193339 * r + 0.1191920 * g + 0.9503041 * b
+    X /= 0.95047; Z /= 1.08883                      # D65 witpunt
+    d = 6.0 / 29.0
 
-    chroma = np.sqrt(a * a + b * b)
-    ch_img = Image.fromarray(np.clip(chroma, 0, 255).astype(np.uint8), mode="L")
-    ch_blur = np.asarray(ch_img.filter(ImageFilter.GaussianBlur(sigma)), dtype=np.float32)
-    hoogdoorlaat = chroma - ch_blur           # alleen chroma-RANDEN, geen kleurvlak
+    def f(t):
+        return np.where(t > d ** 3, np.cbrt(t), t / (3 * d * d) + 4.0 / 29.0)
 
-    grijs = np.clip(l + chroma_winst * hoogdoorlaat, 0, 255).astype(np.uint8)
+    fx, fy, fz = f(X), f(Y), f(Z)
+    L = 116.0 * fy - 16.0                           # 0..100
+    a = 500.0 * (fx - fy)
+    bb = 200.0 * (fy - fz)
+    return L, np.sqrt(a * a + bb * bb)
+
+
+def naar_neutraal_grijs(img: Image.Image, chroma_winst: float = 0.5,
+                        sigma: float = 1.6) -> tuple[Image.Image, str]:
+    """
+    Grijswaarden op basis van CIE-L* (waarneembare lichtheid). Kleurranden tussen
+    tinten met GELIJKE lichtheid (denk: merkblauwe knop op een grijze balk) zouden
+    dan verdwijnen; daarom wordt de RAND van het chromaveld als donkere haarlijn
+    teruggelegd. Structuur en contrast blijven zo overeind, terwijl de kleur zelf -
+    en dus 'welk blauw is mooier' - volledig weg is.
+    """
+    arr = np.asarray(img.convert("RGB"))
+    L, chroma = _naar_lab(arr)
+
+    ch8 = Image.fromarray(np.clip(chroma * 2.0, 0, 255).astype(np.uint8), mode="L")
+    ch_blur = np.asarray(ch8.filter(ImageFilter.GaussianBlur(sigma)), dtype=np.float32)
+    randen = np.abs(np.asarray(ch8, dtype=np.float32) - ch_blur)   # alleen chroma-RANDEN
+
+    grijs = np.clip(L * 2.55 - chroma_winst * randen, 0, 255).astype(np.uint8)
     return Image.fromarray(grijs, mode="L"), (
-        f"CIE-L* + chroma-hoogdoorlaat (winst {chroma_winst}, sigma {sigma})"
+        f"CIE-L* (eigen sRGB->Lab) met chroma-randlijnen "
+        f"(winst {chroma_winst}, sigma {sigma})"
     )
 
 
@@ -347,7 +503,9 @@ def pas_contrast_toe(img: Image.Image, methode: str) -> tuple[Image.Image, str]:
 def neutraliseer(pad: Path, viewport: str, breedte: int,
                  max_hoogte_ratio: float, contrast: str,
                  snij_boven: int | None, maskeer_footer: bool,
-                 chroma_winst: float) -> tuple[Image.Image, NeutralisatieLog]:
+                 chroma_winst: float, merkbalk_hoogte: int | None = None,
+                 extra_maskers: list[list[float]] | None = None
+                 ) -> tuple[Image.Image, NeutralisatieLog]:
     log = NeutralisatieLog()
     img = Image.open(pad)
     img = img.convert("RGB") if img.mode != "RGB" else img
@@ -381,7 +539,8 @@ def neutraliseer(pad: Path, viewport: str, breedte: int,
     log.geschaald_naar = (img.width, img.height)
 
     # 5. merkregio's maskeren
-    header_h, regios = maskeer_merkregios(img, viewport, maskeer_footer)
+    header_h, regios = maskeer_merkregios(img, viewport, maskeer_footer,
+                                          merkbalk_hoogte, extra_maskers)
     log.headerhoogte_px, log.gemaskeerde_regios = header_h, regios
 
     # 6. kleur neutraliseren
@@ -452,7 +611,24 @@ def controleer_naam(naam: str) -> list[str]:
 # ---------------------------------------------------------------------------
 # Ronde bouwen
 # ---------------------------------------------------------------------------
+def lees_extra_maskers(pad: str | None) -> dict[str, list[list[float]]]:
+    """
+    Handmatige extra maskers, per bronbestandsnaam, in RELATIEVE coordinaten:
+        {"linear_docs_1440.png": [[0.10, 0.18, 0.42, 0.26]]}
+    Nodig omdat merknamen ook in de BROODTEKST staan ("Linear Docs",
+    "https://api.stripe.com") en een beeldfilter die niet kan lezen.
+    """
+    if not pad:
+        return {}
+    p = Path(pad) if Path(pad).is_absolute() else PROJECT / pad
+    if not p.exists():
+        print(f"LET OP: maskerbestand {p} bestaat niet; genegeerd.")
+        return {}
+    return json.loads(p.read_text(encoding="utf-8"))
+
+
 def bouw_ronde(bronnen: list[Bron], args, ronde_id: str) -> dict[str, Any]:
+    extra_maskers = lees_extra_maskers(getattr(args, "extra_maskers", None))
     uit_map = Path(args.uit)
     ronde_map = uit_map / ronde_id
     if ronde_map.exists():
@@ -467,7 +643,7 @@ def bouw_ronde(bronnen: list[Bron], args, ronde_id: str) -> dict[str, Any]:
     sleutel_rondes: dict[str, Any] = {
         "seed": args.seed,
         "aangemaakt_op": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-        "breedte_px": args.breedte,
+        "breedte_px": {"desktop": args.breedte, "mobile": args.breedte_mobile},
         "max_hoogte_ratio": args.max_hoogte_ratio,
         "contrast": args.contrast,
         "chroma_winst": args.chroma_winst,
@@ -502,6 +678,9 @@ def bouw_ronde(bronnen: list[Bron], args, ronde_id: str) -> dict[str, Any]:
             lijst = rest + comps[:args.max_comps]
 
         rng.shuffle(lijst)                       # <- de eigenlijke randomisatie
+        # Binnen een viewportgroep is de breedte identiek; tussen groepen wordt
+        # niet vergeleken, dus mobiel hoeft niet naar desktopbreedte opgeblazen.
+        breedte_vp = args.breedte_mobile if vp == "mobile" else args.breedte
         vp_map = ronde_map / vp
         vp_map.mkdir(parents=True, exist_ok=True)
 
@@ -510,8 +689,10 @@ def bouw_ronde(bronnen: list[Bron], args, ronde_id: str) -> dict[str, Any]:
         for label, bron in zip(labels(len(lijst)), lijst):
             try:
                 img, log = neutraliseer(
-                    bron.pad, bron.viewport, args.breedte, args.max_hoogte_ratio,
-                    args.contrast, args.snij_boven, args.maskeer_footer, args.chroma_winst)
+                    bron.pad, bron.viewport, breedte_vp, args.max_hoogte_ratio,
+                    args.contrast, args.snij_boven, args.maskeer_footer,
+                    args.chroma_winst, args.merkbalk_hoogte,
+                    extra_maskers.get(bron.pad.name))
             except Exception as e:
                 problemen.append(f"{bron.pad}: neutralisatie mislukt: {e}")
                 continue
@@ -539,16 +720,18 @@ def bouw_ronde(bronnen: list[Bron], args, ronde_id: str) -> dict[str, Any]:
                 decoy_labels.setdefault(vp, []).append(label)
             totaal += 1
 
-        # alle bestanden op gelijke mtime en (optioneel) gelijke grootte
-        for p in geschreven:
-            os.utime(p, (1735689600, 1735689600))  # 2025-01-01T00:00:00Z
+        # Eerst de grootte gelijktrekken (dat herschrijft de bestanden), pas
+        # daarna de tijdstempels; anders verraadt de mtime de schrijfvolgorde.
         gelijke_grootte = 0
         if args.maskeer_grootte:
             gelijke_grootte = maskeer_bestandsgroottes(geschreven)
+        for p in geschreven:
+            os.utime(p, (1735689600, 1735689600))  # 2025-01-01T00:00:00Z
 
         schrijf_beoordelingsformulier(vp_map, [i["label"] for i in items])
         sleutel_rondes["viewports"][vp] = {
             "aantal": len(items),
+            "breedte_px": breedte_vp,
             "gelijke_bestandsgrootte_bytes": gelijke_grootte,
             "items": items,
         }
@@ -567,13 +750,14 @@ def schrijf_beoordelingsformulier(vp_map: Path, lbls: list[str]) -> None:
 
 
 def schrijf_instructie(ronde_map: Path, sleutel: dict) -> None:
-    vps = ", ".join(sleutel["viewports"].keys()) or "-"
+    vps = ", ".join(f"{k} ({v['breedte_px']} px breed)"
+                    for k, v in sleutel["viewports"].items()) or "-"
     tekst = f"""# Blinde beoordeling
 
 Alle schermen zijn geneutraliseerd: merkkleur is verwijderd (grijswaarden met
 behoud van contrast en structuur), logo-regio's zijn onherkenbaar gemaakt,
-browser-chrome en bannerresten zijn weggesneden en elk beeld is naar dezelfde
-breedte ({sleutel['breedte_px']} px) geschaald. Resolutie, kleur en merk zijn dus
+browser-chrome en bannerresten zijn weggesneden en elk beeld binnen een map is
+naar exact dezelfde breedte geschaald. Resolutie, kleur en merk zijn dus
 geen signaal. Beoordeel uitsluitend: informatiehierarchie, typografie, ritme en
 witruimte, consistentie, en totaalindruk.
 
@@ -614,19 +798,95 @@ def zelftest() -> int:
     from PIL import ImageDraw
     fouten = []
 
-    # kleurverschil bij gelijke lichtheid moet als structuur overleven
-    proef = Image.new("RGB", (200, 100), (120, 120, 120))
+    # Zoek een KLEUR met exact dezelfde lichtheid als middengrijs. Zo'n paar is
+    # de zwaarste test: naieve grijsconversie laat die rand volledig verdwijnen.
+    grijskleur = (128, 128, 128)
+    doel_L = float(_naar_lab(np.array([[grijskleur]], dtype=np.uint8))[0][0, 0])
+    stap = np.arange(0, 256, 8, dtype=np.uint8)
+    R, G, B = np.meshgrid(stap, stap, stap, indexing="ij")
+    kandidaten = np.stack([R, G, B], axis=-1).reshape(1, -1, 3).astype(np.uint8)
+    kL, kC = _naar_lab(kandidaten)
+    naief_luma = (0.299 * kandidaten[0, :, 0] + 0.587 * kandidaten[0, :, 1]
+                  + 0.114 * kandidaten[0, :, 2])
+    # isoluminant onder BEIDE maten: zowel CIE-L* als de naieve 601-luma
+    geldig = (np.abs(kL[0] - doel_L) < 1.0) & (np.abs(naief_luma - 128.0) < 2.0)
+    if not geldig.any():
+        fouten.append("geen isoluminant testpaar gevonden")
+        kleur = (0, 110, 190)
+    else:
+        score = np.where(geldig, kC[0], -1.0)
+        kleur = tuple(int(v) for v in kandidaten[0, int(np.argmax(score))])
+
+    proef = Image.new("RGB", (200, 100), grijskleur)
     d = ImageDraw.Draw(proef)
-    d.rectangle([40, 30, 160, 70], fill=(0, 110, 190))   # merkblauw, ~gelijke L*
+    d.rectangle([40, 30, 160, 70], fill=kleur)
     grijs, _ = naar_neutraal_grijs(proef)
     a = np.asarray(grijs, dtype=np.float32)
     randsterkte = float(np.abs(np.diff(a[50])).max())
-    if randsterkte < 6:
+    naief = np.asarray(proef.convert("L"), dtype=np.float32)
+    naief_rand = float(np.abs(np.diff(naief[50])).max())
+    print(f"  isoluminant paar {grijskleur} vs {kleur}: "
+          f"naieve grijsconversie rand={naief_rand:.1f}, onze rand={randsterkte:.1f}")
+    if randsterkte < 8 or randsterkte <= naief_rand:
         fouten.append(f"isoluminante rand verdwijnt (sterkte {randsterkte:.1f})")
 
     # grijs moet echt grijs zijn: geen kleurkanalen meer
     if grijs.mode != "L":
         fouten.append(f"uitvoer is niet eenkanaals maar {grijs.mode}")
+
+    # --- randdetectie: moet aanslaan op echte chrome, en NIET op een sitekop ---
+    def _mock_browser(schaal=2, donker=False):
+        bg = (255, 255, 255) if not donker else (32, 33, 36)
+        tab = (222, 225, 230) if not donker else (41, 42, 45)
+        bar = (241, 243, 244) if not donker else (53, 54, 58)
+        pil = (255, 255, 255) if not donker else (95, 99, 104)
+        tk = (30, 30, 30) if not donker else (230, 230, 230)
+        w, h = 1440 * schaal, 900 * schaal
+        im = Image.new("RGB", (w, h), bg); d = ImageDraw.Draw(im)
+        d.rectangle([0, 0, w, 60 * schaal], fill=tab)
+        d.rounded_rectangle([20 * schaal, 10 * schaal, 300 * schaal, 50 * schaal],
+                            8 * schaal, fill=bar)
+        d.rectangle([0, 60 * schaal, w, 110 * schaal], fill=bar)
+        d.rounded_rectangle([60 * schaal, 70 * schaal, 900 * schaal, 100 * schaal],
+                            14 * schaal, fill=pil)
+        for i in range(45):
+            d.text((40 * schaal, (130 + i * 14) * schaal), f"Inhoudsregel {i}", fill=tk)
+            d.rectangle([600 * schaal, (130 + i * 14) * schaal,
+                         1300 * schaal, (139 + i * 14) * schaal], fill=(90 + i % 40, 140, 190))
+        return im
+
+    def _mock_sitekop():
+        """Donkere sitekop met logo, navigatie en een zoekpil - geen browser."""
+        w, h = 1440, 3000
+        im = Image.new("RGB", (w, h), (255, 255, 255)); d = ImageDraw.Draw(im)
+        d.rectangle([0, 0, w, 96], fill=(28, 42, 66))
+        d.rectangle([40, 30, 190, 66], fill=(240, 240, 240))          # woordmerk
+        for i, x in enumerate((320, 430, 540, 650)):
+            d.text((x, 44), f"Menu {i}", fill=(235, 235, 235))
+        d.rounded_rectangle([980, 32, 1290, 64], 16, fill=(255, 255, 255))  # zoekpil
+        for i in range(150):
+            d.text((40, 130 + i * 18), f"Pagina-inhoud regel {i}", fill=(40, 40, 40))
+        return im
+
+    for naam, mock, verwacht in (("browser licht 2x", _mock_browser(), True),
+                                 ("browser licht 1x", _mock_browser(1), True),
+                                 ("browser donker", _mock_browser(donker=True), True),
+                                 ("sitekop (geen browser)", _mock_sitekop(), False)):
+        n, reden = detecteer_browser_chrome(mock)
+        print(f"  chromedetectie {naam:24s}: {n:4d} px")
+        if bool(n) != verwacht:
+            fouten.append(f"chromedetectie {naam}: {n} px, verwacht "
+                          f"{'wel' if verwacht else 'geen'} snede ({reden})")
+
+    banner = _mock_sitekop()
+    ImageDraw.Draw(banner).rectangle([0, 3000 - 260, 1440, 3000], fill=(31, 41, 55))
+    n, _ = detecteer_bodembanner(banner)
+    print(f"  bodemdetectie  nagebootste bannerrest : {n:4d} px (260 verwacht)")
+    if not (200 <= n <= 300):
+        fouten.append(f"bodemdetectie vindt {n} px in plaats van ~260")
+    n, _ = detecteer_bodembanner(_mock_sitekop())
+    if n:
+        fouten.append(f"bodemdetectie snijdt {n} px van een pagina zonder banner")
 
     # labels
     if labels(28)[26:] != ["AA", "AB"]:
@@ -670,19 +930,32 @@ def main(argv=None) -> int:
     p.add_argument("--uit", default="renders/ab", help="uitvoermap")
     p.add_argument("--ronde", default=None, help="naam van de ronde (standaard: tijdstempel)")
     p.add_argument("--seed", type=int, default=None, help="seed voor de volgorde")
-    p.add_argument("--breedte", type=int, default=1200, help="identieke breedte in px")
+    p.add_argument("--breedte", type=int, default=1200,
+                   help="identieke breedte in px voor desktop-beelden")
+    p.add_argument("--breedte-mobile", type=int, default=780,
+                   help="identieke breedte in px voor mobiele beelden "
+                        "(apart, zodat mobiel niet onnodig wordt opgeschaald)")
     p.add_argument("--max-hoogte-ratio", type=float, default=3.0,
                    help="max hoogte als veelvoud van de breedte (0 = onbegrensd)")
     p.add_argument("--contrast", choices=["uit", "zacht", "hard"], default="zacht")
-    p.add_argument("--chroma-winst", type=float, default=0.45,
+    p.add_argument("--chroma-winst", type=float, default=0.5,
                    help="hoeveel chroma-randen als structuur terugkomen in het grijs")
     p.add_argument("--snij-boven", type=int, default=None,
                    help="forceer aantal px browser-chrome dat boven wordt weggesneden")
+    p.add_argument("--merkbalk-hoogte", type=int, default=None,
+                   help="forceer de hoogte van de gemaskeerde merkbalk in px "
+                        "(standaard 8%% van de beeldbreedte)")
+    p.add_argument("--extra-maskers", default=None,
+                   help="JSON met extra te maskeren rechthoeken per bronbestand, "
+                        "in relatieve coordinaten [x0,y0,x1,y1]; voor merknamen "
+                        "die in de broodtekst staan")
     p.add_argument("--maskeer-footer", action="store_true",
                    help="ook de footer-linkerhoek maskeren (logo's staan daar vaak)")
     p.add_argument("--viewports", nargs="*", default=["desktop", "mobile"])
-    p.add_argument("--max-per-bron", type=int, default=1,
-                   help="max aantal beelden per comp-bron per viewport (0 = alles)")
+    p.add_argument("--max-per-bron", type=int, default=0,
+                   help="max aantal schermen per comp-BRON (merk) per viewport; "
+                        "0 = alles. Zet op 1 als je niet wilt dat een enkel merk "
+                        "de ranglijst domineert - let op: dan vallen schermen weg.")
     p.add_argument("--max-comps", type=int, default=0,
                    help="max aantal comps per viewport (0 = alles)")
     p.add_argument("--maskeer-grootte", action="store_true", default=True,

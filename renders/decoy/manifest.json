@@ -1,0 +1,41 @@
+{
+  "set": "decoy",
+  "doel": "Controlegroep voor de blinde A/B-harnas: een redelijk maar ongeinspireerd bedrijfsdashboard. Hoort consequent laag te eindigen; doet hij dat niet, dan is de meetlat kapot.",
+  "bewuste_zwaktes": [
+    "systeemfont zonder typografische schaal (11/12/13/14/16/22/26px door elkaar)",
+    "randen om vrijwel elk element, drie verschillende hoekradii",
+    "inconsistente witruimte (8/10/12/15/18/20/25px naast elkaar)",
+    "vier niet-verwante accentkleuren (blauw, groen, oranje, paars)",
+    "kolombreedtes en knoppen net niet uitgelijnd",
+    "grijs-op-grijs panelen zonder hierarchie tussen kop en inhoud"
+  ],
+  "niet_kapot": "Alles is leesbaar, klikbaar en responsief; er zijn geen overlappingen, afgekapte teksten of lege blokken.",
+  "gegenereerd_op": "2026-09-13T07:30:13+0000",
+  "generator": "scripts/maak_decoy.py",
+  "bestanden": [
+    {
+      "viewport": "desktop",
+      "css_breedte": 1440,
+      "css_hoogte": 900,
+      "device_scale_factor": 2,
+      "bestand": "decoy-dashboard-desktop-1440x900.png",
+      "formaat_px": [
+        2880,
+        2742
+      ],
+      "bytes": 514926
+    },
+    {
+      "viewport": "mobile",
+      "css_breedte": 390,
+      "css_hoogte": 844,
+      "device_scale_factor": 2,
+      "bestand": "decoy-dashboard-mobile-390x844.png",
+      "formaat_px": [
+        780,
+        4972
+      ],
+      "bytes": 480965
+    }
+  ]
+}
