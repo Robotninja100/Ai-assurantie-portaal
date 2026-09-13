@@ -33,6 +33,15 @@ def main():
     ok = mis = 0
     for i, d in enumerate(recs, 1):
         nr, pdf = d.get("uitspraaknummer"), d.get("pdf_url")
+
+        # Records die de corpusaudit heeft afgekeurd blijven afgekeurd. Een geslaagde
+        # PDF-controle bewijst dat het uitspraaknummer klopt, niet dat de overige velden
+        # kloppen - en juist daar zaten de fabricaties.
+        if d.get("audit_bevinding"):
+            d["bron_geverifieerd"] = False
+            print(f"  [{i:>2}/{len(recs)}] {nr} OVERGESLAGEN (afgekeurd door audit)", file=sys.stderr)
+            mis += 1
+            continue
         d["bron_html_redirect_naar_register"] = True   # vastgestelde eigenschap van de slug
         if not pdf:
             d["bron_geverifieerd"] = False

@@ -10,7 +10,7 @@
     "samenvatting": "De consument heeft bij de verzekeraar een claim ingediend wegens arbeidsongeschiktheid door knieklachten. De verzekeraar heeft de claim afgewezen, een clausule op de polis geplaatst en de persoonsgegevens van de consument in de Gebeurtenissenadministratie en het Intern Verwijzingsregister (IVR) geregistreerd, omdat volgens hem de consument zijn precontractuele mededelingsplicht heeft geschonden. De consument betwist dit en vordert alsnog een uitkering, herziening van de getroffen maatregelen en verwijdering dan wel een verkorting van de registraties in de interne registers. De commissie oordeelt dat de consument zijn precontractuele mededelingsplicht heeft geschonden door eerdere knieklachten niet te melden in de gezondheidsverklaring ten tijde van het afsluiten van de verzekering. De verzekeraar mocht daarom de claim afwijzen en de getroffen maatregelen nemen. Wel dient de omschrijving van de gebeurtenis te worden aangepast, waaraan de verzekeraar na de hoorzitting heeft voldaan. De klacht is ongegrond en de vorderingen worden afgewezen.",
     "kernoverweging": "De commissie wijst de vorderingen van de consument af. Wel moest de omschrijving van de gebeurtenis in de Gebeurtenissenadministratie en het IVR worden aangepast, wat de verzekeraar inmiddels heeft gedaan.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0881-bindend/",
+    "bron_url": "https://www.kifid.nl/media/wuihph43/uitspraak-2026-0881-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vorderingen afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vorderingen van de consument af. Wel moest de omschrijving van de gebeurtenis in de Gebeurtenissenadministratie en het IVR worden aangepast, wat de verzekeraar inmiddels heeft gedaan.",
@@ -29,7 +29,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 210628,
+    "uitkomst_letterlijk_uit_pdf": "Vorderingen afgewezen"
   },
   {
     "uitspraaknummer": "2026-0875",
@@ -42,7 +48,7 @@
     "samenvatting": "De consument verwijt de adviseur dat hij hem onjuist heeft geïnformeerd en geadviseerd bij zijn keuze voor het vervroegen van de ingangsdatum van zijn ouderdomspensioen. Voorafgaand aan zijn keuze heeft de consument van de adviseur een aantal scenario’s met rekenvoorbeelden ontvangen. Op basis van één van deze scenario’s heeft de consument besloten om eerder te stoppen met werken. Omdat - zo bleek later - dit scenario foutieve informatie bevat, ontvangt de consument een lagere pensioenuitkering dan hij had verwacht op basis van de door de adviseur verstrekte informatie. De consument vordert compensatie van het financieel nadeel ten gevolge van het foutieve pensioenadvies. Volgens de commissie is de adviseur zijn zorg­plicht tegenover de consument niet nagekomen en is de klacht van de consument gegrond. De adviseur moet het door de consument geleden financieel nadeel, door de commissie vastgesteld op een bedrag van € 10.239,26, als schadevergoeding aan de consument betalen.",
     "kernoverweging": "De commissie beslist dat de adviseur een bedrag van € 10.239,26 ten titel van schade- vergoeding aan de consument vergoedt binnen vier weken nadat deze beslissing aan partijen is verstuurd.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0875/",
+    "bron_url": "https://www.kifid.nl/media/eyin51xj/uitspraak-2026-0875.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering gedeeltelijk toegewezen",
     "beslissing_letterlijk": "De commissie beslist dat de adviseur een bedrag van € 10.239,26 ten titel van schade- vergoeding aan de consument vergoedt binnen vier weken nadat deze beslissing aan partijen is verstuurd.",
@@ -60,7 +66,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 105057,
+    "uitkomst_letterlijk_uit_pdf": "Vordering gedeeltelijk toegewezen"
   },
   {
     "uitspraaknummer": "2026-0868",
@@ -73,7 +85,7 @@
     "samenvatting": "De consument heeft via Revolut (een bank) een reis- en annuleringsverzekering bij de verzekeraar. Op 1 september 2023 heeft de consument een claim ingediend voor medische kosten die hij tijdens zijn vakantie in Thailand heeft gemaakt. Volgens zijn opgave was hij in december 2022 in Thailand ten val zijn gekomen waardoor hij zijn been had gebroken. De verzekeraar heeft de claim afgewezen, omdat sprake zou zijn van fraude. Volgens de consument heeft hij een geldige claim ingediend die volledig is gedocumenteerd waarvoor hij dekking onder de verzekering heeft. Hij vordert als hoofdvordering € 9.138,- vermeerderd met indexering en wettelijke rente vanaf 1 september 2023. De commissie oordeelt dat de verzekeraar heeft bewezen dat sprake is van fraude, omdat hij voldoende heeft aangetoond dat de documenten die de consument ter onderbouwing van zijn claim heeft ingediend niet authentiek zijn. Omdat sprake is van fraude vervalt het algehele recht op dekking. De klacht is ongegrond en de vorderingen wordt afgewezen.",
     "kernoverweging": "De commissie wijst de vorderingen af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0868/",
+    "bron_url": "https://www.kifid.nl/media/3kkdknwv/uitspraak-2026-0868.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vorderingen af.",
@@ -91,7 +103,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 125374,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0860",
@@ -104,7 +122,7 @@
     "samenvatting": "De consument en haar toenmalige partner hebben om het overlijdensrisico van hun hypothecaire geldlening af te dekken in december 2016 twee overlijdensrisicoverzekeringen afgesloten, één op het leven van de consument en één op het leven van de partner. De consument was verzekeringnemer voor de verzekering op het leven van haar partner en haar partner van de verzekering op haar leven. In 2023 hebben zij hun woning verkocht. In augustus 2024 heeft de consument de overlijdensrisicoverzekering op het leven van de partner opgezegd. Hij is overleden. De consument stelt dat de verkeerde verzekering is opgezegd en dat alleen de verzekering op haar leven had moeten worden beëindigd. Zij verwijt de bank dat deze haar bij de opzegging geen begeleiding heeft geboden, dat de bank geen navraag heeft gedaan en dat deze onvoldoende gerichte informatie heeft verstrekt over de risico’s van de beëindiging. Zij vordert compensatie. De commissie wijst haar vordering af.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0860/",
+    "bron_url": "https://www.kifid.nl/media/nazdsret/uitspraak-2026-0860.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -122,7 +140,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 78223,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0854",
@@ -135,7 +159,7 @@
     "samenvatting": "De consument heeft de uitvoerder op 20 september 2024 verzocht om rechtsbijstand in een geschil over de door hem gesloten (huur)overeenkomst en de schade die naar aanleiding daarvan bij hem is ontstaan. De uitvoerder heeft op dezelfde dag dekking verleend voor het geschil en daarbij aangetekend dat hij dit standpunt kan wijzigen als later blijkt dat er ook andere feiten en omstandigheden meespelen. Op 11 oktober 2024 heeft de uitvoerder de consument bericht dat er geen dekking is voor de zaak omdat geschillen over de verhuur of exploitatie van goederen of items zijn uitgesloten van dekking. De consument vindt dat de uitvoerder ten onrechte dekking heeft geweigerd. Hij vordert van de uitvoerder een schadevergoeding van € 674.000,-, vermeerderd met een wettelijke rente van 12% vanaf 23 januari 2023. Verder vordert de consument een vergoeding van diverse kostenposten waaronder de door hem betaalde advocaatkosten, griffiekosten, kosten (voorwaardelijke schade) in de zaak bij de huurcommissie en een nader door de commissie te bepalen passende compensatie. Ook vordert hij vergoeding van het door hem betaalde eigen risico van € 100,- omdat de uitvoerder geen dekking heeft verleend. De consument krijgt ongelijk.",
     "kernoverweging": "3.8 Gelet op het voorgaande heeft de uitvoerder dekking voor het geschil over de door consument gesloten (huur)overeenkomst en de vordering tot schadevergoeding mogen afwijzen. Ook heeft de uitvoerder voldoende aangetoond dat hij het eigen risico heeft terugbetaald aan de consument. De commissie ziet daarom geen grond om de vorderingen van de consument toe te wijzen. Alle overige door partijen ingebrachte stellingen en argumenten kunnen niet tot een ander oordeel leiden en zullen daarom onbesproken blijven. De klacht is ongegrond.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0854/",
+    "bron_url": "https://www.kifid.nl/media/ednbq3ds/uitspraak-2026-0854.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vorderingen afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vorderingen af.",
@@ -155,7 +179,13 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 118348,
+    "uitkomst_letterlijk_uit_pdf": "Vorderingen afgewezen"
   },
   {
     "uitspraaknummer": "2026-0842",
@@ -168,7 +198,7 @@
     "samenvatting": "De moeder van de consument is in 2008 overleden. De consument heeft zijn vader in 2025 verzocht om inzage in, afschriften van en informatie over de nalatenschap van zijn moeder. Zijn vader wilde hieraan niet meewerken. De consument heeft de uitvoerder vervolgens om rechtsbijstand verzocht in dit geschil. De uitvoerder heeft het verzoek afgewezen, omdat het geschil gaat over de afwikkeling van de nalatenschap van de moeder en de moeder al voor de ingangsdatum van de verzekering is overleden. De consument is het hier niet mee eens. Volgens hem gaat het geschil hier niet over. Het geschil ziet op de weigering van zijn vader om inzage te geven in en informatie te geven over de nalatenschap van zijn moeder. En dit geschil dateert van 2025. De consument vordert dat de uitvoerder hem rechtsbijstand verleent. De commissie volgt het standpunt van de uitvoerder. De vordering wordt afgewezen.",
     "kernoverweging": "3.2 De commissie kan zich goed voorstellen dat de consument het zo ervaart dat hij een informatie- en medewerkingsgeschil met zijn vader heeft. En dat is ook zo. Maar het geschil heeft te maken met de erfenis van zijn moeder. En dat betekent dat het geschil niet verzekerd is. De commissie wijst de vordering van de consument af.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0842/",
+    "bron_url": "https://www.kifid.nl/media/4zaps22i/uitspraak-2026-0842.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -187,7 +217,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 103639,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0832",
@@ -219,7 +255,10 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_geverifieerd": false,
+    "bron_verificatie_notitie": "ValueError: nummer niet in PDF-tekst"
   },
   {
     "uitspraaknummer": "2026-0830",
@@ -232,7 +271,7 @@
     "samenvatting": "De consument heeft bij de verzekeraar schade gemeld onder zijn woonhuisverzekering met allrisk dekking. Het gaat om schade aan keukenkastjes doordat daarop haarverf is gekomen. De schade is gedekt maar partijen zijn het niet eens over de wijze waarop de schade moet worden afgewikkeld. De originele keukenfronten zijn door de leverancier niet meer leverbaar. Het herstelbedrijf biedt als alternatieve optie dat de beschadigde keukenfronten worden over­gespoten, waarbij een licht kleurverschil niet kan worden uitgesloten. De verzekeraar heeft een bedrag van € 2.161,89 betaald, conform de offerte voor vervanging van de beschadigde fronten. De consument is van mening dat herstel van alleen de beschadigde fronten niet mogelijk is zonder kleurverschil. Hij stelt dat de keuken als visuele eenheid is geleverd is en dat herstel slechts mogelijk is door vervanging van alle 25 frontpanelen inclusief plinten en greeplijsten. De offerte hiervoor bedraagt € 8.000,-. De consument vordert daarom een aanvullende vergoeding van € 5.838,11 vermeerderd met wettelijke rente over dit bedrag vanaf 16 september 2025. De commissie oordeelt dat herstel door het spuiten van de beschadigde fronten overeenkomstig de verzekeringsvoorwaarden is en wijst de vordering af.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0830-bindend/",
+    "bron_url": "https://www.kifid.nl/media/uqdbjmh1/uitspraak-2026-0830-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -252,7 +291,13 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 114522,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0826",
@@ -284,7 +329,10 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_geverifieerd": false,
+    "bron_verificatie_notitie": "GEWEIGERD door corpusaudit: verweerder is 'VvAA Rechtsbijstand' in plaats van 'VvAA Schadeverzekeringen N.V.'",
+    "audit_bevinding": "verweerder is 'VvAA Rechtsbijstand' in plaats van 'VvAA Schadeverzekeringen N.V.'"
   },
   {
     "uitspraaknummer": "2026-0822",
@@ -318,7 +366,10 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_geverifieerd": false,
+    "bron_verificatie_notitie": "GEWEIGERD door corpusaudit: verweerder is de uitvoerder (DAS) in plaats van de verzekeraar (Nationale-Nederlanden)",
+    "audit_bevinding": "verweerder is de uitvoerder (DAS) in plaats van de verzekeraar (Nationale-Nederlanden)"
   },
   {
     "uitspraaknummer": "2026-0821",
@@ -331,7 +382,7 @@
     "samenvatting": "Van 1974 tot en met 1998 heeft de consument pensioen opgebouwd bij het pensioenfonds PVH. Dit fonds is omgezet in een pensioenverzekering. De consument klaagt dat dit zonder zijn toestemming is gebeurd en dat hij hierover niet is geïnformeerd. Hij stelt dat als hij dit geweten had, hij het kapitaal had laten overboeken naar het pensioenfonds Vopak. In dat geval zou hij bij het invaren op grond van de Wet Toekomst Pensioenen een invaarbonus hebben ontvangen. Omdat zijn pensioen ook niet wordt geïndexeerd, vindt de consument dat hij nadeel lijdt. Dit zou kunnen oplopen tot € 100.000,-. Hij vordert schadevergoeding vermeerderd met wettelijke rente vanaf 14 februari 1998, of indexering van zijn pensioen. De commissie wijst de vorderingen af.",
     "kernoverweging": "De commissie wijst de vorderingen af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0821-bindend/",
+    "bron_url": "https://www.kifid.nl/media/koolzhth/uitspraak-2026-0821-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vorderingen af.",
@@ -350,7 +401,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 83911,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0814",
@@ -363,7 +420,7 @@
     "samenvatting": "Tijdens een rondreis door Namibië is de bagage van de consument gestolen uit de door hem gehuurde truck. De consument heeft zijn schade geclaimd op zijn reisverzekering. De verzekeraar heeft die schadeclaim afgewezen omdat de bagage langer in de truck lag dan strikt noodzakelijk en de consument de bagage op een andere veilige plek had moeten bewaren. De consument is het hiermee niet eens. De bagage lag in de kofferbak van de truck die door dikke metalen platen met een dubbel slot aan elke kant van de truck werd gesloten. Bovendien lag de bagage op aanraden van het autoverhuurbedrijf in de afgesloten achterbak van de truck omdat dit in Namibië de veiligste plek is om je spullen te bewaren. Er was dus geen andere veilige plek. De consument vordert uitkering van zijn schade. De commissie is van oordeel dat de verzekeraar de schade van de consument moet uitkeren en wijst de vordering toe.",
     "kernoverweging": "De commissie beslist dat de verzekeraar een bedrag van € 2.367,- aan de consument vergoedt, binnen vier weken nadat deze beslissing aan partijen is verstuurd.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0814-bindend/",
+    "bron_url": "https://www.kifid.nl/media/szsfns3d/uitspraak-2026-0814-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering toegewezen",
     "beslissing_letterlijk": "De commissie beslist dat de verzekeraar een bedrag van € 2.367,- aan de consument vergoedt, binnen vier weken nadat deze beslissing aan partijen is verstuurd.",
@@ -382,7 +439,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 225322,
+    "uitkomst_letterlijk_uit_pdf": "Vordering toegewezen"
   },
   {
     "uitspraaknummer": "2026-0813",
@@ -395,7 +458,7 @@
     "samenvatting": "Op 27 januari 2024 is door een aanrijding schade ontstaan aan de auto van de consument. Hij heeft de schade via de tussenpersoon gemeld onder zijn autoverzekering met cascodekking. De klacht gaat over het eigen risico van € 500,- dat bij de consument in rekening is gebracht omdat hij zijn auto niet bij een bij Schadegarant aangesloten reparateur heeft laten repareren. De consument verwijt de tussenpersoon dat deze hem niet voldoende duidelijk heeft geïnformeerd dat een lager eigen risico zou gelden als de auto door een Schadegarant aangesloten reparateur zou worden hersteld. De consument vordert daarom € 500,- van de tussenpersoon. De commissie oordeelt dat de tussenpersoon de stelling van de consument onvoldoende gemotiveerd heeft betwist en wijst de vordering toe.",
     "kernoverweging": "3.3 De conclusie is dat de tussenpersoon toerekenbaar tekortgeschoten is in zijn zorgplicht. De schade die de consument als gevolg daarvan heeft geleden moet de tussenpersoon vergoeden. De consument stelt dat hij door het tekortschoten van de tussenpersoon € 500,- schade heeft. De tussenpersoon heeft de vordering niet betwist zodat de commissie deze vordering toewijst.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0813-bindend/",
+    "bron_url": "https://www.kifid.nl/media/ztkpzdbm/uitspraak-2026-0813-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering toegewezen",
     "beslissing_letterlijk": "De commissie beslist dat de tussenpersoon een bedrag van € 500,- aan de consument vergoedt, binnen vier weken nadat deze beslissing aan partijen is verstuurd.",
@@ -413,7 +476,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 86264,
+    "uitkomst_letterlijk_uit_pdf": "Vordering toegewezen"
   },
   {
     "uitspraaknummer": "2026-0811",
@@ -426,7 +495,7 @@
     "samenvatting": "De consument heeft bij de verzekeraar een autoverzekering met de aanvullende dekking Rechtshulp Verkeer afgesloten. Toen hij na de aankoop van een tweedehandsauto een geschil kreeg met het autobedrijf, verwachtte hij volledige rechtsbijstand van de uitvoerder van de rechtshulp maar kreeg alleen een eenmalig advies. De consument vordert daarom een schadevergoeding van € 4000,- omdat hij nu extern een advocaat in de arm moet nemen. De consument stelt dat de verzekeraar onvoldoende duidelijk heeft gemaakt dat deze dekking voor aankoopgeschillen alleen geldt als de auto is gekocht bij een bedrijf dat is aangesloten bij een branchevereniging met een onafhankelijke geschillencommissie, zoals BOVAG. Volgens hem is die beperking verborgen in de verzekeringsvoorwaarden en daardoor misleidend. De verzekeraar voert aan dat deze voorwaarde vóór het afsluiten van de verzekering beschikbaar was, op de verzekeringskaart staat vermeld, in de verzekeringsvoorwaarden staat en daarmee op meerdere plaatsen aan de consument kenbaar is gemaakt. Ook staat het op het polisblad nog benoemd. Omdat het autobedrijf niet aan deze voorwaarde voldoet, heeft volgens de verzekeraar de uitvoerder terecht alleen eenmalig juridisch advies verleend. De commissie oordeelt dat de verzekeraar de consument voldoende heeft geïnformeerd over de beperking van de dekking en wijst de vordering af.",
     "kernoverweging": "3.5 De conclusie is dat niet is gebleken dat de verzekeraar de consument onjuist of onvoldoende heeft geïnformeerd of dat de overeengekomen verzekeringsvoorwaarden onjuist zijn toegepast. Daarom wijst de commissie de vordering van de consument af.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0811-bindend/",
+    "bron_url": "https://www.kifid.nl/media/wyvoubro/uitspraak-2026-0811-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -446,7 +515,13 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 77035,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0807",
@@ -459,7 +534,7 @@
     "samenvatting": "De consument wilde zijn overlijdensrisicoverzekering bij de gevolmachtigde opzeggen. Hij had daarvoor de instemming van de medeverzekeringnemer (zijn ex-partner) nodig. De gevolmachtigde heeft de medeverzekeringnemer per e-mail om die instemming gevraagd. Daarbij heeft hij in strijd met de uitdrukkelijke wens van de consument zijn e-mailadres in de cc opgenomen. De consument klaagt dat de gevolmachtigde daarmee inbreuk op zijn privacy heeft gemaakt en vordert schadevergoeding. De commissie oordeelt dat geen sprake is van een datalek onder de AVG. De klacht is ongegrond.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0807-bindend/",
+    "bron_url": "https://www.kifid.nl/media/mroahh2f/uitspraak-2026-0807-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -477,7 +552,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 88932,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0806",
@@ -490,7 +571,7 @@
     "samenvatting": "De consument heeft een opstalverzekering bij de verzekeraar. Sinds 2012 is aan de woning van de consument scheurvorming geconstateerd. De consument heeft hiervoor destijds bij de verzekeraar een schadeclaim ingediend die is afgewezen. Hierover klaagt de consument niet. De consument klaagt erover dat zijn schadeclaim van 1 augustus 2024 vanwege nieuwe, verergerde scheurvorming aan de woning is afgewezen door de verzekeraar op basis van een ondeugdelijk expertiserapport. De consument stelt dat de scheurvorming aan zijn woning is ontstaan door grondwaterfluctuatie en dat sprake moet zijn geweest van een plotseling optredende oorzaak. Hij vordert erkenning van de verzekeraar dat een dergelijke oorzaak in beginsel onder de dekking van de verzekering valt en dat een nieuwe expertise wordt uitgevoerd op kosten van de verzekeraar.",
     "kernoverweging": "De commissie wijst de vorderingen af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0806/",
+    "bron_url": "https://www.kifid.nl/media/qrspaulu/uitspraak-2026-0806.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vorderingen af.",
@@ -511,7 +592,13 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 105750,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0805",
@@ -524,7 +611,7 @@
     "samenvatting": "Tijdens de vakantie van de consument is ingebroken in haar auto en is er bagage gestolen. De schade bedraagt in totaal € 1.500,- en de consument vordert dit bedrag van de verzekeraar. De verzekeraar heeft het verzoek om dekking afgewezen omdat de auto geen braaksporen heeft. De consument is het hier niet mee eens en vordert dekking voor de schade door de diefstal. Zij is van mening dat beroep op het braakvereiste niet terecht en naar maatstaven van redelijkheid en billijkheid onaanvaardbaar is. De commissie oordeelt dat de verzekeraar de dekking mocht afwijzen. De consument vordert daarnaast vergoeding van extra reis- en verblijfskosten. Ook deze claim heeft de verzekeraar mogen afwijzen. De consument heeft namelijk niet voldaan aan het vereiste om contact met de alarmcentrale op te nemen. De klacht is ongegrond en de vorderingen worden afgewezen.",
     "kernoverweging": "De commissie wijst de vorderingen af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0805-bindend/",
+    "bron_url": "https://www.kifid.nl/media/jhcofgf1/uitspraak-2026-0805-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vorderingen afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vorderingen af.",
@@ -542,7 +629,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 107382,
+    "uitkomst_letterlijk_uit_pdf": "Vorderingen afgewezen"
   },
   {
     "uitspraaknummer": "2026-0799",
@@ -555,7 +648,7 @@
     "samenvatting": "De hond van de consument is gebeten door een andere hond. De eigenaar van de andere hond is tegen aansprakelijkheid verzekerd bij de verzekeraar. Naar aanleiding van het bijtincident heeft de verzekeraar een schadevergoeding betaald aan de consument en zijn persoonsgegevens geregistreerd bij Stichting Centraal Informatie Systeem (CIS) vanwege de schademelding. De consument vordert verwijdering van de registratie en een schadevergoeding van € 2.000,- vermeerderd met de wettelijke rente vanaf 16 december 2025, omdat hij door meerdere verzekeraars is geweigerd voor nieuwe verzekeringen. De verzekeraar heeft de registratie, alhoewel hij meent dat deze op zichzelf terecht was, gedurende de Kifid procedure verwijderd. De schadevergoeding heeft de verzekeraar niet betaald, omdat hij vindt dat de registratie geen negatieve gevolgen voor de consument heeft gehad. De commissie volgt dit standpunt van de verzekeraar en wijst de vorderingen van de consument af.",
     "kernoverweging": "De commissie wijst de vorderingen af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0799/",
+    "bron_url": "https://www.kifid.nl/media/q3tbzwk0/uitspraak-2026-0799.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vorderingen af.",
@@ -573,7 +666,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 74650,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0791",
@@ -586,7 +685,7 @@
     "samenvatting": "De consument heeft een autoverzekering aangevraagd. De verzekeraar heeft deze aanvraag afgewezen omdat de consument de vraag over het strafrechtelijk verleden met ‘ja’ heeft beantwoord en hierover geen verdere informatie wil geven. Volgens de consument was het onvoldoende duidelijk dat het beleid is van de verzekeraar om een aanvraag af te wijzen wanneer sprake is van een strafrechtelijke gedraging in de afgelopen vijf jaar en overviel de beslissing hem. De consument klaagt dat de verzekeraar hiermee in strijd met de wet heeft gehandeld dan wel misbruik heeft gemaakt van zijn beleids- en contractsvrijheid. Hij vordert dat de verzekeraar wordt verplicht een concrete toelichting te geven op de gehanteerde acceptatie­criteria, nader uitleg geeft hoe zijn strafrechtelijk verleden een acceptatierisico vormt voor de autoverzekering en het acceptatieproces aan te passen zodat op voorhand duidelijk is wanneer een aanvraag een reële kans van slagen heeft. De commissie oordeelt dat de verzekeraar niet in strijd met de wet of zijn beleids- of contractsvrijheid heeft gehandeld.",
     "kernoverweging": "3.6 De klacht is ongegrond want de commissie oordeelt dat de verzekeraar niet in strijd met de wet heeft gehandeld en ook geen misbruik heeft gemaakt van zijn beleids- en contractsvrijheid.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0791/",
+    "bron_url": "https://www.kifid.nl/media/wfbbozat/uitspraak-2026-0791.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -604,7 +703,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 107293,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0776",
@@ -617,7 +722,7 @@
     "samenvatting": "De lijfrenteverzekering van de consument bereikte op 1 maart 2022 de einddatum. Op dat moment was bij de verzekeraar geen adres bekend van de consument, waardoor het voor de verzekeraar niet mogelijk was om de consument te informeren over de naderende einddatum van zijn lijfrenteverzekering en de mogelijkheden die de consument had met het eindkapitaal van € 2.059,96. De consument heeft zich na het verstrijken van de wettelijke (fiscale) termijn bij de verzekeraar gemeld, waardoor de verzekeraar gehouden was om de fiscale regels toe te passen die gelden bij een niet tijdig aangewende lijfrente en heeft zodoende slechts een gedeelte van het eindkaptaal van € 628,29,- aan de consument uitgekeerd. De consument is het hier niet mee eens en stelt dat de verzekeraar na de einddatum van zijn verzekering meer zijn best had moeten doen om de consument te bereiken. Hij vordert dat de verzekeraar alsnog het resterende kapitaal van € 1.431,67 aan hem uitkeert. De commissie is van oordeel dat de verzekeraar niet kan worden gehouden het resterende kapitaal aan de consument uit te keren. De commissie wijst de vordering van de consument af.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0776-bindend/",
+    "bron_url": "https://www.kifid.nl/media/5nsjdgz5/uitspraak-2026-0776-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -636,7 +741,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 110375,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0756",
@@ -649,7 +760,7 @@
     "samenvatting": "De consument verwijt de adviseur dat hij zijn zorgplicht tegenover de consument niet is nagekomen vanwege slechte dienstverlening bij aankoop van zijn pensioen. Daardoor is de consument onnodig belast met werkzaamheden, terwijl hij nu juist van de adviseur mocht verwachten dat die hem deze werkzaamheden uit handen zou nemen. De consument vordert gehele of gedeeltelijke terugbetaling van de advieskosten van € 395,-. De adviseur beroept zich op de reikwijdte van zijn opdracht, te weten bemiddeling bij het afsluiten van een nieuw uitkerend pensioenproduct bij een pensioenuitvoerder, en niet op de handelwijze van de pensioen­uitvoerder(s) zelf. Volgens de commissie is deze uitleg van de overeenkomst verdedigbaar en ontbreekt het aan een juridische grondslag voor de vordering van de consument. De klacht van de consument is ongegrond en de vordering wordt afgewezen.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0756-bindend/",
+    "bron_url": "https://www.kifid.nl/media/twfkza1j/uitspraak-2026-0756-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -667,7 +778,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 104565,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0755",
@@ -680,7 +797,7 @@
     "samenvatting": "Steenmarters hebben voor € 2.995,- aan schade veroorzaakt in het woonhuis van de consument. De consument vordert hiervoor dekking onder de opstalverzekering bij zijn verzekeraar. De verzekeraar heeft de schade vergoed met toepassing van een beperking uit de voorwaarden die inhoudt dat bij schade door ongedierte een maximale vergoeding van € 1.500,- wordt betaald. In de voorwaarden staat verder dat onder ongedierte mede ‘marters’ wordt begrepen. Volgens de consument is een steenmarter een beschermd diersoort en dus geen ongedierte. De consument vindt daarom dat het beroep op de maximering van de dekking niet kan slagen en dat zijn gehele schade moet worden vergoed. De consument vordert een aanvullende uitkering van € 1.495,- vermeerderd met wettelijke rente over dit bedrag vanaf 6 november 2025. De commissie volgt het standpunt van de verzekeraar. De voorwaarden zijn duidelijk en de verzekeraar mocht een beroep doen op de maximering van de dekking. De vordering van de consument wordt afgewezen.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0755-bindend/",
+    "bron_url": "https://www.kifid.nl/media/g0ggwxqi/uitspraak-2026-0755-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -698,7 +815,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 90228,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0752",
@@ -711,7 +834,7 @@
     "samenvatting": "Partijen discussiëren over de vraag of recht is op dekking onder zijn woonverzekering voor de waterschade aan de Cv-ketel van 21 oktober 2025. Hij vordert vergoeding van de kosten voor: vervanging van zijn Cv-ketel, voor contra-expertises, vervangende woonruimte en voor de slechte service. De consument stelt dat de schade is veroorzaakt door een lekkage in de leidingen naar de Cv-ketel dan wel door regenwater dat direct via het dak naar binnen is gedrongen. De verzekeraar heeft dekking afgewezen omdat de schade zou zijn veroorzaakt door een bouw- en/of constructiefout en een van dekking uitgesloten oorzaak is. De commissie oordeelt dat op basis van de informatie in het dossier blijkt dat sprake is van een bouw- en/of constructiefout en geen recht op vergoeding bestaat.",
     "kernoverweging": ": De lekkage wordt veroorzaakt door schade aan het rookkanaal.” Rapport [onderhoudsbedrijf IV] “Storingsrapport – Waterlekkage Cv-ketel (….) Omschrijving van de storing Vandaag ben ik ter plaatse geweest voor een storing aan de bovengenoemde installatie. Na onderzoek is vastgesteld dat er aan de bovenzijde van de ketel water aanwezig was, vermoedelijk afkomstig van lekkage via het dak. Hierdoor is er water in de ketel terechtgekomen. (…) De lekkage is niet veroorzaakt door ontluchter in de ketel, maar vermoedelijk door water dat via het dak naar beneden is gelekt.” Rapport [lekdetectiebureau] “Herstelwerkzaamheden De verzekerde heeft tijdens de lekdetectie aangegeven dat, indien sprake is van een door de verzekeraar gedekte schade, het herstel door een door de verzekeraar aangewezen partij gewenst is. Hierbij geldt dat de verzekeraar bepaalt of de schade daadwerkelijk gedekt is en welke partij het herstel uitvoert. Conclusie Ten tijde van het onderzoek is er geen drukverlies gemeten in koud en warm waterleidingen. Tijdens het langdurig belasten van de badkamer afvoeren in combinatie met kleurstof zijn er geen uitingen van lekkage waargenomen.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0752-bindend/",
+    "bron_url": "https://www.kifid.nl/media/jolhqh3h/uitspraak-2026-0752-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -732,7 +855,13 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 232604,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0742",
@@ -745,7 +874,7 @@
     "samenvatting": "De consument heeft in 1995 en 1998 een tweetal lijfrenteverzekeringen afgesloten. Beide overeenkomsten bereikten in 2021 de einddatum. De adviseur wordt verweten dat hij op dat moment geen contact met de consument heeft opgenomen. De consument stelt dat hierdoor een adequate begeleiding, bijvoorbeeld ten aanzien van de fiscale spelregels, achterwege is gebleven. Zijn besluit om de lijfrentekapitalen uit te laten keren in plaats van het aankopen van een periodieke uitkering heeft ertoe geleid dat de belastingdienst de consument een aanslag voor de revisierente heeft opgelegd. De consument begroot de schade op € 19.995,- te vermeerderen met de extra belastingrente van € 3.577,-. De commissie wijst de vordering van de consument af. De adviseur heeft namelijk wel het aanbod gedaan om de consument te begeleiden, maar deze is hier niet op ingegaan. Daarnaast stelt de commissie vast dat de verzekeraar in de verschillende expiratiebrieven de consument erop heeft gewezen wat de fiscale gevolgen zijn als geen lijfrente zou worden aangekocht.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0742-bindend/",
+    "bron_url": "https://www.kifid.nl/media/epfgidjs/uitspraak-2026-0742-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -768,7 +897,13 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 72355,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0741",
@@ -781,7 +916,7 @@
     "samenvatting": "De consument is op een parkeerterrein in aanrijding gekomen met een andere bestuurder terwijl zij beiden achteruit vanuit een parkeervak reden. De verzekeraar van de consument heeft hem voor 50% aansprakelijk gehouden voor de aanrijding en de helft van de schade van de tegenpartij vergoed. De consument is het hiermee niet eens. Volgens hem was hij al vrijwel uit zijn parkeervak gereden toen de andere bestuurder begon uit te parkeren en is uitsluitend die bestuurder aansprakelijk voor de aanrijding. Ook vindt hij dat de verzekeraar de schade onzorgvuldig heeft afgewikkeld. Nadat de verzekeraar de schade had vergoed, heeft de consument het uitgekeerde bedrag van € 463,49 aan de verzekeraar terugbetaald, waardoor zijn schadevrije jaren en no-claimkorting zijn hersteld. De consument vordert een herbeoordeling van de aansprakelijkheid en terugbetaling van het door hem betaalde bedrag. De commissie oordeelt dat de verzekeraar de consument in redelijkheid voor 50% aansprakelijk mocht houden voor de aanrijding en niet onzorgvuldig heeft gehandeld. De klacht is ongegrond en de vorderingen worden afgewezen.",
     "kernoverweging": "De klacht is ongegrond en de commissie wijst de vorderingen af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0741-bindend/",
+    "bron_url": "https://www.kifid.nl/media/mweiqwp5/uitspraak-2026-0741-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vorderingen afgewezen",
     "beslissing_letterlijk": "De klacht is ongegrond en de commissie wijst de vorderingen af.",
@@ -801,7 +936,13 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 88575,
+    "uitkomst_letterlijk_uit_pdf": "Vorderingen afgewezen"
   },
   {
     "uitspraaknummer": "2026-0633",
@@ -814,7 +955,7 @@
     "samenvatting": "De consument is arbeidsongeschikt geraakt door burn-out klachten. De gevolmachtigde heeft dekking onder de arbeidsongeschiktheidsverzekering van de consument afgewezen met een beroep op verzwijging van psychische klachten uit het verleden bij het aangaan van de verzekering. De consument voert aan dat zij bij het aangaan van de verzekering klachtenvrij was, dat zij niet bewust informatie heeft achtergehouden en dat er geen causaal verband bestaat tussen de eerdere psychische klachten en de huidige arbeidsongeschiktheid. Zij vordert uitkering van vooralsnog € 9.600,- onder de verzekering. De commissie oordeelt dat de gevolmachtigde dekking mag afwijzen. De consument heeft haar mededelingsplicht geschonden door de eerdere psychische klachten niet te melden bij het aangaan van de verzekering en aannemelijk is dat de gevolmachtigde bij kennis van de ware stand van zaken geen verzekering had aangeboden met dekking voor psychische klachten, waaronder burn-out klachten. De klacht is ongegrond en de vordering wordt afgewezen.",
     "kernoverweging": "3.7 De gevolmachtigde is geen uitkering verschuldigd, omdat de consument niet voldaan heeft aan haar mededelingsplicht en aangenomen mag worden dat bij volledige invulling van de gezondheidsverklaring psychische klachten, waaronder burn-out klachten, van dekking zouden zijn uitgesloten.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0633/",
+    "bron_url": "https://www.kifid.nl/media/bpke2tk1/uitspraak-2026-0633.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -832,7 +973,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 87800,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0617",
@@ -865,7 +1012,10 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_geverifieerd": false,
+    "bron_verificatie_notitie": "GEWEIGERD door corpusaudit: beslissing_letterlijk en kernoverweging bevatten de standaard Kifid-voettekst in plaats van de beslissing, met een onjuist herkomstlabel. Parser struikelde over '4. De besli ssing'",
+    "audit_bevinding": "beslissing_letterlijk en kernoverweging bevatten de standaard Kifid-voettekst in plaats van de beslissing, met een onjuist herkomstlabel. Parser struikelde over '4. De besli ssing'"
   },
   {
     "uitspraaknummer": "2026-0590",
@@ -878,7 +1028,7 @@
     "samenvatting": "De consument heeft krasschade aan de laminaatvloer onder haar inboedelverzekering geclaimd. De krasschade is ontstaan toen de huishoudelijke hulp bij het schoonmaken de bank verschoof. De verzekeraar weigert uit te keren, omdat schade door schoonmaken en/ of door bewerken van inboedel van dekking is uitgesloten. De consument is het hiermee niet eens. De commissie oordeelt dat de uitleg van de consument aan de begrippen “schade door schoonmaken” en “schade door bewerken” een redelijke is. De uitsluiting moet dan zo worden uitgelegd. En dat betekent dat de uitsluiting niet van toepassing is op de krasschade aan de laminaatvloer. Bij dupliek heeft de verzekeraar nog een uitsluitingsgrond aangevoerd. Dat is te laat en daarom en blijft dit verweer buiten beschouwing. De vordering tot uitkering van de krasschade aan de laminaatvloer wordt toegewezen.",
     "kernoverweging": "De commissie beslist dat de verzekeraar een bedrag van € 4.000,- aan de consument vergoedt met wettelijke rente daarover vanaf 4 april 2025 tot aan de dag van algehele voldoening, binnen vier weken nadat deze beslissing aan partijen is verstuurd.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0590-bindend/",
+    "bron_url": "https://www.kifid.nl/media/jispwhub/uitspraak-2026-0590-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering toegewezen",
     "beslissing_letterlijk": "De commissie beslist dat de verzekeraar een bedrag van € 4.000,- aan de consument vergoedt met wettelijke rente daarover vanaf 4 april 2025 tot aan de dag van algehele voldoening, binnen vier weken nadat deze beslissing aan partijen is verstuurd.",
@@ -896,7 +1046,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 67838,
+    "uitkomst_letterlijk_uit_pdf": "Vordering toegewezen"
   },
   {
     "uitspraaknummer": "2026-0566",
@@ -909,7 +1065,7 @@
     "samenvatting": "Op 28 augustus 2025 zijn er twee racefietsen en een e-step gestolen uit de achtertuin van de consument. De fietsen en de step stonden op slot met een ART3-slot. Voor vergoeding van de schade heeft de consument een beroep gedaan op zijn inboedelverzekering. De verzekeraar heeft de dekking afgewezen omdat diefstal uit de tuin is uitgesloten van dekking. De consument is het niet eens met de afwijzing en vordert een bedrag van € 11.541,- van de verzekeraar. De commissie oordeelt dat de verzekeraar een beroep toekomt op de genoemde uitsluiting en de verzekeraar de dekking mocht afwijzen. De klacht is ongegrond.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0566-bindend/",
+    "bron_url": "https://www.kifid.nl/media/njvffthf/uitspraak-2026-0566-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -928,7 +1084,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 547822,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0526",
@@ -941,7 +1103,7 @@
     "samenvatting": "De consument stelt dat zijn auto in parkeerstand is aangereden door een onbekend ander motorvoertuig en vordert van het Waarborgfonds vergoeding van zijn schade van € 4220,-. In de avond van 4 september 2025 had de consument zijn auto onbeschadigd geparkeerd bij een vriend. Vervolgens is hij in de nacht van 5 september 2025 met zijn auto naar huis gereden en is hij de volgende dag met zijn auto naar de wasstraat gereden waar hij de schade aan zijn auto heeft ontdekt. Volgens de consument moet de schade aan zijn auto zijn ontstaan toen deze geparkeerd stond bij de vriend. Het Waarborgfonds heeft de claim afgewezen, omdat er onvoldoende bewijs is voor de stelling van de consument. De commissie oordeelt dat het Waarborgfonds de stelling van de consument gemotiveerd heeft betwist en dat niet is komen vast te staan dat de schade aan de auto van de consument is ontstaan toen deze geparkeerd stond. Daardoor is niet aan de bewijslast van artikel 25 lid 1 sub a Wet aansprakelijkheids­verzekering motorrijtuigen (WAM) en 150 van het Wetboek van Burgerlijke Rechtsvordering (Rv) voldaan. Het Waarborgfonds hoeft de schade daarom niet te vergoeden. De klacht is ongegrond en de vordering wordt afgewezen.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0526-bindend/",
+    "bron_url": "https://www.kifid.nl/media/dnahuyzz/uitspraak-2026-0526-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -959,7 +1121,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 121320,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0473",
@@ -972,7 +1140,7 @@
     "samenvatting": "De consument heeft een aanrijding gehad op 11 april 2025, de consument vordert € 2000,- van zijn verzekeraar. Volgens de consument heeft zijn verzekeraar ten onrechte aansprakelijkheid erkend richting de tegenpartij. Volgens zijn verzekeraar had de consument op grond van artikel 54 Reglement Verkeersregels en verkeerstekens 1990 (RVV) bij het openen van zijn linker voordeur bij de tankstation voorrang moeten verlenen aan de tegenpartij. Het feit dat de aan­rijding is ontstaan, bewijst dat de consument de tegenpartij die voorrang niet verleend heeft. Daarom heeft de verzekeraar de aansprakelijkheid van de consument erkend. De consument stelt dat de tegenpartij roekeloos heeft gereden en daardoor aansprakelijk is. Het is aan de consument om zijn stellingen te bewijzen wanneer deze door de tegenpartij gemotiveerd worden betwist. De consument heeft niet bewezen dat de tegenpartij roekeloos heeft gereden. De commissie oordeelt dat de verzekeraar van de consument zijn aansprakelijkheid heeft mogen erkennen. De klacht is ongegrond en de commissie wijst de vordering van de consument af.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0473-bindend/",
+    "bron_url": "https://www.kifid.nl/media/pq0p2azf/uitspraak-2026-0473-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": null,
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -990,7 +1158,13 @@
     "kop_layout": "fwd",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 94365,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0465",
@@ -1003,7 +1177,7 @@
     "samenvatting": "De consument zijn dak is onjuist aangebracht door 'dakdekker 1' wat heeft geleid tot waterschade aan de inboedel in zijn woning. De verzekeraar heeft de schade aan de inboedel vergoed onder de inboedelverzekering. De geclaimde kosten voor herstel van het dak zijn niet gedekt onder de opstalverzekering bij de verzekeraar. De consument heeft zelf een andere dakdekker (hierna: ‘dakdekker 2’) ingeschakeld om het dak te laten repareren. De consument klaagt erover dat de verzekeraar zijn zorgplicht heeft geschonden, omdat hij hem had moeten adviseren dakdekker 1 in gebreke te stellen, althans om juridische hulp in te schakelen, vóórdat hij dakdekker 2 de opdracht tot herstel van het dak zou geven. Nu dit niet is gebeurd is het onmogelijk om zijn schade, de betaalde reparatiekosten aan dakdekker 2, te verhalen op dakdekker 1. De consument vordert van de verzekeraar een vergoeding van de reparatiekosten ten bedrage van € 8.246,- vermeerderd met wettelijke rente over dit bedrag vanaf 11 september 2025. De commissie oordeelt dat er in dit geval geen zorgplicht bestaat voor de verzekeraar en wijst de vordering van de consument af.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0465/",
+    "bron_url": "https://www.kifid.nl/media/q42oywad/uitspraak-2026-0465.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1021,7 +1195,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 80545,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0435",
@@ -1034,7 +1214,7 @@
     "samenvatting": "De consument vordert € 30.000, - vermeerderd met wettelijke rente vanaf 20 juni 2024 vanwege beschadiging aan spullen doordat deze spullen vanuit een door hem gehuurde kantoorruimte (hierna: de opslag) zijn verplaatst naar een garagebox. De verhuurder van opslag heeft de spullen zonder de toestemming van de consument verplaatst naar een garagebox. De verzekeraar verleent geen dekking, want er is geen sprake van een verzekerde gebeurtenis. De commissie wijst de vordering af, omdat sprake is van bedrijfs­inventaris en de consument niet aan de voorwaarden voldoet voor de dekking van deze bedrijfsinventaris.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0435-bindend/",
+    "bron_url": "https://www.kifid.nl/media/1glm5eh4/uitspraak-2026-0435-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1052,7 +1232,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 269734,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0415",
@@ -1065,7 +1251,7 @@
     "samenvatting": "De consumenten hebben in december 2000 na advies van de tussenpersoon een hypothecaire geldlening van € 143.848,33 afgesloten, met daaraan gekoppeld een beleggings­verzekering. De premie voor de meeverzekerde overlijdensdekking werd periodiek uit de in de verzekering opgebouwde waarde onttrokken. Deze premie is door de jaren heen flink gestegen, wat de waardeopbouw in de verzekering negatief heeft beïnvloed. De consumenten klagen dat de tussenpersoon hen over dit risico niet heeft geïnformeerd en dat hij te weinig begeleiding heeft geboden tijdens de looptijd van de verzekering. De commissie oordeelt dat het hersteladvies niet voldoet maar dat de tussenpersoon voor het overige zijn (na)zorgplicht niet heeft geschonden. De commissie wijst de gevorderde schade­vergoeding niet toe omdat het causaal verband tussen het onvoldoende herstel­advies en de gevorderde schade ontbreekt.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0415-bindend/",
+    "bron_url": "https://www.kifid.nl/media/gt5fwcr0/uitspraak-2026-0415-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1084,7 +1270,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 109576,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2026-0221",
@@ -1115,7 +1307,10 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_geverifieerd": false,
+    "bron_verificatie_notitie": "GEWEIGERD door corpusaudit: verweerder gefabriceerd: corpus noemt 'Nationale-Nederlanden Verzekeren Services B.V.', de PDF noemt 'Nationale-Nederlanden Schadeverzekering Maatschappij N.V.'",
+    "audit_bevinding": "verweerder gefabriceerd: corpus noemt 'Nationale-Nederlanden Verzekeren Services B.V.', de PDF noemt 'Nationale-Nederlanden Schadeverzekering Maatschappij N.V.'"
   },
   {
     "uitspraaknummer": "2026-0174",
@@ -1128,7 +1323,7 @@
     "samenvatting": "Arbeidsongeschiktheidsverzekering. Schending mededelingsplicht. De consument heeft bij de gevolmachtigde een arbeidsongeschiktheidsclaim ingediend vanwege een opgelopen incomplete dwarslaesie na een val. De gevolmachtigde heeft het uitkeringsverzoek afgewezen en de verzekering beëindigd, omdat de consument bij het afsluiten van de verzekering zijn mededelingsplicht heeft geschonden. De consument heeft erkend dat hij onbedoeld zijn mededelingsplicht heeft geschonden en de commissie is het daarmee eens. De gevolmachtigde heeft voldoende onderbouwd dat een redelijk handelend verzekeraar bij kennis van de juiste stand van zaken de verzekering niet zou hebben gesloten. De gevolmachtigde heeft de verzekering mogen beëindigen en is geen uitkering aan de consument verschuldigd. De primaire vordering van de consument wordt daarom afgewezen. Wel heeft de consument recht op premierestitutie.",
     "kernoverweging": "De commissie wijst de primaire vordering af en bepaalt, subsidiair, dat de consument recht heeft op terugbetaling van de door hem betaalde premies.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0174/",
+    "bron_url": "https://www.kifid.nl/media/cs2pbcws/uitspraak-2026-0174.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering gedeeltelijk toegewezen",
     "beslissing_letterlijk": "De commissie wijst de primaire vordering af en bepaalt, subsidiair, dat de consument recht heeft op terugbetaling van de door hem betaalde premies.",
@@ -1147,7 +1342,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 145985,
+    "uitkomst_letterlijk_uit_pdf": "Vordering gedeeltelijk toegewezen"
   },
   {
     "uitspraaknummer": "2026-0087",
@@ -1160,7 +1361,7 @@
     "samenvatting": "Aansprakelijkheidsverzekering. Opzetclausule. Tijdens een burenruzie heeft de consument met zijn wandelstok tegen de auto van de buurman geslagen toen de buurman met zijn auto in de richting van de consument reed. Hierdoor is schade aan de auto van de buurman ontstaan. De tegenpartij heeft de consument aansprakelijk gesteld. De verzekeraar heeft dekking voor aansprakelijkheid afgewezen omdat er sprake is van opzet van de consument. De commissie oordeelt gelet om de omstandigheden in dit geval dat de verzekeraar voldoende heeft bewezen dat de schade aan de auto als een te verwachten of normaal gevolg is van de gedraging van de consument. Dit betekent dat de verzekeraar een beroep toekomt op opzet en hij dekking voor de schadeclaim van de consument heeft mogen weigeren. De vordering wordt afgewezen.",
     "kernoverweging": "3.11 De commissie is van oordeel dat de verzekeraar de schadeclaim van de consument heeft mogen afwijzen, nu hij een beroep kan doen op de door hem ingeroepen opzetclausule. De vordering van de consument wordt afgewezen. 5/7Ambtshalve toetsing 3.12 Voor de beoordeling van de klacht is artikel 4.1 van de voorwaarden van belang. Dit beding is door de commissie getoetst aan het Europese en Nederlandse (consumenten)recht waarvoor ambtshalve toetsing geldt en de commissie acht het beding niet in strijd met deze regelgeving.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2026-0087-bindend/",
+    "bron_url": "https://www.kifid.nl/media/hcpfvwra/uitspraak-2026-0087-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1178,7 +1379,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 127871,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2025-1045",
@@ -1191,7 +1398,7 @@
     "samenvatting": "Aansprakelijkheidsverzekering. De consument vordert vergoeding van schade aan een telefoon van een vriendin onder haar aansprakelijkheidsverzekering voor particulieren (AVP). De schade is ontstaan toen een fietser haar raakte waardoor de telefoon van een vriendin uit haar hand viel terwijl zij een foto maakte met die telefoon. De commissie oordeelt dat de consument niet wettelijk aansprakelijk is. Zij heeft zelf niet onrechtmatig gehandeld; de schade is veroorzaakt door een derde. De vordering wordt afgewezen.",
     "kernoverweging": "3.9 De commissie komt tot het oordeel dat de consument niet aansprakelijk is. Zij heeft zelf niet onrechtmatig gehandeld. Een derde heeft de schade veroorzaakt. De vordering wordt daarom afgewezen. De commissie benadrukt dat “aansprakelijk voelen” iets anders is dan “aansprakelijk zijn”. De verzekeraar heeft richting de tegenpartij de aansprakelijkheid mogen afwijzen.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2025-1045-bindend/",
+    "bron_url": "https://www.kifid.nl/media/jrhhsoq3/uitspraak-2025-1045-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1209,7 +1416,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 81101,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2025-0964",
@@ -1222,7 +1435,7 @@
     "samenvatting": "Aansprakelijkheidsverzekering. Zuivere vermogensschade. De consument veroorzaakt als bestuurder schade aan het voertuig van een vriend, met als gevolg een terugval in de bonus-malus en een premieverhoging van deze laatste. De consument doet een beroep op zijn aansprakelijkheidsverzekering voor vergoeding van de schade aan zijn vriend door de terugval in de bonus-malus. De commissie oordeelt dat er geen recht op vergoeding onder de aansprakelijkheidsverzekering is, aangezien het hier niet om zaakschade maar om zuivere vermogensschade gaat. De commissie oordeelt dat de verzekeraar de claim op die grond mocht afwijzen. De klacht van de consument is ongegrond en de vordering wordt afgewezen.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2025-0964/",
+    "bron_url": "https://www.kifid.nl/media/ilnnzy0i/uitspraak-2025-0964.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1240,7 +1453,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 280565,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2025-0901",
@@ -1253,7 +1472,7 @@
     "samenvatting": "Natura-uitvaartverzekering. De verzekeraar vergoedt enkel de op het polisblad genoemde diensten. De consument vordert aanvulling van de uitkering omdat de verzekering de kosten van de gehele begrafenis zou moeten dekken. De commissie oordeelt dat de verzekering alleen recht geeft op een vergoeding voor de op het polisblad genoemde diensten en niet op een vergoeding van de kosten van de gehele uitvaart. Wel moet de verzekeraar voor een aantal genoemde diensten een hogere vergoeding uitkeren. De klacht is ten dele gegrond.",
     "kernoverweging": "3.12 De klacht is ten dele gegrond. De commissie bepaalt dat de verzekeraar voor het verblijf in het mortuarium nog een bedrag van € 151,- uitkeert en dat de verzekeraar voor de kist nog een uitkering doet ter hoogte van de kosten van een eikenfineerkist met vlak deksel en zijden bekleding rond [datum] 2024, verminderd met het bedrag van € 377,- dat de verzekeraar al heeft uitgekeerd. De wettelijke rente wijst de commissie toe vanaf het moment dat de klacht bij Kifid in behandeling is genomen, 20 mei 2025.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2025-0901-bindend/",
+    "bron_url": "https://www.kifid.nl/media/az3dqhfi/uitspraak-2025-0901-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering (gedeeltelijk) toegewezen",
     "beslissing_letterlijk": "De commissie beslist dat de verzekeraar een bedrag van € 155,- aan de consument vergoedt en een bedrag ter hoogte van de kosten van een eikenfineerkist met vlak deksel en zijden bekleding rond [datum] 2024, verminderd met het bedrag van € 377,-, met wettelijke rente daarover vanaf 20 mei 2025 tot aan de dag van algehele voldoening, binnen vier weken nadat deze beslissing aan partijen is verstuurd. 1 Zie hiervoor GC Kifid 2018-770 onder nummer 4.2.",
@@ -1274,7 +1493,13 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 161793,
+    "uitkomst_letterlijk_uit_pdf": "Vordering (gedeeltelijk) toegewezen"
   },
   {
     "uitspraaknummer": "2025-0874",
@@ -1287,7 +1512,7 @@
     "samenvatting": "Aansprakelijkheidsverzekering. De consument heeft schade veroorzaakt aan de auto van de benadeelde. De consument struikelde met zijn fiets in de hand. De fiets is op de motorkap van de auto van de benadeelde gevallen. Voor vergoeding van de schade is een beroep gedaan op de aansprakelijkheidsverzekering van de consument. De verzekeraar heeft de claim afgewezen, omdat geen sprake is van een onrechtmatige gedraging door de consument. De schade is veroorzaakt door een ongelukkige samenloop van omstandigheden. De commissie oordeelt dat de verzekeraar de claim op de grond heeft mogen afwijzen. De klacht van de consument is ongegrond en de vordering wordt afgewezen.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2025-0874-bindend/",
+    "bron_url": "https://www.kifid.nl/media/j52prrxo/uitspraak-2025-0874-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1305,7 +1530,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 222491,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2025-0781",
@@ -1318,7 +1549,7 @@
     "samenvatting": "Uitvaartverzekering. Onderverzekering. De tussenpersoon heeft toen de verzekeringen bij hem in beheer kwamen, verzuimd te onderzoeken of deze nog passend waren. In zoverre is de klacht gegrond. De commissie kan echter niet vaststellen dat de consument als gevolg daarvan schade lijdt of zal lijden.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2025-0781-bindend-advies/",
+    "bron_url": "https://www.kifid.nl/media/yqunqjui/uitspraak-2025-0781-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1336,7 +1567,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 138173,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2025-0770",
@@ -1349,7 +1586,7 @@
     "samenvatting": "Uitvaartverzekering. De consument claimt dat de verzekeraar twee uitvaartverzekeringen niet heeft uitbetaald. Volgens de verzekeraar werd één polis bij overlijden van de echtgenote van de consument verrekend en is de andere in 1989 komen te vervallen. De commissie oordeelt dat de stelling van de consument door de verzekeraar voldoende gemotiveerd is betwist. De klacht is ongegrond en de vordering is afgewezen.",
     "kernoverweging": "3.4 Het bovenstaande brengt mee dat de verzekeraar geen nadere uitkering hoeft te doen. De klacht van de consument is ongegrond en de vordering wordt afgewezen.",
     "kernoverweging_bron": "Conclusie-paragraaf uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2025-0770/",
+    "bron_url": "https://www.kifid.nl/media/aabfyohb/uitspraak-2025-0770.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1370,7 +1607,13 @@
     "nummer_in_ruwe_html_bronpagina": false,
     "nummer_url_binding_geverifieerd": true,
     "pdf_http_status": 200,
-    "nummer_in_pdf": true
+    "nummer_in_pdf": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 95236,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2025-0615",
@@ -1383,7 +1626,7 @@
     "samenvatting": "Geschil over de fiscale status van de consument en de inhoudingsverplichting van de pensioenuitvoerder. Bindend advies. Klacht ongegrond. Volgens de consument worden door de pensioenuitvoerder ten onrechte premies voor de volksverzekeringen en een bijdrage voor de Zorgverzekeringswet (Zvw) ingehouden, omdat vaststaat dat de consument niet meer als Nederlands ingezetene kan worden aangemerkt. Volgens de pensioenuitvoerder is dit nu juist niet komen vast te staan en is hij om die reden verplicht om de inhoudingen te verrichten. De commissie oordeelt dat de klacht van de consument ongegrond is. De pensioenuitvoerder mag van de consument verlangen dat deze bewijs over legt, waaruit onomwonden blijkt de pensioenuitvoerder niet meer inhoudingsplichtig is.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2025-0615-bindend/",
+    "bron_url": "https://www.kifid.nl/media/x23glx3e/uitspraak-2025-0615-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1401,7 +1644,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 103225,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   },
   {
     "uitspraaknummer": "2025-0146",
@@ -1414,7 +1663,7 @@
     "samenvatting": "WIA-excedentverzekering. De klacht van de consument bestaat uit drie onderdelen. Het eerste is dat de verzekeraar zijn uitkering heeft verlaagd met een bedrag dat gelijk is aan de verhoging die voortkwam uit de indexatie van zijn IVA-uitkering. Dit klachtonderdeel is ongegrond gelet op het aanvullend (schadeverzekerings)karakter van de verzekering zoals volgt uit de in de voorwaarden vastgelegde wijze van berekening van de uitkering. Het tweede klachtonderdeel is dat er per 1 juli 2023 geen toeslag is verleend. Dit klachtonderdeel is gegrond, omdat de verzekeraar daarmee afwijkt van de door hem aan de consument meegedeelde wijziging van het indexatiebeleid per 1 januari 2023. Het derde klachtonderdeel is dat de jaarlijkse bonus die hij destijds van zijn werkgever ontving niet is meegeteld voor het bepalen van de uitkeringsgrondslag. Dit klachtonderdeel is ongegrond omdat de bonus afhankelijk is gesteld van gerealiseerde bedrijfsresultaten en individueel vastgestelde doelstellingen waardoor het niet gaat om een zonder meer plaatsvindende jaarlijkse uitkering. De vordering van de consument wordt gedeeltelijk toegewezen.",
     "kernoverweging": "De commissie beslist dat de verzekeraar de uitkeringsgrondslag per 1 juli 2023 met 3% verhoogt en op basis daarvan per die datum een aanvullende uitkering aan de consument toekent met de wettelijke rente over die verhoging, voor iedere maandtermijn te rekenen ste vanaf de 25 dag van de kalendermaand waarop de termijn betrekking heeft, tot aan de dag van algehele voldoening, binnen vier weken nadat deze beslissing aan partijen is verstuurd. Al het overige wordt afgewezen.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2025-0146-bindend/",
+    "bron_url": "https://www.kifid.nl/media/vx3fmyyd/uitspraak-2025-0146-bindend-2.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering (gedeeltelijk) toegewezen",
     "beslissing_letterlijk": "De commissie beslist dat de verzekeraar de uitkeringsgrondslag per 1 juli 2023 met 3% verhoogt en op basis daarvan per die datum een aanvullende uitkering aan de consument toekent met de wettelijke rente over die verhoging, voor iedere maandtermijn te rekenen ste vanaf de 25 dag van de kalendermaand waarop de termijn betrekking heeft, tot aan de dag van algehele voldoening, binnen vier weken nadat deze beslissing aan partijen is verstuurd. Al het overige wordt afgewezen.",
@@ -1432,7 +1681,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 167964,
+    "uitkomst_letterlijk_uit_pdf": "Vordering (gedeeltelijk) toegewezen"
   },
   {
     "uitspraaknummer": "2024-1054",
@@ -1445,7 +1700,7 @@
     "samenvatting": "Lijfrenteverzekering. Zorgplicht assurantietussenpersoon. De consument verwijt de tussenpersoon dat hij heeft verzuimd het overlijden van zijn moeder, de medeverzekerde, in 2004 te melden bij de verzekeraar. Hierdoor heeft zijn vader, de inmiddels overleden verzekeringsnemer en verzekerde, over de periode van bijna 19 jaar te veel aan lijfrente-uitkeringen ontvangen. Daardoor is er ook te veel betaald aan premies Zorgverzekeringswet en inkomstenbelasting. De commissie oordeelt dat de tussenpersoon zijn zorgplicht heeft geschonden. De schade die hieruit voortvloeit staat niet gelijk aan de vordering van de consument. De vordering wordt voor een deel toegewezen.",
     "kernoverweging": "De commissie beslist dat de tussenpersoon een bedrag van € 1.739,- aan de consument vergoedt, binnen vier weken nadat deze beslissing aan partijen is verstuurd. Alle overige deelvorderingen wijst de commissie af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2024-1054-bindend/",
+    "bron_url": "https://www.kifid.nl/media/04ojwhk2/uitspraak-2024-1054-bindend.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering (gedeeltelijk) toegewezen",
     "beslissing_letterlijk": "De commissie beslist dat de tussenpersoon een bedrag van € 1.739,- aan de consument vergoedt, binnen vier weken nadat deze beslissing aan partijen is verstuurd. Alle overige deelvorderingen wijst de commissie af.",
@@ -1464,7 +1719,13 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 132650,
+    "uitkomst_letterlijk_uit_pdf": "Vordering (gedeeltelijk) toegewezen"
   },
   {
     "uitspraaknummer": "2024-0968",
@@ -1477,7 +1738,7 @@
     "samenvatting": "Reisverzekering. De zoon van de consument was voor zijn vlucht naar huis vergeten een visum aan te vragen voor de tussenstop in Canada. Hoewel de zoon uiteindelijk op het vliegveld alsnog met spoed een visum had geregeld, werd hij niet meer toegelaten tot de geboekte vlucht. In overleg met de assurantietussenpersoon is er een nieuw vliegticket geboekt voor de zoon. De kosten hiervoor worden door de reisverzekeraar niet vergoed omdat er geen sprake is van een verzekerde gebeurtenis. Volgens de consument had de assurantietussenpersoon hem niet moeten adviseren een nieuw ticket te kopen, maar had hem moeten verwijzen naar de hulpdienst van de verzekeraar. De commissie oordeelt dat de assurantietussenpersoon niet gehouden was om de consument te verwijzen naar de hulpdienst van de verzekeraar. De kosten van het nieuw aangekochte vliegticket blijven, als niet gedekt door de reisverzekering, voor rekening en risico van de consument. De klacht is ongegrond en de vordering is afgewezen.",
     "kernoverweging": "De commissie wijst de vordering af.",
     "kernoverweging_bron": "Sectie 'De beslissing' uit de uitspraak",
-    "bron_url": "https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/uitspraak-2024-0968/",
+    "bron_url": "https://www.kifid.nl/media/sbfm0spo/uitspraak-2024-0968.pdf",
     "opgehaald_op": "2026-09-13",
     "uitkomst_letterlijk": "Vordering afgewezen",
     "beslissing_letterlijk": "De commissie wijst de vordering af.",
@@ -1496,6 +1757,12 @@
     "kop_layout": "rev",
     "bron_url_http_status": 200,
     "nummer_in_ruwe_html_bronpagina": false,
-    "nummer_url_binding_geverifieerd": true
+    "nummer_url_binding_geverifieerd": true,
+    "bron_html_redirect_naar_register": true,
+    "bron_soort": "pdf",
+    "bron_geverifieerd": true,
+    "bron_verificatie_notitie": "uitspraaknummer letterlijk teruggelezen uit de PDF-tekst",
+    "pdf_bytes": 144599,
+    "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"
   }
 ]

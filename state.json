@@ -133,7 +133,8 @@
         "69 polisclausules met inhoudshash",
         "8/8 grondslagen van de rekenkern onderbouwd",
         "precedentzoeker end-to-end: 8 echte bronnen, oordeel GEFUNDEERD, 0 verzonnen verwijzingen"
-      ]
+      ],
+      "audit": "HERSTELBAAR: 4 fabricaties gevonden en in quarantaine, 164 bruikbare records over"
     }
   ],
   "next_step_awaiting_user": "Kies een runtime-route (eigen ANTHROPIC_API_KEY als env var in de omgeving), of geef opdracht om alleen de niet-AI fundering te bouwen.",
@@ -171,14 +172,35 @@
     },
     "kifid": {
       "records_totaal": 47,
-      "bruikbaar": 47,
-      "geweigerd": [],
-      "oordelen": {
-        "ongegrond": 37,
-        "gedeeltelijk gegrond": 7,
-        "gegrond": 3
-      },
-      "scraper": "scripts/scrape_kifid.py + scripts/repareer_kifid_bronnen.py"
+      "bruikbaar": 42,
+      "geweigerd": [
+        {
+          "nr": "2026-0832",
+          "reden": "ValueError: nummer niet in PDF-tekst"
+        },
+        {
+          "nr": "2026-0826",
+          "reden": "GEWEIGERD door corpusaudit: verweerder is 'VvAA Rechtsbijstand' in plaats van 'VvAA Schadeverzekeringen N.V.'"
+        },
+        {
+          "nr": "2026-0822",
+          "reden": "GEWEIGERD door corpusaudit: verweerder is de uitvoerder (DAS) in plaats van de verzekeraar (Nationale-Nederlanden)"
+        },
+        {
+          "nr": "2026-0617",
+          "reden": "GEWEIGERD door corpusaudit: beslissing_letterlijk en kernoverweging bevatten de standaard Kifid-voettekst in plaats van de beslissing, met een onjuist herkomstlabel. Parser struikelde over '4. De besli ssing'"
+        },
+        {
+          "nr": "2026-0221",
+          "reden": "GEWEIGERD door corpusaudit: verweerder gefabriceerd: corpus noemt 'Nationale-Nederlanden Verzekeren Services B.V.', de PDF noemt 'Nationale-Nederlanden Schadeverzekering Maatschappij N.V.'"
+        }
+      ],
+      "bron": "ongedocumenteerd maar publiek endpoint https://www.kifid.nl/api/Search/SearchDecision/ (let op de afsluitende slash); de detailpagina is een React-SPA zonder inhoud in de HTML",
+      "primaire_citatie": "uitspraak-PDF; 42 van 47 bevestigd door het nummer letterlijk uit de PDF-tekst te lezen",
+      "scrapers": [
+        "scripts/scrape_kifid.py",
+        "scripts/repareer_kifid_bronnen.py"
+      ]
     },
     "polisvoorwaarden": {
       "records": 69,
@@ -250,13 +272,49 @@
   },
   "openstaand_volgende_sessie": [
     "1. FRONTEND BESTAAT NOG NIET. backend/api.py serveert frontend/index.html dat er niet is.",
+    "1b. KIFID-VELD 'oordeel' IS EEN VERTALING, geen brontekst. De precedentzoeker aggregeert er nu op. Overweeg te aggregeren op uitkomst_letterlijk en de nuance zichtbaar te maken.",
     "2. Blinde A/B-harnas + decoy afmaken (scripts/blind_ab.py, scripts/maak_decoy.py).",
     "3. CORPUSGAT: geen diefstal-/inbraakbeveiligingsclausules. De dekkingscheck weigerde daardoor terecht te antwoorden op een inbraakcasus. Aanvullen vanuit inboedelvoorwaarden.",
     "4. Ronde 1 criticus: 10 rommelige casussen per feature, 12 features.",
     "5. Twee Kifid-uitspraken (2026-0832, 2026-0742) opnieuw verifieren; nu uitgesloten.",
-    "6. Streaming voor OpenRouter is nu nagebootst (chunken van een compleet antwoord); echte SSE-streaming van de provider zou beter zijn."
+    "6. Streaming voor OpenRouter is nu nagebootst (chunken van een compleet antwoord); echte SSE-streaming van de provider zou beter zijn.",
+    "7. 2026-0832 opnieuw proberen (nummer niet uit PDF-tekstlaag te lezen; mogelijk gescand)."
   ],
   "veiligheid": {
     "api_sleutel": "door gebruiker in de chat gedeeld; staat in .env en is via .gitignore buiten git gehouden. AANBEVELING: roteer deze sleutel, want hij is buiten een secret store om gedeeld."
+  },
+  "corpusaudit_ronde_0": {
+    "oordeel": "HERSTELBAAR",
+    "records_opgehaald_door_auditor": 47,
+    "bevestigd_echt": 47,
+    "fabricaties_gevonden": [
+      {
+        "nr": "2026-0221",
+        "wat": "verweerder gefabriceerd",
+        "detail": "corpus 'Nationale-Nederlanden Verzekeren Services B.V.' komt in geen enkele van de 47 PDFs voor; de bron zegt 'Nationale-Nederlanden Schadeverzekering Maatschappij N.V.'",
+        "status": "GEWEIGERD door retrieval"
+      },
+      {
+        "nr": "2026-0617",
+        "wat": "beslissing gefabriceerd + vals herkomstlabel",
+        "detail": "beslissing_letterlijk bevat de Kifid-voettekst in plaats van 'De commissie wijst de vordering af.'; parser struikelde over de kop '4. De besli ssing' met spatie",
+        "status": "GEWEIGERD door retrieval"
+      },
+      {
+        "nr": "2026-0822",
+        "wat": "verkeerde partij",
+        "detail": "DAS is uitvoerder, Nationale-Nederlanden is verweerder",
+        "status": "GEWEIGERD door retrieval"
+      },
+      {
+        "nr": "2026-0826",
+        "wat": "verkeerde partij",
+        "detail": "'VvAA Rechtsbijstand' i.p.v. 'VvAA Schadeverzekeringen N.V.'",
+        "status": "GEWEIGERD door retrieval"
+      }
+    ],
+    "belangrijkste_inhoudelijke_waarschuwing": "Kifid gebruikt in moderne uitspraken NIET de termen gegrond/ongegrond. De kopregel heet 'Uitkomst' en luidt 'Vordering (gedeeltelijk) toegewezen/afgewezen'. Het veld 'oordeel' is dus een GENORMALISEERDE VERTALING die juridische nuance verliest: een klacht kan materieel gegrond zijn terwijl de vordering wordt afgewezen (wel zorgplichtschending, geen causaal verband). Gebruik voor nuance de letterlijke velden uitkomst_letterlijk en beslissing_letterlijk, niet 'oordeel'.",
+    "representativiteit": "NIET representatief. Steekproef scheef naar recent (2026: 37, 2025: 8, 2024: 2) en naar afwijzingen. Alleen Geschillencommissie, geen Commissie van Beroep. Gebruik dit corpus NOOIT om uitspraken te doen over slagingspercentages bij Kifid.",
+    "les": "De auditor vond fabricaties die mijn eigen steekproef miste, en mijn steekproef vond de niet-citeerbare bron-URL die de auditor miste. Beide waren nodig."
   }
 }
