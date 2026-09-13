@@ -91,9 +91,23 @@ class Corpus:
                     rows = json.load(f)
                 rows = rows.get("records", rows) if isinstance(rows, dict) else rows
                 rows = [r for r in rows if isinstance(r, dict)]
+
+                # CITEER-OF-WEIGER OP RETRIEVALNIVEAU.
+                # Een record waarvan de bron niet is bevestigd mag nooit als onderbouwing
+                # worden opgehaald, ook niet als het inhoudelijk zou kloppen. Records
+                # zonder verificatieveld laten we toe (dat veld bestaat niet voor elk
+                # corpus), maar een expliciete False sluit het record uit.
+                geweigerd = [r for r in rows if r.get("bron_geverifieerd") is False]
+                rows = [r for r in rows if r.get("bron_geverifieerd") is not False]
+
                 self.data[naam] = rows
                 self.index[naam] = Index(rows, velden)
-                self.status[naam] = {"geladen": True, "records": len(rows), "pad": pad}
+                self.status[naam] = {
+                    "geladen": True, "records": len(rows), "pad": pad,
+                    "geweigerd_onbevestigde_bron": len(geweigerd),
+                    "geweigerde_ids": [r.get("uitspraaknummer") or r.get("artikel")
+                                       or r.get("clausule_id") for r in geweigerd][:10],
+                }
             except Exception as e:
                 self.data[naam], self.index[naam] = [], Index([], velden)
                 self.status[naam] = {"geladen": False, "records": 0, "pad": pad,

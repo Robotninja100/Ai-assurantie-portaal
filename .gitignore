@@ -6,3 +6,4 @@ models/
 *.gguf
 renders/*.png
 .DS_Store
+.env

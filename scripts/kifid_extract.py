@@ -30,6 +30,19 @@ MND_RE = "|".join(MAANDEN)
 _JUNK = re.compile(r"\s*\d{1,2}\s*/\s*\d{1,3}\s*$")
 
 
+def clip(t, limit):
+    """Afkappen op een zinsgrens, nooit midden in een zin/woord."""
+    if not t or len(t) <= limit:
+        return t
+    cut = t[:limit]
+    for sep in (". ", "! ", "? "):
+        i = cut.rfind(sep)
+        if i > limit * 0.4:
+            return cut[:i + 1]
+    i = cut.rfind(" ")
+    return (cut[:i] if i > 0 else cut).rstrip() + " [...]"
+
+
 def norm(s):
     return " ".join(s.split()) if s else None
 
@@ -116,7 +129,7 @@ def get_kern(pdf):
         if m:
             t = norm(m.group(1))
             if t and len(t) >= 60:
-                return t[:1500]
+                return clip(t, 2500)
     return None
 
 
@@ -135,7 +148,7 @@ def get_beslissing(pdf):
     # voetnootblokken en paginanummers die de PDF-extractie erin plakt
     t = re.split(r"\s+\d+\s+(?:Artikel|HR |Hoge Raad|Zie ook|Verordening|Dit volgt)", t)[0]
     t = _JUNK.sub("", t).strip()
-    return t[:700] if len(t) > 10 else None
+    return clip(t, 900) if len(t) > 10 else None
 
 
 def get_conclusie(pdf):
@@ -147,7 +160,7 @@ def get_conclusie(pdf):
         t = _JUNK.sub("", t).strip()
         if 60 < len(t) < 2500:
             best = t
-    return best[:900] if best else None
+    return clip(best, 1200) if best else None
 
 
 def map_oordeel(uitkomst, beslissing):

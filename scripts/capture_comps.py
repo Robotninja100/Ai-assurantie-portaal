@@ -96,8 +96,18 @@ CANDIDATES = [
         "bron_naam": "Attio",
         "url": "https://attio.com/",
         "wat_het_toont": "Attio CRM-interface: spreadsheet-achtige recordtabellen, kolomtypes en "
-                         "record-detailweergave. Directe maatlat voor onze relatie-/polisoverzichten.",
+                         "record-detailweergave. Directe maatlat voor onze relatie-/polisoverzichten. "
+                         "LET OP: scroll-geanimeerd - enkele desktopsecties blijven leeg in een statische capture; zie attio_help.",
         "wait_ms": 5000,
+    },
+    {
+        "id": "attio_help",
+        "bron_naam": "Attio",
+        "url": "https://attio.com/help/reference/attio-101",
+        "wat_het_toont": "Attio helpcentrum-app: sidebar-navigatie, artikeldetail en ingebedde "
+                         "schermafbeeldingen van de echte CRM-tabellen en recordweergaven. "
+                         "Rendert statisch, dus betrouwbaarder dan de scroll-geanimeerde homepage.",
+        "wait_ms": 4000,
     },
     {
         "id": "mercury_banking",
@@ -165,11 +175,19 @@ CANDIDATES = [
         "wait_ms": 5000,
     },
     {
-        "id": "posthog_product",
-        "bron_naam": "PostHog",
-        "url": "https://posthog.com/",
-        "wat_het_toont": "PostHog-productpagina met echte analytics-UI: funnels, insight-tabellen "
-                         "en linkernavigatie van de app.",
+        "id": "resend_product",
+        "url": "https://resend.com/",
+        "bron_naam": "Resend",
+        "wat_het_toont": "Resend: e-mail-dashboard met logtabel, statusbadges en detailpaneel. "
+                         "Strak, monochroom, hoge informatiedichtheid - dicht bij wat wij willen.",
+        "wait_ms": 5000,
+    },
+    {
+        "id": "dub_analytics",
+        "url": "https://dub.co/",
+        "bron_naam": "Dub",
+        "wat_het_toont": "Dub analytics-werkblad: linktabel, filters en grafiek-/statpanelen. "
+                         "Moderne, rustige SaaS-datadichtheid.",
         "wait_ms": 5000,
     },
     {
@@ -188,6 +206,7 @@ ACCEPT_TEXTS = [
     "Accept cookies", "Accept", "I agree", "Got it", "Understood",
     "Alles accepteren", "Accepteer alles", "Alle cookies accepteren", "Akkoord",
     "Tout accepter", "Alle akzeptieren", "Zustimmen",
+    "Continue",  # laatste redmiddel (o.a. Attio); de URL-bewaking vangt misklikken op
 ]
 
 # Bekende consent-knoppen, exact geadresseerd - veiliger dan tekst zoeken.
@@ -267,6 +286,37 @@ def dismiss_consent(page, original_url):
     return False
 
 
+KILL_OVERLAYS_JS = """
+() => {
+  // Verwijder overgebleven consent-/cookieoverlays die geen bekende selector hebben:
+  // alleen zwevende elementen (fixed/sticky/absolute) met cookie-/consent-woordenschat.
+  const re = /cookie|cookies|consent|toestemming|privacybeleid|privacy policy|we use .* to improve/i;
+  let n = 0;
+  for (const el of document.querySelectorAll('body *')) {
+    let cs;
+    try { cs = getComputedStyle(el); } catch (e) { continue; }
+    if (!['fixed', 'sticky', 'absolute'].includes(cs.position)) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width < 60 || r.height < 30) continue;
+    if (r.width * r.height > window.innerWidth * window.innerHeight * 0.9) continue;
+    const txt = (el.innerText || '').trim();
+    if (txt.length === 0 || txt.length > 800) continue;
+    if (!re.test(txt)) continue;
+    el.style.setProperty('display', 'none', 'important');
+    n++;
+  }
+  return n;
+}
+"""
+
+
+def kill_overlays(page):
+    try:
+        return page.evaluate(KILL_OVERLAYS_JS)
+    except Exception:
+        return 0
+
+
 def autoscroll(page):
     """Door de pagina scrollen zodat lazy-loaded media inlaadt, daarna terug naar boven."""
     try:
@@ -339,10 +389,12 @@ def capture(browser, cand, vp_key):
 
         dismiss_consent(page, cand["url"])
         page.add_style_tag(content=HIDE_CSS)
+        kill_overlays(page)
         page.wait_for_timeout(400)
 
         autoscroll(page)
         page.add_style_tag(content=HIDE_CSS)  # opnieuw, voor laat gemounte banners
+        rec["overlays_verwijderd"] = kill_overlays(page)
         page.wait_for_timeout(600)
 
         h = page_height(page)
@@ -402,9 +454,28 @@ def main():
                 print(f'{mark} {rec["bestand"]:<38} {rec.get("fout","")}', flush=True)
         browser.close()
 
-    MANIFEST.write_text(json.dumps(entries, indent=2, ensure_ascii=False), encoding="utf-8")
-    ok = sum(1 for e in entries if e["geladen_ok"])
-    print(f"\n{ok}/{len(entries)} captures geslaagd -> {MANIFEST}")
+    # Bij een deel-run: bestaande manifest-regels behouden en alleen de opnieuw
+    # vastgelegde combinaties (id + viewport) overschrijven.
+    merged = {}
+    if MANIFEST.exists():
+        try:
+            for e in json.loads(MANIFEST.read_text(encoding="utf-8")):
+                merged[(e["id"], e["viewport"])] = e
+        except Exception:
+            pass
+    for e in entries:
+        merged[(e["id"], e["viewport"])] = e
+
+    order = {c["id"]: i for i, c in enumerate(CANDIDATES)}
+    rows = sorted(merged.values(),
+                  key=lambda e: (order.get(e["id"], 999), 0 if "1440" in e["viewport"] else 1))
+    # regels waarvan het bestand niet meer bestaat, laten we vallen
+    rows = [e for e in rows if (OUT_DIR / e["bestand"]).exists()]
+
+    MANIFEST.write_text(json.dumps(rows, indent=2, ensure_ascii=False), encoding="utf-8")
+    ok = sum(1 for e in rows if e["geladen_ok"])
+    print(f"\ndeze run: {sum(1 for e in entries if e['geladen_ok'])}/{len(entries)} geslaagd")
+    print(f"manifest totaal: {ok}/{len(rows)} -> {MANIFEST}")
 
 
 if __name__ == "__main__":

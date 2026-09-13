@@ -183,6 +183,7 @@ TARGETS = [
 
 # ------------------------------------------------------- cookie handling
 ACCEPT_TEXTS = [
+    "Akkoord", "Accepteer",
     "Alles accepteren", "Accepteer alles", "Alle cookies accepteren",
     "Accepteren", "Akkoord", "Ik ga akkoord", "Ja, ik accepteer",
     "Cookies accepteren", "Accepteer cookies", "Alles toestaan",
@@ -202,8 +203,28 @@ HIDE_CSS = """
 #sp_message_container_1, [id^="sp_message_container"],
 .privacy-banner, .consent-modal, [aria-label*="ookie"],
 .modal-backdrop, .cookie-overlay { display:none !important; }
-html, body { overflow: auto !important; position: static !important; }
 """
+
+# Alleen toepassen als de pagina echt scroll-locked is (cookiewall-gedrag).
+# Blind forceren breekt sites die met een eigen scroll-container werken:
+# full_page rekent dan een verkeerde hoogte uit en de shot wordt afgekapt.
+UNLOCK_JS = """() => {
+  const el = [document.documentElement, document.body];
+  let locked = false;
+  for (const e of el) {
+    const cs = getComputedStyle(e);
+    if (cs.overflow === 'hidden' || cs.overflowY === 'hidden' ||
+        cs.position === 'fixed') locked = true;
+  }
+  if (locked) {
+    const st = document.createElement('style');
+    st.textContent =
+      'html,body{overflow:visible !important;position:static !important;' +
+      'height:auto !important;}';
+    document.head.appendChild(st);
+  }
+  return locked;
+}"""
 
 # animaties uit -> stabielere full-page shots
 FREEZE_CSS = """
@@ -247,6 +268,11 @@ def dismiss_cookies(page, log):
                 continue
     try:
         page.add_style_tag(content=HIDE_CSS)
+    except Exception:
+        pass
+    try:
+        if page.evaluate(UNLOCK_JS):
+            log.append("scroll-lock opgeheven")
     except Exception:
         pass
     log.append(f"cookies: {'geklikt op ' + clicked if clicked else 'verborgen via CSS'}")
@@ -318,6 +344,8 @@ def shoot(browser, target, viewport, dsf, path, is_mobile, log):
             pass
         run_steps(page, target.get("steps"), log)
         settle(page)
+        # Sommige CMP's verschijnen pas na een paar seconden of na scrollen.
+        dismiss_cookies(page, log)
         try:
             page.add_style_tag(content=HIDE_CSS)
         except Exception:

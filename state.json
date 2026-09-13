@@ -1,7 +1,7 @@
 {
   "project": "AI-portaal voor Nederlandse assurantieprofessionals",
   "branch": "claude/dutch-insurance-ai-portal-l5skuo",
-  "status": "RUNTIME_SECURED_BUILDING",
+  "status": "RONDE_0_FUNDERING_AF__RONDE_1_NIET_GESTART",
   "blocker": null,
   "runtime_audit": {
     "verdict": "LOCAL_FREE_RUNTIME_WORKING",
@@ -38,15 +38,26 @@
       }
     ],
     "chosen": {
-      "route": "local llama.cpp (llama-cpp-python 0.3.35) + Qwen3-4B-Instruct-2507 Q4_K_M GGUF",
-      "keyless": true,
-      "cost": "EUR 0",
-      "model_path": "scratchpad/models/qwen3-4b.gguf",
-      "throughput_tok_s": 6.5,
-      "load_s": 10.8,
-      "ctx": 4096,
-      "threads": 4,
-      "why": "Enige route zonder API-key die echt draait. Bevestigd met live tests, geen mock."
+      "route": "OpenRouter gratis modellen (primair) met lokaal Qwen3-4B als terugval",
+      "provider": "openrouter",
+      "keyless": false,
+      "cost": "EUR 0 (gratis tier)",
+      "sleutel": "OPENROUTER_API_KEY in .env — .env staat in .gitignore, sleutel staat NIET in git",
+      "modelketen": [
+        "inclusionai/ling-3.0-flash-fin:free",
+        "nex-agi/nex-n2.5-pro:free",
+        "inclusionai/ling-3.0-flash-sante:free",
+        "nex-agi/nex-n2.5-mini:free",
+        "nvidia/nemotron-3-super-120b-a12b:free"
+      ],
+      "waarom_deze_volgorde": "Op GEMETEN gedrag, niet op modelgrootte. Alle vijf rekenen de evenredigheidsbreuk correct (40.000) en antwoorden in bruikbaar Nederlands. Nemotron-super is het grootste model maar lekt redeneerstappen in het antwoord ('We need to answer based solely on...') en staat daarom onderaan.",
+      "gemeten": "precedentzoeker met 8 bronnen: 530s lokaal -> 5,4s via OpenRouter (factor ~100)",
+      "afgewezen_modellen": {
+        "dots-3-note-preview / liquid lfm-2.5 / nemotron-content-safety": "leeg content-veld, alleen reasoning",
+        "thinkingmachines inkling(-small) / poolside laguna-xs / google gemma-4": "HTTP 403",
+        "poolside/laguna-s-2.1": "rekende de onderverzekering FOUT (200.000-250.000 als aftrekking)",
+        "nvidia/nemotron-3.5-lightning": "54s en antwoordde in het Engels"
+      }
     },
     "live_probe_results": [
       {
@@ -111,7 +122,20 @@
       "why_reversed": "Eerder afgeschreven op aanname. Live getest: rekent correct, weigert te hallucineren. Met RAG is 4B voldoende omdat het corpus de feiten levert, niet het model."
     }
   ],
-  "rounds": [],
+  "rounds": [
+    {
+      "ronde": 0,
+      "naam": "Fundering",
+      "uitkomst": "AF",
+      "bewijs": [
+        "53 wetsartikelen HTTP-geverifieerd",
+        "46 Kifid-uitspraken PDF-geverifieerd",
+        "69 polisclausules met inhoudshash",
+        "8/8 grondslagen van de rekenkern onderbouwd",
+        "precedentzoeker end-to-end: 8 echte bronnen, oordeel GEFUNDEERD, 0 verzonnen verwijzingen"
+      ]
+    }
+  ],
   "next_step_awaiting_user": "Kies een runtime-route (eigen ANTHROPIC_API_KEY als env var in de omgeving), of geef opdracht om alleen de niet-AI fundering te bouwen.",
   "architecture_decision": {
     "principle": "Retrieval-grounded, citeer-of-weiger. Model synthetiseert alleen over opgehaalde brontekst.",
@@ -130,5 +154,109 @@
     "cohere": 401,
     "google_ai_studio": 403,
     "note": "401/403 = bereikbaar, key nodig. Gratis tiers bestaan bij Groq/OpenRouter/Google indien gebruiker later een key aanmaakt."
+  },
+  "laatst_bijgewerkt": "2026-09-13",
+  "corpus": {
+    "wetgeving": {
+      "records": 53,
+      "wetten": {
+        "Wft": 17,
+        "BGfo": 19,
+        "BW": 17
+      },
+      "bron": "officiele BWB-XML via repository.officiele-overheidspublicaties.nl, niet HTML-scraping",
+      "verificatie": "alle 53 artikelen HTTP-geverifieerd tegen wetten.overheid.nl",
+      "peildatum": "toestand 2026 (Wft/BGfo 2026-09-01, BW 2026-07-01)",
+      "scraper": "scripts/scrape_wetgeving.py"
+    },
+    "kifid": {
+      "records_totaal": 47,
+      "bruikbaar": 47,
+      "geweigerd": [],
+      "oordelen": {
+        "ongegrond": 37,
+        "gedeeltelijk gegrond": 7,
+        "gegrond": 3
+      },
+      "scraper": "scripts/scrape_kifid.py + scripts/repareer_kifid_bronnen.py"
+    },
+    "polisvoorwaarden": {
+      "records": 69,
+      "producten": {
+        "aansprakelijkheidsverzekering particulieren (AVP)": 9,
+        "opstalverzekering": 11,
+        "inboedelverzekering": 8,
+        "autoverzekering (WA/casco)": 11,
+        "rechtsbijstandverzekering": 4,
+        "reisverzekering": 3,
+        "opstal-/inboedelverzekering (woonverzekering)": 9,
+        "algemene voorwaarden schadeverzekering": 6,
+        "arbeidsongeschiktheidsverzekering (AOV)": 8
+      },
+      "types": {
+        "dekking": 4,
+        "uitsluiting": 27,
+        "schaderegeling": 15,
+        "verjaring": 6,
+        "verplichting verzekerde": 11,
+        "eigen risico": 6
+      },
+      "brondocumenten": 11,
+      "verzekeraars": [
+        "Interpolis (Achmea Schadeverzekeringen N.V.)",
+        "Klaverblad Verzekeringen",
+        "Univé (N.V. Univé Schade)",
+        "a.s.r. (ASR Schadeverzekering N.V.)"
+      ],
+      "verificatie": "bron_pdf_sha256 per document; eigen steekproef Klaverblad AVP reproduceerde de hash exact"
+    }
+  },
+  "gebouwd": {
+    "backend/rekenkern.py": "deterministische berekeningen, elke uitkomst met wettelijke grondslag",
+    "backend/retrieval.py": "BM25 met de hand geschreven; weigert records met bron_geverifieerd=False",
+    "backend/grounding.py": "citeerbewaker: controleert elke verwijzing tegen de OPGEHAALDE documenten",
+    "backend/features.py": "twaalf structureel verschillende functies",
+    "backend/llm.py": "providerlaag: openrouter | local | anthropic | openai-compatibel",
+    "backend/api.py": "FastAPI + SSE; bronnen worden VOOR het antwoord gestuurd",
+    "scripts/valideer_grondslagen.py": "faalt als de rekenkern naar een artikel verwijst dat niet in het corpus staat"
+  },
+  "eigen_fouten_gevonden_en_hersteld": [
+    {
+      "wat": "Bereddingskosten werden buiten de evenredigheidsbreuk gehouden",
+      "waarom_fout": "Art. 7:959 lid 2 BW verklaart art. 7:958 lid 5 juist van OVEREENKOMSTIGE toepassing op bereddingskosten bij onderverzekering. Dat zij de verzekerde som mogen overschrijden (lid 1) betekent niet dat zij buiten de breuk vallen.",
+      "gevolg": "testcase 200k/250k/50k/ER500/BK5000: 44.500 -> 43.500",
+      "hoe_gevonden": "eigen citeer-of-weiger-regel op de eigen code toegepast"
+    },
+    {
+      "wat": "Verjaringstermijn liep vanaf de bekendheidsdatum en behandelde afwijzing als parallelle termijn",
+      "waarom_fout": "Art. 7:942 lid 1 BW: 'de dag, VOLGENDE OP'. Lid 2: na afwijzing loopt een NIEUWE termijn die de oude vervangt; het is een stuitingsmechanisme.",
+      "gevolg": "einddatum een dag verschoven; mechanisme herschreven"
+    },
+    {
+      "wat": "Kifid bron_url gaf HTTP 200 maar redirect naar het algemene uitsprakenregister",
+      "waarom_fout": "Formeel bereikbaar, materieel niet-citeerbaar: het uitspraaknummer stond niet op de geleverde pagina. Exact de 'uncitable source' uit de opdracht.",
+      "gevolg": "PDF (/media/<hash>/) is nu de primaire bron; 46/48 bevestigd door het nummer letterlijk uit de PDF-tekst terug te lezen; 2 geweigerd",
+      "hoe_gevonden": "eigen steekproef, niet door de auditor van de workflow"
+    }
+  ],
+  "comps": {
+    "internationaal_pngs": 36,
+    "nederlands_pngs": 44,
+    "scripts": [
+      "scripts/capture_comps.py",
+      "scripts/capture_comps_nl.py"
+    ],
+    "let_op": "blinde A/B-harnas en decoy waren nog in aanbouw toen de sessie werd afgerond"
+  },
+  "openstaand_volgende_sessie": [
+    "1. FRONTEND BESTAAT NOG NIET. backend/api.py serveert frontend/index.html dat er niet is.",
+    "2. Blinde A/B-harnas + decoy afmaken (scripts/blind_ab.py, scripts/maak_decoy.py).",
+    "3. CORPUSGAT: geen diefstal-/inbraakbeveiligingsclausules. De dekkingscheck weigerde daardoor terecht te antwoorden op een inbraakcasus. Aanvullen vanuit inboedelvoorwaarden.",
+    "4. Ronde 1 criticus: 10 rommelige casussen per feature, 12 features.",
+    "5. Twee Kifid-uitspraken (2026-0832, 2026-0742) opnieuw verifieren; nu uitgesloten.",
+    "6. Streaming voor OpenRouter is nu nagebootst (chunken van een compleet antwoord); echte SSE-streaming van de provider zou beter zijn."
+  ],
+  "veiligheid": {
+    "api_sleutel": "door gebruiker in de chat gedeeld; staat in .env en is via .gitignore buiten git gehouden. AANBEVELING: roteer deze sleutel, want hij is buiten een secret store om gedeeld."
   }
 }

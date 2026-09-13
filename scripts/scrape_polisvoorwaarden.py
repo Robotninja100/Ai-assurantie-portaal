@@ -299,6 +299,28 @@ CLAUSULES = [
     ("asr_aov", "par. 6.4", "Uitsluiting molest", "uitsluiting",
      "Er is geen dekking als u arbeidsongeschikt bent geworden of een ongeval heeft gehad door molest.",
      "6.5 Atoomkernreactie"),
+# --- Univé woonverzekering, aanvullend ---
+    ("unive_woon", "art. 3.5 sub f", "Wat is niet verzekerd? - ontbreken vonkenvanger bij rieten dak", "uitsluiting",
+     "Heeft uw woning een rieten dak en stookt u met vaste brandstoffen?",
+     "g. Waterschade zoals hiernaast beschreven"),
+    ("unive_woon", "art. 3.6.1", "Uw woning wordt gebouwd, verbouwd of gerenoveerd", "dekking",
+     "Tijdens de aanbouw, verbouw of renovatie van uw woning bent u beperkt verzekerd",
+     "3.6.2 Uw woning is onbewoond of staat leeg"),
+    ("unive_woon", "art. 3.6.2", "Uw woning is onbewoond of staat leeg", "dekking",
+     "Is uw woning langer dan drie maanden onbewoond", "3.6.3 Uw inboedel tijdens verhuizing"),
+    ("unive_woon", "art. 3.6.4", "Verhuur van uw woning", "uitsluiting",
+     "Verhuurt u uw woning, (recreatie)woning, een kamer of inboedel aan anderen dan",
+     "3.7 Uw inboedel op een ander adres"),
+    ("unive_woon", "art. 4.1", "Vaststellen schadebedrag", "schaderegeling",
+     "Het schadebedrag stellen wij samen met u vast.", "4.2 (Contra-)expert of arbiter"),
+    ("unive_woon", "art. 4.2", "(Contra-)expert of arbiter", "schaderegeling",
+     "Twijfelt u aan het schadebedrag? Dan kunt u zelf ook een expert inschakelen.",
+     "Goed om te weten: experts beslissen niet over de dekking"),
+
+    # --- Interpolis algemene voorwaarden, aanvullend ---
+    ("ip_av", "art. 7", "Wanneer is schade niet verzekerd?", "uitsluiting",
+     "Schade door ernstige conflicten (molest). Bij ernstige conflicten, zoals een oorlog",
+     "8. Bent u verzekerd voor schade door terrorisme?"),
 ]
 
 
