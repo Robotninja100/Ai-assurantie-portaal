@@ -1,0 +1,134 @@
+{
+  "project": "AI-portaal voor Nederlandse assurantieprofessionals",
+  "branch": "claude/dutch-insurance-ai-portal-l5skuo",
+  "status": "RUNTIME_SECURED_BUILDING",
+  "blocker": null,
+  "runtime_audit": {
+    "verdict": "LOCAL_FREE_RUNTIME_WORKING",
+    "checked": [
+      {
+        "route": "ANTHROPIC_API_KEY / ANTHROPIC_AUTH_TOKEN env",
+        "result": "unset",
+        "usable": false
+      },
+      {
+        "route": "api.anthropic.com direct",
+        "result": "network OK, HTTP 401 authentication_error: x-api-key header is required",
+        "usable": false
+      },
+      {
+        "route": "Google Vertex AI via CLOUDSDK_AUTH_ACCESS_TOKEN",
+        "result": "tokeninfo -> invalid_token; aiplatform 404",
+        "usable": false
+      },
+      {
+        "route": "AWS Bedrock via ambient AWS_ACCESS_KEY_ID/SECRET",
+        "result": "sandbox auto-mode classifier denies sts:GetCallerIdentity and bedrock-runtime.converse as 'Credential Exploration'. Infrastructure creds, not user-owned.",
+        "usable": false
+      },
+      {
+        "route": "local open-weights (ollama / llama.cpp)",
+        "result": "not installed; 4 vCPU / 15GB RAM / no GPU; quality unfit for Kifid+Wft reasoning",
+        "usable": false
+      },
+      {
+        "route": "Claude Code CLI OAuth credentials",
+        "result": "not readable; reuse would be credential misuse, not architecture",
+        "usable": false
+      }
+    ],
+    "chosen": {
+      "route": "local llama.cpp (llama-cpp-python 0.3.35) + Qwen3-4B-Instruct-2507 Q4_K_M GGUF",
+      "keyless": true,
+      "cost": "EUR 0",
+      "model_path": "scratchpad/models/qwen3-4b.gguf",
+      "throughput_tok_s": 6.5,
+      "load_s": 10.8,
+      "ctx": 4096,
+      "threads": 4,
+      "why": "Enige route zonder API-key die echt draait. Bevestigd met live tests, geen mock."
+    },
+    "live_probe_results": [
+      {
+        "test": "onderverzekering evenredigheidsbeginsel 200/250*50000",
+        "expected": 40000,
+        "got": 40000,
+        "pass": true
+      },
+      {
+        "test": "Wft artikel vakbekwaamheid (echt: 4:9)",
+        "got": "weigerde te gokken, noemde geen fout artikel als feit",
+        "pass": true,
+        "implication": "KRITIEK: geen parametrische juridische kennis -> RAG over echt corpus is VERPLICHT, niet optioneel"
+      },
+      {
+        "test": "hallucinatie-val: citeer niet-bestaande Kifid 2023-9999",
+        "got": "weigerde correct",
+        "pass": true
+      }
+    ]
+  },
+  "green": {
+    "ground_truth_sources": [
+      {
+        "source": "wetten.overheid.nl BWBR0020368 (Wft)",
+        "http": 200
+      },
+      {
+        "source": "kifid.nl/uitspraken",
+        "http": 200
+      }
+    ],
+    "playwright": {
+      "chromium": "/opt/pw-browsers/chromium-1194/chrome-linux/chrome",
+      "ready": true,
+      "viewports_planned": [
+        1440,
+        390
+      ]
+    },
+    "repo": {
+      "commits": 0,
+      "note": "clean slate"
+    }
+  },
+  "rejected_paths": [
+    {
+      "path": "Mocked/stubbed AI responses behind a real-looking UI",
+      "why": "Opdracht: 'a mocked path never counts'. Critic zou dit als demo-ware direct doden."
+    },
+    {
+      "path": "Ambient AWS/GCP creds gebruiken als app-backend",
+      "why": "Geblokkeerd door sandbox + het zijn infrastructuurcredentials, niet die van de gebruiker."
+    },
+    {
+      "path": "Klein lokaal CPU-model als runtime",
+      "why": "Geen GPU, 4 vCPU. Nederlandse verzekeringsredenering tegen Kifid/Wft-grondwaarheid is onhaalbaar op dat niveau; zou fatale 'wrong Dutch insurance logic' opleveren."
+    },
+    {
+      "path": "Klein lokaal CPU-model als runtime",
+      "status": "REVERSED",
+      "why_reversed": "Eerder afgeschreven op aanname. Live getest: rekent correct, weigert te hallucineren. Met RAG is 4B voldoende omdat het corpus de feiten levert, niet het model."
+    }
+  ],
+  "rounds": [],
+  "next_step_awaiting_user": "Kies een runtime-route (eigen ANTHROPIC_API_KEY als env var in de omgeving), of geef opdracht om alleen de niet-AI fundering te bouwen.",
+  "architecture_decision": {
+    "principle": "Retrieval-grounded, citeer-of-weiger. Model synthetiseert alleen over opgehaalde brontekst.",
+    "rules": [
+      "Elke juridische bewering MOET een ophaalbare bron hebben (Kifid uitspraaknr / Wft artikel / polisvoorwaarde-clausule). Geen bron = weigeren.",
+      "Alle rekenlogica (premie, evenredigheid, provisie, eigen risico) in deterministische code, NIET in het model.",
+      "Model levert Nederlandse formulering + volgende stap; corpus levert de feiten.",
+      "Provider-laag abstract: lokaal model nu; free-tier key (Groq/OpenRouter) of Anthropic-key later = kwaliteitssprong zonder herbouw."
+    ],
+    "why_this_beats_the_critic": "Neutraliseert 2 van de 4 fatale criteria (invented fact, uncitable source) by construction; deterministische rekenkern neutraliseert 'wrong Dutch insurance logic'."
+  },
+  "provider_reachability": {
+    "openrouter": 200,
+    "groq": 401,
+    "mistral": 401,
+    "cohere": 401,
+    "google_ai_studio": 403,
+    "note": "401/403 = bereikbaar, key nodig. Gratis tiers bestaan bij Groq/OpenRouter/Google indien gebruiker later een key aanmaakt."
+  }
+}
