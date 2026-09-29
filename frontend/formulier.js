@@ -64,14 +64,17 @@ function bouwEen(v, producten) {
     uit.zet = (x) => { inp.value = x ?? ""; };
   } else if (v.type === "keuze") {
     // Een vergelijking gaat over het aanbod van één verzekeraar: dan kiest u product én verzekeraar.
-    const opties = v.bron === "varianten"
+    const verzekeraars = [...new Set((producten || []).flatMap((p) => (p.varianten || []).map((x) => x.verzekeraar)))].sort();
+    const opties = v.bron === "verzekeraars"
+      ? verzekeraars.map((n) => h("option", { value: n }, n))
+      : v.bron === "varianten"
       ? (producten || []).filter((p) => (p.varianten || []).length).map((p) =>
         h("optgroup", { label: p.product }, ...p.varianten.map((x) =>
           h("option", { value: x.waarde }, `${p.product} · ${x.verzekeraar} (${x.clausules} clausules)`))))
       : (producten || []).map((p) => h("option", { value: p.product }, p.product));
     const sel = h("select", { id, name: v.id, "aria-describedby": beschrijving },
       v.leeg ? h("option", { value: "" }, v.leeg) : h("option", { value: "", disabled: true },
-        v.bron === "varianten" ? "Kies een product en verzekeraar" : "Kies een product"),
+        v.bron === "varianten" ? "Kies een product en verzekeraar" : v.bron === "verzekeraars" ? "Kies een verzekeraar" : "Kies een product"),
       ...opties);
     uit.el = sel; uit.blok = veldBlok(v, sel);
     uit.lees = () => sel.value;

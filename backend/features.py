@@ -257,6 +257,51 @@ def _product_filter(product: str):
     return lambda d: d.get("product") in familie
 
 
+def _polisfilter(*teksten, product: str = "", verzekeraar: str = ""):
+    """
+    Het filter voor polisclausules: het product van de klant en, als bekend, ZIJN verzekeraar. Zonder dit stelt
+    een dekkingsoordeel over een Univé-polis clausules van Klaverblad als voorwaarde van de klant voor, en dat
+    is precies de fout die een adviseur kan laten uitbetalen of weigeren op de verkeerde voorwaarden.
+
+    De verzekeraar volgt uit het veld `verzekeraar` of anders uit de tekst (een casus- of briefomschrijving die er
+    één noemt). Noemt de tekst er meerdere, dan kiest het portaal niet. Is de verzekeraar er wel één, maar staan
+    zijn voorwaarden niet in het corpus, dan komt er GEEN polisclausule (van een ander) voor in de plaats.
+    Geeft (filter of None, meldingen, verzekeraar kort of None).
+    """
+    hp = _herken(product)
+    genoemd, buiten, meerdere = set(), None, False
+    for t in (verzekeraar, *teksten):
+        h = _herken(t or "")
+        if h["verzekeraar"]:
+            genoemd.add(h["verzekeraar"])
+        meerdere = meerdere or h["meerdere_verzekeraars"]
+        buiten = buiten or h["buiten_corpus"]
+    productfilter = _product_filter(product) if hp["product"] else None
+    if buiten and not genoemd:
+        return (lambda d: False), [f"Van {buiten.title()} staan geen polisvoorwaarden in het corpus. Er zijn daarom geen polisclausules opgehaald: "
+                                   "clausules van een andere verzekeraar gelden niet voor deze klant. Vraag de voorwaarden van de klant op."], None
+    if len(genoemd) == 1 and not meerdere:
+        naam = next(iter(genoemd))
+        return ((lambda d: (productfilter is None or productfilter(d)) and d.get("verzekeraar_of_bron") == naam),
+                [], _kort(naam))
+    meldingen = []
+    if len(genoemd) > 1 or meerdere:
+        meldingen.append("Er worden meerdere verzekeraars genoemd; het portaal kiest er geen. Bij elke clausule staat van welke verzekeraar en "
+                         "welk product ze is: gebruik alleen die van de verzekeraar van de klant.")
+    return productfilter, meldingen, None
+
+
+def _van_wie(kort, polis_docs) -> str:
+    """Wat het model moet weten over de verzekeraar van de klant en van wie de aangeleverde clausules zijn."""
+    aangeleverd = sorted({_kort(d.get("verzekeraar_of_bron")) for d in polis_docs})
+    if kort:
+        return f"{kort}. Alleen de voorwaarden van deze verzekeraar zijn aangeleverd."
+    if aangeleverd:
+        return ("niet vastgesteld. De aangeleverde clausules zijn van " + ", ".join(aangeleverd) + ". Noem bij elke clausule van welke "
+                "verzekeraar en welk product ze is; presenteer er geen als voorwaarde van deze klant zolang zijn verzekeraar niet vaststaat.")
+    return "niet vastgesteld; er zijn geen polisclausules aangeleverd."
+
+
 # Welk deel van de wetgeving bij welke vraag hoort. Een dekkingsvraag gaat over het verzekeringsrecht
 # (BW boek 7), niet over de gedragsregels voor adviseurs (Wft, BGfo); andersom geldt hetzelfde. Zonder
 # dit filter haalde een inbraakcasus artikelen over meldingsplichten aan de AFM op, alleen omdat
@@ -333,13 +378,15 @@ def _bronlijst(opgehaald: Dict) -> List[Dict]:
 
 # =============================================================== 1. dekkingscheck
 
-def dekkingscheck(situatie: str, product: str = "") -> Dict:
+def dekkingscheck(situatie: str, product: str = "", verzekeraar: str = "") -> Dict:
     gekozen = _herken(product)["product"]         # de herkende productnaam, niet de ruwe invoer
+    polisfilter, meldingen, kort = _polisfilter(situatie, product=product, verzekeraar=verzekeraar)
     vraag = f"{gekozen or ''} {situatie}".strip()
     ctx = _context(vraag, ["polisvoorwaarden", "wetgeving"], per_bron=5,
-                   waar={"polisvoorwaarden": _product_filter(product), "wetgeving": VERZEKERINGSRECHT})
+                   waar={"polisvoorwaarden": polisfilter, "wetgeving": VERZEKERINGSRECHT})
+    van_wie = _van_wie(kort, ctx["opgehaald"].get("polisvoorwaarden", []))
     gebruiker = (
-        f"SCHADESITUATIE:\n{situatie}\n\nPRODUCT: {gekozen or 'niet opgegeven of niet herkend'}\n\n"
+        f"SCHADESITUATIE:\n{situatie}\n\nPRODUCT: {gekozen or 'niet opgegeven of niet herkend'}\nVERZEKERAAR VAN DE KLANT: {van_wie}\n\n"
         "Beoordeel op basis van UITSLUITEND de bronnen:\n"
         "1. Welke clausules raken deze situatie? Noem ze bij hun clausulenummer.\n"
         "2. Wijst dit op dekking of op een uitsluiting? Wees expliciet als het onduidelijk is.\n"
@@ -347,7 +394,7 @@ def dekkingscheck(situatie: str, product: str = "") -> Dict:
         "Als de bronnen geen uitsluitsel geven, zeg dat en benoem welke polisvoorwaarden "
         "de adviseur moet opvragen.")
     return {"functie": "dekkingscheck", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": _meld(ctx),
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": _meld(ctx, meldingen),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 1000}
 
 
@@ -680,11 +727,14 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
 
 def afwijzingsanalyse(brieftekst: str) -> Dict:
     tekst, opmerkingen, afgekapt = _afkap(brieftekst, "De brief")
+    polisfilter, meldingen, kort = _polisfilter(tekst)
     ctx = _context(tekst[:600] + " afwijzing dekking uitsluiting mededelingsplicht "
                    "opzet eigen gebrek", ["polisvoorwaarden", "kifid", "wetgeving"], per_bron=4,
-                   waar={"wetgeving": VERZEKERINGSRECHT})
+                   waar={"wetgeving": VERZEKERINGSRECHT, "polisvoorwaarden": polisfilter})
+    opmerkingen = opmerkingen + meldingen
     gebruiker = (
         f"AFWIJZINGSBRIEF VAN DE VERZEKERAAR:\n---\n{tekst}\n---\n{afgekapt}\n"
+        f"VERZEKERAAR IN DE BRIEF: {_van_wie(kort, ctx['opgehaald'].get('polisvoorwaarden', []))}\n\n"
         "Analyseer op basis van UITSLUITEND de bronnen:\n"
         "1. Op welke grond wijst de verzekeraar af? Citeer die grond uit de brief.\n"
         "2. Wordt die grond gedragen door een clausule of wetsartikel uit de bronnen? "
@@ -746,7 +796,8 @@ def begripsuitleg(begrip: str) -> Dict:
     ctx = _context(begrip, ["wetgeving", "polisvoorwaarden", "kifid"], per_bron=3)
     gebruiker = (
         f"BEGRIP: {begrip}\n\n"
-        "Leg dit begrip uit op basis van UITSLUITEND de bronnen.\n"
+        "Leg dit begrip uit op basis van UITSLUITEND de bronnen. Polisclausules verschillen per verzekeraar: noem bij elke "
+        "clausule van welke verzekeraar en welk product ze is, en presenteer er geen als algemene regel.\n"
         "1. Wat zegt de wettekst of clausule letterlijk? Citeer.\n"
         "2. Wat betekent dat in de praktijk voor een adviseur?\n"
         "3. Waar gaat het in de praktijk mis?\n"

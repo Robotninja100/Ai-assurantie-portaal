@@ -235,11 +235,16 @@ def draai_standin(casus, antwoorden):
     import api
     import features
     res = {"id": casus["id"], "functie": casus["functie"], "http_status": 200, "tekst": "", "gebeurtenissen": []}
-    try:
-        opdracht = features.FUNCTIES[casus["functie"]]["fn"](**casus["invoer"])
-    except (TypeError, ValueError, ArithmeticError) as e:
-        res.update(http_status=400, fout=f"{type(e).__name__}: {e}", bronnen=[], berekening=None)
-        return res
+    bewaard = os.path.join(antwoorden, os.pardir, "opdrachten", casus["id"] + ".json")
+    if os.path.exists(bewaard):                 # precies wat het stand-in-model zag, ook als de code intussen veranderde
+        with open(bewaard, encoding="utf-8") as fh:
+            opdracht = json.load(fh)
+    else:
+        try:
+            opdracht = features.FUNCTIES[casus["functie"]]["fn"](**casus["invoer"])
+        except (TypeError, ValueError, ArithmeticError) as e:
+            res.update(http_status=400, fout=f"{type(e).__name__}: {e}", bronnen=[], berekening=None)
+            return res
     res.update(bronnen_volledig=opdracht["bronnen"], bronnen=bronnen_kort(opdracht["bronnen"]),
                berekening=opdracht.get("berekening"), opmerkingen=opdracht.get("opmerkingen"))
     if not opdracht["bronnen"]:

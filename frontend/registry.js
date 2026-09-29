@@ -25,10 +25,12 @@ export const REGISTER = {
         hint: "Wat is er gebeurd, wanneer, en wat is beschadigd of vermist? Noem ook wat de klant zelf heeft gedaan." },
       { id: "product", label: "Product", type: "keuze", bron: "producten", leeg: "Niet opgegeven",
         hint: "Met een product zoekt het portaal alleen in de voorwaarden van die productsoort." },
+      { id: "verzekeraar", label: "Verzekeraar", type: "keuze", bron: "verzekeraars", leeg: "Niet opgegeven", optioneel: true,
+        hint: "Met een verzekeraar staan alleen zijn voorwaarden erbij. Noemt de schadesituatie de verzekeraar, dan leest het portaal die zelf." },
     ],
     voorbeeld: {
       situatie: "De klant meldt dat er afgelopen weekend is ingebroken terwijl hij een week op vakantie was. De dader kwam binnen via een openstaand raam op de eerste verdieping en heeft een laptop en sieraden meegenomen.",
-      product: "inboedelverzekering",
+      product: "inboedelverzekering", verzekeraar: "Klaverblad",
     },
   },
   precedentzoeker: {

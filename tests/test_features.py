@@ -204,3 +204,49 @@ def test_stuk_snijdt_op_een_woordgrens_en_zegt_dat_er_meer_is():
     assert features._stuk("een twee drie vier", 100) == "een twee drie vier"
     assert features._stuk("een twee drie vier", 10) == "een twee …"
     assert features._stuk(None, 10) == ""
+
+
+# ------------------------------------------------------------ clausules van de verzekeraar van de klant, niet van een andere
+
+def _verzekeraars_polis(r):
+    return {b["verzekeraar"] for b in r["bronnen"] if b["soort"] == "polis"}
+
+
+def test_dekkingscheck_leest_de_verzekeraar_uit_de_schadesituatie():
+    r = features.dekkingscheck("Klant is verzekerd met de woonverzekering van Univé. Er is een schoorsteenbrand geweest.",
+                               "opstal-/inboedelverzekering (woonverzekering)")
+    assert _verzekeraars_polis(r) == {"Univé (N.V. Univé Schade)"}
+    assert "VERZEKERAAR VAN DE KLANT: Univé. Alleen de voorwaarden van deze verzekeraar zijn aangeleverd." in r["gebruiker"]
+
+
+def test_dekkingscheck_met_het_veld_verzekeraar_beperkt_de_clausules_tot_die_verzekeraar():
+    r = features.dekkingscheck("Inbraak in de woning via een openstaand raam", "inboedelverzekering", "Klaverblad")
+    assert _verzekeraars_polis(r) == {"Klaverblad Verzekeringen"}
+    r = features.dekkingscheck("Inbraak in de woning via een openstaand raam", "", "Univé")
+    assert _verzekeraars_polis(r) == {"Univé (N.V. Univé Schade)"}
+
+
+def test_dekkingscheck_zonder_bekende_verzekeraar_zegt_van_wie_de_clausules_zijn_zodat_het_model_ze_niet_toeschrijft():
+    r = features.dekkingscheck("Inbraak in de woning via een openstaand raam", "inboedelverzekering")
+    assert "niet vastgesteld" in r["gebruiker"] and "Noem bij elke clausule van welke verzekeraar" in r["gebruiker"]
+
+
+def test_dekkingscheck_met_een_verzekeraar_buiten_het_corpus_toont_geen_clausules_van_een_ander():
+    r = features.dekkingscheck("Klant heeft een polis bij Centraal Beheer, er is ingebroken.", "inboedelverzekering")
+    assert not [b for b in r["bronnen"] if b["soort"] == "polis"]
+    assert any("Centraal Beheer" in m and "geen polisvoorwaarden" in m for m in r["opmerkingen"])
+
+
+def test_meerdere_verzekeraars_in_de_situatie_geven_een_melding_en_geen_keuze():
+    r = features.dekkingscheck("Vorige verzekeraar was Klaverblad, nu Univé. Inbraak in de woning.", "inboedelverzekering")
+    assert any("meerdere verzekeraars" in m for m in r["opmerkingen"])
+
+
+def test_afwijzingsanalyse_leest_de_verzekeraar_uit_de_brief():
+    r = features.afwijzingsanalyse("Geachte heer, Univé wijst uw claim af. Uw schade door storm tijdens de verbouwing valt onder een uitsluiting.")
+    assert _verzekeraars_polis(r) <= {"Univé (N.V. Univé Schade)"}
+    assert "VERZEKERAAR IN DE BRIEF: Univé." in r["gebruiker"]
+
+
+def test_begripsuitleg_laat_het_model_de_verzekeraar_noemen_bij_elke_clausule():
+    assert "noem bij elke clausule van welke verzekeraar" in features.begripsuitleg("eigen risico")["gebruiker"]

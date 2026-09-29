@@ -46,13 +46,19 @@ function meta(b) {
   return h("div", { class: "bron-meta" }, ...delen);
 }
 
+/** 'Klaverblad Verzekeringen' -> 'Klaverblad'; 'Univé (N.V. Univé Schade)' -> 'Univé'. */
+function verzekeraarKort(naam) {
+  return (naam || "").replace(/\s*\(.*\)\s*$/, "").replace(" Verzekeringen", "").trim();
+}
+
 function rij(b) {
   const el = h("div", { class: "bron", dataset: { open: "false", soort: b.soort, sleutels: sleutels(b).join(" ") } });
   const knop = h("button", { class: "bron-rij", type: "button", "aria-expanded": "false",
     onClick: () => zet(el, el.dataset.open !== "true") },
     h("span", { class: "bron-tekst" },
       b.soort === "polis" && b.clausule
-        ? h("span", { class: "bron-label" }, h("b", null, b.clausule), h("span", { class: "bron-sub" }, b.product))
+        ? h("span", { class: "bron-label" }, h("b", null, b.clausule),
+          h("span", { class: "bron-sub" }, [b.product, verzekeraarKort(b.verzekeraar)].filter(Boolean).join(" · ")))
         : h("span", { class: "bron-label" }, h("b", null, b.label)),
       b.titel ? h("span", { class: "bron-titel" }, b.titel) : null),
     h("span", { class: "bron-tags" }, ...tags(b)),

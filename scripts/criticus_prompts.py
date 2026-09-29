@@ -62,6 +62,11 @@ def main():
             json.dump({"id": c["id"], "functie": c["functie"], "systeem": opdracht["systeem"],
                        "gebruiker": opdracht["gebruiker"], "max_tokens": opdracht.get("max_tokens", 600)},
                       fh, ensure_ascii=False, indent=1)
+        # De volledige opdracht (bronnen, berekening, meldingen) apart: het stand-in-model leest die niet, maar de
+        # beoordeling gebruikt precies wat het model zag, ook als de code intussen is veranderd.
+        os.makedirs(os.path.join(a.uit, "opdrachten"), exist_ok=True)
+        with open(os.path.join(a.uit, "opdrachten", f"{c['id']}.json"), "w", encoding="utf-8") as fh:
+            json.dump(opdracht, fh, ensure_ascii=False)
         geschreven += 1
     with open(os.path.join(a.uit, "LEESMIJ.md"), "w", encoding="utf-8") as fh:
         fh.write(LEESMIJ)
