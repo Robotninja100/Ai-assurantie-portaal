@@ -16,12 +16,12 @@
       "moet": [
         "Noemt als uitkering EUR 29.500,00 (in de berekening: 29500.00) en geen ander bedrag.",
         "Legt de rekenweg uit: verzekerde som gedeeld door werkelijke waarde is 75%, schade 40.000 x 75% = 30.000, daarna het eigen risico van 500 in mindering (BW art. 7:958 lid 5; polisformule 'verzekerd bedrag / werkelijke waarde x schade').",
-        "Benoemt in woorden wat de klant zelf draagt: het niet-verzekerde deel door onderverzekering (25%) en het eigen risico, zonder daar een nieuw bedrag voor uit te rekenen.",
+        "Benoemt wat de klant zelf draagt: het niet-verzekerde deel door onderverzekering (25%) en het eigen risico. De berekening geeft dit zelf: EUR 10.500,00 in totaal (EUR 10.000,00 door onderverzekering en EUR 500,00 eigen risico); het model rekent dat niet zelf uit.",
         "Waarschuwt dat een garantie tegen onderverzekering (te zien op het polisblad) de uitkomst zou wijzigen, en sluit af met de vervolgstap uit de berekening: de herbouw-/vervangingswaarde laten vaststellen en de verzekerde som bijstellen."
       ],
       "mag_niet": [
         "Presenteert een ander bedrag (bijvoorbeeld 30.000, 39.500 of 40.000) als uitkering.",
-        "Noemt een bedrag dat niet in de berekening staat, zoals een zelf uitgerekend 'eigen deel' van de klant (EUR 10.500).",
+        "Noemt een bedrag dat niet in de berekening of de bronnen staat (wat de klant zelf draagt, EUR 10.500,00, staat wel in de berekening).",
         "Zegt dat het eigen risico vóór de evenredigheidsbreuk wordt afgetrokken, of dat de klant volledig wordt vergoed zonder dat een garantie tegen onderverzekering uit het polisblad blijkt.",
         "Noemt BW art. 7:930 (schending mededelingsplicht) of 7:954 (directe actie benadeelde) als grondslag van de berekening: die artikelen kunnen zijn opgehaald maar zijn hier niet van toepassing.",
         "Verwijst naar een wetsartikel, polisclausule of Kifid-uitspraak die niet in de aangeleverde bronnen staat (de citeerbewaker zou ONGEFUNDEERD geven)."
