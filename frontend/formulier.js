@@ -67,7 +67,7 @@ function bouwEen(v, producten) {
     const opties = v.bron === "varianten"
       ? (producten || []).filter((p) => (p.varianten || []).length).map((p) =>
         h("optgroup", { label: p.product }, ...p.varianten.map((x) =>
-          h("option", { value: x.waarde }, `${x.verzekeraar} (${x.clausules} clausules)`))))
+          h("option", { value: x.waarde }, `${p.product} · ${x.verzekeraar} (${x.clausules} clausules)`))))
       : (producten || []).map((p) => h("option", { value: p.product }, p.product));
     const sel = h("select", { id, name: v.id, "aria-describedby": beschrijving },
       v.leeg ? h("option", { value: "" }, v.leeg) : h("option", { value: "", disabled: true },
