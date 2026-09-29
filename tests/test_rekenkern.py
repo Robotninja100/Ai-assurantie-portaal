@@ -5,6 +5,8 @@ de wettekst in corpus/wetgeving.json, niet uit de uitvoer van de code zelf.
 from datetime import date
 from decimal import Decimal
 
+import pytest
+
 import rekenkern as rk
 
 
@@ -186,3 +188,82 @@ def test_elke_uitkomst_noemt_een_vervolgstap():
     ]
     for u in uitkomsten:
         assert u.volgende_stap, u.onderwerp
+
+
+# ------------------------------------------------------------ classificatie van producten (BGfo 86c/86d)
+
+def test_producten_uit_verschillende_regimes_door_elkaar_zijn_onbepaald():
+    # Regressie: 'hypotheek + inboedelverzekering' werd als schadeverzekering geclassificeerd omdat de
+    # tekst op 'verzekering' eindigde.
+    u = rk.provisie_toets("hypotheek + inboedelverzekering", 1850, 12)
+    assert u.details["status"] == "ONBEPAALD" and u.bedrag is None
+
+
+def test_individuele_aov_is_verboden_en_de_kale_aov_onbepaald_ook_binnen_een_zin():
+    assert status("individuele arbeidsongeschiktheidsverzekering voor een zzp'er") == "VERBODEN"
+    assert status("arbeidsongeschiktheidsverzekering voor een zzp'er") == "ONBEPAALD"
+
+
+def test_een_zakelijke_brandverzekering_valt_onder_86d():
+    assert status("zakelijke brandverzekering") == "TOEGESTAAN_MET_TRANSPARANTIE"
+    assert status("schadeverzekeringen") == "TOEGESTAAN_MET_TRANSPARANTIE"
+
+
+def test_meervoud_van_een_verboden_product_wordt_herkend():
+    assert status("hypotheken") == "VERBODEN"
+    assert status("uitvaartverzekeringen") == "VERBODEN"
+
+
+def test_individueel_bij_een_aov_maakt_er_de_verboden_individuele_aov_van():
+    for tekst in ("AOV, individueel", "aov (individueel)", "individuele AOV", "arbeidsongeschiktheidsverzekering, individueel"):
+        assert status(tekst) == "VERBODEN", tekst
+    assert status("collectieve AOV") == "ONBEPAALD"
+    assert status("AOV individueel of collectief") == "ONBEPAALD"      # niet vast te stellen welke van de twee
+
+
+def test_provisie_zonder_premie_of_percentage_geeft_geen_nulbedrag():
+    for premie, pct in ((0, 15), (600, 0), (0, 0)):
+        u = rk.provisie_toets("opstalverzekering", premie, pct)
+        assert u.details["status"] == "TOEGESTAAN_MET_TRANSPARANTIE"
+        assert u.bedrag is None, (premie, pct)
+
+
+# ------------------------------------------------------------ gevonden door de onafhankelijke casusschrijvers
+
+def test_schade_boven_de_waarde_wordt_bij_onderverzekering_begrensd_op_de_verzekerde_som():
+    # Regressie: 300.000 x 50% = 150.000 werd uitgekeerd bij een verzekerde som van 100.000 (art. 7:955 lid 1).
+    u = rk.evenredigheidsbeginsel(100000, 200000, 300000)
+    assert eur(u.bedrag) == Decimal("100000.00")
+    assert any("hoger dan de werkelijke waarde" in w for w in u.waarschuwingen)
+    assert "BW:7:955:1" in u.grondslag
+
+
+def test_uitkering_is_nooit_hoger_dan_de_waarde_ook_bij_een_te_hoge_verzekerde_som():
+    u = rk.evenredigheidsbeginsel(250000, 200000, 300000)
+    assert eur(u.bedrag) == Decimal("200000.00")
+
+
+def test_aanspraak_na_de_peildatum_heeft_nog_niets_gestuit():
+    # Regressie: een voorgenomen brief (2 okt) gaf op 29 sep al 'gestuit', terwijl de termijn nog gewoon loopt.
+    u = verjaring(date(2023, 10, 5), date(2026, 10, 2), peildatum=date(2026, 9, 29))
+    assert u.details["status"] == "LOOPT"
+    assert u.details["laatste_dag"] == "2026-10-05" and u.details["dagen_resterend"] == 6
+    assert any("ligt na de peildatum" in w for w in u.waarschuwingen)
+
+
+def test_reactie_na_de_peildatum_is_nog_niet_gebeurd():
+    u = verjaring(date(2024, 1, 10), date(2024, 5, 1), date(2027, 1, 1), peildatum=date(2026, 9, 29))
+    assert u.details["status"] == "GESTUIT"
+
+
+def test_bekendheid_na_de_peildatum_is_een_invoerfout():
+    with pytest.raises(ValueError):
+        verjaring(date(2027, 1, 1), peildatum=date(2026, 9, 29))
+
+
+def test_dagwaarde_precies_op_de_drempel_geeft_dagwaarde_want_de_clausule_zegt_meer_dan():
+    # Klaverblad inboedel art. 2.17.3 sub c: nieuwwaarde alleen als de dagwaarde MEER DAN 40% bedraagt.
+    u = rk.nieuwwaarde_of_dagwaarde(1000, 6, 10)
+    assert u.details["toegepast"] == "dagwaarde" and eur(u.bedrag) == Decimal("400.00")
+    assert any("precies op de drempel" in w for w in u.waarschuwingen)
+    assert rk.nieuwwaarde_of_dagwaarde(1000, 5.9, 10).details["toegepast"] == "nieuwwaarde"

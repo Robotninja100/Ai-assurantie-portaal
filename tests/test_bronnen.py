@@ -86,9 +86,9 @@ def test_maskeer_markeert_zichtbaar_en_verwijdert_niets():
     antwoord = "Dit volgt uit art. 7:958 lid 5 BW en art. 7:942 BW."
     r = grounding.controleer(antwoord, OPGEHAALD)
     m = grounding.maskeer(antwoord, r)
-    assert "7:958 ⚠️[niet in corpus]" in m
+    assert "7:958 ⚠️[niet in de opgehaalde bronnen]" in m
     assert "7:942 ⚠️" not in m
-    assert m.replace(" ⚠️[niet in corpus]", "") == antwoord
+    assert m.replace(" ⚠️[niet in de opgehaalde bronnen]", "") == antwoord
 
 
 def test_antwoord_zonder_verwijzingen_krijgt_dat_oordeel():
@@ -143,3 +143,95 @@ def test_clausule_die_niet_is_opgehaald_blijft_ongefundeerd():
     opgehaald = {"polisvoorwaarden": [{"clausule_id": "Woonhuis art. 11.6"}]}
     r = grounding.controleer("Zie art. 11.7 van de voorwaarden.", opgehaald)
     assert r["oordeel"] == "ONGEFUNDEERD"
+
+
+# ------------------------------------------------------------ getallen en data in het antwoord
+
+TOEGESTAAN = (
+    "Uitkering: EUR 43500.00\n- Evenredigheidsbreuk: 200000.00 / 250000.00 = 80.00\n"
+    '{"bedrag": "43500.00", "details": {"laatste_dag": "2027-03-10", "onderverzekering_pct": "20.00"}}\n'
+    "De laatste dag is 10 maart 2027. Polisclausule: het eigen risico is € 250 per gebeurtenis.")
+
+
+GETALSOORTEN = {"bedrag", "percentage", "datum"}
+
+
+def geefgetallen(antwoord, toegestaan=TOEGESTAAN):
+    r = grounding.controleer(antwoord, {}, toegestaan)
+    return ({x["verwijzing"] for x in r["gefundeerd"] if x["soort"] in GETALSOORTEN},
+            {x["verwijzing"] for x in r["ongefundeerd"] if x["soort"] in GETALSOORTEN}, r)
+
+
+def test_bedrag_uit_de_berekening_is_gefundeerd_in_elke_nederlandse_schrijfwijze():
+    ok, slecht, r = geefgetallen("De uitkering is € 43.500,00, dus 43.500 euro, of EUR 43500.")
+    assert not slecht, slecht
+    assert ok
+
+
+def test_verzonnen_of_verkeerd_overgenomen_bedrag_wordt_gemarkeerd():
+    ok, slecht, r = geefgetallen("De uitkering is € 44.500,00.")
+    assert slecht == {"€ 44.500,00"}
+    assert r["oordeel"] == "ONGEFUNDEERD"
+    assert r["ongefundeerd"][0]["soort"] == "bedrag"
+
+
+def test_bedrag_uit_een_bron_mag_ook():
+    ok, slecht, _ = geefgetallen("Het eigen risico is € 250.")
+    assert not slecht
+
+
+def test_percentage_dat_uit_de_berekening_volgt_mag_een_verzonnen_percentage_niet():
+    ok, slecht, _ = geefgetallen("Je bent voor 80% verzekerd en 20% zelf verantwoordelijk, niet voor 35%.")
+    assert slecht == {"35%"}
+
+
+def test_datum_uit_de_berekening_in_elke_schrijfwijze_is_gefundeerd_een_andere_datum_niet():
+    ok, slecht, _ = geefgetallen("Laatste dag: 10 maart 2027 (10-03-2027). Niet 11 maart 2027.")
+    assert slecht == {"11 maart 2027"}
+
+
+def test_artikelnummers_aantallen_en_jaartallen_zijn_geen_bedragen():
+    ok, slecht, _ = geefgetallen("Volgens art. 7:942 lid 2 loopt er 3 jaar een termijn sinds 2024 in 2 stappen.")
+    assert not slecht and not ok
+
+
+def test_zonder_toegestane_tekst_worden_getallen_niet_gecontroleerd():
+    r = grounding.controleer("Het bedrag is € 99.999,00.", {})
+    assert r["oordeel"] == "GEEN_VERWIJZINGEN"
+
+
+# ------------------------------------------------------------ artikelen zonder dubbele punt, leden, tijden
+
+BGFO = {"wetgeving": [{"artikel": "86d", "leden": ["1. Een aanbieder...", "2. Voor de toepassing..."]},
+                      {"artikel": "43", "leden": []},
+                      {"artikel": "7:958", "leden": ["1. a", "2. b", "3. c", "4. d", "5. e"]}]}
+
+
+def ongefundeerd(antwoord, opgehaald=BGFO):
+    return {x["verwijzing"] for x in grounding.controleer(antwoord, opgehaald)["ongefundeerd"]}
+
+
+def test_verzonnen_bgfo_artikel_met_letter_wordt_gevonden():
+    # Regressie: 'art. 86z BGfo' werd nooit gemarkeerd omdat kale nummers stil werden overgeslagen.
+    assert ongefundeerd("Zie art. 86z BGfo.") == {"86z"}
+    assert ongefundeerd("Zie artikel 86d lid 1 BGfo.") == set()
+
+
+def test_bgfo_artikel_zonder_letter_telt_alleen_met_de_wetnaam():
+    assert ongefundeerd("Zie artikel 99 BGfo.") == {"99"}
+    assert ongefundeerd("Zie artikel 43 BGfo.") == set()
+    assert ongefundeerd("Zie artikel 5 van de polis.") == set()          # geen wetsverwijzing
+
+
+def test_rangtelwoorden_en_tijden_geven_geen_vals_alarm():
+    assert ongefundeerd("De 1e en 2e stap; om 14:30 uur en om 9:30 uur; gebouwd in 2a fasen.") == set()
+
+
+def test_een_lid_dat_niet_bestaat_wordt_gemarkeerd_een_bestaand_lid_niet():
+    assert ongefundeerd("Volgens art. 7:958 lid 9 BW geldt dit.") == {"7:958 lid 9"}
+    assert ongefundeerd("Volgens art. 7:958 lid 5 BW geldt dit.") == set()
+    assert ongefundeerd("Volgens art. 86d lid 3 BGfo geldt dit.") == {"86d lid 3"}
+
+
+def test_artikel_zonder_bekende_leden_wordt_niet_op_lid_afgekeurd():
+    assert ongefundeerd("Zie artikel 43 lid 2 BGfo.") == set()

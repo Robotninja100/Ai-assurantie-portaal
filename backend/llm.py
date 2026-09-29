@@ -63,6 +63,9 @@ _laad_env()
 
 _lock = threading.Lock()
 _llm = None
+# llama.cpp laat één generatie tegelijk toe op dezelfde instantie. Een tweede verzoek wacht (de UI toont
+# de wachttijd) in plaats van het model te laten crashen.
+_lokaal_slot = threading.Semaphore(1)
 
 
 # ------------------------------------------------------------------ status
@@ -180,8 +183,8 @@ class ModelFout(Exception):
 # ------------------------------------------------------------------ OpenRouter
 
 def _openrouter_stukken(model: str, systeem: str, gebruiker: str, max_tokens: int,
-                        temperatuur: float, key: str) -> Iterator[str]:
-    """Eén model, echte server-sent events. Geeft de tekststukken zodra ze binnenkomen."""
+                        temperatuur: float, key: str) -> Iterator[Dict]:
+    """Eén model, echte server-sent events. Geeft {'tekst': ...} zodra tekst binnenkomt en {'einde': reden} aan het eind."""
     import urllib.request
     body = json.dumps({
         "model": model, "max_tokens": max_tokens, "temperature": temperatuur, "stream": True,
@@ -213,7 +216,9 @@ def _openrouter_stukken(model: str, systeem: str, gebruiker: str, max_tokens: in
             for keuze in chunk.get("choices") or []:
                 tekst = (keuze.get("delta") or {}).get("content")
                 if tekst:                 # 'reasoning' staat in een eigen veld en telt niet mee
-                    yield tekst
+                    yield {"tekst": tekst}
+                if keuze.get("finish_reason"):
+                    yield {"einde": keuze["finish_reason"]}
 
 
 def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]:
@@ -234,13 +239,17 @@ def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[
     for model in OPENROUTER_MODELLEN:
         filter_ = _ZonderDenkblok()
         gaf_tekst = False
+        eindreden = None
 
         def kop() -> Dict:
             return {"type": "model", "model": model, "provider": "openrouter",
                     "overgeslagen": list(redenen)}
         try:
-            for stuk in _openrouter_stukken(model, systeem, gebruiker, max_tokens, temperatuur, key):
-                uit = filter_.voer(stuk)
+            for onderdeel in _openrouter_stukken(model, systeem, gebruiker, max_tokens, temperatuur, key):
+                if "einde" in onderdeel:
+                    eindreden = onderdeel["einde"]
+                    continue
+                uit = filter_.voer(onderdeel["tekst"])
                 if not uit:
                     continue
                 if not gaf_tekst:
@@ -254,6 +263,7 @@ def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[
                     yield kop()
                 yield {"type": "delta", "tekst": rest}
             if gaf_tekst:
+                yield {"type": "einde", "reden": eindreden or "stop"}
                 return
             redenen.append(f"{model}: leeg antwoord")
         except urllib.error.HTTPError as e:
@@ -279,7 +289,7 @@ def _get_local():
     with _lock:
         if _llm is None:
             from llama_cpp import Llama
-            _llm = Llama(model_path=MODEL_PATH, n_ctx=8192,
+            _llm = Llama(model_path=MODEL_PATH, n_ctx=12288,
                          n_threads=os.cpu_count() or 4, verbose=False)
         return _llm
 
@@ -291,7 +301,9 @@ def _stream_local(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]
         return
     filter_ = _ZonderDenkblok()
     gaf_tekst = False
+    eindreden = None
     naam = os.path.basename(MODEL_PATH)
+    _lokaal_slot.acquire()
     try:
         # '/no_think' schakelt bij Qwen3 het redeneerblok uit; op een CPU kost elk token seconden.
         stroom = _get_local().create_chat_completion(
@@ -299,6 +311,8 @@ def _stream_local(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]
                       {"role": "user", "content": gebruiker + "\n\n/no_think"}],
             max_tokens=max_tokens, temperature=temperatuur, stream=True)
         for chunk in stroom:
+            if chunk["choices"][0].get("finish_reason"):
+                eindreden = chunk["choices"][0]["finish_reason"]
             stuk = chunk["choices"][0].get("delta", {}).get("content")
             if not stuk:
                 continue
@@ -318,8 +332,12 @@ def _stream_local(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]
         yield {"type": "fout", "afgebroken": gaf_tekst,
                "fout": f"Lokaal model faalde: {type(e).__name__}: {e}"}
         return
+    finally:
+        _lokaal_slot.release()
     if not gaf_tekst:
         yield {"type": "fout", "afgebroken": False, "fout": "Het lokale model gaf een leeg antwoord."}
+    else:
+        yield {"type": "einde", "reden": eindreden or "stop"}
 
 
 # ------------------------------------------------------------------ overige providers
@@ -383,6 +401,7 @@ def stream_events(systeem: str, gebruiker: str, max_tokens: int = 700,
     Gebeurtenissen van één generatie:
       {"type": "model", "model", "provider", ["overgeslagen": [...]]}   zodra het eerste teken er is
       {"type": "delta", "tekst"}                                         tekst zodra die binnenkomt
+      {"type": "einde", "reden": "stop" | "length" | ...}                 hoe het model stopte; 'length' = afgekapt
       {"type": "fout", "fout", "afgebroken": bool, ["modellen": [...]]}  einde zonder (volledig) antwoord
 
     Dit is geen cosmetica. Op een lokale CPU-runtime duurt een antwoord van 400 tokens minuten;

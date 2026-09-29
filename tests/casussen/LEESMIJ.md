@@ -22,5 +22,5 @@ te lang, buiten het corpus, een poging het model te sturen). Formaat per casus:
 
 `invoer` gebruikt EXACT de parameternamen van de functie in `backend/features.py`.
 `harde_checks` zijn machine-toetsbaar op het API-resultaat (alleen voor de deterministische delen); sleutels
-zijn paden in het `berekening`-object van de API (bijv. `bedrag`, `details.status`), `geweigerd: true` voor
+zijn paden RELATIEF aan het `berekening`-object van de API (bijv. `bedrag`, `details.status`, dus zonder `berekening.` ervoor), `geweigerd: true` voor
 een casus waar het portaal moet weigeren (geen bronnen, of onbepaalde uitkomst).

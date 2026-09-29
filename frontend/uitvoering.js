@@ -13,13 +13,19 @@ const BEREKENING_TITEL = {
   waardetoets: "Waardebepaling", precedentzoeker: "Verdeling",
 };
 const BRONNEN_DICHT = new Set(["schadeberekening", "verjaringstoets", "provisietoets", "waardetoets"]);
-const SOORT_NAAM = { wetsartikel: "Wetsartikel", kifid: "Kifid-uitspraak", polisclausule: "Polisclausule" };
+const SOORT_NAAM = { wetsartikel: "Wetsartikel", kifid: "Kifid-uitspraak", polisclausule: "Polisclausule",
+  bedrag: "Bedrag", percentage: "Percentage", datum: "Datum" };
+const GETALSOORT = new Set(["bedrag", "percentage", "datum"]);
 
 const OORDEEL = {
-  GEFUNDEERD: { toon: "ok", icoon: "vink", uitleg: "Elke wet, uitspraak of clausule die het antwoord noemt, is teruggevonden in de bronnen die hierboven zijn opgehaald." },
-  ONGEFUNDEERD: { toon: "fout", icoon: "waarschuwing", uitleg: "Deze verwijzingen zijn in het antwoord gemarkeerd. Het model noemde ze zonder dat ze zijn opgehaald. Gebruik ze niet zonder ze zelf te controleren." },
-  GEEN_VERWIJZINGEN: { toon: "let", icoon: "info", uitleg: "Zonder verwijzing naar een wetsartikel, uitspraak of clausule is het antwoord niet te controleren. Lees het als samenvatting, niet als onderbouwing." },
-  GEWEIGERD_GEEN_BRONNEN: { toon: "info", icoon: "info", uitleg: "Er zijn geen bronnen gevonden die deze vraag kunnen onderbouwen. Het portaal geeft daarom geen inhoudelijk antwoord." },
+  GEFUNDEERD: { toon: "ok", icoon: "vink", titel: "Alles wat het antwoord noemt staat in de bronnen of de berekening",
+    uitleg: "Elke wet, uitspraak of clausule is teruggevonden in de opgehaalde bronnen, en elk bedrag, percentage en elke datum komt uit de berekening, de invoer of de bronnen." },
+  ONGEFUNDEERD: { toon: "fout", icoon: "waarschuwing",
+    uitleg: "Deze punten zijn in het antwoord gemarkeerd. Het model noemde ze zonder dat ze zijn opgehaald of berekend. Gebruik ze niet zonder ze zelf te controleren." },
+  GEEN_VERWIJZINGEN: { toon: "let", icoon: "info", titel: "Het antwoord noemt geen wet, uitspraak of clausule",
+    uitleg: "Zonder verwijzing naar een wetsartikel, uitspraak of clausule is het antwoord niet te controleren. Lees het als samenvatting, niet als onderbouwing." },
+  GEWEIGERD_GEEN_BRONNEN: { toon: "info", icoon: "info", titel: "Geen bronnen, dus geen inhoudelijk antwoord",
+    uitleg: "Er zijn geen bronnen gevonden die deze vraag kunnen onderbouwen. Het portaal geeft daarom geen inhoudelijk antwoord." },
 };
 
 const tijd = (ms) => `${(ms / 1000).toFixed(1).replace(".", ",")} s`;
@@ -99,6 +105,7 @@ export class Uitvoering {
     switch (e.type) {
       case "bronnen": return this.opBronnen(e.bronnen);
       case "berekening": return this.opBerekening(e.berekening);
+      case "opmerkingen": return this.opOpmerkingen(e.opmerkingen);
       case "model": return this.opModel(e);
       case "wacht": return this.opWacht(e.sec);
       case "tekst": return this.opTekst(e.tekst);
@@ -119,6 +126,11 @@ export class Uitvoering {
       meta: `${meervoud(bronnen.length, "bron", "bronnen")} opgehaald`, klapbaar: dicht, dicht }));
     this.pijp.zet("bronnen", "klaar");
     this.pijp.zet(HEEFT_BEREKENING.has(this.id) ? "berekening" : "antwoord", "actief");
+  }
+
+  opOpmerkingen(lijst) {
+    this.doel.append(h("div", { class: "meldingen", stijl: "margin-top:0" }, ...lijst.map((t) =>
+      h("div", { class: "melding" }, icoon("waarschuwing", 18), h("div", null, t)))));
   }
 
   opBerekening(b) {
@@ -204,16 +216,21 @@ export class Uitvoering {
       this.secTekst.meta(`${this.model ? this.model.model + " · " : ""}${c.duur_sec != null ? tijd(c.duur_sec * 1000) : ""}`);
       if (this.kopieerKnop) this.kopieerKnop.hidden = false;
     }
+    if (c.afgekapt && this.antwoordEl) {
+      this.antwoordEl.append(h("div", { class: "melding", stijl: "margin-top:16px" }, icoon("waarschuwing", 18),
+        h("div", null, h("b", null, "Het antwoord is afgekapt. "),
+          "Het model bereikte de maximale lengte. Wat hierboven staat is onvolledig en de vervolgstap ontbreekt mogelijk.")));
+    }
     const uitleg = OORDEEL[c.oordeel] || OORDEEL.GEEN_VERWIJZINGEN;
-    const nOk = c.gefundeerd.length, nSlecht = c.ongefundeerd.length;
-    const titel = c.oordeel === "GEFUNDEERD" ? `Alle ${meervoud(nOk, "verwijzing", "verwijzingen")} staan in de bronnen`
-      : c.oordeel === "ONGEFUNDEERD" ? `${meervoud(nSlecht, "verwijzing staat", "verwijzingen staan")} niet in de bronnen`
-      : c.oordeel === "GEWEIGERD_GEEN_BRONNEN" ? "Geen bronnen, dus geen inhoudelijk antwoord"
-      : "Het antwoord noemt geen wet, uitspraak of clausule";
-    const rijen = [...c.ongefundeerd.map((v) => ({ ...v, ok: false })), ...c.gefundeerd.map((v) => ({ ...v, ok: true }))];
+    const nSlecht = c.ongefundeerd.length;
+    const nRefs = c.gefundeerd.filter((v) => !GETALSOORT.has(v.soort)).length;
+    const nGetallen = c.gefundeerd.filter((v) => GETALSOORT.has(v.soort)).length;
+    const titel = uitleg.titel || `${meervoud(nSlecht, "punt staat", "punten staan")} niet in de bronnen of de berekening`;
+    const rijen = [...c.ongefundeerd.map((v) => ({ ...v, ok: false })),
+      ...c.gefundeerd.filter((v) => !GETALSOORT.has(v.soort)).map((v) => ({ ...v, ok: true }))];
     const b = c.bronnen_beschikbaar || {};
     const lijst = rijen.length ? h("ul", { class: "verwijzingslijst" }, ...rijen.map((v) =>
-      h("li", null, h("span", { class: `tag ${v.ok ? "ok" : "fout"}` }, v.ok ? "In de bronnen" : "Niet in de bronnen"),
+      h("li", null, h("span", { class: `tag ${v.ok ? "ok" : "fout"}` }, v.ok ? "In de bronnen" : GETALSOORT.has(v.soort) ? "Niet in de berekening" : "Niet in de bronnen"),
         h("b", null, v.verwijzing), h("span", { class: "soort" }, SOORT_NAAM[v.soort] || v.soort)))) : null;
     const body = h("div", { class: "sectie-body" },
       h("div", { class: "controle-kop" },
@@ -221,7 +238,8 @@ export class Uitvoering {
         h("div", null, h("h4", null, titel), h("p", null, uitleg.uitleg))),
       lijst,
       h("div", { class: "controle-meta" },
-        h("span", null, "Gecontroleerd tegen ", h("b", null, `${aantal(b.wetgeving || 0)} wetsartikelen, ${aantal(b.kifid || 0)} uitspraken, ${aantal(b.polisclausules || 0)} clausules`), " die voor deze vraag zijn opgehaald."),
+        h("span", null, "Gecontroleerd: ", h("b", null, `${meervoud(nRefs + c.ongefundeerd.filter((v) => !GETALSOORT.has(v.soort)).length, "verwijzing", "verwijzingen")} en ${meervoud(nGetallen + c.ongefundeerd.filter((v) => GETALSOORT.has(v.soort)).length, "getal", "getallen")}`),
+          " tegen ", h("b", null, `${aantal(b.wetgeving || 0)} wetsartikelen, ${aantal(b.kifid || 0)} uitspraken, ${aantal(b.polisclausules || 0)} clausules`), " en de berekening van deze vraag."),
         c.duur_sec != null ? h("span", null, "Totale duur ", h("b", null, tijd(c.duur_sec * 1000))) : null));
     this.voegSectieToe(sectie(this.volgnummer(), "Controle van verwijzingen", body, { meta: "citeer-of-weiger" }));
     this.pijp.zet("controle", c.oordeel === "ONGEFUNDEERD" ? "fout" : "klaar");

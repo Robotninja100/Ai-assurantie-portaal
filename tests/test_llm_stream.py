@@ -224,3 +224,42 @@ def test_api_stuurt_een_hartslag_zolang_het_model_nog_niets_uitgeeft(monkeypatch
     assert soorten.count("wacht") >= 2
     assert soorten.index("bronnen") < soorten.index("wacht") < soorten.index("model") < soorten.index("tekst")
     assert soorten[-1] == "controle"
+
+
+# ------------------------------------------------------------ afgekapte antwoorden
+
+def test_llm_meldt_hoe_het_model_stopte(nep, monkeypatch):
+    ketens(monkeypatch, "ok")
+    nep.hek.set()
+    events = list(llm.stream_events("s", "g"))
+    assert events[-1] == {"type": "einde", "reden": "stop"} or events[-1]["type"] == "einde"
+
+
+def test_api_markeert_een_afgekapt_antwoord_in_de_controle(monkeypatch):
+    from fastapi.testclient import TestClient
+    import sys
+    sys.path.insert(0, os.path.dirname(__file__))
+    from nep_llm import NepLLM
+    n = NepLLM(einde="length", knip=120)
+    monkeypatch.setattr(llm, "OPENROUTER_URL", n.url)
+    monkeypatch.setattr(llm, "PROVIDER", "openrouter")
+    monkeypatch.setattr(llm, "OPENROUTER_MODELLEN", ["m"])
+    monkeypatch.setenv("OPENROUTER_API_KEY", "x")
+    try:
+        r = TestClient(api.app).post("/api/vraag", json={"functie": "begripsuitleg", "invoer": {"begrip": "onderverzekering"}})
+    finally:
+        n.stop()
+    events = [json.loads(l[6:]) for l in r.text.splitlines() if l.startswith("data: ") and l != "data: [DONE]"]
+    controle = next(e for e in events if e["type"] == "controle")["controle"]
+    assert controle["afgekapt"] is True
+
+
+def test_api_meldt_dat_een_te_lange_invoer_is_afgekapt(monkeypatch):
+    from fastapi.testclient import TestClient
+    monkeypatch.setattr(llm, "PROVIDER", "local")
+    monkeypatch.setattr(llm, "MODEL_PATH", "/bestaat/niet.gguf")
+    lang = "Het dossier bevat een klantprofiel. " * 200          # ruim boven de 4.000 tekens
+    r = TestClient(api.app).post("/api/vraag", json={"functie": "dossiercheck", "invoer": {"dossiertekst": lang}})
+    events = [json.loads(l[6:]) for l in r.text.splitlines() if l.startswith("data: ") and l != "data: [DONE]"]
+    opm = next(e for e in events if e["type"] == "opmerkingen")["opmerkingen"]
+    assert "alleen de eerste 4.000" in opm[0]

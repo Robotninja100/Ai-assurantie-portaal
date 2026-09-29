@@ -121,6 +121,8 @@ def vraag(a: Aanvraag):
         yield _sse({"type": "bronnen", "bronnen": opdracht["bronnen"]})
         if opdracht.get("berekening"):
             yield _sse({"type": "berekening", "berekening": opdracht["berekening"]})
+        if opdracht.get("opmerkingen"):
+            yield _sse({"type": "opmerkingen", "opmerkingen": opdracht["opmerkingen"]})
 
         # Geen bronnen = geen inhoudelijk antwoord. Dit is de kern van citeer-of-weiger:
         # het portaal zwijgt liever dan dat het ongefundeerd praat.
@@ -135,7 +137,7 @@ def vraag(a: Aanvraag):
             yield "data: [DONE]\n\n"
             return
 
-        volledig, fout = [], None
+        volledig, fout, einde = [], None, None
         for e in _model_stroom(opdracht["systeem"], opdracht["gebruiker"],
                                opdracht.get("max_tokens", 600)):
             if e["type"] == "delta":
@@ -143,6 +145,8 @@ def vraag(a: Aanvraag):
                 yield _sse({"type": "tekst", "tekst": e["tekst"]})
             elif e["type"] == "fout":
                 fout = e
+            elif e["type"] == "einde":
+                einde = e["reden"]
             else:                                   # 'model' en 'wacht' gaan ongewijzigd door
                 yield _sse(e)
 
@@ -161,8 +165,14 @@ def vraag(a: Aanvraag):
         if fout:                                    # halverwege afgebroken: wat er staat is onvolledig
             yield _sse({"type": "fout", "afgebroken": True,
                         "fout": fout["fout"] + " Het antwoord hierboven is onvolledig."})
-        controle = grounding.controleer(antwoord, opdracht["opgehaald"])
+        # Getallen mogen alleen uit de berekening, de invoer van de adviseur of de bronnen komen.
+        toegestaan = "\n".join([opdracht["systeem"], opdracht["gebruiker"],
+                                json.dumps(opdracht.get("berekening") or {}, ensure_ascii=False)])
+        controle = grounding.controleer(antwoord, opdracht["opgehaald"], toegestaan)
         controle["duur_sec"] = round(time.time() - t0, 1)
+        # Een antwoord dat tegen de maximale lengte aanliep eindigt midden in een zin en mist de
+        # vervolgstap. Dat mag nooit voor een volledig antwoord doorgaan.
+        controle["afgekapt"] = einde in ("length", "max_tokens") or bool(fout and fout.get("afgebroken"))
         yield _sse({"type": "controle", "controle": controle})
         if controle["ongefundeerd"]:
             yield _sse({"type": "gemaskeerd", "tekst": grounding.maskeer(antwoord, controle)})

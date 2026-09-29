@@ -382,6 +382,9 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
 .verw.ok { color: var(--accent-2); background: var(--accent-bg); border-color: var(--accent-lijn); }
 .verw.slecht { color: var(--fout); background: var(--fout-bg); border-color: var(--fout-lijn); background-image: repeating-linear-gradient(135deg, transparent 0 4px, rgba(161,42,34,.08) 4px 8px); cursor: help; }
 .verw.slecht::after { content: " ⚠"; font-size: .85em; }
+.verw.getal { cursor: default; padding: 0 2px; }
+.verw.getal.ok { background: none; border-color: transparent; color: inherit; font-weight: inherit; border-bottom: 1px dotted var(--accent); border-radius: 0; }
+.verw.getal.slecht { cursor: help; }
 .invulveld { background: var(--let-bg); color: var(--let); border: 1px dashed var(--let-lijn); border-radius: 5px; padding: 0 5px; font-weight: 600; font-size: .92em; }
 
 .document { padding: var(--s6) var(--s7); border: 1px solid var(--lijn); border-radius: var(--r-1); background: var(--vlak); }
@@ -434,6 +437,10 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
   .pagina { padding: var(--s5) var(--s4) var(--s7); }
   .kop { margin-bottom: var(--s5); }
   .principes, .corpusrij { grid-template-columns: 1fr; }
+  .principes { gap: var(--s3); margin-bottom: var(--s6); }
+  .principe { padding: var(--s4) var(--s5); }
+  .principe h3 { margin-top: var(--s1); font-size: var(--t-lg); }
+  .principe p { font-size: var(--t-sm); }
 }
 @media (max-width: 640px) {
   :root { --t-2xl: 24px; --t-held: 36px; }

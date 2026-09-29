@@ -56,3 +56,22 @@ def test_berekende_functies_nemen_hun_grondslagartikelen_mee_in_de_bronnen():
     r = features.provisietoets("opstalverzekering", 600, 15)
     labels = [b["label"] for b in r["bronnen"]]
     assert "BGfo art. 86d" in labels and "BGfo art. 86i" in labels
+
+
+import pytest
+
+
+@pytest.mark.parametrize("aanroep", [
+    lambda: features.provisietoets("opstalverzekering", -312, 18),
+    lambda: features.provisietoets("opstalverzekering", 600, 140),
+    lambda: features.provisietoets("opstalverzekering", 600, 10, -5),
+    lambda: features.schadeberekening(-1, 100, 10),
+    lambda: features.schadeberekening(100, 100, -10),
+    lambda: features.schadeberekening(100, 100, 10, -5),
+    lambda: features.waardetoets(2000, -1, 10),
+    lambda: features.waardetoets(2000, 5, 10, 140),
+    lambda: features.schadeberekening("abc", 100, 10),
+])
+def test_onzin_in_bedragen_wordt_geweigerd_in_plaats_van_doorgerekend(aanroep):
+    with pytest.raises((ValueError, ArithmeticError)):
+        aanroep()

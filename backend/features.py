@@ -19,6 +19,7 @@ import grounding
 
 
 CORPUS = Corpus()
+MAX_INVOER = 4000        # zoveel tekens van een dossier of brief gaan naar het model
 
 
 # --------------------------------------------------------------- hulpfuncties
@@ -70,7 +71,7 @@ def _blok(bron: str, rows: List) -> str:
     uit = []
     for score, d in rows:
         if bron == "wetgeving":
-            lim = 3000 if score >= VERPLICHT else 1200
+            lim = 4000 if score >= VERPLICHT else 2600     # een afgekapt artikel verbergt leden (Wft 4:23 lid 7)
             uit.append(f"[{d.get('wet')} art. {d.get('artikel')}] {d.get('titel') or ''}\n"
                        f"{(d.get('tekst') or '')[:lim]}\nBron: {d.get('bron_url')}")
         elif bron == "kifid":
@@ -187,7 +188,7 @@ def dekkingscheck(situatie: str, product: str = "") -> Dict:
         "de adviseur moet opvragen.")
     return {"functie": "dekkingscheck", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 550}
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 1000}
 
 
 # =============================================================== 2. precedentzoeker
@@ -223,13 +224,16 @@ def precedentzoeker(geschil: str) -> Dict:
                            "telling": telling, "aantal_uitspraken": len(docs),
                            "let_op": "Dit is de verdeling binnen de gevonden uitspraken, "
                                      "geen representatieve steekproef van alle Kifid-zaken."},
-            "max_tokens": 550}
+            "max_tokens": 800}
 
 
 # =============================================================== 3. schadeberekening
 
 def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: float,
                      eigen_risico: float = 0, bereddingskosten: float = 0) -> Dict:
+    for naam, w in (("verzekerde som", verzekerde_som), ("werkelijke waarde", werkelijke_waarde), ("schade", schade),
+                    ("eigen risico", eigen_risico), ("bereddingskosten", bereddingskosten)):
+        _getal(w, naam)
     u = rk.evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
                                   eigen_risico, bereddingskosten)
     ctx = _context("onderverzekering evenredigheid verzekerde som herbouwwaarde eigen risico",
@@ -245,10 +249,30 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
         "aan een klant moet uitleggen. Noem expliciet wat de klant zelf draagt en waarom.")
     return {"functie": "schadeberekening", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 400}
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 900}
 
 
 # =============================================================== 4. verjaringstoets
+
+def _getal(waarde, naam: str, minimum=0, maximum=None):
+    """
+    Een bedrag of percentage dat de rekenkern in mag. Onzin (tekst, negatief, een percentage boven
+    de 100) wordt geweigerd met een duidelijke melding in plaats van doorgerekend: een rekenkern die
+    -312 euro premie netjes verwerkt geeft schijnzekerheid.
+    """
+    from decimal import Decimal, InvalidOperation
+    try:
+        d = Decimal(str(waarde))
+    except InvalidOperation:
+        raise ValueError(f"{naam}: '{waarde}' is geen getal")
+    if not d.is_finite():
+        raise ValueError(f"{naam}: '{waarde}' is geen geldig getal")
+    if minimum is not None and d < minimum:
+        raise ValueError(f"{naam} mag niet lager zijn dan {minimum} (ingevuld: {waarde})")
+    if maximum is not None and d > maximum:
+        raise ValueError(f"{naam} mag niet hoger zijn dan {maximum} (ingevuld: {waarde})")
+    return waarde
+
 
 def _datum(waarde: str, veld: str) -> Optional[date]:
     """Leest een ISO-datum (JJJJ-MM-DD). Een onleesbare datum is een invoerfout, geen crash."""
@@ -280,13 +304,16 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
         "stuiting. Reken zelf niets na.")
     return {"functie": "verjaringstoets", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 400}
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 650}
 
 
 # =============================================================== 5. provisietoets
 
 def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: float = 0,
                   directe_beloning: float = 0) -> Dict:
+    _getal(jaarpremie, "jaarpremie")
+    _getal(provisiepercentage, "provisiepercentage", 0, 100)
+    _getal(directe_beloning, "directe beloning")
     u = rk.provisie_toets(producttype, jaarpremie, provisiepercentage, directe_beloning)
     ctx = _context(f"provisieverbod beloning {producttype} dienstverleningsdocument "
                    f"transparantie complex product", ["wetgeving", "kifid"], per_bron=4,
@@ -301,25 +328,43 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
         "letterlijk in staan. Sluit af met wat de adviseur in het dossier moet vastleggen.")
     return {"functie": "provisietoets", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 450}
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 650}
 
 
 # =============================================================== 6. dossiercheck
 
+def _nl_getal(n: int) -> str:
+    return f"{n:,}".replace(",", ".")
+
+
+def _afkap(tekst: str, wat: str):
+    """De eerste MAX_INVOER tekens gaan naar het model; wat er daarna komt wordt niet gelezen. Zeg dat."""
+    tekst = tekst or ""
+    if len(tekst) <= MAX_INVOER:
+        return tekst, [], ""
+    opm = (f"{wat} is {_nl_getal(len(tekst))} tekens lang; alleen de eerste {_nl_getal(MAX_INVOER)} zijn gelezen "
+           "en getoetst. Wat daarna staat is niet meegewogen.")
+    return tekst[:MAX_INVOER], [opm], (f"\nLET OP: {wat.lower()} is afgekapt na {MAX_INVOER} tekens. Zeg in je "
+                                       "antwoord dat alleen het eerste deel is getoetst.\n")
+
+
 def dossiercheck(dossiertekst: str) -> Dict:
+    tekst, opmerkingen, afgekapt = _afkap(dossiertekst, "Het dossier")
+    # De zoekvraag bestaat niet alleen uit de vaste zorgplichttermen: het dossier zelf bepaalt welke
+    # productregels erbij horen (provisie, hypotheek, beleggingsverzekering).
     ctx = _context("passend advies klantprofiel zorgplicht informatieverstrekking "
-                   "kennis ervaring doelstelling risicobereidheid financiele positie",
+                   "kennis ervaring doelstelling risicobereidheid financiele positie " + tekst[:800],
                    ["wetgeving", "kifid"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS})
     gebruiker = (
-        f"ADVIESDOSSIER:\n---\n{dossiertekst[:4000]}\n---\n\n"
+        f"ADVIESDOSSIER:\n---\n{tekst}\n---\n{afgekapt}\n"
         "Toets dit dossier tegen de zorgplicht- en adviesvereisten uit de bronnen.\n"
         "1. Welke verplichte elementen zijn AANWEZIG? Citeer waar je ze ziet.\n"
         "2. Welke ONTBREKEN? Dit is het belangrijkste deel.\n"
         "3. Welk concreet risico loopt de adviseur bij een klacht?\n"
         "Wees streng. Een ontbrekend element niet benoemen is erger dan te streng zijn.")
     return {"functie": "dossiercheck", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 650}
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": opmerkingen,
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 900}
 
 
 # =============================================================== 7. polisvergelijker
@@ -364,7 +409,7 @@ def polisvergelijker(product_a: str, product_b: str) -> Dict:
         b["kant"] = "A" if i < len(ra) else "B"        # de UI toont beide varianten naast elkaar
     return {"functie": "polisvergelijker", "systeem": grounding.systeemprompt(blok),
             "gebruiker": gebruiker, "opgehaald": {"polisvoorwaarden": docs},
-            "bronnen": bronnen, "berekening": None, "max_tokens": 600}
+            "bronnen": bronnen, "berekening": None, "max_tokens": 800}
 
 
 # =============================================================== 8. klachtroute
@@ -384,17 +429,18 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
         "Staat een termijn niet in de bronnen, zeg dat dan in plaats van een termijn te noemen.")
     return {"functie": "klachtroute", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 550}
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 800}
 
 
 # =============================================================== 9. afwijzingsanalyse
 
 def afwijzingsanalyse(brieftekst: str) -> Dict:
-    ctx = _context(brieftekst[:600] + " afwijzing dekking uitsluiting mededelingsplicht "
+    tekst, opmerkingen, afgekapt = _afkap(brieftekst, "De brief")
+    ctx = _context(tekst[:600] + " afwijzing dekking uitsluiting mededelingsplicht "
                    "opzet eigen gebrek", ["polisvoorwaarden", "kifid", "wetgeving"], per_bron=4,
                    waar={"wetgeving": VERZEKERINGSRECHT})
     gebruiker = (
-        f"AFWIJZINGSBRIEF VAN DE VERZEKERAAR:\n---\n{brieftekst[:4000]}\n---\n\n"
+        f"AFWIJZINGSBRIEF VAN DE VERZEKERAAR:\n---\n{tekst}\n---\n{afgekapt}\n"
         "Analyseer op basis van UITSLUITEND de bronnen:\n"
         "1. Op welke grond wijst de verzekeraar af? Citeer die grond uit de brief.\n"
         "2. Wordt die grond gedragen door een clausule of wetsartikel uit de bronnen? "
@@ -403,8 +449,8 @@ def afwijzingsanalyse(brieftekst: str) -> Dict:
         "4. Welk bewijs moet de adviseur verzamelen?\n"
         "Overschat de zaak niet. Als de afwijzing terecht lijkt, zeg dat eerlijk.")
     return {"functie": "afwijzingsanalyse", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 700}
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": opmerkingen,
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 900}
 
 
 # =============================================================== 10. adviesnotitie
@@ -429,6 +475,10 @@ def adviesnotitie(klantsituatie: str, advies: str) -> Dict:
 
 def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: float,
                 drempel_pct: float = 40) -> Dict:
+    _getal(nieuwwaarde, "nieuwwaarde")
+    _getal(ouderdom_jaren, "ouderdom")
+    _getal(levensduur_jaren, "levensduur")
+    _getal(drempel_pct, "drempel", 0, 100)
     u = rk.nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren, drempel_pct)
     ctx = _context("nieuwwaarde dagwaarde afschrijving vervangingswaarde inboedel",
                    ["polisvoorwaarden", "wetgeving"], per_bron=3)
@@ -441,7 +491,7 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
         "polisvoorwaarden komt en per verzekeraar verschilt. Reken niets na.")
     return {"functie": "waardetoets", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 400}
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 600}
 
 
 # =============================================================== 12. begripsuitleg
@@ -458,7 +508,7 @@ def begripsuitleg(begrip: str) -> Dict:
         "bronnen staat en leg NIETS uit uit eigen kennis.")
     return {"functie": "begripsuitleg", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 500}
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 700}
 
 
 FUNCTIES = {

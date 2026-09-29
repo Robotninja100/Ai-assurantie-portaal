@@ -12,6 +12,7 @@ bij het opstarten gevalideerd tegen het corpus (zie citatie.py). Staat het artik
 in het corpus, dan mag de app de bewering NIET als onderbouwd tonen.
 """
 
+import re
 from dataclasses import dataclass, field, asdict
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import date
@@ -90,10 +91,19 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
         u.volgende_stap = "Stel eerst de herbouw-/vervangingswaarde vast, desnoods via een taxatie."
         return u
 
+    # De schade kan niet hoger zijn dan de waarde van het verzekerde belang, en de uitkering nooit hoger
+    # dan de verzekerde som (art. 7:955 lid 1, behoudens art. 7:959). Een schade boven de waarde is bij
+    # totaal verlies de waarde zelf; de invoer is dan tegenstrijdig en dat zeggen we erbij.
+    sch_eff = min(sch, ww)
+    if sch > ww:
+        u.waarschuwingen.append(
+            f"De schade ({_bedrag(sch)}) is hoger dan de werkelijke waarde ({_bedrag(ww)}). De berekening gaat "
+            "uit van de waarde als hoogste schade (totaal verlies). Controleer de invoer.")
+
     if vs >= ww:
         u.stappen.append(Stap("Geen onderverzekering: verzekerde som dekt de waarde",
-                              f"{_bedrag(vs)} >= {_bedrag(ww)}"))
-        basis = min(sch, vs)
+                              f"{_bedrag(vs)} >= {_bedrag(ww)}", None, ""))
+        basis = min(sch_eff, vs)
         u.grondslag = ["BW:7:955:1"]
         u.details = {"onderverzekerd": False, "verzekerd_pct": "100.00", "onderverzekering_pct": "0.00"}
         if sch > vs:
@@ -104,10 +114,13 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
         breuk = vs / ww
         u.stappen.append(Stap("Evenredigheidsbreuk bepalen",
                               f"{_bedrag(vs)} / {_bedrag(ww)}", breuk * 100, "%"))
-        basis = sch * breuk
+        if sch > ww:
+            u.stappen.append(Stap("Schade begrensd op de werkelijke waarde (totaal verlies, art. 7:958 lid 2)",
+                                  f"min({_bedrag(sch)}; {_bedrag(ww)})", sch_eff))
+        basis = min(sch_eff * breuk, vs)
         u.stappen.append(Stap("Schade naar evenredigheid",
-                              f"{_bedrag(sch)} x ({_bedrag(vs)} / {_bedrag(ww)})", basis))
-        u.grondslag = ["BW:7:958:5"]
+                              f"{_bedrag(sch_eff)} x ({_bedrag(vs)} / {_bedrag(ww)})", basis))
+        u.grondslag = ["BW:7:958:5", "BW:7:955:1"] if sch > ww else ["BW:7:958:5"]
         u.details = {"onderverzekerd": True, "verzekerd_pct": str(_eur(breuk * 100)),
                      "onderverzekering_pct": str(_eur((1 - breuk) * 100))}
         u.waarschuwingen.append(
@@ -217,6 +230,8 @@ def verjaring_schadeclaim(datum_bekend: date,
     voorzichtig met de hoofdtermijn en toont de gunstiger uitkomst alleen als voorwaardelijk.
     """
     peil = peildatum or date.today()
+    if datum_bekend > peil:
+        raise ValueError(f"De bekendheid met de opeisbaarheid ({_nl(datum_bekend)}) ligt na de peildatum ({_nl(peil)}).")
     u = Uitkomst(onderwerp="Verjaring rechtsvordering op de verzekeraar", bedrag=None)
     u.grondslag = ["BW:7:942:1"]
     gebeurtenissen = [{"datum": datum_bekend.isoformat(), "soort": "bekendheid",
@@ -235,6 +250,14 @@ def verjaring_schadeclaim(datum_bekend: date,
         f"{_nl(start0)} + 3 jaar, het einde van de dag ervoor = {_nl(eind0)}", None, ""))
     gebeurtenissen.append({"datum": eind0.isoformat(), "soort": "einde_hoofdtermijn",
                            "label": "Einde hoofdtermijn"})
+
+    # Wat na de peildatum gebeurt (of gepland staat) heeft op de peildatum nog niets gestuit. Zo blijft de
+    # uitkomst een momentopname, en een voorgenomen brief geeft niet ten onrechte rust.
+    latere_aanspraak = latere_reactie = None
+    if datum_stuiting and datum_stuiting > peil:
+        latere_aanspraak, datum_stuiting = datum_stuiting, None
+    if datum_reactie and datum_reactie > peil:
+        latere_reactie, datum_reactie = datum_reactie, None
 
     stuit_geldig = False
     if datum_stuiting:
@@ -357,6 +380,15 @@ def verjaring_schadeclaim(datum_bekend: date,
                 "meer afdwingbaar. Onderzoek subsidiair of de adviseur zelf aansprakelijk is voor "
                 "het laten verlopen van de termijn.")
 
+    if latere_aanspraak:
+        gebeurtenissen.append({"datum": latere_aanspraak.isoformat(), "soort": "stuiting",
+                               "label": f"{aanspraak_woord.capitalize()} (na de peildatum)"})
+        deadline = f" Verstuur haar vóór {_nl(eind)}, met verzendbewijs." if (eind and status == "LOOPT") else ""
+        u.waarschuwingen.insert(0, f"De {aanspraak_woord} van {_nl(latere_aanspraak)} ligt na de peildatum "
+                                   f"({_nl(peil)}) en heeft op die dag nog niets gestuit.{deadline}")
+    if latere_reactie:
+        u.waarschuwingen.insert(0, f"De {reactie_woord} van {_nl(latere_reactie)} ligt na de peildatum "
+                                   f"({_nl(peil)}) en is niet meegeteld.")
     if not aansprakelijkheid:
         u.waarschuwingen.append(
             "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere "
@@ -392,8 +424,9 @@ def verjaring_schadeclaim(datum_bekend: date,
 def nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren,
                              dagwaarde_drempel_pct=40) -> Uitkomst:
     """
-    Veel inboedel-/opstalpolissen keren nieuwwaarde uit, TENZIJ de dagwaarde onder een
-    drempel (vaak 40% van de nieuwwaarde) is gezakt; dan geldt dagwaarde.
+    Veel inboedel-/opstalpolissen keren nieuwwaarde uit, maar alleen als de dagwaarde MEER DAN een
+    drempel (vaak 40% van de nieuwwaarde) bedraagt (Klaverblad art. 2.17.3 sub c); op of onder die
+    drempel geldt dagwaarde.
     De drempel is polisafhankelijk en wordt daarom als parameter meegegeven,
     niet hard aangenomen.
     """
@@ -417,10 +450,14 @@ def nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren,
     u.details = {
         "nieuwwaarde": str(_eur(nw)), "dagwaarde": str(_eur(dagwaarde)), "drempel": str(_eur(drempel)),
         "dagwaarde_pct": str(_eur(factor * 100)), "drempel_pct": str(_eur(Decimal(str(dagwaarde_drempel_pct)))),
-        "toegepast": "dagwaarde" if dagwaarde < drempel else "nieuwwaarde"}
-    if dagwaarde < drempel:
+        "toegepast": "dagwaarde" if dagwaarde <= drempel else "nieuwwaarde"}
+    if dagwaarde == drempel:
+        u.waarschuwingen.append(
+            "De dagwaarde ligt precies op de drempel. Klaverblad (inboedel, art. 2.17.3 sub c) vraagt 'meer dan "
+            "40%' voor nieuwwaarde, dus dan geldt dagwaarde; een andere verzekeraar kan 'ten minste' hanteren.")
+    if dagwaarde <= drempel:
         u.bedrag = dagwaarde
-        u.toelichting = "Dagwaarde ligt onder de polisdrempel; er wordt op dagwaarde afgewikkeld."
+        u.toelichting = "Dagwaarde ligt op of onder de polisdrempel; er wordt op dagwaarde afgewikkeld."
         u.volgende_stap = ("Controleer de exacte drempelclausule in de polisvoorwaarden; "
                            "die verschilt per verzekeraar en per productversie.")
     else:
@@ -450,6 +487,7 @@ VERBOD_86C = (
 # Spreektaal -> de term uit het artikel.
 _ALIAS_VERBOD = {
     "hypotheek": "hypothecair krediet",
+    "hypotheken": "hypothecair krediet",         # het meervoud laat de dubbele e vallen
     "hypothecaire lening": "hypothecair krediet",
     "orv": "overlijdensrisicoverzekering",
     "overlijdensrisico": "overlijdensrisicoverzekering",
@@ -485,8 +523,26 @@ SCHADE = (
     "autoverzekering", "opstalverzekering", "inboedelverzekering", "woonverzekering",
     "aansprakelijkheidsverzekering", "rechtsbijstandverzekering", "reisverzekering",
     "brandverzekering", "fietsverzekering", "caravanverzekering", "glasverzekering",
-    "dierenverzekering", "bromfietsverzekering", "motorverzekering",
+    "dierenverzekering", "bromfietsverzekering", "motorverzekering", "schadeverzekering",
 )
+
+
+def _treffers(pt: str):
+    """
+    Alle productnamen uit de drie lijsten die als heel woord in de tekst staan, als
+    (regime, term, begin, eind). Een meervoud of verbogen vorm telt mee. Een treffer die binnen een
+    langere treffer valt vervalt: 'individuele arbeidsongeschiktheidsverzekering' is de VERBODEN term,
+    niet ook nog de onbepaalde 'arbeidsongeschiktheidsverzekering' die er als deel in zit.
+    """
+    kandidaten = []
+    lijsten = ([("VERBODEN", t, t) for t in VERBOD_86C] + [("VERBODEN", a, t) for a, t in _ALIAS_VERBOD.items()]
+               + [("ONBEPAALD", t, t) for t in _ONBEPAALD] + [("SCHADE", t, t) for t in SCHADE])
+    for regime, zoek, term in lijsten:
+        for m in re.finditer(r"(?<!\w)" + re.escape(zoek) + r"(?:en|s)?(?!\w)", pt):
+            kandidaten.append((regime, term, m.start(), m.end()))
+    return [k for k in kandidaten
+            if not any(o is not k and o[2] <= k[2] and k[3] <= o[3] and (o[3] - o[2]) > (k[3] - k[2])
+                       for o in kandidaten)]
 
 
 def classificeer_product(producttype: str):
@@ -494,17 +550,37 @@ def classificeer_product(producttype: str):
     Geeft (status, wettelijke_term, uitleg):
       VERBODEN      - het product staat in art. 86c lid 1 BGfo
       SCHADE        - een schadeverzekering die art. 86c niet noemt (art. 86d)
-      ONBEPAALD     - kwalificatie volgt niet uit het corpus; de toets weigert een uitspraak
+      ONBEPAALD     - kwalificatie volgt niet uit het corpus, of er staan producten uit verschillende
+                      regimes door elkaar; de toets weigert dan een uitspraak
     """
     pt = " ".join((producttype or "").lower().split())
-    if pt in VERBOD_86C:
-        return "VERBODEN", pt, "Genoemd in art. 86c lid 1 BGfo."
-    if pt in _ALIAS_VERBOD:
-        term = _ALIAS_VERBOD[pt]
-        return "VERBODEN", term, f"'{producttype}' valt onder '{term}', genoemd in art. 86c lid 1 BGfo."
-    if pt in _ONBEPAALD:
-        return "ONBEPAALD", None, _ONBEPAALD[pt]
-    if pt in SCHADE or (pt.endswith("verzekering") and any(s in pt for s in SCHADE)):
+    treffers = _treffers(pt)
+    # 'AOV, individueel' en 'AOV (individueel)': het woord 'individueel' bij een AOV maakt er de
+    # individuele arbeidsongeschiktheidsverzekering van die art. 86c lid 1 letterlijk noemt. Staat er
+    # ook 'collectief' (bijvoorbeeld 'individueel of collectief'), dan is het juist niet vast te stellen.
+    aov_termen = ("aov", "arbeidsongeschiktheidsverzekering", "individuele arbeidsongeschiktheidsverzekering")
+    aov = [t for t in treffers if t[1] in aov_termen]
+    if aov:
+        individueel = re.search(r"(?<!\w)individu(?:eel|ele)(?!\w)", pt)
+        collectief = re.search(r"(?<!\w)collectie(?:f|ve)(?!\w)", pt)
+        if collectief:
+            treffers = [t for t in treffers if t not in aov] + [("ONBEPAALD", "aov", 0, 0)]
+        elif individueel:
+            treffers = [t for t in treffers if t not in aov] + [("VERBODEN", "individuele arbeidsongeschiktheidsverzekering", 0, 0)]
+    regimes = {t[0] for t in treffers}
+    if len(regimes) > 1:
+        namen = ", ".join(sorted({t[1] for t in treffers}))
+        return "ONBEPAALD", None, (
+            f"In de invoer staan producten uit verschillende regimes door elkaar ({namen}). Voor een "
+            "hypotheek e.d. geldt het verbod van art. 86c lid 1, voor een schadeverzekering art. 86d. "
+            "Toets elk product apart.")
+    if regimes == {"VERBODEN"}:
+        term = treffers[0][1]
+        return "VERBODEN", term, (f"Genoemd in art. 86c lid 1 BGfo." if term == pt
+                                  else f"'{producttype}' valt onder '{term}', genoemd in art. 86c lid 1 BGfo.")
+    if regimes == {"ONBEPAALD"}:
+        return "ONBEPAALD", None, _ONBEPAALD[treffers[0][1]]
+    if regimes == {"SCHADE"}:
         return "SCHADE", None, "Niet genoemd in art. 86c lid 1 BGfo; voor schadeverzekeringen geldt art. 86d."
     return "ONBEPAALD", None, (
         f"Het producttype '{producttype}' is niet herkend. Bepaal eerst of het onder art. 86c lid 1 BGfo "
@@ -556,8 +632,14 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
         u.grondslag = ["BGfo:86d:1", "BGfo:86i:3"]
         u.stappen.append(Stap("Toets: art. 86c lid 1 noemt dit product niet; art. 86d regelt de provisie",
                               f"'{producttype}' is een schadeverzekering", None, ""))
-        u.stappen.append(Stap("Provisie over jaarpremie", f"{_bedrag(jp)} x {pct}%", prov))
-        u.bedrag = prov
+        if jp > 0 and pct > 0:
+            u.stappen.append(Stap("Provisie over jaarpremie", f"{_bedrag(jp)} x {pct}%", prov))
+            u.bedrag = prov
+        else:
+            # Een lege premie of een leeg percentage is geen nul: dat zou schijnzekerheid geven.
+            u.stappen.append(Stap("Geen jaarpremie of provisiepercentage ingevuld: geen bedrag berekend",
+                                  "vul beide in voor een bedrag", None, ""))
+            u.bedrag = None
         u.toelichting = (
             f"Voor '{producttype}' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat "
             "afsluit- en doorlopende provisie toe, mits de consument kosteloos en op begrijpelijke "

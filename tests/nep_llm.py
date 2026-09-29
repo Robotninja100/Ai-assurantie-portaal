@@ -33,10 +33,12 @@ def antwoord_voor(systeem: str) -> str:
 
 
 class NepLLM:
-    def __init__(self, poort: int = 0, vertraging: float = 0.0):
+    def __init__(self, poort: int = 0, vertraging: float = 0.0, einde: str = "stop", knip: int = 0):
         nep = self
         self.verzoeken = []
         self.vertraging = vertraging
+        self.einde = einde          # 'length' bootst een model na dat tegen max_tokens aanliep
+        self.knip = knip            # bij 'length': na zoveel tekens stoppen
 
         class Handler(http.server.BaseHTTPRequestHandler):
             protocol_version = "HTTP/1.1"
@@ -53,6 +55,8 @@ class NepLLM:
                 body = json.loads(self.rfile.read(int(self.headers["Content-Length"])))
                 nep.verzoeken.append(body)
                 tekst = antwoord_voor(body["messages"][0]["content"])
+                if nep.einde == "length" and nep.knip:
+                    tekst = tekst[:nep.knip]
                 self.send_response(200)
                 self.send_header("Content-Type", "text/event-stream")
                 self.send_header("Transfer-Encoding", "chunked")
@@ -61,6 +65,7 @@ class NepLLM:
                 time.sleep(nep.vertraging)
                 for i in range(0, len(tekst), 16):
                     self.stuur("data: " + json.dumps({"choices": [{"delta": {"content": tekst[i:i + 16]}}]}) + "\n\n")
+                self.stuur("data: " + json.dumps({"choices": [{"delta": {}, "finish_reason": nep.einde}]}) + "\n\n")
                 self.stuur("data: [DONE]\n\n")
                 self.wfile.write(b"0\r\n\r\n")
 

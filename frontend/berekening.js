@@ -57,7 +57,19 @@ function afsluiting(b, opKlik) {
 
 // ---------------------------------------------------------------- schadeberekening
 
+/** De rekenkern kon niet rekenen (een sleutelfeit ontbreekt): geen heldgetal met een streepje maar de reden. */
+function nietTeBerekenen(b, opKlik) {
+  return h("div", null,
+    h("div", { class: "oordeel let" },
+      h("div", { class: "oordeel-icoon" }, icoon("waarschuwing", 22)),
+      h("div", null, h("h4", null, "Niet te berekenen"),
+        h("p", null, (b.waarschuwingen && b.waarschuwingen[0]) || "Er ontbreekt een gegeven om de berekening uit te voeren."))),
+    b.waarschuwingen && b.waarschuwingen.length > 1 ? meldingen(b.waarschuwingen.slice(1)) : null,
+    vervolgstap(b.volgende_stap));
+}
+
 function schade(b, opKlik) {
+  if (b.bedrag == null) return nietTeBerekenen(b, opKlik);
   const d = b.details || {};
   const verzekerd = Number(d.verzekerd_pct ?? 100), onder = Number(d.onderverzekering_pct ?? 0);
   return h("div", null,
@@ -76,6 +88,7 @@ function schade(b, opKlik) {
 // ---------------------------------------------------------------- waardetoets
 
 function waardetoets(b, opKlik) {
+  if (b.bedrag == null) return nietTeBerekenen(b, opKlik);
   const d = b.details || {};
   const dag = Number(d.dagwaarde_pct ?? 0), drempel = Number(d.drempel_pct ?? 0);
   const dagwaarde = d.toegepast === "dagwaarde";
