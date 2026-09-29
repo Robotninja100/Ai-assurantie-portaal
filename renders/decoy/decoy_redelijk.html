@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beheerportaal - Polissen</title>
+<!--
+  DECOY "redelijk": een standaard admin-template met zijbalk en lijstweergave. Bewust niet goed: het
+  ziet er op het eerste gezicht gangbaar uit, maar er is geen typografische schaal, het ritme is
+  onregelmatig, de bediening is te luid en de maten kloppen niet helemaal. Alles is leesbaar en
+  functioneel. Zie scripts/maak_decoy.py voor de ingebouwde zwaktes.
+-->
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; color: #2b3138; background: #f3f4f6; }
+  a { color: #2f6fdb; text-decoration: none; }
+
+  .shell { display: flex; min-height: 100vh; }
+  .zij { width: 232px; flex: none; background: #1f2733; color: #c9d1dc; padding: 0 0 24px 0; }
+  .zij .merk { padding: 18px 20px 16px 18px; font-size: 17px; font-weight: 700; color: #fff; border-bottom: 1px solid #2e3947; }
+  .zij .merk small { display: block; font-size: 10px; font-weight: 400; color: #8b97a7; margin-top: 3px; letter-spacing: .4px; }
+  .zij h4 { margin: 18px 20px 6px 18px; font-size: 10px; font-weight: 600; letter-spacing: 1.3px; text-transform: uppercase; color: #6f7c8d; }
+  .zij a { display: block; padding: 9px 20px 9px 18px; color: #c9d1dc; font-size: 13px; }
+  .zij a i { display: inline-block; width: 18px; font-style: normal; color: #7e8a9a; font-size: 12px; }
+  .zij a:nth-of-type(3n) i { font-size: 15px; }
+  .zij a.actief { background: #2c6bed; color: #fff; }
+  .zij a.actief i { color: #fff; }
+  .zij .telling { float: right; background: #38465a; color: #d8dfe8; border-radius: 9px; padding: 0 7px 0 7px; font-size: 11px; line-height: 17px; }
+
+  .hoofd { flex: 1; min-width: 0; }
+  .balk { height: 54px; background: #fff; border-bottom: 1px solid #dde1e6; display: flex; align-items: center; padding: 0 22px 0 20px; }
+  .balk .zoek { flex: 1; max-width: 440px; }
+  .balk .zoek input { width: 100%; height: 32px; border: 1px solid #ccd2da; border-radius: 4px; padding: 0 10px 0 10px; font-size: 13px; background: #f7f8fa; }
+  .balk .rechts { margin-left: auto; font-size: 13px; color: #48505a; }
+  .balk .rechts span { margin-left: 18px; }
+  .balk .bel { background: #e5484d; color: #fff; border-radius: 8px; font-size: 10px; padding: 1px 5px 1px 5px; margin-left: 3px; }
+
+  .inhoud { padding: 22px 24px 30px 22px; }
+  .kop { display: flex; align-items: flex-start; margin-bottom: 14px; }
+  .kop h1 { font-size: 21px; margin: 0 0 3px 0; font-weight: 600; color: #1b2027; }
+  .kop .sub { font-size: 12px; color: #7b8590; }
+  .kop .acties { margin-left: auto; }
+
+  .btn { display: inline-block; height: 32px; line-height: 30px; padding: 0 14px 0 14px; border: 1px solid #2c6bed; background: #2c6bed; color: #fff; border-radius: 4px; font-size: 13px; margin-left: 6px; }
+  .btn.omlijnd { background: #fff; color: #2c6bed; }
+  .btn.groen { background: #1f9d55; border-color: #1f9d55; }
+  .btn.klein { height: 26px; line-height: 24px; padding: 0 8px 0 8px; font-size: 12px; margin-left: 3px; }
+  .btn.grijs { background: #fff; color: #48505a; border-color: #ccd2da; }
+
+  .filters { background: #fff; border: 1px solid #dde1e6; border-radius: 6px; padding: 12px 14px 14px 14px; margin-bottom: 14px; }
+  .filters .veld { display: inline-block; vertical-align: bottom; margin: 0 10px 6px 0; }
+  .filters label { display: block; font-size: 11px; color: #7b8590; margin-bottom: 4px; }
+  .filters input, .filters select { border: 1px solid #ccd2da; border-radius: 3px; font-size: 13px; background: #fff; color: #2b3138; padding: 0 8px 0 8px; }
+  .filters .f1 input { width: 230px; height: 34px; }
+  .filters .f2 select { width: 150px; height: 30px; }
+  .filters .f3 select { width: 130px; height: 36px; }
+  .filters .f4 input { width: 118px; height: 32px; }
+  .filters .knoppen { display: inline-block; vertical-align: bottom; margin-bottom: 6px; }
+  .filters .wis { font-size: 12px; margin-left: 10px; }
+
+  .tabs { margin: 0 0 12px 0; border-bottom: 1px solid #dde1e6; }
+  .tabs a { display: inline-block; padding: 8px 14px 9px 14px; font-size: 13px; color: #5b6570; margin-right: 2px; }
+  .tabs a.actief { color: #2c6bed; border-bottom: 2px solid #2c6bed; font-weight: 600; }
+  .tabs a b { font-weight: 400; color: #7d8792; margin-left: 4px; }
+
+  .tabelkaart { background: #fff; border: 1px solid #dde1e6; border-radius: 8px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  td.bedrag, td.datum, td:nth-child(7) { white-space: nowrap; }
+  thead th { text-align: left; font-size: 10.5px; letter-spacing: .8px; text-transform: uppercase; color: #79828d; font-weight: 600; padding: 10px 12px 10px 12px; background: #f7f8fa; border-bottom: 1px solid #dde1e6; }
+  tbody td { padding: 11px 12px 12px 12px; border-bottom: 1px solid #edf0f3; font-size: 13px; }
+  tbody tr:nth-child(even) td { background: #fafbfc; }
+  td.nr { color: #2c6bed; font-weight: 600; }
+  td.bedrag { text-align: left; }
+  td.datum { text-align: center; }
+  td.acties { white-space: nowrap; }
+  td.sub { color: #858e99; font-size: 12px; }
+  .chk { width: 15px; height: 15px; }
+
+  .st { font-size: 11px; padding: 2px 8px 2px 8px; }
+  .st.actief { background: #e3f6ea; color: #1a7f45; border-radius: 10px; }
+  .st.behandeling { background: #fff1d6; color: #9a6400; border-radius: 3px; }
+  .st.offerte { border: 1px solid #2c6bed; color: #2c6bed; border-radius: 10px; }
+  .st.royement { background: #e5484d; color: #fff; border-radius: 0; }
+  .st.geschorst { color: #7b8590; padding-left: 0; }
+  .st.geschorst:before { content: "\25CF"; color: #98a1ab; margin-right: 5px; }
+
+  .voet { display: flex; align-items: center; padding: 12px 14px 12px 14px; font-size: 12px; color: #7b8590; border-top: 1px solid #edf0f3; }
+  .voet .pager { margin-left: auto; }
+  .voet .pager a { display: inline-block; min-width: 26px; height: 26px; line-height: 24px; text-align: center; border: 1px solid #ccd2da; border-radius: 3px; margin-left: 3px; color: #48505a; background: #fff; }
+  .voet .pager a.nu { background: #2c6bed; border-color: #2c6bed; color: #fff; }
+  .voet .pager a.breed { padding: 0 10px 0 10px; }
+
+  @media (max-width: 900px) {
+    .shell { display: block; }
+    .zij { width: auto; padding-bottom: 10px; }
+    .zij h4 { display: none; }
+    .zij a { display: inline-block; padding: 8px 12px 8px 12px; }
+    .zij a i { display: none; }
+    .zij .telling { display: none; }
+    .balk { height: auto; padding: 10px 12px 10px 12px; flex-wrap: wrap; }
+    .balk .zoek { max-width: none; flex-basis: 100%; }
+    .balk .rechts { margin: 8px 0 0 0; }
+    .balk .rechts span:first-child { margin-left: 0; }
+    .inhoud { padding: 14px 12px 22px 12px; }
+    .kop { display: block; }
+    .kop .acties { margin: 10px 0 0 0; }
+    .kop .acties .btn { margin: 0 6px 6px 0; }
+    .filters .veld, .filters .knoppen { display: block; margin-right: 0; }
+    .filters .f1 input, .filters .f2 select, .filters .f3 select, .filters .f4 input { width: 100%; }
+    .tabs a { padding: 8px 9px 9px 9px; }
+    table, thead, tbody, tr, th, td { display: block; }
+    thead { display: none; }
+    tbody tr { padding: 10px 12px 10px 12px; border-bottom: 1px solid #edf0f3; }
+    tbody td { border: 0; padding: 2px 0 2px 0; background: transparent !important; }
+    td.hidem { display: none; }
+    td.bedrag, td.datum { text-align: left; }
+    td.chkcel { display: none; }
+    .voet { display: block; }
+    .voet .pager { margin: 10px 0 0 0; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="zij">
+    <div class="merk">Beheerportaal<small>POLIS- EN RELATIEBEHEER</small></div>
+    <h4>Beheer</h4>
+    <a href="#"><i>&#9632;</i>Dashboard</a>
+    <a href="#" class="actief"><i>&#9670;</i>Polissen <span class="telling">1.284</span></a>
+    <a href="#"><i>&#9679;</i>Relaties <span class="telling">3.902</span></a>
+    <a href="#"><i>&#9650;</i>Schades <span class="telling">47</span></a>
+    <a href="#"><i>&#9733;</i>Offertes</a>
+    <h4>Financieel</h4>
+    <a href="#"><i>&#9632;</i>Facturatie</a>
+    <a href="#"><i>&#9670;</i>Incasso</a>
+    <a href="#"><i>&#9679;</i>Provisie</a>
+    <h4>Systeem</h4>
+    <a href="#"><i>&#9650;</i>Rapporten</a>
+    <a href="#"><i>&#9733;</i>Instellingen</a>
+    <a href="#"><i>&#9632;</i>Gebruikers</a>
+  </aside>
+
+  <div class="hoofd">
+    <div class="balk">
+      <div class="zoek"><input type="text" placeholder="Zoek op relatie, polisnummer of kenteken..."></div>
+      <div class="rechts"><span>Help</span><span>Meldingen <b class="bel">3</b></span><span>J. de Vries</span></div>
+    </div>
+
+    <div class="inhoud">
+      <div class="kop">
+        <div>
+          <h1>Polissen</h1>
+          <div class="sub">1.284 polissen in portefeuille &middot; laatst bijgewerkt vandaag 09:14</div>
+        </div>
+        <div class="acties">
+          <a href="#" class="btn omlijnd">Importeren</a>
+          <a href="#" class="btn omlijnd">Exporteren</a>
+          <a href="#" class="btn groen">Batch prolongatie</a>
+          <a href="#" class="btn">+ Nieuwe polis</a>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="veld f1"><label>Zoeken</label><input type="text" placeholder="Relatie of polisnummer"></div>
+        <div class="veld f2"><label>Product</label><select><option>Alle producten</option><option>Autoverzekering</option><option>Aansprakelijkheid</option></select></div>
+        <div class="veld f3"><label>Maatschappij</label><select><option>Alle</option><option>Noordster</option><option>Hollandia</option></select></div>
+        <div class="veld f4"><label>Ingang vanaf</label><input type="text" value="01-01-2026"></div>
+        <div class="knoppen"><a href="#" class="btn klein">Filteren</a><a href="#" class="wis">Filters wissen</a></div>
+      </div>
+
+      <div class="tabs">
+        <a href="#" class="actief">Alle <b>1.284</b></a><a href="#">Actief <b>1.101</b></a><a href="#">In behandeling <b>74</b></a><a href="#">Offerte <b>63</b></a><a href="#">Royement <b>41</b></a><a href="#">Geschorst <b>5</b></a>
+      </div>
+
+      <div class="tabelkaart">
+        <table>
+          <colgroup><col style="width:38px"><col style="width:112px"><col style="width:134px"><col style="width:196px"><col style="width:106px"><col style="width:100px"><col style="width:118px"><col style="width:102px"><col></colgroup>
+          <thead>
+            <tr><th></th><th>Polisnummer</th><th>Relatie</th><th>Product</th><th class="hidem">Maatschappij</th><th>Premie p/j</th><th>Status</th><th>Prolongatie</th><th></th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2024-01183</td><td>Bakkerij Van Loon B.V.</td><td>Bedrijfsaansprakelijkheid</td><td class="hidem sub">Noordster</td><td class="bedrag">&euro; 1.240,00</td><td><span class="st actief">Actief</span></td><td class="datum">01-03-2027</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Prolongeer</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2024-00947</td><td>M. Haverkamp</td><td>Autoverzekering WA+</td><td class="hidem sub">Hollandia</td><td class="bedrag">&euro; 684,50</td><td><span class="st behandeling">In behandeling</span></td><td class="datum">15-05-2027</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Prolongeer</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2023-02210</td><td>Installatiebedrijf Kroon</td><td>Rechtsbijstand zakelijk</td><td class="hidem sub">De Waterlinie</td><td class="bedrag">&euro; 415,00</td><td><span class="st actief">Actief</span></td><td class="datum">01-09-2026</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Prolongeer</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2025-00031</td><td>A. el Amrani</td><td>Overlijdensrisicoverzekering</td><td class="hidem sub">Zeeland Onderling</td><td class="bedrag">&euro; 228,80</td><td><span class="st offerte">Offerte</span></td><td class="datum">-</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Omzetten</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2022-01765</td><td>Praktijk De Linde</td><td>Inventaris / goederen</td><td class="hidem sub">Noordster</td><td class="bedrag">&euro; 2.019,00</td><td><span class="st royement">Royement</span></td><td class="datum">-</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2024-01902</td><td>Transport Wielinga</td><td>Wagenparkverzekering</td><td class="hidem sub">Vechtstreek</td><td class="bedrag">&euro; 7.845,00</td><td><span class="st actief">Actief</span></td><td class="datum">01-07-2027</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Prolongeer</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2021-00518</td><td>S. Jansen-de Boer</td><td>Opstalverzekering</td><td class="hidem sub">Hollandia</td><td class="bedrag">&euro; 312,40</td><td><span class="st actief">Actief</span></td><td class="datum">20-02-2027</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Prolongeer</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2026-00077</td><td>Maatschap Van der Meer</td><td>Landbouwmaterieel</td><td class="hidem sub">Zeeland Onderling</td><td class="bedrag">&euro; 3.120,00</td><td><span class="st offerte">Offerte</span></td><td class="datum">-</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Omzetten</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2023-01344</td><td>T. Yildiz</td><td>Inboedelverzekering</td><td class="hidem sub">De Waterlinie</td><td class="bedrag">&euro; 148,90</td><td><span class="st actief">Actief</span></td><td class="datum">01-11-2026</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Prolongeer</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2024-02051</td><td>Autoschade Peters</td><td>Bedrijfsschadeverzekering</td><td class="hidem sub">Vechtstreek</td><td class="bedrag">&euro; 1.890,00</td><td><span class="st geschorst">Geschorst</span></td><td class="datum">01-04-2027</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Heractiveer</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2025-00412</td><td>Fam. De Groot</td><td>Reisverzekering doorlopend</td><td class="hidem sub">Hollandia</td><td class="bedrag">&euro; 96,50</td><td><span class="st actief">Actief</span></td><td class="datum">01-06-2026</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Prolongeer</a></td></tr>
+            <tr><td class="chkcel"><input type="checkbox" class="chk"></td><td class="nr">P-2022-00890</td><td>Bouwbedrijf Hendriks</td><td>Constructieverzekering (CAR)</td><td class="hidem sub">Noordster</td><td class="bedrag">&euro; 5.230,00</td><td><span class="st actief">Actief</span></td><td class="datum">01-02-2027</td><td class="acties"><a href="#" class="btn klein grijs">Bekijk</a><a href="#" class="btn klein grijs">Wijzig</a><a href="#" class="btn klein">Prolongeer</a></td></tr>
+          </tbody>
+        </table>
+        <div class="voet">
+          <span>1 - 12 van 1.284 polissen</span>
+          <span class="pager"><a href="#" class="breed">Vorige</a><a href="#" class="nu">1</a><a href="#">2</a><a href="#">3</a><a href="#">...</a><a href="#">107</a><a href="#" class="breed">Volgende</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

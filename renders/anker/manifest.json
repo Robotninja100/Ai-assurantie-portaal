@@ -1,0 +1,470 @@
+{
+  "set": "anker",
+  "schema_versie": 2,
+  "doel": "Plafondanker (positieve controle): echte product-UI van uitzonderlijke kwaliteit die in elke ronde bovenaan hoort te eindigen.",
+  "dekking_categorie": "Internationaal en buiten het domein: een documentatie-interface, geen Nederlands assurantie-backoffice. Het anker is een positieve controle op de smaak van de beoordelaar en op de neutralisatie, geen vertegenwoordiger van de categorie waarin het product valt.",
+  "motivatie": "Waarom dit anker: de documentatie van Stripe wordt door ontwikkelaars, documentatie-vakmensen en ontwerpers consequent genoemd als de standaard in de sector (drie kolommen, rustige informatiehierarchie, strakke typografie, interactieve voorbeelden naast de tekst, hoge dichtheid zonder drukte). Het is echte, werkende product-UI en publiek zonder account. Dat maakt het een scherm dat in vrijwel elke pool bovenaan hoort; staat het in een ronde niet in de bovenste helft, dan meet de beoordelaar iets anders dan visuele kwaliteit (bijvoorbeeld witruimte of kleurloosheid) en zijn de scores voor onze eigen schermen niet te vertrouwen. Beperking: dit is een oordeel op grond van externe bronnen, geen meting; en het is een documentatie-interface, geen backoffice-app.",
+  "onderbouwing": [
+    {
+      "titel": "How Stripe creates the best documentation in the industry (Mintlify)",
+      "url": "https://www.mintlify.com/blog/stripe-docs"
+    },
+    {
+      "titel": "Stripe Developer Experience Teardown: What to Steal in 2026 (Moesif)",
+      "url": "https://www.moesif.com/blog/best-practices/api-product-management/the-stripe-developer-experience-and-docs-teardown/"
+    },
+    {
+      "titel": "Why Stripe's API Docs Are the Benchmark (Apidog)",
+      "url": "https://apidog.com/blog/stripe-docs/"
+    },
+    {
+      "titel": "Stripe developer documentation (InfoQ-presentatie)",
+      "url": "https://www.infoq.com/presentations/stripe-developer-documentation"
+    }
+  ],
+  "onderbouwing_noot": "Bronnen gevonden via een zoekopdracht op 2026-09-29; het zijn meningen van derden (deels commercieel: Mintlify en Apidog verkopen documentatietools), niet een onafhankelijke meting. Ze zijn hier alleen aangehaald om te laten zien dat 'breed aangehaald als referentie' geen eigen smaakoordeel van de opnemer is.",
+  "gegenereerd_op": "2026-09-29T21:54:32+00:00",
+  "generator": "scripts/capture_anker.py + scripts/capture_controle.py",
+  "ankers": [
+    {
+      "id": "stripe_docs_api_reference",
+      "bron_naam": "Stripe documentatie - API-referentie",
+      "url": "https://docs.stripe.com/api"
+    },
+    {
+      "id": "stripe_docs_payment_methods",
+      "bron_naam": "Stripe documentatie - ondersteunde betaalmethoden",
+      "url": "https://docs.stripe.com/payments/payment-methods/overview"
+    }
+  ],
+  "bestanden": [
+    {
+      "id": "stripe_docs_api_reference",
+      "bron_naam": "Stripe documentatie - API-referentie",
+      "url": "https://docs.stripe.com/api",
+      "bestand": "stripe_docs_api_reference_1440.png",
+      "viewport_naam": "desktop",
+      "viewport": "1440x900@2x",
+      "klasse": "anker",
+      "domein": "anker",
+      "taal": "en",
+      "soort_scherm": "docs",
+      "geladen_ok": true,
+      "afkeurredenen": [],
+      "controle": {
+        "schema": 2,
+        "controle_versie": "1",
+        "beeld": {
+          "formaat_px": [
+            2880,
+            1800
+          ],
+          "verwachte_breedte_px": 2880,
+          "breder_dan_viewport": false,
+          "pagina_hoogte_css_px": 900,
+          "dominante_kleur": "#ffffff",
+          "dominante_aandeel": 0.8411,
+          "inkt_aandeel": 0.1096,
+          "structuur_aandeel": 0.0498,
+          "effen_wit_aandeel": 0.8434,
+          "effen_blokken_aandeel": 0.4167,
+          "lege_rijen_aandeel": 0.2361,
+          "langste_lege_band_css_px": 24,
+          "langste_lege_band_aandeel": 0.0267,
+          "grote_lege_banden_aandeel": 0.0,
+          "lege_staart_css_px": 0,
+          "lege_staart_aandeel": 0.0,
+          "overlay": {
+            "gecentreerd_blok": false,
+            "dimming_boven_vouw": false,
+            "blok_bbox_rel": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "blok_gevuld": 0.898,
+            "blok_contrast": 0.0
+          }
+        },
+        "dom": {
+          "http_status": 200,
+          "eind_url": "https://docs.stripe.com/api",
+          "titel": "Stripe API Reference",
+          "h1": "API Reference",
+          "tekst_tekens": 24314,
+          "tekst_begin": "Find anything / Ask AI Introduction Authentication Errors Expanding Responses Idempotent requests Include-dependent response values (API v2) Metadata Pagination Request IDs Connected Accounts Versioning Enums Core Resources Accountsv2 Accou",
+          "taal_gemeten": "en",
+          "fout_patroon": null,
+          "captcha_element": false,
+          "overlays_na": [],
+          "scroll_vergrendeld": false,
+          "inner_afmeting": [
+            1440,
+            900
+          ]
+        },
+        "cookies": {
+          "actie": "geen_banner",
+          "knop": null,
+          "verborgen_via": null,
+          "blokkerend_voor": 0,
+          "blokkerend_na": 0,
+          "schoon_na_meting": true,
+          "stappen": [],
+          "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+        }
+      },
+      "wat_het_toont": "Stripe API-referentie (docs.stripe.com/api): documentatie-applicatie in drie kolommen. Desktop: zoekbalk en navigatieboom links, introductietekst in het midden, rechts codepanelen (base URL, clientbibliotheken). Mobiel: dezelfde tekst als een kolom onder een compacte kopbalk. De opname is een viewport hoog omdat de pagina in een eigen scroll-container werkt.",
+      "geinspecteerd_op": "2026-09-29",
+      "vastgelegd_op": "2026-09-29T21:51:32+00:00",
+      "http_status": 200,
+      "eind_url": "https://docs.stripe.com/api",
+      "titel": "Stripe API Reference",
+      "dekking_categorie": "Internationaal en buiten het domein: een documentatie-interface, geen Nederlands assurantie-backoffice. Het anker is een positieve controle op de smaak van de beoordelaar en op de neutralisatie, geen vertegenwoordiger van de categorie waarin het product valt.",
+      "bestandsgrootte_bytes": 539437,
+      "pagina_hoogte_css_px": 900,
+      "toegang": "publiek, zonder account",
+      "onderbouwing": [
+        {
+          "titel": "How Stripe creates the best documentation in the industry (Mintlify)",
+          "url": "https://www.mintlify.com/blog/stripe-docs"
+        },
+        {
+          "titel": "Stripe Developer Experience Teardown: What to Steal in 2026 (Moesif)",
+          "url": "https://www.moesif.com/blog/best-practices/api-product-management/the-stripe-developer-experience-and-docs-teardown/"
+        },
+        {
+          "titel": "Why Stripe's API Docs Are the Benchmark (Apidog)",
+          "url": "https://apidog.com/blog/stripe-docs/"
+        },
+        {
+          "titel": "Stripe developer documentation (InfoQ-presentatie)",
+          "url": "https://www.infoq.com/presentations/stripe-developer-documentation"
+        }
+      ]
+    },
+    {
+      "id": "stripe_docs_api_reference",
+      "bron_naam": "Stripe documentatie - API-referentie",
+      "url": "https://docs.stripe.com/api",
+      "bestand": "stripe_docs_api_reference_390.png",
+      "viewport_naam": "mobile",
+      "viewport": "390x844@2x",
+      "klasse": "anker",
+      "domein": "anker",
+      "taal": "en",
+      "soort_scherm": "docs",
+      "geladen_ok": true,
+      "afkeurredenen": [],
+      "controle": {
+        "schema": 2,
+        "controle_versie": "1",
+        "beeld": {
+          "formaat_px": [
+            780,
+            1688
+          ],
+          "verwachte_breedte_px": 780,
+          "breder_dan_viewport": false,
+          "pagina_hoogte_css_px": 844,
+          "dominante_kleur": "#ffffff",
+          "dominante_aandeel": 0.8187,
+          "inkt_aandeel": 0.1028,
+          "structuur_aandeel": 0.0909,
+          "effen_wit_aandeel": 0.8228,
+          "effen_blokken_aandeel": 0.2276,
+          "lege_rijen_aandeel": 0.5403,
+          "langste_lege_band_css_px": 64,
+          "langste_lege_band_aandeel": 0.0758,
+          "grote_lege_banden_aandeel": 0.0,
+          "lege_staart_css_px": 0,
+          "lege_staart_aandeel": 0.0,
+          "overlay": {
+            "gecentreerd_blok": false,
+            "dimming_boven_vouw": false,
+            "blok_bbox_rel": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "blok_gevuld": 0.903,
+            "blok_contrast": 0.0
+          }
+        },
+        "dom": {
+          "http_status": 200,
+          "eind_url": "https://docs.stripe.com/api",
+          "titel": "Stripe API Reference",
+          "h1": "API Reference",
+          "tekst_tekens": 22961,
+          "tekst_begin": "INTRODUCTION Introduction Authentication Errors Expanding Responses Idempotent requests Include-dependent response values (API v2) Metadata Pagination Request IDs Connected Accounts Versioning Enums Accounts Account Links Account Tokens Bal",
+          "taal_gemeten": "en",
+          "fout_patroon": null,
+          "captcha_element": false,
+          "overlays_na": [],
+          "scroll_vergrendeld": true,
+          "inner_afmeting": [
+            390,
+            844
+          ]
+        },
+        "cookies": {
+          "actie": "geen_banner",
+          "knop": null,
+          "verborgen_via": null,
+          "blokkerend_voor": 0,
+          "blokkerend_na": 0,
+          "schoon_na_meting": true,
+          "stappen": [],
+          "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+        }
+      },
+      "wat_het_toont": "Stripe API-referentie (docs.stripe.com/api): documentatie-applicatie in drie kolommen. Desktop: zoekbalk en navigatieboom links, introductietekst in het midden, rechts codepanelen (base URL, clientbibliotheken). Mobiel: dezelfde tekst als een kolom onder een compacte kopbalk. De opname is een viewport hoog omdat de pagina in een eigen scroll-container werkt.",
+      "geinspecteerd_op": "2026-09-29",
+      "vastgelegd_op": "2026-09-29T21:52:06+00:00",
+      "http_status": 200,
+      "eind_url": "https://docs.stripe.com/api",
+      "titel": "Stripe API Reference",
+      "dekking_categorie": "Internationaal en buiten het domein: een documentatie-interface, geen Nederlands assurantie-backoffice. Het anker is een positieve controle op de smaak van de beoordelaar en op de neutralisatie, geen vertegenwoordiger van de categorie waarin het product valt.",
+      "bestandsgrootte_bytes": 249230,
+      "pagina_hoogte_css_px": 844,
+      "toegang": "publiek, zonder account",
+      "onderbouwing": [
+        {
+          "titel": "How Stripe creates the best documentation in the industry (Mintlify)",
+          "url": "https://www.mintlify.com/blog/stripe-docs"
+        },
+        {
+          "titel": "Stripe Developer Experience Teardown: What to Steal in 2026 (Moesif)",
+          "url": "https://www.moesif.com/blog/best-practices/api-product-management/the-stripe-developer-experience-and-docs-teardown/"
+        },
+        {
+          "titel": "Why Stripe's API Docs Are the Benchmark (Apidog)",
+          "url": "https://apidog.com/blog/stripe-docs/"
+        },
+        {
+          "titel": "Stripe developer documentation (InfoQ-presentatie)",
+          "url": "https://www.infoq.com/presentations/stripe-developer-documentation"
+        }
+      ]
+    },
+    {
+      "id": "stripe_docs_payment_methods",
+      "bron_naam": "Stripe documentatie - ondersteunde betaalmethoden",
+      "url": "https://docs.stripe.com/payments/payment-methods/overview",
+      "bestand": "stripe_docs_payment_methods_1440.png",
+      "viewport_naam": "desktop",
+      "viewport": "1440x900@2x",
+      "klasse": "anker",
+      "domein": "anker",
+      "taal": "en",
+      "soort_scherm": "docs",
+      "geladen_ok": true,
+      "afkeurredenen": [],
+      "controle": {
+        "schema": 2,
+        "controle_versie": "1",
+        "beeld": {
+          "formaat_px": [
+            2880,
+            1800
+          ],
+          "verwachte_breedte_px": 2880,
+          "breder_dan_viewport": false,
+          "pagina_hoogte_css_px": 900,
+          "dominante_kleur": "#ffffff",
+          "dominante_aandeel": 0.8322,
+          "inkt_aandeel": 0.0531,
+          "structuur_aandeel": 0.0439,
+          "effen_wit_aandeel": 0.8321,
+          "effen_blokken_aandeel": 0.4421,
+          "lege_rijen_aandeel": 0.2783,
+          "langste_lege_band_css_px": 37,
+          "langste_lege_band_aandeel": 0.0411,
+          "grote_lege_banden_aandeel": 0.0,
+          "lege_staart_css_px": 18,
+          "lege_staart_aandeel": 0.0194,
+          "overlay": {
+            "gecentreerd_blok": false,
+            "dimming_boven_vouw": false,
+            "blok_bbox_rel": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "blok_gevuld": 0.956,
+            "blok_contrast": 0.0
+          }
+        },
+        "dom": {
+          "http_status": 200,
+          "eind_url": "https://docs.stripe.com/payments/payment-methods/overview",
+          "titel": "Supported payment methods | Stripe Documentation",
+          "h1": "Supported payment methods",
+          "tekst_tekens": 6663,
+          "tekst_begin": "Skip to content Search / Ask AI Create account Sign in Get started Payments Revenue Data Platforms and marketplaces Money management Developer resources APIs & SDKs Help Overview Accept a payment ONLINE PAYMENTS Overview Find your use case ",
+          "taal_gemeten": "en",
+          "fout_patroon": null,
+          "captcha_element": false,
+          "overlays_na": [],
+          "scroll_vergrendeld": false,
+          "inner_afmeting": [
+            1440,
+            900
+          ]
+        },
+        "cookies": {
+          "actie": "geen_banner",
+          "knop": null,
+          "verborgen_via": null,
+          "blokkerend_voor": 0,
+          "blokkerend_na": 0,
+          "schoon_na_meting": true,
+          "stappen": [],
+          "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+        }
+      },
+      "wat_het_toont": "Stripe-documentatie 'Supported payment methods': artikel met navigatieboom links, artikelkolom (titel, lead, bulletlijst, callout 'Pricing and fees') en rechts een inhoudsopgave 'On this page'. Geen tabel in beeld. Mobiel: artikel als een kolom (circa 7500 css-px lang).",
+      "geinspecteerd_op": "2026-09-29",
+      "vastgelegd_op": "2026-09-29T21:52:39+00:00",
+      "http_status": 200,
+      "eind_url": "https://docs.stripe.com/payments/payment-methods/overview",
+      "titel": "Supported payment methods | Stripe Documentation",
+      "dekking_categorie": "Internationaal en buiten het domein: een documentatie-interface, geen Nederlands assurantie-backoffice. Het anker is een positieve controle op de smaak van de beoordelaar en op de neutralisatie, geen vertegenwoordiger van de categorie waarin het product valt.",
+      "bestandsgrootte_bytes": 489582,
+      "pagina_hoogte_css_px": 900,
+      "toegang": "publiek, zonder account",
+      "onderbouwing": [
+        {
+          "titel": "How Stripe creates the best documentation in the industry (Mintlify)",
+          "url": "https://www.mintlify.com/blog/stripe-docs"
+        },
+        {
+          "titel": "Stripe Developer Experience Teardown: What to Steal in 2026 (Moesif)",
+          "url": "https://www.moesif.com/blog/best-practices/api-product-management/the-stripe-developer-experience-and-docs-teardown/"
+        },
+        {
+          "titel": "Why Stripe's API Docs Are the Benchmark (Apidog)",
+          "url": "https://apidog.com/blog/stripe-docs/"
+        },
+        {
+          "titel": "Stripe developer documentation (InfoQ-presentatie)",
+          "url": "https://www.infoq.com/presentations/stripe-developer-documentation"
+        }
+      ]
+    },
+    {
+      "id": "stripe_docs_payment_methods",
+      "bron_naam": "Stripe documentatie - ondersteunde betaalmethoden",
+      "url": "https://docs.stripe.com/payments/payment-methods/overview",
+      "bestand": "stripe_docs_payment_methods_390.png",
+      "viewport_naam": "mobile",
+      "viewport": "390x844@2x",
+      "klasse": "anker",
+      "domein": "anker",
+      "taal": "en",
+      "soort_scherm": "docs",
+      "geladen_ok": true,
+      "afkeurredenen": [],
+      "controle": {
+        "schema": 2,
+        "controle_versie": "1",
+        "beeld": {
+          "formaat_px": [
+            780,
+            15114
+          ],
+          "verwachte_breedte_px": 780,
+          "breder_dan_viewport": false,
+          "pagina_hoogte_css_px": 7557,
+          "dominante_kleur": "#ffffff",
+          "dominante_aandeel": 0.7917,
+          "inkt_aandeel": 0.0627,
+          "structuur_aandeel": 0.0503,
+          "effen_wit_aandeel": 0.7915,
+          "effen_blokken_aandeel": 0.2931,
+          "lege_rijen_aandeel": 0.6075,
+          "langste_lege_band_css_px": 446,
+          "langste_lege_band_aandeel": 0.0591,
+          "grote_lege_banden_aandeel": 0.0591,
+          "lege_staart_css_px": 26,
+          "lege_staart_aandeel": 0.0034,
+          "overlay": {
+            "gecentreerd_blok": false,
+            "dimming_boven_vouw": false,
+            "blok_bbox_rel": [
+              0.0,
+              0.0,
+              1.0,
+              1.0
+            ],
+            "blok_gevuld": 0.921,
+            "blok_contrast": 0.0,
+            "vouwstap": 25.8,
+            "vouw_scherpte": 0.0,
+            "helderste_boven_zonder_blok": 255.0,
+            "helderste_onder": 255.0
+          }
+        },
+        "dom": {
+          "http_status": 200,
+          "eind_url": "https://docs.stripe.com/payments/payment-methods/overview",
+          "titel": "Supported payment methods | Stripe Documentation",
+          "h1": "Supported payment methods",
+          "tekst_tekens": 5163,
+          "tekst_begin": "Skip to content Overview Create account or Sign in Home / Payments Supported payment methods Learn about the types of payment methods that your Stripe integration can support. Copy for LLM View as Markdown Install tools Stripe supports the ",
+          "taal_gemeten": "en",
+          "fout_patroon": null,
+          "captcha_element": false,
+          "overlays_na": [],
+          "scroll_vergrendeld": false,
+          "inner_afmeting": [
+            390,
+            844
+          ]
+        },
+        "cookies": {
+          "actie": "geen_banner",
+          "knop": null,
+          "verborgen_via": null,
+          "blokkerend_voor": 0,
+          "blokkerend_na": 0,
+          "schoon_na_meting": true,
+          "stappen": [],
+          "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+        }
+      },
+      "wat_het_toont": "Stripe-documentatie 'Supported payment methods': artikel met navigatieboom links, artikelkolom (titel, lead, bulletlijst, callout 'Pricing and fees') en rechts een inhoudsopgave 'On this page'. Geen tabel in beeld. Mobiel: artikel als een kolom (circa 7500 css-px lang).",
+      "geinspecteerd_op": "2026-09-29",
+      "vastgelegd_op": "2026-09-29T21:53:13+00:00",
+      "http_status": 200,
+      "eind_url": "https://docs.stripe.com/payments/payment-methods/overview",
+      "titel": "Supported payment methods | Stripe Documentation",
+      "dekking_categorie": "Internationaal en buiten het domein: een documentatie-interface, geen Nederlands assurantie-backoffice. Het anker is een positieve controle op de smaak van de beoordelaar en op de neutralisatie, geen vertegenwoordiger van de categorie waarin het product valt.",
+      "bestandsgrootte_bytes": 1354637,
+      "pagina_hoogte_css_px": 7557,
+      "toegang": "publiek, zonder account",
+      "onderbouwing": [
+        {
+          "titel": "How Stripe creates the best documentation in the industry (Mintlify)",
+          "url": "https://www.mintlify.com/blog/stripe-docs"
+        },
+        {
+          "titel": "Stripe Developer Experience Teardown: What to Steal in 2026 (Moesif)",
+          "url": "https://www.moesif.com/blog/best-practices/api-product-management/the-stripe-developer-experience-and-docs-teardown/"
+        },
+        {
+          "titel": "Why Stripe's API Docs Are the Benchmark (Apidog)",
+          "url": "https://apidog.com/blog/stripe-docs/"
+        },
+        {
+          "titel": "Stripe developer documentation (InfoQ-presentatie)",
+          "url": "https://www.infoq.com/presentations/stripe-developer-documentation"
+        }
+      ]
+    }
+  ]
+}
