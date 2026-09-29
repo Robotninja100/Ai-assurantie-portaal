@@ -76,7 +76,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.053
+  "duur_sec": 0.048
  },
  {
   "id": "dekkingscheck-02",
@@ -155,7 +155,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.03
+  "duur_sec": 0.044
  },
  {
   "id": "dekkingscheck-03",
@@ -234,7 +234,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.065
+  "duur_sec": 0.099
  },
  {
   "id": "dekkingscheck-04",
@@ -392,7 +392,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.082
+  "duur_sec": 0.073
  },
  {
   "id": "dekkingscheck-06",
@@ -450,7 +450,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.015
+  "duur_sec": 0.014
  },
  {
   "id": "dekkingscheck-07",
@@ -529,7 +529,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.064
+  "duur_sec": 0.074
  },
  {
   "id": "dekkingscheck-08",
@@ -573,7 +573,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.119
+  "duur_sec": 0.2
  },
  {
   "id": "dekkingscheck-09",
@@ -652,7 +652,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.37
+  "duur_sec": 0.623
  },
  {
   "id": "dekkingscheck-10",
@@ -731,6 +731,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.106
+  "duur_sec": 0.084
  }
 ]

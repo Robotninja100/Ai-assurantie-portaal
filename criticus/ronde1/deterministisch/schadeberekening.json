@@ -519,7 +519,7 @@
     "De uitkering is € 103.000,00. Van de totale schade van € 103.000,00 draagt de verzekerde zelf € 0,00."
    ]
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.0
  },
  {
   "id": "schadeberekening-08",
@@ -634,7 +634,7 @@
     "Er is geen schade ingevoerd, dus er valt niets te vergoeden."
    ]
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.0
  },
  {
   "id": "schadeberekening-10",

@@ -71,7 +71,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.033
+  "duur_sec": 0.019
  },
  {
   "id": "precedentzoeker-02",
@@ -144,7 +144,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.044
+  "duur_sec": 0.045
  },
  {
   "id": "precedentzoeker-03",
@@ -217,7 +217,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.028
+  "duur_sec": 0.019
  },
  {
   "id": "precedentzoeker-04",
@@ -292,7 +292,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.039
+  "duur_sec": 0.029
  },
  {
   "id": "precedentzoeker-05",
@@ -527,7 +527,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.423
+  "duur_sec": 0.51
  },
  {
   "id": "precedentzoeker-09",
@@ -601,7 +601,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.022
+  "duur_sec": 0.05
  },
  {
   "id": "precedentzoeker-10",
@@ -675,6 +675,6 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.077
+  "duur_sec": 0.13
  }
 ]

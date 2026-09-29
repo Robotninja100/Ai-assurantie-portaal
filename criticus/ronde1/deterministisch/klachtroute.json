@@ -142,7 +142,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.07
+  "duur_sec": 0.09
  },
  {
   "id": "klachtroute-02",
@@ -287,7 +287,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.039
+  "duur_sec": 0.045
  },
  {
   "id": "klachtroute-03",
@@ -373,7 +373,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.047
+  "duur_sec": 0.044
  },
  {
   "id": "klachtroute-04",
@@ -518,7 +518,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.043
+  "duur_sec": 0.045
  },
  {
   "id": "klachtroute-05",
@@ -801,7 +801,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.099
+  "duur_sec": 0.067
  },
  {
   "id": "klachtroute-07",
@@ -887,7 +887,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.161
+  "duur_sec": 0.063
  },
  {
   "id": "klachtroute-08",
@@ -980,7 +980,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.111
+  "duur_sec": 0.103
  },
  {
   "id": "klachtroute-09",
@@ -1125,7 +1125,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.215
+  "duur_sec": 0.283
  },
  {
   "id": "klachtroute-10",

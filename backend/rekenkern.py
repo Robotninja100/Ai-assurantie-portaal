@@ -573,7 +573,10 @@ def nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren,
     dagwaarde = nw * factor
     drempel = nw * Decimal(str(dagwaarde_drempel_pct)) / Decimal("100")
 
-    u.stappen.append(Stap("Restlevensduur", f"{_g(levensduur_jaren)} - {_g(ouderdom_jaren)} = {_g(rest)} jaar"))
+    ouder_dan_levensduur = Decimal(str(ouderdom_jaren)) > Decimal(str(levensduur_jaren))
+    u.stappen.append(Stap("Restlevensduur", (
+        f"max(0; {_g(levensduur_jaren)} - {_g(ouderdom_jaren)}) = {_g(rest)} jaar" if ouder_dan_levensduur
+        else f"{_g(levensduur_jaren)} - {_g(ouderdom_jaren)} = {_g(rest)} jaar")))
     u.stappen.append(Stap("Dagwaarde", f"{_bedrag(nw)} x ({_g(rest)}/{_g(levensduur_jaren)})", dagwaarde))
     u.stappen.append(Stap(f"Drempel ({_g(dagwaarde_drempel_pct)}% van nieuwwaarde)",
                           f"{_bedrag(nw)} x {_g(dagwaarde_drempel_pct)}%", drempel))
@@ -582,16 +585,39 @@ def nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren,
         "nieuwwaarde": str(_eur(nw)), "dagwaarde": str(_eur(dagwaarde)), "drempel": str(_eur(drempel)),
         "dagwaarde_pct": str(_eur(factor * 100)), "drempel_pct": str(_eur(Decimal(str(dagwaarde_drempel_pct)))),
         "toegepast": "dagwaarde" if dagwaarde <= drempel else "nieuwwaarde"}
+    if Decimal(str(dagwaarde_drempel_pct)) != 40:
+        u.waarschuwingen.append(
+            f"Je hebt een drempel van {_g(dagwaarde_drempel_pct)}% ingevoerd. De enige drempelclausule in het corpus "
+            "(Klaverblad, inboedel, art. 2.17.3 sub c) noemt 'meer dan 40%'. Controleer welk percentage de polis van "
+            "de klant hanteert.")
     if dagwaarde == drempel:
         u.waarschuwingen.append(
             "De dagwaarde ligt precies op de drempel. Klaverblad (inboedel, art. 2.17.3 sub c) vraagt 'meer dan "
-            "40%' voor nieuwwaarde, dus dan geldt dagwaarde; een andere verzekeraar kan 'ten minste' hanteren.")
+            "40%' voor nieuwwaarde, dus dan geldt dagwaarde. Formuleert de polis van de klant het anders (bijvoorbeeld "
+            "'ten minste'), dan valt de uitkomst anders uit: lees de clausule.")
+    # --- dezelfde berekening in gewone zinnen, voor wie de uitkomst aan een klant moet uitleggen
+    if ouder_dan_levensduur:
+        u.uitleg.append(
+            f"De ouderdom ({_g(ouderdom_jaren)} jaar) is hoger dan de levensduur ({_g(levensduur_jaren)} jaar); de "
+            "restlevensduur is dan 0 jaar en de dagwaarde nul.")
+    u.uitleg.append(
+        f"De dagwaarde is de nieuwwaarde ({_bedrag(nw)}) maal de restlevensduur ({_g(rest)} jaar) gedeeld door de "
+        f"levensduur ({_g(levensduur_jaren)} jaar): {_bedrag(dagwaarde)}, dat is {_procent(factor * 100)} van de nieuwwaarde.")
+    u.uitleg.append(
+        f"De drempel is {_g(dagwaarde_drempel_pct)}% van de nieuwwaarde: {_bedrag(drempel)}. Dat percentage is als invoer "
+        "opgegeven; het volgt uit de polisvoorwaarden, niet uit de wet.")
     if dagwaarde <= drempel:
+        u.uitleg.append(
+            f"De dagwaarde ({_bedrag(dagwaarde)}) ligt {'precies op' if dagwaarde == drempel else 'onder'} de drempel "
+            f"({_bedrag(drempel)}); er wordt dan op dagwaarde afgewikkeld: {_bedrag(dagwaarde)}.")
         u.bedrag = dagwaarde
         u.toelichting = "Dagwaarde ligt op of onder de polisdrempel; er wordt op dagwaarde afgewikkeld."
-        u.volgende_stap = ("Controleer de exacte drempelclausule in de polisvoorwaarden; "
-                           "die verschilt per verzekeraar en per productversie.")
+        u.volgende_stap = ("Controleer de exacte drempelclausule in de polisvoorwaarden van de verzekeraar van "
+                           "de klant.")
     else:
+        u.uitleg.append(
+            f"De dagwaarde ({_bedrag(dagwaarde)}) ligt boven de drempel ({_bedrag(drempel)}); er wordt dan op "
+            f"nieuwwaarde afgewikkeld: {_bedrag(nw)}.")
         u.bedrag = nw
         u.toelichting = "Dagwaarde ligt boven de polisdrempel; er wordt op nieuwwaarde afgewikkeld."
         u.volgende_stap = "Vraag een aankoopbewijs of vervangingsofferte op ter onderbouwing."

@@ -37,7 +37,7 @@ def _uitkomstregel(label: str, u) -> str:
         reden = " ".join(u.waarschuwingen) or u.toelichting or "de invoer volstaat niet"
         return (f"{label}: NIET TE BEREKENEN. Reden: {reden} Noem geen bedrag; leg uit wat er ontbreekt "
                 "en wat de volgende stap is.")
-    return f"{label}: EUR {d['bedrag']}"
+    return f"{label}: {rk._bedrag(d['bedrag'])}"
 
 
 HERSCHRIJF = (
@@ -80,13 +80,13 @@ def _zelf_te_dragen(u) -> str:
         return ""
     delen = []
     if Decimal(d.get("zelf_te_dragen_door_onderverzekering", "0")) > 0:
-        delen.append(f"door onderverzekering EUR {d['zelf_te_dragen_door_onderverzekering']}")
+        delen.append(f"door onderverzekering {rk._bedrag(d['zelf_te_dragen_door_onderverzekering'])}")
     if Decimal(d.get("zelf_te_dragen_boven_verzekerde_som", "0")) > 0:
-        delen.append(f"boven de verzekerde som EUR {d['zelf_te_dragen_boven_verzekerde_som']}")
+        delen.append(f"boven de verzekerde som {rk._bedrag(d['zelf_te_dragen_boven_verzekerde_som'])}")
     if Decimal(d.get("zelf_te_dragen_eigen_risico", "0")) > 0:
-        delen.append(f"eigen risico EUR {d['zelf_te_dragen_eigen_risico']}")
-    return (f"Zelf te dragen door de klant: EUR {d['zelf_te_dragen']} van een totale schade van EUR "
-            f"{d['totale_schade']}" + (f" ({'; '.join(delen)})" if delen else "") + ".\n")
+        delen.append(f"eigen risico {rk._bedrag(d['zelf_te_dragen_eigen_risico'])}")
+    return (f"Zelf te dragen door de klant: {rk._bedrag(d['zelf_te_dragen'])} van een totale schade van "
+            f"{rk._bedrag(d['totale_schade'])}" + (f" ({'; '.join(delen)})" if delen else "") + ".\n")
 
 
 def _uitkomst(d: Dict) -> str:
@@ -157,7 +157,10 @@ def _blok(bron: str, rows: List) -> str:
                        f"{_stuk(d.get('samenvatting') or d.get('kern_klacht'), LIMIET_KIFID)}\n"
                        f"Bron: {d.get('bron_url')}")
         else:
-            uit.append(f"[{d.get('product')} {d.get('clausule_id')} - {d.get('type')}] "
+            # Met de verzekeraar in de kop: zonder die kan het model niet zeggen van wie een clausule is (alleen de
+            # URL verraadt het), en een clausule van de ene verzekeraar wordt dan als 'de' regel gepresenteerd.
+            uit.append(f"[{d.get('verzekeraar_of_bron') or 'verzekeraar onbekend'} | {d.get('product')} "
+                       f"{d.get('clausule_id')} - {d.get('type')}] "
                        f"{d.get('kop') or ''}\n{_stuk(d.get('tekst'), LIMIET_POLIS)}\n"
                        f"Bron: {d.get('bron_url')}")
     return "\n\n".join(uit)
@@ -297,8 +300,10 @@ def _van_wie(kort, polis_docs) -> str:
     if kort:
         return f"{kort}. Alleen de voorwaarden van deze verzekeraar zijn aangeleverd."
     if aangeleverd:
-        return ("niet vastgesteld. De aangeleverde clausules zijn van " + ", ".join(aangeleverd) + ". Noem bij elke clausule van welke "
-                "verzekeraar en welk product ze is; presenteer er geen als voorwaarde van deze klant zolang zijn verzekeraar niet vaststaat.")
+        namen = ", ".join(aangeleverd)
+        return ("niet vastgesteld. De aangeleverde clausules zijn van " + namen + ("" if namen.endswith(".") else ".")
+                + " Noem bij elke clausule van welke verzekeraar en welk product ze is; presenteer er geen als voorwaarde "
+                "van deze klant zolang zijn verzekeraar niet vaststaat.")
     return "niet vastgesteld; er zijn geen polisclausules aangeleverd."
 
 
@@ -555,7 +560,7 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
     gebruiker = (
         f"PRODUCT: {_regel(producttype)}\n"
         f"Toets is AL UITGEVOERD: {u.toelichting}\n"
-        f"Bedrag: {('EUR ' + bedrag) if bedrag else 'niet vast te stellen'}\n"
+        f"Bedrag: {rk._bedrag(bedrag) if bedrag else 'niet vast te stellen'}\n"
         f"Signalen: {'; '.join(u.waarschuwingen) or 'geen'}\n"
         f"{_uitleg_en_vervolg(u)}\n"
         "Onderbouw dit met de wetsartikelen uit de bronnen. Noem ALLEEN artikelen die er "
@@ -680,13 +685,29 @@ def polisvergelijker(product_a: str, product_b: str) -> Dict:
     naam_a, naam_b = _kantnaam(ka), _kantnaam(kb)
     blok = (f"=== VARIANT A: {naam_a} ===\n{_blok('polisvoorwaarden', rijen(ra)) or '(geen clausules in het corpus)'}\n\n"
             f"=== VARIANT B: {naam_b} ===\n{_blok('polisvoorwaarden', rijen(rb)) or '(geen clausules in het corpus)'}")
-    gebruiker = (
-        f"Vergelijk variant A ({naam_a}) met variant B ({naam_b}) op basis van UITSLUITEND bovenstaande clausules.\n"
-        "1. Waar verschillen de UITSLUITINGEN? Noem clausulenummers aan beide kanten.\n"
-        "2. Welk concreet dekkingshiaat ontstaat er als een klant overstapt van A naar B?\n"
-        "3. Welke vergelijking kun je NIET maken omdat de clausule aan een kant ontbreekt? "
-        "Benoem dat expliciet in plaats van het gat te vullen.\n"
-        + ("".join(f"Let op: {o}\n" for o in opmerkingen)))
+    gelijk = bool(ra) and (ka["product"], ka["verzekeraar"]) == (kb["product"], kb["verzekeraar"])
+    if gelijk:
+        vragen = (
+            f"Variant A en variant B zijn hetzelfde: {naam_a}. Er valt niets te vergelijken. Zeg dat in één zin, "
+            "verzin geen verschillen en beschrijf hooguit kort wat deze clausules regelen. Sluit af met de "
+            "vervolgstap: kies voor variant B een ander product of een andere verzekeraar.\n")
+    elif not ra or not rb:
+        kant, leeg = ("B", "A") if ra else ("A", "B")
+        vragen = (
+            f"Alleen variant {kant} heeft clausules; variant {leeg} heeft er geen in het corpus. Vergelijken kan dus niet. "
+            f"Zeg dat, beschrijf uitsluitend wat de clausules van variant {kant} regelen (met clausulenummers) en "
+            f"zeg dat er over variant {leeg} niets te zeggen valt. Sluit af met de vervolgstap: kies voor variant "
+            f"{leeg} een product en verzekeraar die in het corpus staan.\n")
+    else:
+        vragen = (
+            f"Vergelijk variant A ({naam_a}) met variant B ({naam_b}) op basis van UITSLUITEND bovenstaande clausules.\n"
+            "1. Waar verschillen de UITSLUITINGEN? Noem clausulenummers aan beide kanten.\n"
+            "2. Welk concreet dekkingshiaat ontstaat er als een klant overstapt van A naar B?\n"
+            "3. Welke vergelijking kun je NIET maken omdat de clausule aan een kant ontbreekt? "
+            "Benoem dat expliciet in plaats van het gat te vullen.\n"
+            "Uitsluitingen staan ook in dekkingsclausules. Zeg erbij dat dit een vergelijking is van de clausules "
+            "hierboven en dat een sluitende vergelijking de volledige voorwaarden vraagt.\n")
+    gebruiker = vragen + "".join(f"Let op: {o}\n" for o in opmerkingen)
     bronnen = _bronlijst({"polisvoorwaarden": docs})
     for i, b in enumerate(bronnen):
         b["kant"] = "A" if i < len(ra) else "B"        # de UI toont beide varianten naast elkaar
@@ -717,7 +738,9 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
     termijnen = ""
     if u:
         termijnen = ("De termijnen zijn AL BEREKEND. Neem deze data letterlijk over en reken niets na:\n"
-                     + _stappen_tekst(u) + f"\n{u.toelichting}\n\n")
+                     + _stappen_tekst(u) + f"\n{u.toelichting}\n"
+                     + f"Waarschuwingen: {'; '.join(u.waarschuwingen) or 'geen'}\n"
+                     + f"Vervolgstap uit de code: {u.volgende_stap}\n\n")
     gebruiker = (
         f"SITUATIE:\n{situatie}\n"
         f"Datum klacht: {datum_klacht or 'niet opgegeven'}\n"
@@ -726,7 +749,8 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
         "1. Welke stap is nu aan de orde?\n"
         "2. Welke termijnen gelden en waar blijkt dat uit?\n"
         "3. Welke informatie moet mee bij indiening?\n"
-        "Staat een termijn niet in de bronnen, zeg dat dan in plaats van een termijn te noemen.")
+        "Staat iets hiervan niet in de bronnen (een termijn, wat er mee moet bij indiening, hoe de geschilleninstantie "
+        "werkt), zeg dan dat het niet in de geraadpleegde bronnen staat en noem het niet uit eigen kennis.")
     return {"functie": "klachtroute", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": bool(u), "opmerkingen": _meld(ctx),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict() if u else None, "max_tokens": 800}
@@ -793,8 +817,7 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
         f"\n{_uitleg_en_vervolg(u)}"
         f"Waarschuwingen: {'; '.join(u.waarschuwingen)}\n"
         f"VERZEKERAAR VAN DE KLANT: {_van_wie(None, ctx['opgehaald'].get('polisvoorwaarden', []))}\n\n"
-        f"{HERSCHRIJF} Benadruk dat de drempel uit de polisvoorwaarden komt en per verzekeraar verschilt. "
-        "Reken niets na.")
+        f"{HERSCHRIJF} Reken niets na.")
     return {"functie": "waardetoets", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": True,
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 600}
@@ -811,8 +834,9 @@ def begripsuitleg(begrip: str) -> Dict:
         "1. Wat zegt de wettekst of clausule letterlijk? Citeer.\n"
         "2. Wat betekent dat in de praktijk voor een adviseur?\n"
         "3. Waar gaat het in de praktijk mis?\n"
-        "Komt het begrip niet in de bronnen voor, zeg dan dat het niet in de geraadpleegde "
-        "bronnen staat en leg NIETS uit uit eigen kennis.")
+        "Beantwoord alleen de onderdelen waarvoor de bronnen iets bevatten. Bij een onderdeel waarvoor ze niets bevatten "
+        "(of komt het begrip helemaal niet in de bronnen voor) zeg je dat het niet in de geraadpleegde bronnen staat; "
+        "leg NIETS uit uit eigen kennis.")
     return {"functie": "begripsuitleg", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": _meld(ctx),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 700}

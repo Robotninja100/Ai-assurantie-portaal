@@ -81,7 +81,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.042
+  "duur_sec": 0.02
  },
  {
   "id": "provisietoets-02",
@@ -150,7 +150,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.05
+  "duur_sec": 0.027
  },
  {
   "id": "provisietoets-03",
@@ -226,7 +226,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.023
+  "duur_sec": 0.017
  },
  {
   "id": "provisietoets-04",
@@ -302,7 +302,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.036
+  "duur_sec": 0.03
  },
  {
   "id": "provisietoets-05",
@@ -378,7 +378,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.044
+  "duur_sec": 0.033
  },
  {
   "id": "provisietoets-06",
@@ -454,7 +454,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.109
+  "duur_sec": 0.068
  },
  {
   "id": "provisietoets-07",
@@ -531,7 +531,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.288
+  "duur_sec": 0.29
  },
  {
   "id": "provisietoets-08",
@@ -601,7 +601,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.04
+  "duur_sec": 0.024
  },
  {
   "id": "provisietoets-09",

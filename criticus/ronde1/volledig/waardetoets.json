@@ -1,0 +1,194 @@
+[
+ {
+  "id": "waardetoets-01",
+  "functie": "waardetoets",
+  "http_status": 200,
+  "tekst": "De waardebepaling is al uitgevoerd. Hier is de uitleg die je aan de klant moet uitleggen, op basis van de gegeven informatie:\n\nUitkomst: EUR 1200,00 - Dagwaarde ligt boven de polisdrempel; er wordt op nieuwwaarde afgewikkeld.\n- Restlevensduur: 8 - 3 = 5 jaar\n- Dagwaarde: € 1.200,00 x (5/8) = € 750,00\n- Drempel (40% van nieuwwaarde): € 1.200,00 x 40% = € 480,00\nVervolgstap uit de code: Vraag een aankoopbewijs of vervangingsofferte op ter onderbouwing.\nWaarschuwingen: De drempel en de gehanteerde levensduur volgen uit de polisvoorwaarden, niet uit de wet. Verifieer beide in het clausulecorpus voordat je dit aan de klant meldt.",
+  "gebeurtenissen": [],
+  "bronnen_volledig": [
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.3",
+    "titel": "Schadevergoeding - wanneer nieuwwaarde",
+    "type": "schaderegeling",
+    "product": "inboedelverzekering",
+    "clausule": "art. 2.17.3",
+    "verzekeraar": "Klaverblad Verzekeringen",
+    "document": "Inboedelverzekering, Polisvoorwaarden BI 24 (AVWBI/2409)",
+    "url": "https://www.klaverblad.nl/voorwaarden-inboedel.pdf",
+    "fragment": "3. We vergoeden de nieuwwaarde als voldaan is aan de volgende 3 voorwaarden:\na. De spullen waren nieuw toen u ze kocht.\nb. U kunt met een nota aantonen hoe oud de spullen waren en wat de koopprijs was. Of u kunt dit op een andere manier aannemelijk maken.\nc. De dagwaarde is meer dan 40% van de nieuwwaarde."
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.4",
+    "titel": "Uitsluiting molest",
+    "type": "uitsluiting",
+    "product": "arbeidsongeschiktheidsverzekering (AOV)",
+    "clausule": "art. 7.4",
+    "verzekeraar": "a.s.r. (ASR Schadeverzekering N.V.)",
+    "document": "Voorwaarden arbeidsongeschiktheidsverzekering model 231 (44141_2025)",
+    "url": "https://www.asr.nl/asr/api/asrnl/pod/getpdf?uri=/POD/r/Pdf/44141_2025.pdf",
+    "fragment": "Er is geen dekking als u arbeidsongeschikt bent geworden of een ongeval heeft gehad door molest. Onder molest verstaan we:\n- een gewapend conflict: landen zijn met elkaar in oorlog;\n- een burgeroorlog: inwoners van één land voeren oorlog met elkaar;\n- een opstand: inwoners van een land verzetten zich met geweld tegen de overheid van dat land;\n- binnenlandse onlusten: groepen mensen gebruiken geweld op verschillende plaatsen in een land;\n- oproer: een groep mensen verzet zich op één plaats met geweld tegen de overheid;\n- muiterij: een groep militairen verzet zich met geweld tegen hun commandanten. De juridische omschrijving van deze zes vormen van molest vindt u in bijlage 1. Doen we een beroep op deze uitsluiting? Dan gebruiken we de juridische omschrijving."
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.17",
+    "titel": "Accessoires (laptops en telefoons vallen er niet onder)",
+    "type": "dekking",
+    "product": "autoverzekering (WA/casco)",
+    "clausule": "art. 2.17",
+    "verzekeraar": "Klaverblad Verzekeringen",
+    "document": "Klaverblad Autoverzekering, Polisvoorwaarden AU24 (AVWAU/2404)",
+    "url": "https://www.klaverblad.nl/voorwaarden-auto.pdf",
+    "fragment": "1. Met accessoires bedoelen wij:\na. Alles wat niet vanuit de fabriek of importeur onderdeel van de auto is, maar wat later is ingebouwd of gemonteerd. Deze accessoires zitten dus niet in de oorspronkelijke cataloguswaarde* van de fabrikant of importeur.\nb. Losse onderdelen die enkel en alleen bij de auto horen, zoals automatten, een brandblusapparaat, gevarendriehoek, pechlamp, sleep- en startkabel, een losse laadkabel, veiligheidsvest en verbanddoos. Met accessoires bedoelen wij niet:\na. Losse spullen zoals mobiele telefoons, smartphones en losse geluids-, zend-, navigatieapparatuur en tablets of laptops.\nb. Losse onderdelen van de auto die apart worden opgeslagen, zoals winter- of zomerbanden.\nc. Een gehuurde accu van een elektrische auto.\n2. De accessoires zijn tot € 2.500,- verzekerd tegen dezelfde gebeurtenissen als uw auto. Heeft u een hoger bedrag verzekerd? Dan staat dat op uw polisblad. Wij vergoeden voor accessoires de vervangingswaarde."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "titel": "verplichte precontractuele informatie (o.a. aansluiting geschilleninstantie)",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk8_Afdeling8.1_Paragraaf8.1.4_Artikel57",
+    "wet": "BGfo",
+    "artikel": "57",
+    "geldig_op": "2026-08-28",
+    "fragment": "1. Een financiëledienstverlener verstrekt een consument of, indien het een verzekering betreft, cliënt, voorafgaand aan de totstandkoming van een overeenkomst inzake een financieel product of financiële dienst ten minste de volgende informatie:\n  a. zijn naam en adres en, indien de financiëledienstverlener een rechtspersoon is, de statutaire naam en handelsnaam of handelsnamen;\n  b. de aard van zijn financiële dienstverlening;\n  c. voorzover artikel 4:17 van de wet van toepassing is: zijn interne klachtenprocedure, bedoeld in artikel 4:17, eerste lid, onderdeel a, van de wet, en de erkende geschilleninstantie waarbij hij is aangesloten; en\n  d. zijn inschrijving in het door de toezichthouder gehouden register.\n2. Een bemiddelaar in hypothecair krediet, adviseur, bemiddelaar in verzekeringen, gevolmachtigde agent of ondergevolmachtigde agent verstrekt de consument in aanvulling op de informatie bedoeld in het eerste lid, onderdeel d, gegevens aan de hand waarvan deze inschrijving kan worden gecontroleerd."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "titel": "waarde van het verzekerd belang en onderverzekering",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling2_Artikel958",
+    "wet": "BW",
+    "artikel": "7:958",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Er is totaal verlies, wanneer een zaak:\n  a. is tenietgegaan,\n  b. zo is beschadigd dat zij heeft opgehouden een zaak van de verzekerde soort te zijn, of\n  c. buiten de macht van de verzekerde is geraakt en herkrijging niet is te verwachten.\n2. Bij totaal verlies vergoedt de verzekeraar de waarde van het verzekerde belang bij de zaak.\n3. Heeft de verzekeraar in het geval van lid 1 onder c voldaan aan zijn verplichting en wordt het daarna mogelijk de zaak te herkrijgen, dan heeft de verzekeraar ter keuze van de verzekerde recht op terugbetaling van de vergoeding of op overdracht van de zaak.\n4. De verzekeraar vergoedt in geval van verzekering tegen vervangings-, herbouw- of nieuwwaarde bij gedeeltelijke schade te zijner keuze hetzij de kosten van herstel en de waardevermindering naar verkoopwaarde ondanks herstel, hetzij de verzekerde waarde van de onbeschadigde zaak verminderd met de verkoopwaarde van de restanten.\n5. Indien het bedrag van de verzekerde som lager is dan de waarde die aan de schadeberekening ten grondslag ligt, wordt de vergoeding volgens de leden 2 en 4 verminderd naar evenredigheid van hetgeen dat bedrag lager is dan de waarde."
+   }
+  ],
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.3",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.4",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.17",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Nieuwwaarde versus dagwaarde",
+   "bedrag": "1200.00",
+   "stappen": [
+    {
+     "omschrijving": "Restlevensduur",
+     "formule": "8 - 3 = 5 jaar",
+     "uitkomst": null,
+     "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Dagwaarde",
+     "formule": "€ 1.200,00 x (5/8)",
+     "uitkomst": "750.00",
+     "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Drempel (40% van nieuwwaarde)",
+     "formule": "€ 1.200,00 x 40%",
+     "uitkomst": "480.00",
+     "eenheid": "EUR"
+    }
+   ],
+   "grondslag": [],
+   "toelichting": "Dagwaarde ligt boven de polisdrempel; er wordt op nieuwwaarde afgewikkeld.",
+   "volgende_stap": "Vraag een aankoopbewijs of vervangingsofferte op ter onderbouwing.",
+   "waarschuwingen": [
+    "De drempel en de gehanteerde levensduur volgen uit de polisvoorwaarden, niet uit de wet. Verifieer beide in het clausulecorpus voordat je dit aan de klant meldt."
+   ],
+   "details": {
+    "nieuwwaarde": "1200.00",
+    "dagwaarde": "750.00",
+    "drempel": "480.00",
+    "dagwaarde_pct": "62.50",
+    "drempel_pct": "40.00",
+    "toegepast": "nieuwwaarde"
+   },
+   "uitleg": []
+  },
+  "model": {
+   "model": "qwen3-4b.gguf",
+   "provider": "local",
+   "overgeslagen": null
+  },
+  "controle": {
+   "oordeel": "GEEN_VERWIJZINGEN",
+   "gefundeerd": [
+    {
+     "soort": "bedrag",
+     "verwijzing": "EUR 1200,00",
+     "positie": 137,
+     "einde": 148
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 1.200,00",
+     "positie": 272,
+     "einde": 282
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 750,00",
+     "positie": 293,
+     "einde": 301
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 480,00",
+     "positie": 354,
+     "einde": 362
+    },
+    {
+     "soort": "percentage",
+     "verwijzing": "40%",
+     "positie": 313,
+     "einde": 316
+    }
+   ],
+   "ongefundeerd": [],
+   "bronnen_beschikbaar": {
+    "wetgeving": 2,
+    "kifid": 0,
+    "polisclausules": 6
+   },
+   "duur_sec": 261.1,
+   "afgekapt": false,
+   "einde_reden": "stop"
+  },
+  "duur_sec": 261.2,
+  "_sleutel": "070f5eb8467f95d1"
+ }
+]

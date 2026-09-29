@@ -270,3 +270,46 @@ def test_verjaringstoets_laat_het_model_stuiting_alleen_noemen_zoals_de_code_haa
     g = features.verjaringstoets("2024-03-10", "", "", False, "2026-09-29")["gebruiker"]
     assert "Wees concreet over stuiting" not in g
     assert "alleen zoals de toelichting, de stappen en de vervolgstap hierboven" in g
+
+
+def test_elke_polisclausule_in_wat_het_model_leest_noemt_de_verzekeraar():
+    # Zonder verzekeraar in de kop kan het model niet zeggen van wie een clausule is (alleen de URL verraadt het).
+    import re
+    for r in (features.begripsuitleg("eigen risico"), features.waardetoets(1200, 4, 10),
+              features.polisvergelijker("autoverzekering Klaverblad", "autoverzekering Interpolis")):
+        koppen = re.findall(r"^\[([^\]|]+) \| [^\]]+\]", r["systeem"], re.M)
+        aantal_clausules = len(re.findall(r"^Bron: ", r["systeem"], re.M)) - len(re.findall(r"^\[(?:BW|Wft|BGfo) art\.|^\[Kifid ", r["systeem"], re.M))
+        assert koppen and len(koppen) == aantal_clausules, (r["functie"], koppen)
+
+
+def test_polisvergelijker_zegt_wat_er_te_doen_valt_als_er_niets_te_vergelijken_is():
+    gelijk = features.polisvergelijker("inboedelverzekering Klaverblad", "inboedelverzekering Klaverblad")["gebruiker"]
+    assert "Er valt niets te vergelijken" in gelijk and "verzin geen verschillen" in gelijk
+    een_kant = features.polisvergelijker("inboedelverzekering Klaverblad", "")["gebruiker"]
+    assert "Alleen variant B heeft clausules" in een_kant and "Vergelijken kan dus niet" in een_kant
+    assert "Waar verschillen de UITSLUITINGEN" not in gelijk + een_kant
+    normaal = features.polisvergelijker("autoverzekering Klaverblad", "autoverzekering Interpolis")["gebruiker"]
+    assert "Waar verschillen de UITSLUITINGEN" in normaal and "sluitende vergelijking" in normaal
+
+
+def test_klachtroute_geeft_het_model_ook_de_waarschuwingen_en_de_vervolgstap_uit_de_code():
+    g = features.klachtroute("Klant wacht op reactie.", "2026-07-14", False, "")["gebruiker"]
+    assert "nadere informatie" in g and "lid 4" in g            # de verlenging van art. 43 lid 4 is niet meegerekend
+    assert "Vervolgstap uit de code:" in g
+    assert "hoe de geschilleninstantie werkt" in g
+
+
+def test_bedragen_staan_in_wat_het_model_leest_in_nederlandse_notatie():
+    g = features.schadeberekening(100000, 200000, 40000, 500, 1000)["gebruiker"]
+    assert "Uitkering: € 20.000,00" in g and "EUR " not in g
+    assert "Zelf te dragen door de klant: € 21.000,00 van een totale schade van € 41.000,00" in g
+    assert "Bedrag: € 100,00" in features.provisietoets("autoverzekering", 1000, 10)["gebruiker"]
+
+
+def test_waardetoets_heeft_een_uitleg_uit_de_code_en_beweert_niets_over_verzekeraars_die_het_corpus_niet_draagt():
+    r = features.waardetoets(1200, 12, 10, 30)
+    g = r["gebruiker"]
+    assert "UITLEG UIT DE CODE" in g and "max(0; 10 - 12) = 0 jaar" in g
+    assert "per verzekeraar" not in g and "verschilt" not in g
+    assert any("30%" in w and "40%" in w for w in r["berekening"]["waarschuwingen"])   # afwijking van de enige clausule wordt gemeld
+    assert not any("ingevoerd" in w for w in features.waardetoets(1200, 4, 10, 40)["berekening"]["waarschuwingen"])
