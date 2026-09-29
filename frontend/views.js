@@ -1,7 +1,7 @@
 // De twee soorten pagina's: het overzicht en de werkplek van één functie.
 import { bouwFormulier } from "./formulier.js";
 import { h, icoon, leeg } from "./dom.js";
-import { aantal } from "./format.js";
+import { aantal, meervoud } from "./format.js";
 import { GROEPEN, HEEFT_BEREKENING, REGISTER } from "./registry.js";
 import { Uitvoering } from "./uitvoering.js";
 
@@ -31,6 +31,7 @@ export function renderOverzicht(ctx) {
           h("span", null, h("b", null, f.naam), h("span", null, f.omschrijving)))))));
   }
   const s = ctx.status;
+  const aantalVerzekeraars = new Set((ctx.producten || []).flatMap((p) => (p.varianten || []).map((v) => v.verzekeraar))).size;
   if (s) {
     const c = s.corpus || {};
     const blok = (titel, n, tekst) => h("div", { class: "corpusblok" }, h("h3", null, titel), h("div", { class: "cijfer" }, aantal(n)), h("p", null, tekst));
@@ -38,7 +39,8 @@ export function renderOverzicht(ctx) {
       h("div", { class: "kaart" }, h("div", { class: "kaart-body" }, h("div", { class: "corpusrij" },
         blok("Wetgeving", c.wetgeving?.records || 0, "artikelen uit de Wft, het BGfo en Boek 7 titel 17 BW, uit de officiële wetgevingsbron."),
         blok("Kifid-uitspraken", c.kifid?.records || 0, `Geschillencommissie, scheef naar 2026 en naar afwijzingen. ${c.kifid?.geweigerd_onbevestigde_bron || 0} records zijn geweigerd omdat hun bron niet klopte. Niet geschikt voor slagingspercentages.`),
-        blok("Polisclausules", c.polisvoorwaarden?.records || 0, "letterlijk uit de openbare voorwaarden van vier verzekeraars, elk met de hash van het brondocument."))))));
+        blok("Polisclausules", c.polisvoorwaarden?.records || 0,
+          `letterlijk uit de openbare voorwaarden van ${aantalVerzekeraars ? meervoud(aantalVerzekeraars, "verzekeraar", "verzekeraars") : "verzekeraars"}, elk met de hash van het brondocument.`))))));
   }
   return wortel;
 }
