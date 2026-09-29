@@ -81,22 +81,42 @@ def _delen(w: str, diepte: int = 0) -> List[str]:
     return []
 
 
+def _stam(w: str) -> str:
+    """Het stamwoord waaronder een woord in de index staat: spreektaalvorm naar corpusterm, lichte uitgangen eraf."""
+    w = _SYNONIEM.get(w, w)
+    # lichte Nederlandse suffixstripping; conservatief zodat 'verzekering' en
+    # 'verzekeringen' matchen zonder 'uitsluiting' kapot te maken
+    for suf in ("ingen", "heden", "en", "er", "s"):
+        if len(w) > 6 and w.endswith(suf):
+            w = w[: -len(suf)]
+            break
+    return _SYNONIEM.get(w, w)
+
+
 def tokenize(t: str) -> List[str]:
     toks = []
     for w in _WORD.findall(_vouw(t)):
         if w in STOP or len(w) < 2:
             continue
-        w = _SYNONIEM.get(w, w)
-        # lichte Nederlandse suffixstripping; conservatief zodat 'verzekering' en
-        # 'verzekeringen' matchen zonder 'uitsluiting' kapot te maken
-        for suf in ("ingen", "heden", "en", "er", "s"):
-            if len(w) > 6 and w.endswith(suf):
-                w = w[: -len(suf)]
-                break
-        w = _SYNONIEM.get(w, w)
+        w = _stam(w)
         toks.append(w)
         toks.extend(_delen(w))
     return toks
+
+
+def _typo_achtig(t: str, c: str) -> bool:
+    """
+    Ziet het verschil tussen een onbekend woord `t` en een corpuswoord `c` (één fout) eruit als een typefout? Een uitgang
+    ('bijgebouwd' / 'bijgebouw', 'definitieve' / 'definitie'), een andere eerste letter ('voordeel' / 'oordeel') en
+    een ander, wel geldig woord zijn dat niet. Dat een woord niet in ons kleine corpus staat, maakt het nog geen typefout.
+    """
+    if t[0] != c[0]:                                      # een typefout zit zelden in de eerste letter
+        return False
+    if len(t) == len(c):                                  # een letter vervangen of twee naast elkaar verwisseld
+        return True
+    korter, langer = sorted((t, c), key=len)
+    eerste = next((i for i in range(len(korter)) if korter[i] != langer[i]), len(korter))
+    return eerste < len(korter)                           # een letter erbij of eraf, niet aan het eind (dat is een uitgang)
 
 
 def _afstand(a: str, b: str, maximaal: int) -> int:
@@ -121,6 +141,7 @@ class Index:
         self.docs, self.k1, self.b = docs, k1, b
         self.tf, self.len = [], []
         df = Counter()
+        self._vorm: Dict[str, Counter] = {}
         for d in docs:
             tekst = " ".join(str(d.get(v) or "") for v in velden)
             toks = tokenize(tekst)
@@ -128,6 +149,10 @@ class Index:
             self.tf.append(c)
             self.len.append(len(toks))
             df.update(c.keys())
+            for w in _WORD.findall(_vouw(tekst)):
+                if w not in STOP and len(w) >= 2:
+                    self._vorm.setdefault(_stam(w), Counter())[w] += 1
+        self.df = df
         self.N = max(1, len(docs))
         self.avg = (sum(self.len) / self.N) if self.N else 1
         self.idf = {t: math.log(1 + (self.N - n + 0.5) / (n + 0.5)) for t, n in df.items()}
@@ -135,35 +160,17 @@ class Index:
         # Alle woorden van ALLE bronnen (Corpus zet dit): een woord dat elders in het corpus voorkomt is geen typefout.
         self.bekend = set(self.idf)
 
-    def _dichtstbij(self, t: str) -> str:
-        """
-        Het corpuswoord dat het dichtst bij een onbekend woord ligt ('lekkge' -> 'lekkage'), of ''. Alleen voor
-        woorden die NERGENS in het corpus voorkomen (een geldig woord dat alleen in deze bron ontbreekt, zoals
-        'verjaring' in het Kifid-register, blijft ontbreken: dan moet het portaal weigeren en niet 'verklaring'
-        vinden), vanaf zes tekens, met hooguit één fout (twee vanaf elf tekens). Bij gelijke afstand wint het
-        woord met de hoogste idf, daarna alfabetisch: deterministisch.
-        """
-        if len(t) < 6 or t in self.bekend or ":" in t or any(c.isdigit() for c in t):
-            return ""
-        grens = 2 if len(t) >= 11 else 1
-        beste = None
-        for c in self._woordenschat:
-            if abs(len(c) - len(t)) > grens or (c[0] != t[0] and c[1:2] != t[1:2] and len(t) < 8):
-                continue
-            if t.startswith(c) and len(t) - len(c) >= 2:      # 'definitieve' is 'definitie' met een uitgang, geen typefout
-                continue
-            d = _afstand(t, c, grens)
-            if d <= grens:
-                sleutel = (d, -self.idf[c], c)
-                if beste is None or sleutel < beste[0]:
-                    beste = (sleutel, c)
-        return beste[1] if beste else ""
+    def vorm(self, stam: str) -> str:
+        """Het woord zoals het in het corpus meestal geschreven staat ('onderverzekering', niet het stamwoord)."""
+        vormen = self._vorm.get(stam)
+        return vormen.most_common(1)[0][0] if vormen else stam
 
-    def zoek(self, vraag: str, top=6, waar=None) -> List[Tuple[float, Dict]]:
-        """`waar` is een optioneel filter op het document; de BM25-statistiek blijft die van het hele corpus."""
-        q = [(t, 1.0) for t in tokenize(vraag)]
-        # Een woord dat het corpus niet kent is vaak een typefout: het dichtstbijzijnde corpuswoord telt mee, met minder gewicht.
-        q += [(c, 0.6) for t, _ in list(q) if t not in self.idf for c in [self._dichtstbij(t)] if c]
+    def zoek(self, vraag: str, top=6, waar=None, extra=()) -> List[Tuple[float, Dict]]:
+        """
+        `waar` is een optioneel filter op het document; de BM25-statistiek blijft die van het hele corpus.
+        `extra` zijn herstelde termen (zie Corpus.herstel): ze tellen mee met minder gewicht dan wat de adviseur typte.
+        """
+        q = [(t, 1.0) for t in tokenize(vraag)] + [(c, 0.6) for c in extra]
         if not q or not self.docs:
             return []
         scores = []
@@ -227,24 +234,46 @@ class Corpus:
         alles = set().union(*(ix.idf.keys() for ix in self.index.values())) if self.index else set()
         for ix in self.index.values():
             ix.bekend = alles
+        self._alle_df = Counter()
+        for ix in self.index.values():
+            self._alle_df.update(ix.df)
+        self._alle_woorden = sorted(alles)
+
+    def herstel(self, vraag: str) -> List[Tuple[str, str, str]]:
+        """
+        Woorden in de vraag die het portaal als typefout leest: [(zoals getypt, stamwoord in de index, zoals het corpus het
+        schrijft)]. Het portaal raadt niet: alleen een woord van negen tekens of meer dat NERGENS in het corpus voorkomt (een
+        geldig woord dat alleen in één bron ontbreekt, zoals 'verjaring' in het Kifid-register, blijft ontbreken) en geen
+        samenstelling van bekende delen is ('brandschade'); precies één corpuswoord dat op één typefout na gelijk is (zie
+        _typo_achtig) en in minstens twee documenten voorkomt. Bij twijfel geen correctie. Geldige woorden die in ons kleine
+        corpus toevallig ontbreken ('voordeel', 'verwijst', 'negeer') zijn geen typefout: daarom de ondergrens van negen tekens.
+        """
+        uit, gezien = [], set()
+        for w0 in re.findall(r"[^\W\d_]+", vraag or ""):
+            w = _vouw(w0)
+            if w in gezien:
+                continue
+            gezien.add(w)
+            t = _stam(w)
+            if (len(t) < 9 or t in STOP or t in _SYNONIEM or _delen(t)
+                    or any(t in ix.bekend for ix in self.index.values())):
+                continue
+            kandidaten = [c for c in self._alle_woorden
+                          if abs(len(c) - len(t)) <= 1 and c[0] == t[0] and self._alle_df[c] >= 2
+                          and _afstand(t, c, 1) == 1 and _typo_achtig(t, c)]
+            if len(kandidaten) == 1:
+                vormen = max((ix for ix in self.index.values() if kandidaten[0] in ix._vorm), key=lambda ix: ix.df.get(kandidaten[0], 0))
+                uit.append((w0.lower(), kandidaten[0], vormen.vorm(kandidaten[0])))
+        return uit
 
     def correcties(self, vraag: str, max_n: int = 4) -> List[Tuple[str, str]]:
-        """
-        Welke woorden in de vraag als typefout zijn gelezen: [('onderverzekring', 'onderverzekering')]. Dit hoort bij
-        de zoekopdracht getoond te worden: het portaal mag een spelling herstellen, maar niet stilzwijgend raden.
-        """
-        uit = []
-        for t in dict.fromkeys(tokenize(vraag)):
-            if any(t in ix.bekend for ix in self.index.values()):
-                continue
-            kandidaten = sorted({c for ix in self.index.values() for c in [ix._dichtstbij(t)] if c},
-                                key=lambda c: (_afstand(t, c, 3), c))
-            if kandidaten:
-                uit.append((t, kandidaten[0]))
-        return uit[:max_n]
+        """De melding bij een herstelde spelling: [('onderverzekring', 'onderverzekering')]. Het portaal herstelt niet stilzwijgend."""
+        return [(a, c) for a, _, c in self.herstel(vraag)][:max_n]
 
     def zoek(self, bron: str, vraag: str, top=6, waar=None):
-        return self.index.get(bron).zoek(vraag, top, waar) if bron in self.index else []
+        if bron not in self.index:
+            return []
+        return self.index[bron].zoek(vraag, top, waar, extra=[t for _, t, _ in self.herstel(vraag)])
 
     def zoek_breed(self, vraag: str, per_bron=4):
         return {b: self.zoek(b, vraag, per_bron) for b in self.index}

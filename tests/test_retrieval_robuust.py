@@ -24,7 +24,8 @@ GEVALLEN = [
     ("de inbrekers hebben het slot geforceerd", "polisvoorwaarden", ("inbraak",)),
     ("mijn fiets is gestolen van het station", "polisvoorwaarden", ("fiets",)),
     ("dieven hebben de auto opengebroken", "polisvoorwaarden", ("diefstal",)),
-    ("lekkge in de badkamer", "polisvoorwaarden", ("lekkage", "lek")),
+    ("lekkage in de badkamer", "polisvoorwaarden", ("lekkage", "lek")),
+    ("onderverzekring bij de opstal", "wetgeving", ("onderverzekering", "evenredig")),
     ("de wasmachine is gelekt en er staat water in huis", "polisvoorwaarden", ("lekkage", "water")),
     ("stormscade aan het dak", "polisvoorwaarden", ("storm",)),
     ("de storm heeft dakpannen losgerukt", "polisvoorwaarden", ("storm",)),
@@ -76,13 +77,31 @@ def test_afstand_telt_een_verwisseling_als_een_fout():
     assert retrieval._afstand("lekkage", "storm", 1) > 1
 
 
-def test_alleen_onbekende_woorden_vanaf_vijf_tekens_worden_gecorrigeerd(corpus):
-    ix = corpus.index["polisvoorwaarden"]
-    assert ix._dichtstbij("lekkge") == "lekkage"
-    assert ix._dichtstbij("stormscade") == "stormschade"
-    assert ix._dichtstbij("zzzzzz") == "" and ix._dichtstbij("bakker") == ""
-    assert ix._dichtstbij("wolk") == ""                                    # te kort
-    assert ix._dichtstbij("4:23") == "" and ix._dichtstbij("art") == ""
+def test_alleen_onbekende_woorden_vanaf_negen_tekens_worden_gecorrigeerd(corpus):
+    gelezen = lambda w: [c for _, _, c in corpus.herstel(w)]
+    assert gelezen("stormscade") == ["stormschade"]
+    assert gelezen("onderverzekring") == ["onderverzekering"]
+    assert gelezen("zzzzzzzzzz") == [] and gelezen("bakkerijen") == []
+    assert gelezen("lekkge") == []                                         # te kort om te raden: 'negeer' is ook geen 'neger'
+    assert gelezen("wolk") == []                                           # te kort
+    assert gelezen("4:23") == [] and gelezen("art") == []
+
+
+@pytest.mark.parametrize("woord", [
+    "brandschade",     # samenstelling van bekende delen
+    "definitieve",     # 'definitie' met een uitgang
+    "bijgebouwd",      # 'bijgebouw' met een uitgang van één letter
+    "voordeel",        # geldig woord, andere eerste letter dan 'oordeel', en te kort
+    "verwijst", "doorslag", "orkaan", "zolder", "kasten", "schilder", "schuur", "negeer", "dakgoot",   # geldige woorden
+])
+def test_geldige_woorden_die_het_corpus_niet_kennen_worden_niet_voor_een_typefout_aangezien(corpus, woord):
+    assert corpus.herstel(f"de {woord} in de woonkamer") == [], woord
+
+
+def test_de_spelmelding_toont_de_woorden_van_de_adviseur_en_de_schrijfwijze_van_het_corpus(corpus):
+    # niet de stamwoorden waaronder de index ze bewaart ('gedronk', 'onderverzeker')
+    assert corpus.correcties("Onderverzekring bij de opstalverzekering") == [("onderverzekring", "onderverzekering")]
+    assert corpus.correcties("gedronken samenwerken") == []
 
 
 def test_zoeken_is_deterministisch_ook_bij_een_andere_hashvolgorde():
@@ -99,7 +118,7 @@ def test_een_geldig_woord_dat_alleen_in_deze_bron_ontbreekt_wordt_niet_gecorrige
     het portaal vond dan een uitspraak en weigerde niet. Een typefout is een woord dat nergens in het corpus staat."""
     kifid = corpus.index["kifid"]
     assert "verjaring" not in kifid.idf and "verjaring" in kifid.bekend
-    assert kifid._dichtstbij("verjaring") == ""
+    assert corpus.herstel("verjaring") == []
     assert corpus.zoek("kifid", "verjaring stuiting 7:942", 5) == []
 
 
@@ -113,7 +132,7 @@ def test_precedentzoeker_weigert_bij_een_vraag_waar_het_kifid_register_niets_ove
 
 def test_corpus_meldt_welke_woorden_als_typefout_zijn_gelezen(corpus):
     assert corpus.correcties("onderverzekring") == [("onderverzekring", "onderverzekering")]
-    assert corpus.correcties("lekkge en stormscade") == [("lekkge", "lekkage"), ("stormscade", "stormschade")]
+    assert corpus.correcties("lekkge en stormscade") == [("stormscade", "stormschade")]         # 'lekkge' is te kort om te raden
     assert corpus.correcties("eigen risico bij inbraak") == []                     # geen typefouten, geen melding
     assert corpus.correcties("verjaring stuiting") == []                           # geldig woord, alleen niet in elke bron
 
@@ -125,7 +144,7 @@ def test_functies_zetten_de_gelezen_spelling_in_de_opmerkingen():
     assert r["bronnen"], "met de herstelde spelling zijn er bronnen"
     assert any("7:958" in b["label"] for b in r["bronnen"])
     assert features.begripsuitleg("onderverzekering")["opmerkingen"] == []
-    for fn, kw in ((features.dekkingscheck, {"situatie": "lekkge in de badkamer"}), (features.precedentzoeker, {"geschil": "lekkge"}),
+    for fn, kw in ((features.dekkingscheck, {"situatie": "stormscade aan het dak"}), (features.precedentzoeker, {"geschil": "stormscade"}),
                    (features.klachtroute, {"situatie": "afwijzing onderverzekring"})):
         assert any("gelezen als" in m for m in fn(**kw)["opmerkingen"]), fn.__name__
 
