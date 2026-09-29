@@ -18,12 +18,25 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)
 sys.path.insert(0, os.path.join(ROOT, "tests"))
 from nep_llm import NepLLM  # noqa: E402
 
-CHROME = os.environ.get("PLAYWRIGHT_CHROMIUM", "/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+def _chrome_pad():
+    """Chromium: PLAYWRIGHT_CHROMIUM, anders de vaste plek in deze omgeving, anders wat `playwright install chromium` neerzette."""
+    for pad in (os.environ.get("PLAYWRIGHT_CHROMIUM"), "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"):
+        if pad and os.path.exists(pad):
+            return pad
+    try:
+        with sync_playwright() as pw:
+            pad = pw.chromium.executable_path
+        return pad if os.path.exists(pad) else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+CHROME = _chrome_pad()
 
 
 def pytest_collection_modifyitems(config, items):
-    if not os.path.exists(CHROME):
-        skip = pytest.mark.skip(reason="geen Chromium beschikbaar")
+    if not CHROME:
+        skip = pytest.mark.skip(reason="geen Chromium beschikbaar (playwright install chromium)")
         for item in items:
             if "e2e" in str(item.fspath):
                 item.add_marker(skip)
