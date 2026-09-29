@@ -493,7 +493,14 @@
     "duur_sec": 2253.8,
     "uitkomst": "Alle bedragen klopten, want ze komen uit de berekening. De uitleg eromheen was fout: 'omdat het object niet volledig is verloren gegaan (75% in goede toestand)', 'de klant draagt hierdoor geen eigen risico' (tegen de eigen berekening in) en er stond geen enkele wettelijke verwijzing in (oordeel GEEN_VERWIJZINGEN).",
     "les": "Getallen en verwijzingen zijn mechanisch te bewaken; de redenering eromheen niet. Een klein model dat mag uitleggen verzint oorzaken.",
-    "gevolg": "Uitkomst.uitleg: de uitkomst in gewone zinnen uit code, met de artikelen erbij. De opdracht aan het model is nu 'herschrijf uitsluitend wat hierboven staat'. De UI toont de uitleg uit code als 'In gewone woorden' en waarschuwt bij een klein lokaal model. Of een sterker model (OpenRouter) hier beter mee omgaat is onbewezen zonder sleutel."
+    "gevolg": "Uitkomst.uitleg: de uitkomst in gewone zinnen uit code, met de artikelen erbij. De opdracht aan het model is nu 'herschrijf uitsluitend wat hierboven staat'. De UI toont de uitleg uit code als 'In gewone woorden' en waarschuwt bij een klein lokaal model. Of een sterker model (OpenRouter) hier beter mee omgaat is onbewezen zonder sleutel.",
+    "na_herschrijfopdracht": {
+      "casus": "schadeberekening-01",
+      "duur_sec": 1076.2,
+      "uitkomst": "Met de uitleg uit code en de opdracht om uitsluitend te herschrijven gaf hetzelfde kleine model een korte, juiste en getrouwe toelichting: bedragen, breuk, eigen risico, wat de klant zelf draagt (EUR 10.500,00, waarvan EUR 10.000,00 door onderverzekering en EUR 500,00 eigen risico) en de vervolgstap uit de code. Wel liet het art. 7:958 lid 5 weg (oordeel GEEN_VERWIJZINGEN).",
+      "kanttekening": "n=1 na de wijziging tegenover n=2 fout ervoor; geen bewijs van betrouwbaarheid. Daarom schrijft het lokale model bij berekeningen toch niets (uitleg uit code is dan het antwoord); een sterker model herschrijft wel."
+    },
+    "schadeberekening_02_oude_opdracht": "Verwisselde verzekerde som en waarde, telde het eigen risico bij de schade op en haalde een 'extra eigen risico bij storm tijdens een verbouwing' uit een niet-passende Univé-clausule; de bewaker vond één verzonnen bedrag (EUR 3.583,33), de rest was semantische onzin. Gevolg: de schadeberekening haalt geen polisclausules van willekeurige verzekeraars meer op."
   },
   "meetlat_herstel_ronde_1": {
     "status": "IN UITVOERING door twee agents (harnas + OCR-lekcontrole + rapport; opnames, comps en decoys); nog niet verwerkt",

@@ -31,7 +31,7 @@
         "details.onderverzekerd": true
       }
     },
-    "bron_van_waarheid": "BW art. 7:958 lid 5 (vergoeding 'verminderd naar evenredigheid van hetgeen dat bedrag lager is dan de waarde'); Klaverblad Inboedelverzekering BI 24 art. 2.17.10 sub b (formule) en art. 2.17.14 (eigen risico wordt afgetrokken van het bedrag dat wordt vergoed). Handmatig: 40.000 x 150.000/200.000 = 30.000; 30.000 - 500 = 29.500."
+    "bron_van_waarheid": "BW art. 7:958 lid 5 (vergoeding 'verminderd naar evenredigheid van hetgeen dat bedrag lager is dan de waarde'); de polisformule (Klaverblad Inboedelverzekering art. 2.17.10 sub b, eigen risico art. 2.17.14) staat niet meer in de bronnen van deze functie: de berekening rust op de wet. Handmatig: 40.000 x 150.000/200.000 = 30.000; 30.000 - 500 = 29.500."
   },
   {
     "id": "schadeberekening-02",

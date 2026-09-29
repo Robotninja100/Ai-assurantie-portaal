@@ -444,8 +444,11 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
         _getal(w, naam)
     u = rk.evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
                                   eigen_risico, bereddingskosten)
+    # Alleen de wet. De berekening rust op BW 7:955-7:959; polisclausules van willekeurige verzekeraars zijn hier
+    # geen grondslag en het lokale model haalde er bij een echte proef een 'extra eigen risico bij storm tijdens
+    # een verbouwing' uit dat niet bij de vraag hoorde. Dat het eigen risico polisafhankelijk is, staat in de waarschuwingen.
     ctx = _context("onderverzekering evenredigheid verzekerde som herbouwwaarde eigen risico",
-                   ["wetgeving", "polisvoorwaarden"], per_bron=5, grondslag=u.grondslag,
+                   ["wetgeving"], per_bron=3, grondslag=u.grondslag,
                    waar={"wetgeving": VERZEKERINGSRECHT})
     stappen = _stappen_tekst(u)
     gebruiker = (
@@ -782,7 +785,8 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
         f"{_uitkomstregel('Uitkomst', u)} - {u.toelichting}\n"
         + _stappen_tekst(u) +
         f"\n{_uitleg_en_vervolg(u)}"
-        f"Waarschuwingen: {'; '.join(u.waarschuwingen)}\n\n"
+        f"Waarschuwingen: {'; '.join(u.waarschuwingen)}\n"
+        f"VERZEKERAAR VAN DE KLANT: {_van_wie(None, ctx['opgehaald'].get('polisvoorwaarden', []))}\n\n"
         f"{HERSCHRIJF} Benadruk dat de drempel uit de polisvoorwaarden komt en per verzekeraar verschilt. "
         "Reken niets na.")
     return {"functie": "waardetoets", "systeem": grounding.systeemprompt(ctx["blok"]),
