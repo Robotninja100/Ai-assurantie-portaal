@@ -1,13 +1,19 @@
 """
 Provider-laag voor het taalmodel.
 
-Nu: lokaal Qwen3-4B via llama.cpp. Geen API-key, geen kosten, draait echt.
-Later: zet ASSURANTIE_LLM_PROVIDER=anthropic|groq|openrouter + een key, en de rest
-van de applicatie verandert niet. Dat is bewust: het corpus en de rekenkern dragen
-de correctheid, het model levert alleen de Nederlandse formulering.
+Primair: gratis modellen via OpenRouter, met een keten van terugvalmodellen. Zonder sleutel valt
+het portaal terug op een lokaal model (Qwen3-4B via llama.cpp): draait zonder netwerk, maar op een
+CPU ruim honderd keer trager. Optioneel: Anthropic of een OpenAI-compatibele dienst. De rest van de
+applicatie merkt daar niets van: het corpus en de rekenkern dragen de correctheid, het model levert
+alleen de Nederlandse formulering.
+
+Alles loopt via stream_events(). Dat geeft gebeurtenissen in plaats van kale tekst, omdat de
+adviseur moet kunnen zien WELK model een antwoord schreef en waarom een ander model het niet deed.
 """
-import os, threading, json
-from typing import Optional, List, Dict
+import json
+import os
+import threading
+from typing import Dict, Iterator, List
 
 # Standaard in de projectmap (models/ staat in .gitignore). Een pad in een tijdelijke sessiemap
 # verdween met de container en liet het lokale model stil onbereikbaar worden.
@@ -15,6 +21,8 @@ _ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MODEL_PATH = os.environ.get("ASSURANTIE_MODEL_PATH",
                             os.path.join(_ROOT, "models", "qwen3-4b.gguf"))
 PROVIDER = os.environ.get("ASSURANTIE_LLM_PROVIDER", "openrouter")
+OPENROUTER_URL = os.environ.get("ASSURANTIE_OPENROUTER_URL",
+                                "https://openrouter.ai/api/v1/chat/completions")
 
 # OpenRouter-modellen die op echte Nederlandse verzekeringsvragen zijn getest: correcte
 # evenredigheidsberekening, bruikbaar Nederlands, en schone 'content' (geen modellen die
@@ -33,10 +41,14 @@ OPENROUTER_MODELLEN = [
     ])).split(",") if m.strip()
 ]
 
+# Tijd die een model mag nemen voor het eerste teken en tussen twee stukken. Gratis modellen
+# staan soms in de wachtrij; daarna komt de tekst binnen enkele seconden.
+TIMEOUT_SEC = int(os.environ.get("ASSURANTIE_TIMEOUT", "120"))
+
 
 def _laad_env():
     """Leest .env uit de projectmap. Die staat in .gitignore; sleutels horen niet in git."""
-    pad = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), ".env")
+    pad = os.path.join(_ROOT, ".env")
     if not os.path.exists(pad):
         return
     for regel in open(pad, encoding="utf-8"):
@@ -53,28 +65,48 @@ _lock = threading.Lock()
 _llm = None
 
 
+# ------------------------------------------------------------------ status
+
+def effectieve_provider() -> str:
+    """
+    De provider die nu daadwerkelijk wordt gebruikt. Staat OpenRouter ingesteld maar ontbreekt de
+    sleutel, dan valt het portaal terug op het lokale model als dat er ligt. Dat gebeurt zichtbaar:
+    runtime_info() meldt het, en de UI toont het.
+    """
+    if PROVIDER == "openrouter" and not os.environ.get("OPENROUTER_API_KEY"):
+        return "local" if os.path.exists(MODEL_PATH) else "openrouter"
+    return PROVIDER
+
+
 def runtime_info() -> Dict:
     """Eerlijke status. De UI toont dit; we verbergen niet welk model er draait."""
-    info = {"provider": PROVIDER, "beschikbaar": False, "model": None, "opmerking": ""}
-    if PROVIDER == "local":
+    prov = effectieve_provider()
+    info = {"provider": prov, "ingesteld": PROVIDER, "beschikbaar": False, "model": None,
+            "opmerking": "", "snelheid": None}
+    if prov == "local":
         info["model"] = os.path.basename(MODEL_PATH)
         if os.path.exists(MODEL_PATH):
             info["beschikbaar"] = True
-            info["opmerking"] = ("Lokaal model op CPU, circa 6-7 tokens/sec. "
-                                 "Feiten komen uit het corpus, niet uit het model.")
+            info["snelheid"] = "traag"
+            info["opmerking"] = (
+                "Lokaal model op CPU: een antwoord duurt minuten. "
+                + ("Teruggevallen omdat OPENROUTER_API_KEY ontbreekt. "
+                   if PROVIDER == "openrouter" else "")
+                + "Feiten komen uit het corpus, niet uit het model.")
         else:
             info["opmerking"] = f"Modelbestand niet gevonden op {MODEL_PATH}"
-    elif PROVIDER == "openrouter":
+    elif prov == "openrouter":
         key = os.environ.get("OPENROUTER_API_KEY")
         info["beschikbaar"] = bool(key)
         info["model"] = OPENROUTER_MODELLEN[0] if OPENROUTER_MODELLEN else None
         info["fallbacks"] = OPENROUTER_MODELLEN[1:]
+        info["snelheid"] = "snel" if key else None
         info["opmerking"] = (
-            "Gratis modellen via OpenRouter, circa 2 seconden per antwoord. "
+            "Gratis modellen via OpenRouter, meestal een paar seconden per antwoord. "
             "Feiten komen uit het corpus, niet uit het model."
             if key else
-            "Geen OPENROUTER_API_KEY gevonden. Zet die in .env of in de omgeving; "
-            "zonder sleutel valt het portaal terug op het lokale model.")
+            "Geen OPENROUTER_API_KEY gevonden en geen lokaal model aanwezig. Zet de sleutel in de "
+            "omgeving of in .env, of plaats een GGUF-model op " + MODEL_PATH + ".")
     else:
         key = os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("LLM_API_KEY")
         info["beschikbaar"] = bool(key)
@@ -84,39 +116,163 @@ def runtime_info() -> Dict:
     return info
 
 
-def _openrouter(systeem, gebruiker, max_tokens, temperatuur):
+# ------------------------------------------------------------------ denkblokken
+
+class _ZonderDenkblok:
     """
-    Probeert de modellen op volgorde. Gratis modellen op OpenRouter zijn wisselend
-    beschikbaar (403, rate limit, of een leeg content-veld bij reasoning-modellen),
-    dus een keten is hier geen luxe maar een voorwaarde om betrouwbaar te draaien.
-    Geeft (tekst, gebruikt_model) terug; tekst is '' als alles faalt.
+    Sommige modellen (Qwen3, DeepSeek-distillaties) openen hun antwoord met <think>...</think>.
+    Dat zijn redeneerstappen, geen antwoord: ze horen niet bij de adviseur. Streamingveilig: houdt
+    tekst vast zolang het begin nog een denkblok kan zijn.
     """
-    import urllib.request, urllib.error
+    OPEN, SLUIT = "<think>", "</think>"
+
+    def __init__(self):
+        self.stand = "begin"          # begin -> (denken ->) door
+        self.buf = ""
+        self.kaal = True              # nog niets uitgegeven: voorloop-witruimte is nooit inhoud
+
+    def voer(self, stuk: str) -> str:
+        uit = self._voer(stuk)
+        if self.kaal and uit:
+            uit = uit.lstrip()
+            if uit:
+                self.kaal = False
+        return uit
+
+    def _voer(self, stuk: str) -> str:
+        if self.stand == "door":
+            return stuk
+        self.buf += stuk
+        if self.stand == "begin":
+            kaal = self.buf.lstrip()
+            if not kaal:
+                return ""
+            if len(kaal) < len(self.OPEN) and self.OPEN.startswith(kaal):
+                return ""             # nog onduidelijk of dit <think> wordt
+            if kaal.startswith(self.OPEN):
+                self.stand = "denken"
+                self.buf = kaal[len(self.OPEN):]
+            else:
+                uit, self.buf, self.stand = self.buf, "", "door"
+                return uit
+        if self.stand == "denken":
+            i = self.buf.find(self.SLUIT)
+            if i < 0:
+                self.buf = self.buf[-len(self.SLUIT):]   # bewaar alleen een mogelijk begin van </think>
+                return ""
+            rest = self.buf[i + len(self.SLUIT):].lstrip()
+            self.buf, self.stand = "", "door"
+            return rest
+        return ""
+
+    def einde(self) -> str:
+        """Wat er nog vastzit als de stroom eindigt (een antwoord dat toevallig op '<' begon)."""
+        if self.stand == "begin":
+            uit, self.buf = self.buf, ""
+            return uit.lstrip() if self.kaal else uit
+        return ""
+
+
+class ModelFout(Exception):
+    pass
+
+
+# ------------------------------------------------------------------ OpenRouter
+
+def _openrouter_stukken(model: str, systeem: str, gebruiker: str, max_tokens: int,
+                        temperatuur: float, key: str) -> Iterator[str]:
+    """Eén model, echte server-sent events. Geeft de tekststukken zodra ze binnenkomen."""
+    import urllib.request
+    body = json.dumps({
+        "model": model, "max_tokens": max_tokens, "temperature": temperatuur, "stream": True,
+        "messages": [{"role": "system", "content": systeem},
+                     {"role": "user", "content": gebruiker}]}).encode()
+    req = urllib.request.Request(
+        OPENROUTER_URL, data=body,
+        headers={"content-type": "application/json", "accept": "text/event-stream",
+                 "authorization": f"Bearer {key}", "X-Title": "Assurantieportaal"})
+    with urllib.request.urlopen(req, timeout=TIMEOUT_SEC) as r:
+        while True:
+            ruw = r.readline()
+            if not ruw:
+                return
+            regel = ruw.decode("utf-8", "replace").strip()
+            # lege regels scheiden gebeurtenissen; ': OPENROUTER PROCESSING' is een keepalive
+            if not regel or regel.startswith(":") or not regel.startswith("data:"):
+                continue
+            data = regel[5:].strip()
+            if data == "[DONE]":
+                return
+            try:
+                chunk = json.loads(data)
+            except ValueError:
+                continue
+            if chunk.get("error"):
+                fout = chunk["error"]
+                raise ModelFout(fout.get("message") if isinstance(fout, dict) else str(fout))
+            for keuze in chunk.get("choices") or []:
+                tekst = (keuze.get("delta") or {}).get("content")
+                if tekst:                 # 'reasoning' staat in een eigen veld en telt niet mee
+                    yield tekst
+
+
+def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]:
+    """
+    Probeert de modellen op volgorde. Gratis modellen zijn wisselend beschikbaar (403, 429, een
+    wachtrij, of een leeg antwoord bij redeneermodellen), dus een keten is hier een voorwaarde.
+
+    Doorschuiven naar het volgende model kan ALLEEN zolang er nog geen tekst is uitgegeven. Valt
+    een model halverwege uit, dan zou een tweede model een antwoord op een antwoord schrijven: dat
+    melden we als afgebroken antwoord, we plakken er niets achter.
+    """
+    import urllib.error
     key = os.environ.get("OPENROUTER_API_KEY")
     if not key:
-        return "", None
-    fouten = []
+        yield {"type": "fout", "fout": "Geen OPENROUTER_API_KEY.", "afgebroken": False}
+        return
+    redenen: List[str] = []
     for model in OPENROUTER_MODELLEN:
-        try:
-            body = json.dumps({
-                "model": model, "max_tokens": max_tokens, "temperature": temperatuur,
-                "messages": [{"role": "system", "content": systeem},
-                             {"role": "user", "content": gebruiker}]}).encode()
-            req = urllib.request.Request(
-                "https://openrouter.ai/api/v1/chat/completions", data=body,
-                headers={"content-type": "application/json",
-                         "authorization": f"Bearer {key}",
-                         "X-Title": "Assurantieportaal"})
-            with urllib.request.urlopen(req, timeout=150) as r:
-                d = json.loads(r.read())
-            tekst = (d.get("choices", [{}])[0].get("message", {}).get("content") or "").strip()
-            if tekst:
-                return tekst, model
-            fouten.append(f"{model}: leeg content-veld")
-        except Exception as e:
-            fouten.append(f"{model}: {type(e).__name__}")
-    return "", "; ".join(fouten)
+        filter_ = _ZonderDenkblok()
+        gaf_tekst = False
 
+        def kop() -> Dict:
+            return {"type": "model", "model": model, "provider": "openrouter",
+                    "overgeslagen": list(redenen)}
+        try:
+            for stuk in _openrouter_stukken(model, systeem, gebruiker, max_tokens, temperatuur, key):
+                uit = filter_.voer(stuk)
+                if not uit:
+                    continue
+                if not gaf_tekst:
+                    gaf_tekst = True
+                    yield kop()
+                yield {"type": "delta", "tekst": uit}
+            rest = filter_.einde()
+            if rest:
+                if not gaf_tekst:
+                    gaf_tekst = True
+                    yield kop()
+                yield {"type": "delta", "tekst": rest}
+            if gaf_tekst:
+                return
+            redenen.append(f"{model}: leeg antwoord")
+        except urllib.error.HTTPError as e:
+            if gaf_tekst:
+                yield {"type": "fout", "afgebroken": True, "model": model,
+                       "fout": f"{model} viel weg tijdens het antwoord (HTTP {e.code})."}
+                return
+            redenen.append(f"{model}: HTTP {e.code}")
+        except Exception as e:  # noqa: BLE001 - netwerk, timeout, ModelFout, ongeldige stroom
+            if gaf_tekst:
+                yield {"type": "fout", "afgebroken": True, "model": model,
+                       "fout": f"{model} viel weg tijdens het antwoord ({type(e).__name__}: {e})."}
+                return
+            redenen.append(f"{model}: {type(e).__name__}" + (f": {e}" if str(e) else ""))
+    yield {"type": "fout", "afgebroken": False, "modellen": redenen,
+           "fout": "Alle modellen in de keten faalden: " + "; ".join(redenen)}
+
+
+# ------------------------------------------------------------------ lokaal
 
 def _get_local():
     global _llm
@@ -128,39 +284,65 @@ def _get_local():
         return _llm
 
 
-def genereer(systeem: str, gebruiker: str, max_tokens: int = 700,
-             temperatuur: float = 0.2) -> str:
-    """Eén synchrone completion. Geeft '' terug als er geen runtime is."""
-    if PROVIDER == "local":
-        if not os.path.exists(MODEL_PATH):
-            return ""
-        r = _get_local().create_chat_completion(
+def _stream_local(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]:
+    if not os.path.exists(MODEL_PATH):
+        yield {"type": "fout", "afgebroken": False,
+               "fout": f"Modelbestand niet gevonden op {MODEL_PATH}"}
+        return
+    filter_ = _ZonderDenkblok()
+    gaf_tekst = False
+    naam = os.path.basename(MODEL_PATH)
+    try:
+        # '/no_think' schakelt bij Qwen3 het redeneerblok uit; op een CPU kost elk token seconden.
+        stroom = _get_local().create_chat_completion(
             messages=[{"role": "system", "content": systeem},
-                      {"role": "user", "content": gebruiker}],
-            max_tokens=max_tokens, temperature=temperatuur)
-        return r["choices"][0]["message"]["content"].strip()
+                      {"role": "user", "content": gebruiker + "\n\n/no_think"}],
+            max_tokens=max_tokens, temperature=temperatuur, stream=True)
+        for chunk in stroom:
+            stuk = chunk["choices"][0].get("delta", {}).get("content")
+            if not stuk:
+                continue
+            uit = filter_.voer(stuk)
+            if uit:
+                if not gaf_tekst:
+                    gaf_tekst = True
+                    yield {"type": "model", "model": naam, "provider": "local"}
+                yield {"type": "delta", "tekst": uit}
+        rest = filter_.einde()
+        if rest:
+            if not gaf_tekst:
+                gaf_tekst = True
+                yield {"type": "model", "model": naam, "provider": "local"}
+            yield {"type": "delta", "tekst": rest}
+    except Exception as e:  # noqa: BLE001
+        yield {"type": "fout", "afgebroken": gaf_tekst,
+               "fout": f"Lokaal model faalde: {type(e).__name__}: {e}"}
+        return
+    if not gaf_tekst:
+        yield {"type": "fout", "afgebroken": False, "fout": "Het lokale model gaf een leeg antwoord."}
 
-    if PROVIDER == "openrouter":
-        tekst, _model = _openrouter(systeem, gebruiker, max_tokens, temperatuur)
-        return tekst
 
-    if PROVIDER == "anthropic":
-        import urllib.request
-        key = os.environ.get("ANTHROPIC_API_KEY")
-        if not key:
-            return ""
-        body = json.dumps({
-            "model": os.environ.get("ASSURANTIE_MODEL_NAAM", "claude-sonnet-5"),
-            "max_tokens": max_tokens, "system": systeem,
-            "messages": [{"role": "user", "content": gebruiker}]}).encode()
-        req = urllib.request.Request(
-            "https://api.anthropic.com/v1/messages", data=body,
-            headers={"content-type": "application/json", "x-api-key": key,
-                     "anthropic-version": "2023-06-01"})
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            return json.loads(resp.read())["content"][0]["text"].strip()
+# ------------------------------------------------------------------ overige providers
 
-    # OpenAI-compatibel: Groq, OpenRouter, Mistral
+def _volledig_anthropic(systeem, gebruiker, max_tokens, temperatuur) -> str:
+    import urllib.request
+    key = os.environ.get("ANTHROPIC_API_KEY")
+    if not key:
+        return ""
+    body = json.dumps({
+        "model": os.environ.get("ASSURANTIE_MODEL_NAAM", "claude-sonnet-5"),
+        "max_tokens": max_tokens, "system": systeem,
+        "messages": [{"role": "user", "content": gebruiker}]}).encode()
+    req = urllib.request.Request(
+        "https://api.anthropic.com/v1/messages", data=body,
+        headers={"content-type": "application/json", "x-api-key": key,
+                 "anthropic-version": "2023-06-01"})
+    with urllib.request.urlopen(req, timeout=TIMEOUT_SEC) as resp:
+        return json.loads(resp.read())["content"][0]["text"].strip()
+
+
+def _volledig_openai_compatibel(systeem, gebruiker, max_tokens, temperatuur) -> str:
+    """Groq, Mistral e.d. via LLM_API_KEY en LLM_BASE_URL."""
     import urllib.request
     key = os.environ.get("LLM_API_KEY", "")
     base = os.environ.get("LLM_BASE_URL", "https://api.groq.com/openai/v1")
@@ -174,34 +356,59 @@ def genereer(systeem: str, gebruiker: str, max_tokens: int = 700,
     req = urllib.request.Request(
         base.rstrip("/") + "/chat/completions", data=body,
         headers={"content-type": "application/json", "authorization": f"Bearer {key}"})
-    with urllib.request.urlopen(req, timeout=120) as resp:
+    with urllib.request.urlopen(req, timeout=TIMEOUT_SEC) as resp:
         return json.loads(resp.read())["choices"][0]["message"]["content"].strip()
 
 
-def stream(systeem: str, gebruiker: str, max_tokens: int = 700,
-           temperatuur: float = 0.2):
-    """
-    Token-voor-token generatie.
-
-    Dit is geen cosmetica. Op een lokale CPU-runtime van circa 6-7 tokens/sec duurt een
-    antwoord van 400 tokens ruim een minuut. Wachten op een compleet antwoord maakt het
-    portaal onbruikbaar; meelezen terwijl het opbouwt maakt het werkbaar. De snelheid
-    van het model is een gegeven, de beleving ervan is een ontwerpkeuze.
-    """
-    if PROVIDER == "local":
-        if not os.path.exists(MODEL_PATH):
-            yield ""
-            return
-        for chunk in _get_local().create_chat_completion(
-                messages=[{"role": "system", "content": systeem},
-                          {"role": "user", "content": gebruiker}],
-                max_tokens=max_tokens, temperature=temperatuur, stream=True):
-            d = chunk["choices"][0].get("delta", {})
-            if d.get("content"):
-                yield d["content"]
+def _stream_volledig(functie, naam: str, systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]:
+    """Providers zonder eigen streaming: één antwoord, in stukjes uitgegeven."""
+    try:
+        tekst = functie(systeem, gebruiker, max_tokens, temperatuur)
+    except Exception as e:  # noqa: BLE001
+        yield {"type": "fout", "afgebroken": False, "fout": f"{naam} faalde: {type(e).__name__}: {e}"}
         return
-
-    # Niet-lokale providers: val terug op één keer genereren en in stukjes uitgeven.
-    tekst = genereer(systeem, gebruiker, max_tokens, temperatuur)
+    if not tekst:
+        yield {"type": "fout", "afgebroken": False, "fout": f"{naam} gaf geen antwoord (sleutel ontbreekt?)."}
+        return
+    yield {"type": "model", "model": os.environ.get("ASSURANTIE_MODEL_NAAM", naam), "provider": naam}
     for i in range(0, len(tekst), 24):
-        yield tekst[i:i + 24]
+        yield {"type": "delta", "tekst": tekst[i:i + 24]}
+
+
+# ------------------------------------------------------------------ publieke interface
+
+def stream_events(systeem: str, gebruiker: str, max_tokens: int = 700,
+                  temperatuur: float = 0.2) -> Iterator[Dict]:
+    """
+    Gebeurtenissen van één generatie:
+      {"type": "model", "model", "provider", ["overgeslagen": [...]]}   zodra het eerste teken er is
+      {"type": "delta", "tekst"}                                         tekst zodra die binnenkomt
+      {"type": "fout", "fout", "afgebroken": bool, ["modellen": [...]]}  einde zonder (volledig) antwoord
+
+    Dit is geen cosmetica. Op een lokale CPU-runtime duurt een antwoord van 400 tokens minuten;
+    meelezen terwijl het opbouwt maakt het werkbaar. De snelheid van het model is een gegeven, de
+    beleving ervan is een ontwerpkeuze.
+    """
+    prov = effectieve_provider()
+    if prov == "local":
+        yield from _stream_local(systeem, gebruiker, max_tokens, temperatuur)
+    elif prov == "openrouter":
+        yield from _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur)
+    elif prov == "anthropic":
+        yield from _stream_volledig(_volledig_anthropic, "anthropic", systeem, gebruiker,
+                                    max_tokens, temperatuur)
+    else:
+        yield from _stream_volledig(_volledig_openai_compatibel, "openai-compatibel", systeem,
+                                    gebruiker, max_tokens, temperatuur)
+
+
+def stream(systeem: str, gebruiker: str, max_tokens: int = 700, temperatuur: float = 0.2):
+    """Alleen de tekststukken. Bij een fout zonder antwoord blijft de stroom leeg."""
+    for e in stream_events(systeem, gebruiker, max_tokens, temperatuur):
+        if e["type"] == "delta":
+            yield e["tekst"]
+
+
+def genereer(systeem: str, gebruiker: str, max_tokens: int = 700, temperatuur: float = 0.2) -> str:
+    """Eén synchrone completion. Geeft '' terug als er geen runtime is."""
+    return "".join(stream(systeem, gebruiker, max_tokens, temperatuur)).strip()

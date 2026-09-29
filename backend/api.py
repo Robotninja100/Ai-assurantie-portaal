@@ -9,7 +9,7 @@ Antwoordvolgorde per aanvraag - bewust deze volgorde:
   3. 'tekst'      : token voor token.
   4. 'controle'   : de citeerbewaker, over het VOLLEDIGE antwoord.
 """
-import json, os, sys, time
+import json, os, queue, sys, threading, time
 sys.path.insert(0, os.path.dirname(__file__))
 
 from fastapi import FastAPI, HTTPException
@@ -28,6 +28,50 @@ FRONTEND = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "fronte
 class Aanvraag(BaseModel):
     functie: str
     invoer: Dict[str, Any] = {}
+
+
+HARTSLAG_SEC = 4          # zolang het model nog niets heeft uitgegeven sturen we elke paar seconden een teken
+
+
+def _sse(obj: Dict) -> str:
+    return f"data: {json.dumps(obj, ensure_ascii=False)}\n\n"
+
+
+def _model_stroom(systeem: str, gebruiker: str, max_tokens: int):
+    """
+    Draait het taalmodel in een eigen thread, zodat de HTTP-laag een hartslag kan sturen terwijl
+    het model nog niets uitgeeft. Op een lokaal CPU-model duurt het eerste teken minuten; een
+    stille verbinding wordt door browsers en proxy's afgekapt en laat de adviseur raden of er iets
+    gebeurt. Een 'wacht'-gebeurtenis is een eerlijk teken van leven: de tijd die is verstreken.
+    """
+    q: "queue.Queue" = queue.Queue()
+    stop = threading.Event()
+
+    def werk():
+        try:
+            for e in llm.stream_events(systeem, gebruiker, max_tokens=max_tokens):
+                q.put(e)
+                if stop.is_set():
+                    break
+        except Exception as ex:  # noqa: BLE001
+            q.put({"type": "fout", "fout": f"{type(ex).__name__}: {ex}", "afgebroken": False})
+        finally:
+            q.put(None)
+
+    threading.Thread(target=werk, daemon=True).start()
+    t0 = time.time()
+    try:
+        while True:
+            try:
+                e = q.get(timeout=HARTSLAG_SEC)
+            except queue.Empty:
+                yield {"type": "wacht", "sec": int(time.time() - t0)}
+                continue
+            if e is None:
+                return
+            yield e
+    finally:
+        stop.set()
 
 
 @app.get("/api/status")
@@ -64,9 +108,9 @@ def vraag(a: Aanvraag):
 
     def gen():
         t0 = time.time()
-        yield f"data: {json.dumps({'type':'bronnen','bronnen':opdracht['bronnen']}, ensure_ascii=False)}\n\n"
+        yield _sse({"type": "bronnen", "bronnen": opdracht["bronnen"]})
         if opdracht.get("berekening"):
-            yield f"data: {json.dumps({'type':'berekening','berekening':opdracht['berekening']}, ensure_ascii=False)}\n\n"
+            yield _sse({"type": "berekening", "berekening": opdracht["berekening"]})
 
         # Geen bronnen = geen inhoudelijk antwoord. Dit is de kern van citeer-of-weiger:
         # het portaal zwijgt liever dan dat het ongefundeerd praat.
@@ -75,19 +119,22 @@ def vraag(a: Aanvraag):
                          "Het portaal geeft daarom geen inhoudelijk antwoord.\n\n"
                          "Vervolgstap: verfijn de omschrijving, of vul het corpus aan met de "
                          "polisvoorwaarden of uitspraken die op deze casus van toepassing zijn.")
-            yield f"data: {json.dumps({'type':'tekst','tekst':boodschap}, ensure_ascii=False)}\n\n"
-            yield f"data: {json.dumps({'type':'controle','controle':{'oordeel':'GEWEIGERD_GEEN_BRONNEN','gefundeerd':[],'ongefundeerd':[]}}, ensure_ascii=False)}\n\n"
+            yield _sse({"type": "weigering", "tekst": boodschap})
+            yield _sse({"type": "controle", "controle": {
+                "oordeel": "GEWEIGERD_GEEN_BRONNEN", "gefundeerd": [], "ongefundeerd": []}})
             yield "data: [DONE]\n\n"
             return
 
-        volledig = []
-        try:
-            for stuk in llm.stream(opdracht["systeem"], opdracht["gebruiker"],
-                                   max_tokens=opdracht.get("max_tokens", 600)):
-                volledig.append(stuk)
-                yield f"data: {json.dumps({'type':'tekst','tekst':stuk}, ensure_ascii=False)}\n\n"
-        except Exception as e:
-            yield f"data: {json.dumps({'type':'fout','fout':f'{type(e).__name__}: {e}'}, ensure_ascii=False)}\n\n"
+        volledig, fout = [], None
+        for e in _model_stroom(opdracht["systeem"], opdracht["gebruiker"],
+                               opdracht.get("max_tokens", 600)):
+            if e["type"] == "delta":
+                volledig.append(e["tekst"])
+                yield _sse({"type": "tekst", "tekst": e["tekst"]})
+            elif e["type"] == "fout":
+                fout = e
+            else:                                   # 'model' en 'wacht' gaan ongewijzigd door
+                yield _sse(e)
 
         antwoord = "".join(volledig)
         if not antwoord.strip():
@@ -95,15 +142,20 @@ def vraag(a: Aanvraag):
             # geslaagde controle. Meld het als wat het is, een storing in de runtime.
             rt = llm.runtime_info()
             reden = (rt.get("opmerking") or "onbekende reden") if not rt.get("beschikbaar") \
-                else "het taalmodel gaf geen bruikbaar antwoord"
-            yield f"data: {json.dumps({'type':'fout','fout':'Geen antwoord van het taalmodel: ' + reden + ' De bronnen en de berekening hierboven zijn wel volledig en gecontroleerd.'}, ensure_ascii=False)}\n\n"
+                else (fout["fout"] if fout else "het taalmodel gaf geen bruikbaar antwoord.")
+            yield _sse({"type": "fout", "afgebroken": False,
+                        "fout": "Geen antwoord van het taalmodel: " + reden +
+                                " De bronnen en de berekening hierboven zijn wel volledig en gecontroleerd."})
             yield "data: [DONE]\n\n"
             return
+        if fout:                                    # halverwege afgebroken: wat er staat is onvolledig
+            yield _sse({"type": "fout", "afgebroken": True,
+                        "fout": fout["fout"] + " Het antwoord hierboven is onvolledig."})
         controle = grounding.controleer(antwoord, opdracht["opgehaald"])
         controle["duur_sec"] = round(time.time() - t0, 1)
-        yield f"data: {json.dumps({'type':'controle','controle':controle}, ensure_ascii=False)}\n\n"
+        yield _sse({"type": "controle", "controle": controle})
         if controle["ongefundeerd"]:
-            yield f"data: {json.dumps({'type':'gemaskeerd','tekst':grounding.maskeer(antwoord, controle)}, ensure_ascii=False)}\n\n"
+            yield _sse({"type": "gemaskeerd", "tekst": grounding.maskeer(antwoord, controle)})
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(gen(), media_type="text/event-stream",

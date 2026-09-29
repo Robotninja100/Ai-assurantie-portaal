@@ -11,3 +11,5 @@ renders/**/*.png
 # De A/B-sleutel mag nooit in de repo belanden: dan is de blindering weg.
 renders/ab/_sleutel.json
 .pytest_cache/
+.claude/
+models/
