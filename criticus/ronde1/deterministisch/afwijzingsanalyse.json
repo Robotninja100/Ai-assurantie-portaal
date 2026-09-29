@@ -6,8 +6,8 @@
   "bronnen": [
    {
     "soort": "polis",
-    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.1",
-    "type": "uitsluiting",
+    "label": "fietsverzekering art. 2.2.2",
+    "type": "verplichting verzekerde",
     "kant": null,
     "uitkomst": null
    },
@@ -20,15 +20,15 @@
    },
    {
     "soort": "polis",
-    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 2.8",
-    "type": "schaderegeling",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.1",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
-    "type": "verplichting verzekerde",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 2.8",
+    "type": "schaderegeling",
     "kant": null,
     "uitkomst": null
    },
@@ -90,13 +90,20 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.003
  },
  {
   "id": "afwijzingsanalyse-02",
   "functie": "afwijzingsanalyse",
   "http_status": 200,
   "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 4.3 sub h",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
    {
     "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 10 sub h",
@@ -106,21 +113,14 @@
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub j",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.1",
+    "label": "inboedelverzekering art. 2.8.3 sub i en j",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub b",
+    "label": "opstalverzekering Woonhuis art. 10 sub j",
     "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
@@ -183,7 +183,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.003
  },
  {
   "id": "afwijzingsanalyse-03",
@@ -213,7 +213,7 @@
    },
    {
     "soort": "polis",
-    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
+    "label": "reisverzekering art. 31.1 sub c",
     "type": "verplichting verzekerde",
     "kant": null,
     "uitkomst": null
@@ -276,7 +276,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.004
  },
  {
   "id": "afwijzingsanalyse-04",
@@ -292,22 +292,22 @@
    },
    {
     "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.16",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 4.3 sub g",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 10 sub b",
     "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub f",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 11.9",
-    "type": "eigen risico",
     "kant": null,
     "uitkomst": null
    },
@@ -369,7 +369,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.003
  },
  {
   "id": "afwijzingsanalyse-05",
@@ -399,8 +399,8 @@
    },
    {
     "soort": "polis",
-    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.3",
-    "type": "verjaring",
+    "label": "inboedelverzekering art. 2.17.14",
+    "type": "eigen risico",
     "kant": null,
     "uitkomst": null
    },
@@ -462,7 +462,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.008
  },
  {
   "id": "afwijzingsanalyse-06",
@@ -471,28 +471,28 @@
   "bronnen": [
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.1",
-    "type": "dekking",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
+    "label": "fietsverzekering art. 2.2.2",
     "type": "verplichting verzekerde",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "label": "fietsverzekering art. 2.2.1",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "fietsverzekering art. 2.3.2",
     "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.2",
+    "label": "fietsverzekering art. 2.2",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
@@ -555,7 +555,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.003
  },
  {
   "id": "afwijzingsanalyse-07",
@@ -571,13 +571,6 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.2",
-    "type": "dekking",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
     "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
     "type": "verplichting verzekerde",
     "kant": null,
@@ -585,8 +578,15 @@
    },
    {
     "soort": "polis",
-    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 5.1",
-    "type": "dekking",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
@@ -648,7 +648,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.003
  },
  {
   "id": "afwijzingsanalyse-08",
@@ -664,6 +664,13 @@
    },
    {
     "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.16",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
     "type": "eigen risico",
     "kant": null,
@@ -672,13 +679,6 @@
    {
     "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 10 sub f",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "algemene voorwaarden schadeverzekering art. 4.1.5",
     "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
@@ -741,7 +741,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.002
  },
  {
   "id": "afwijzingsanalyse-09",
@@ -834,7 +834,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.003
  },
  {
   "id": "afwijzingsanalyse-10",
@@ -850,7 +850,7 @@
    },
    {
     "soort": "polis",
-    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 2.4",
+    "label": "reisverzekering art. 36.3 en 36.4",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
@@ -864,8 +864,8 @@
    },
    {
     "soort": "polis",
-    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
-    "type": "verplichting verzekerde",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 2.4",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -927,6 +927,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.003
  }
 ]

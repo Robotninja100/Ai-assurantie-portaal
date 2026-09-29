@@ -68,6 +68,12 @@
      "formule": "€ 30.000,00 - € 500,00",
      "uitkomst": "29500.00",
      "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Zelf te dragen door de verzekerde (schade min uitkering)",
+     "formule": "€ 40.000,00 - € 29.500,00",
+     "uitkomst": "10500.00",
+     "eenheid": "EUR"
     }
    ],
    "grondslag": [
@@ -76,12 +82,17 @@
    "toelichting": "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. De breuk wordt toegepast op de schade, niet op de verzekerde som.",
    "volgende_stap": "Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en stel de verzekerde som bij. Controleer of de polis een indexclausule kent.",
    "waarschuwingen": [
-    "Onderverzekering van 25,00%. Controleer of een garantie tegen onderverzekering van toepassing is; die zet de evenredigheidsregel opzij."
+    "Onderverzekering van 25,00%. Controleer of een garantie tegen onderverzekering van toepassing is; die zet de evenredigheidsregel opzij.",
+    "De volgorde (eerst de evenredigheidsbreuk, daarna het eigen risico) volgt uit de polisvoorwaarden, niet uit de wet. Controleer haar in de voorwaarden van deze verzekeraar: wordt het eigen risico eerst afgetrokken, dan valt de uitkomst anders uit."
    ],
    "details": {
     "onderverzekerd": true,
     "verzekerd_pct": "75.00",
-    "onderverzekering_pct": "25.00"
+    "onderverzekering_pct": "25.00",
+    "totale_schade": "40000.00",
+    "zelf_te_dragen": "10500.00",
+    "zelf_te_dragen_door_onderverzekering": "10000.00",
+    "zelf_te_dragen_eigen_risico": "500.00"
    }
   },
   "duur_sec": 0.001
@@ -155,6 +166,12 @@
      "formule": "€ 3.333,33 - € 250,00",
      "uitkomst": "3083.33",
      "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Zelf te dragen door de verzekerde (schade min uitkering)",
+     "formule": "€ 10.000,00 - € 3.083,33",
+     "uitkomst": "6916.67",
+     "eenheid": "EUR"
     }
    ],
    "grondslag": [
@@ -163,12 +180,17 @@
    "toelichting": "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. De breuk wordt toegepast op de schade, niet op de verzekerde som.",
    "volgende_stap": "Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en stel de verzekerde som bij. Controleer of de polis een indexclausule kent.",
    "waarschuwingen": [
-    "Onderverzekering van 66,67%. Controleer of een garantie tegen onderverzekering van toepassing is; die zet de evenredigheidsregel opzij."
+    "Onderverzekering van 66,67%. Controleer of een garantie tegen onderverzekering van toepassing is; die zet de evenredigheidsregel opzij.",
+    "De volgorde (eerst de evenredigheidsbreuk, daarna het eigen risico) volgt uit de polisvoorwaarden, niet uit de wet. Controleer haar in de voorwaarden van deze verzekeraar: wordt het eigen risico eerst afgetrokken, dan valt de uitkomst anders uit."
    ],
    "details": {
     "onderverzekerd": true,
     "verzekerd_pct": "33.33",
-    "onderverzekering_pct": "66.67"
+    "onderverzekering_pct": "66.67",
+    "totale_schade": "10000.00",
+    "zelf_te_dragen": "6916.67",
+    "zelf_te_dragen_door_onderverzekering": "6666.67",
+    "zelf_te_dragen_eigen_risico": "250.00"
    }
   },
   "duur_sec": 0.0
@@ -319,6 +341,12 @@
      "formule": "€ 200.000,00 x (€ 100.000,00 / € 200.000,00)",
      "uitkomst": "100000.00",
      "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Zelf te dragen door de verzekerde (schade min uitkering)",
+     "formule": "€ 200.000,00 - € 100.000,00",
+     "uitkomst": "100000.00",
+     "eenheid": "EUR"
     }
    ],
    "grondslag": [
@@ -334,7 +362,11 @@
    "details": {
     "onderverzekerd": true,
     "verzekerd_pct": "50.00",
-    "onderverzekering_pct": "50.00"
+    "onderverzekering_pct": "50.00",
+    "totale_schade": "200000.00",
+    "zelf_te_dragen": "100000.00",
+    "zelf_te_dragen_door_onderverzekering": "100000.00",
+    "zelf_te_dragen_eigen_risico": "0.00"
    }
   },
   "duur_sec": 0.0
@@ -434,6 +466,12 @@
      "formule": "€ 17.000,00 + € 1.200,00",
      "uitkomst": "18200.00",
      "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Zelf te dragen door de verzekerde (schade en bereddingskosten min uitkering)",
+     "formule": "€ 32.000,00 - € 18.200,00",
+     "uitkomst": "13800.00",
+     "eenheid": "EUR"
     }
    ],
    "grondslag": [
@@ -445,15 +483,20 @@
    "toelichting": "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. De breuk wordt toegepast op de schade, niet op de verzekerde som.",
    "volgende_stap": "Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en stel de verzekerde som bij. Controleer of de polis een indexclausule kent.",
    "waarschuwingen": [
-    "Onderverzekering van 40,00%. Controleer of een garantie tegen onderverzekering van toepassing is; die zet de evenredigheidsregel opzij."
+    "Onderverzekering van 40,00%. Controleer of een garantie tegen onderverzekering van toepassing is; die zet de evenredigheidsregel opzij.",
+    "De volgorde (eerst de evenredigheidsbreuk, daarna het eigen risico) volgt uit de polisvoorwaarden, niet uit de wet. Controleer haar in de voorwaarden van deze verzekeraar: wordt het eigen risico eerst afgetrokken, dan valt de uitkomst anders uit."
    ],
    "details": {
     "onderverzekerd": true,
     "verzekerd_pct": "60.00",
-    "onderverzekering_pct": "40.00"
+    "onderverzekering_pct": "40.00",
+    "totale_schade": "32000.00",
+    "zelf_te_dragen": "13800.00",
+    "zelf_te_dragen_door_onderverzekering": "12800.00",
+    "zelf_te_dragen_eigen_risico": "1000.00"
    }
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "schadeberekening-07",
@@ -545,6 +588,12 @@
      "formule": "€ 100.000,00 + € 3.000,00",
      "uitkomst": "103000.00",
      "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Zelf te dragen door de verzekerde (schade en bereddingskosten min uitkering)",
+     "formule": "€ 103.000,00 - € 103.000,00",
+     "uitkomst": "0.00",
+     "eenheid": "EUR"
     }
    ],
    "grondslag": [
@@ -558,7 +607,11 @@
    "details": {
     "onderverzekerd": false,
     "verzekerd_pct": "100.00",
-    "onderverzekering_pct": "0.00"
+    "onderverzekering_pct": "0.00",
+    "totale_schade": "103000.00",
+    "zelf_te_dragen": "0.00",
+    "zelf_te_dragen_boven_verzekerde_som": "0.00",
+    "zelf_te_dragen_eigen_risico": "0.00"
    }
   },
   "duur_sec": 0.0
@@ -660,6 +713,12 @@
      "formule": "€ 0,00 + € 640,00",
      "uitkomst": "640.00",
      "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Zelf te dragen door de verzekerde (schade en bereddingskosten min uitkering)",
+     "formule": "€ 800,00 - € 640,00",
+     "uitkomst": "160.00",
+     "eenheid": "EUR"
     }
    ],
    "grondslag": [
@@ -676,7 +735,11 @@
    "details": {
     "onderverzekerd": true,
     "verzekerd_pct": "80.00",
-    "onderverzekering_pct": "20.00"
+    "onderverzekering_pct": "20.00",
+    "totale_schade": "800.00",
+    "zelf_te_dragen": "160.00",
+    "zelf_te_dragen_door_onderverzekering": "160.00",
+    "zelf_te_dragen_eigen_risico": "0.00"
    }
   },
   "duur_sec": 0.0

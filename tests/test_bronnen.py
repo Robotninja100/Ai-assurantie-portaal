@@ -86,8 +86,8 @@ def test_maskeer_markeert_zichtbaar_en_verwijdert_niets():
     antwoord = "Dit volgt uit art. 7:958 lid 5 BW en art. 7:942 BW."
     r = grounding.controleer(antwoord, OPGEHAALD)
     m = grounding.maskeer(antwoord, r)
-    assert "7:958 ⚠️[niet in de opgehaalde bronnen]" in m
-    assert "7:942 ⚠️" not in m
+    assert "art. 7:958 lid 5 BW ⚠️[niet in de opgehaalde bronnen]" in m      # direct achter de hele verwijzing
+    assert "7:942 BW ⚠️" not in m
     assert m.replace(" ⚠️[niet in de opgehaalde bronnen]", "") == antwoord
 
 
@@ -147,17 +147,19 @@ def test_clausule_die_niet_is_opgehaald_blijft_ongefundeerd():
 
 # ------------------------------------------------------------ getallen en data in het antwoord
 
+# Zoals in de API: de tekst (invoer en bronnen) en de berekening (JSON) zijn twee aparte dingen.
 TOEGESTAAN = (
     "Uitkering: EUR 43500.00\n- Evenredigheidsbreuk: 200000.00 / 250000.00 = 80.00\n"
-    '{"bedrag": "43500.00", "details": {"laatste_dag": "2027-03-10", "onderverzekering_pct": "20.00"}}\n'
     "De laatste dag is 10 maart 2027. Polisclausule: het eigen risico is € 250 per gebeurtenis.")
+BEREKENING = ('{"bedrag": "43500.00", "details": {"laatste_dag": "2027-03-10", "onderverzekering_pct": "20.00", '
+              '"verzekerd_pct": "80.00"}}')
 
 
 GETALSOORTEN = {"bedrag", "percentage", "datum"}
 
 
-def geefgetallen(antwoord, toegestaan=TOEGESTAAN):
-    r = grounding.controleer(antwoord, {}, toegestaan)
+def geefgetallen(antwoord, toegestaan=TOEGESTAAN, berekening=BEREKENING):
+    r = grounding.controleer(antwoord, {}, toegestaan, berekening)
     return ({x["verwijzing"] for x in r["gefundeerd"] if x["soort"] in GETALSOORTEN},
             {x["verwijzing"] for x in r["ongefundeerd"] if x["soort"] in GETALSOORTEN}, r)
 

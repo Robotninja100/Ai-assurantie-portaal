@@ -13,15 +13,15 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -71,7 +71,7 @@
     "toegepast": "nieuwwaarde"
    }
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "waardetoets-02",
@@ -87,15 +87,15 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -145,7 +145,7 @@
     "toegepast": "dagwaarde"
    }
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "waardetoets-03",
@@ -169,15 +169,15 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -217,15 +217,15 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -291,15 +291,15 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -366,15 +366,15 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -392,13 +392,13 @@
    "stappen": [
     {
      "omschrijving": "Restlevensduur",
-     "formule": "10 - 6.5 = 3.5 jaar",
+     "formule": "10 - 6,5 = 3,5 jaar",
      "uitkomst": null,
      "eenheid": "EUR"
     },
     {
      "omschrijving": "Dagwaarde",
-     "formule": "€ 2.400,00 x (3.5/10)",
+     "formule": "€ 2.400,00 x (3,5/10)",
      "uitkomst": "840.00",
      "eenheid": "EUR"
     },

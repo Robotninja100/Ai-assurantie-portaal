@@ -224,10 +224,11 @@ def vraag(a: Aanvraag):
         if fout:                                    # halverwege afgebroken: wat er staat is onvolledig
             yield _sse({"type": "fout", "afgebroken": True,
                         "fout": fout["fout"] + " Het antwoord hierboven is onvolledig."})
-        # Getallen mogen alleen uit de berekening, de invoer van de adviseur of de bronnen komen.
-        toegestaan = "\n".join([opdracht["systeem"], opdracht["gebruiker"],
-                                json.dumps(opdracht.get("berekening") or {}, ensure_ascii=False)])
-        controle = grounding.controleer(antwoord, opdracht["opgehaald"], toegestaan)
+        # Getallen en citaten mogen alleen uit de berekening, de invoer van de adviseur of de bronnen komen.
+        # De nummers van opsommingen ('1.' t/m '9.' in de regels en de vraagstelling) tellen niet als getal.
+        toegestaan = grounding.zonder_opsomming("\n".join([opdracht["systeem"], opdracht["gebruiker"]]))
+        controle = grounding.controleer(antwoord, opdracht["opgehaald"], toegestaan,
+                                        json.dumps(opdracht.get("berekening") or {}, ensure_ascii=False))
         controle["duur_sec"] = round(time.time() - t0, 1)
         # Een antwoord dat tegen de maximale lengte aanliep eindigt midden in een zin en mist de
         # vervolgstap. Dat mag nooit voor een volledig antwoord doorgaan.

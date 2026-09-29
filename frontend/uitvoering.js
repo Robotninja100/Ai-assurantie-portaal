@@ -14,7 +14,7 @@ const BEREKENING_TITEL = {
 };
 const BRONNEN_DICHT = new Set(["schadeberekening", "verjaringstoets", "provisietoets", "waardetoets"]);
 const SOORT_NAAM = { wetsartikel: "Wetsartikel", kifid: "Kifid-uitspraak", polisclausule: "Polisclausule",
-  bedrag: "Bedrag", percentage: "Percentage", datum: "Datum", citaat: "Citaat" };
+  bedrag: "Bedrag", percentage: "Percentage", datum: "Datum", citaat: "Citaat", uitspraak: "Uitspraak (ECLI)" };
 const GETALSOORT = new Set(["bedrag", "percentage", "datum"]);
 
 const OORDEEL = {

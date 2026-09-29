@@ -41,7 +41,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.004
  },
  {
   "id": "begripsuitleg-02",
@@ -130,14 +130,14 @@
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.14",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "label": "inboedelverzekering art. 2.17.14",
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
@@ -172,7 +172,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "begripsuitleg-05",
@@ -244,7 +244,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.003
  },
  {
   "id": "begripsuitleg-06",
@@ -316,7 +316,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "begripsuitleg-07",
@@ -498,6 +498,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  }
 ]

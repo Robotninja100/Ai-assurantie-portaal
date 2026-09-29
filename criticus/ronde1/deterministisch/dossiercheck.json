@@ -76,7 +76,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.002
  },
  {
   "id": "dossiercheck-02",
@@ -155,7 +155,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "dossiercheck-03",
@@ -313,7 +313,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.002
  },
  {
   "id": "dossiercheck-05",
@@ -629,7 +629,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.002
  },
  {
   "id": "dossiercheck-09",
@@ -708,7 +708,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "dossiercheck-10",

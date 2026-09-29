@@ -122,7 +122,7 @@
     "BGfo:43:2",
     "BGfo:43:3"
    ],
-   "toelichting": "Op peildatum 29 september 2026 kan de klager de klacht nog niet aan de geschilleninstantie voorleggen; de vroegste datum volgens art. 43 lid 3 is 16 november 2026.",
+   "toelichting": "Op peildatum 30 september 2026 kan de klager de klacht nog niet voorleggen; acht weken na het indienen is 16 november 2026. De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
    "volgende_stap": "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. Wacht met de geschilleninstantie tot de vroegste datum is bereikt en vraag intussen om een schriftelijke afhandelingstermijn.",
    "waarschuwingen": [
     "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
@@ -130,7 +130,7 @@
     "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
    ],
    "details": {
-    "peildatum": "2026-09-29",
+    "peildatum": "2026-09-30",
     "klacht": "2026-09-21",
     "bevestiging_uiterlijk": "2026-10-05",
     "acht_weken_na_indienen": "2026-11-16",
@@ -141,7 +141,7 @@
     "afhankelijk_van_de_lezing": false
    }
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.006
  },
  {
   "id": "klachtroute-02",
@@ -273,23 +273,23 @@
     "BGfo:43:2",
     "BGfo:43:3"
    ],
-   "toelichting": "Op peildatum 29 september 2026 kan de klager de klacht rechtstreeks aan de geschilleninstantie voorleggen: beide data uit art. 43 lid 3 zijn verstreken (uiterlijk 10 augustus 2026).",
-   "volgende_stap": "Leg de datum van de klacht en van de ontvangstbevestiging vast. Is de vroegste datum bereikt en is de klacht niet naar tevredenheid afgehandeld, vraag dan het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (10 augustus 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. Wacht met de geschilleninstantie tot de vroegste datum is bereikt en vraag intussen om een schriftelijke afhandelingstermijn.",
    "waarschuwingen": [
     "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
     "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording (lid 4). Dat is hier niet meegerekend.",
     "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
    ],
    "details": {
-    "peildatum": "2026-09-29",
+    "peildatum": "2026-09-30",
     "klacht": "2026-06-15",
     "bevestiging_uiterlijk": "2026-06-29",
     "acht_weken_na_indienen": "2026-08-10",
     "zes_weken_na_bevestiging": null,
     "vroegste_datum_geschilleninstantie": "2026-08-10",
     "laatste_datum_geschilleninstantie": "2026-08-10",
-    "kan_naar_geschilleninstantie": true,
-    "afhankelijk_van_de_lezing": false
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true
    }
   },
   "duur_sec": 0.001
@@ -378,7 +378,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "klachtroute-04",
@@ -503,23 +503,23 @@
     "BGfo:43:2",
     "BGfo:43:3"
    ],
-   "toelichting": "Op peildatum 29 september 2026 kan de klager de klacht rechtstreeks aan de geschilleninstantie voorleggen: beide data uit art. 43 lid 3 zijn verstreken (uiterlijk 27 juli 2026).",
-   "volgende_stap": "Leg de datum van de klacht en van de ontvangstbevestiging vast. Is de vroegste datum bereikt en is de klacht niet naar tevredenheid afgehandeld, vraag dan het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (27 juli 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. Wacht met de geschilleninstantie tot de vroegste datum is bereikt en vraag intussen om een schriftelijke afhandelingstermijn.",
    "waarschuwingen": [
     "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
     "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording (lid 4). Dat is hier niet meegerekend.",
     "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
    ],
    "details": {
-    "peildatum": "2026-09-29",
+    "peildatum": "2026-09-30",
     "klacht": "2026-06-01",
     "bevestiging_uiterlijk": "2026-06-15",
     "acht_weken_na_indienen": "2026-07-27",
     "zes_weken_na_bevestiging": null,
     "vroegste_datum_geschilleninstantie": "2026-07-27",
     "laatste_datum_geschilleninstantie": "2026-07-27",
-    "kan_naar_geschilleninstantie": true,
-    "afhankelijk_van_de_lezing": false
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true
    }
   },
   "duur_sec": 0.001
@@ -654,23 +654,23 @@
     "BGfo:43:2",
     "BGfo:43:3"
    ],
-   "toelichting": "Op peildatum 29 september 2026 kan de klager de klacht rechtstreeks aan de geschilleninstantie voorleggen: beide data uit art. 43 lid 3 zijn verstreken (uiterlijk 27 april 2026).",
-   "volgende_stap": "Leg de datum van de klacht en van de ontvangstbevestiging vast. Is de vroegste datum bereikt en is de klacht niet naar tevredenheid afgehandeld, vraag dan het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (27 april 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. Wacht met de geschilleninstantie tot de vroegste datum is bereikt en vraag intussen om een schriftelijke afhandelingstermijn.",
    "waarschuwingen": [
     "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
     "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording (lid 4). Dat is hier niet meegerekend.",
     "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
    ],
    "details": {
-    "peildatum": "2026-09-29",
+    "peildatum": "2026-09-30",
     "klacht": "2026-03-02",
     "bevestiging_uiterlijk": "2026-03-16",
     "acht_weken_na_indienen": "2026-04-27",
     "zes_weken_na_bevestiging": null,
     "vroegste_datum_geschilleninstantie": "2026-04-27",
     "laatste_datum_geschilleninstantie": "2026-04-27",
-    "kan_naar_geschilleninstantie": true,
-    "afhankelijk_van_de_lezing": false
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true
    }
   },
   "duur_sec": 0.001
@@ -805,26 +805,26 @@
     "BGfo:43:2",
     "BGfo:43:3"
    ],
-   "toelichting": "Op peildatum 29 september 2026 kan de klager de klacht rechtstreeks aan de geschilleninstantie voorleggen: beide data uit art. 43 lid 3 zijn verstreken (uiterlijk 8 september 2026).",
-   "volgende_stap": "Leg de datum van de klacht en van de ontvangstbevestiging vast. Is de vroegste datum bereikt en is de klacht niet naar tevredenheid afgehandeld, vraag dan het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (8 september 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. Wacht met de geschilleninstantie tot de vroegste datum is bereikt en vraag intussen om een schriftelijke afhandelingstermijn.",
    "waarschuwingen": [
     "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
     "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording (lid 4). Dat is hier niet meegerekend.",
     "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
    ],
    "details": {
-    "peildatum": "2026-09-29",
+    "peildatum": "2026-09-30",
     "klacht": "2026-07-14",
     "bevestiging_uiterlijk": "2026-07-28",
     "acht_weken_na_indienen": "2026-09-08",
     "zes_weken_na_bevestiging": null,
     "vroegste_datum_geschilleninstantie": "2026-09-08",
     "laatste_datum_geschilleninstantie": "2026-09-08",
-    "kan_naar_geschilleninstantie": true,
-    "afhankelijk_van_de_lezing": false
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true
    }
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "klachtroute-07",
@@ -917,7 +917,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.005
  },
  {
   "id": "klachtroute-08",
@@ -1128,26 +1128,26 @@
     "BGfo:43:2",
     "BGfo:43:3"
    ],
-   "toelichting": "Op peildatum 29 september 2026 kan de klager de klacht rechtstreeks aan de geschilleninstantie voorleggen: beide data uit art. 43 lid 3 zijn verstreken (uiterlijk 28 augustus 2026).",
-   "volgende_stap": "Leg de datum van de klacht en van de ontvangstbevestiging vast. Is de vroegste datum bereikt en is de klacht niet naar tevredenheid afgehandeld, vraag dan het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (28 augustus 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. Wacht met de geschilleninstantie tot de vroegste datum is bereikt en vraag intussen om een schriftelijke afhandelingstermijn.",
    "waarschuwingen": [
     "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
     "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording (lid 4). Dat is hier niet meegerekend.",
     "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
    ],
    "details": {
-    "peildatum": "2026-09-29",
+    "peildatum": "2026-09-30",
     "klacht": "2026-07-03",
     "bevestiging_uiterlijk": "2026-07-17",
     "acht_weken_na_indienen": "2026-08-28",
     "zes_weken_na_bevestiging": null,
     "vroegste_datum_geschilleninstantie": "2026-08-28",
     "laatste_datum_geschilleninstantie": "2026-08-28",
-    "kan_naar_geschilleninstantie": true,
-    "afhankelijk_van_de_lezing": false
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true
    }
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.002
  },
  {
   "id": "klachtroute-10",
