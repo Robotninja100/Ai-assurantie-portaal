@@ -53,12 +53,15 @@ class Index:
         self.avg = (sum(self.len) / self.N) if self.N else 1
         self.idf = {t: math.log(1 + (self.N - n + 0.5) / (n + 0.5)) for t, n in df.items()}
 
-    def zoek(self, vraag: str, top=6) -> List[Tuple[float, Dict]]:
+    def zoek(self, vraag: str, top=6, waar=None) -> List[Tuple[float, Dict]]:
+        """`waar` is een optioneel filter op het document; de BM25-statistiek blijft die van het hele corpus."""
         q = tokenize(vraag)
         if not q or not self.docs:
             return []
         scores = []
         for i, tf in enumerate(self.tf):
+            if waar is not None and not waar(self.docs[i]):
+                continue
             s = 0.0
             dl = self.len[i] or 1
             for t in q:
@@ -113,8 +116,8 @@ class Corpus:
                 self.status[naam] = {"geladen": False, "records": 0, "pad": pad,
                                      "fout": f"{type(e).__name__}: {e}"}
 
-    def zoek(self, bron: str, vraag: str, top=6):
-        return self.index.get(bron).zoek(vraag, top) if bron in self.index else []
+    def zoek(self, bron: str, vraag: str, top=6, waar=None):
+        return self.index.get(bron).zoek(vraag, top, waar) if bron in self.index else []
 
     def zoek_breed(self, vraag: str, per_bron=4):
         return {b: self.zoek(b, vraag, per_bron) for b in self.index}

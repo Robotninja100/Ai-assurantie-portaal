@@ -85,13 +85,52 @@ def _blok(bron: str, rows: List) -> str:
     return "\n\n".join(uit)
 
 
-def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=()) -> Dict:
+# Welke polisproducten bij de gekozen productsoort horen. Een dekkingsvraag over een inboedel mag
+# geen autoclausules opleveren, maar de algemene voorwaarden gelden voor elk schadeproduct.
+ALGEMEEN = "algemene voorwaarden schadeverzekering"
+PRODUCT_FAMILIE = {
+    "inboedelverzekering": {"inboedelverzekering", "opstal-/inboedelverzekering (woonverzekering)"},
+    "opstalverzekering": {"opstalverzekering", "opstal-/inboedelverzekering (woonverzekering)"},
+    "opstal-/inboedelverzekering (woonverzekering)": {"inboedelverzekering", "opstalverzekering",
+                                                       "opstal-/inboedelverzekering (woonverzekering)"},
+}
+
+
+def _product_filter(product: str):
+    """Filter voor Corpus.zoek op de gekozen productsoort; None als er niets is gekozen of herkend."""
+    p = " ".join((product or "").lower().split())
+    if not p:
+        return None
+    kennen = {r.get("product") for r in CORPUS.data.get("polisvoorwaarden", [])}
+    gelijk = next((k for k in kennen if k and k.lower() == p), None)
+    if gelijk is None:
+        gelijk = next((k for k in kennen if k and (p in k.lower() or k.lower() in p)), None)
+    if gelijk is None:
+        return None
+    familie = PRODUCT_FAMILIE.get(gelijk, {gelijk}) | {ALGEMEEN}
+    return lambda d: d.get("product") in familie
+
+
+# Welk deel van de wetgeving bij welke vraag hoort. Een dekkingsvraag gaat over het verzekeringsrecht
+# (BW boek 7), niet over de gedragsregels voor adviseurs (Wft, BGfo); andersom geldt hetzelfde. Zonder
+# dit filter haalde een inbraakcasus artikelen over meldingsplichten aan de AFM op, alleen omdat
+# 'melden' en 'klant' erin voorkomen.
+def _wet(*wetten):
+    return lambda d: d.get("wet") in wetten
+
+
+VERZEKERINGSRECHT = _wet("BW")
+GEDRAGSREGELS = _wet("Wft", "BGfo")
+
+
+def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=(), waar=None) -> Dict:
     opgehaald, blokken = {}, []
+    waar = waar or {}
     verplicht = _grondslag_docs(grondslag)
     if verplicht and "wetgeving" not in bronnen:
         bronnen = ["wetgeving"] + list(bronnen)
     for b in bronnen:
-        rows = CORPUS.zoek(b, vraag, per_bron)
+        rows = CORPUS.zoek(b, vraag, per_bron, waar.get(b))
         if b == "wetgeving" and verplicht:
             ids = {(d.get("wet"), d.get("artikel")) for d in verplicht}
             rows = ([(VERPLICHT, d) for d in verplicht] +
@@ -112,18 +151,23 @@ def _bronlijst(opgehaald: Dict) -> List[Dict]:
         for d in docs:
             if b == "wetgeving":
                 uit.append({"soort": "wetgeving", "label": f"{d.get('wet')} art. {d.get('artikel')}",
-                            "titel": d.get("titel"), "url": d.get("bron_url"),
-                            "fragment": (d.get("tekst") or "")[:300]})
+                            "titel": d.get("onderwerp") or d.get("titel"), "url": d.get("bron_url"),
+                            "wet": d.get("wet"), "artikel": d.get("artikel"),
+                            "geldig_op": d.get("geldig_op"),
+                            "fragment": (d.get("tekst") or "")[:900]})
             elif b == "kifid":
                 uit.append({"soort": "kifid", "label": f"Kifid {d.get('uitspraaknummer')}",
-                            "titel": d.get("titel"), "uitkomst": _uitkomst(d),
-                            "url": d.get("bron_url"),
-                            "fragment": (d.get("samenvatting") or "")[:300]})
+                            "titel": d.get("thema") or d.get("titel"), "uitkomst": _uitkomst(d),
+                            "url": d.get("bron_url"), "verweerder": d.get("verweerder"),
+                            "datum": d.get("datum"), "bindend": d.get("bindend"),
+                            "fragment": (d.get("samenvatting") or d.get("kern_klacht") or "")[:900]})
             else:
                 uit.append({"soort": "polis",
                             "label": f"{d.get('product')} {d.get('clausule_id')}",
                             "titel": d.get("kop"), "type": d.get("type"),
-                            "url": d.get("bron_url"), "fragment": (d.get("tekst") or "")[:300]})
+                            "product": d.get("product"), "clausule": d.get("clausule_id"),
+                            "verzekeraar": d.get("verzekeraar_of_bron"), "document": d.get("document"),
+                            "url": d.get("bron_url"), "fragment": (d.get("tekst") or "")[:900]})
     return uit
 
 
@@ -131,7 +175,8 @@ def _bronlijst(opgehaald: Dict) -> List[Dict]:
 
 def dekkingscheck(situatie: str, product: str = "") -> Dict:
     vraag = f"{product} {situatie}".strip()
-    ctx = _context(vraag, ["polisvoorwaarden", "wetgeving"], per_bron=5)
+    ctx = _context(vraag, ["polisvoorwaarden", "wetgeving"], per_bron=5,
+                   waar={"polisvoorwaarden": _product_filter(product), "wetgeving": VERZEKERINGSRECHT})
     gebruiker = (
         f"SCHADESITUATIE:\n{situatie}\n\nPRODUCT: {product or 'niet opgegeven'}\n\n"
         "Beoordeel op basis van UITSLUITEND de bronnen:\n"
@@ -188,7 +233,8 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
     u = rk.evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
                                   eigen_risico, bereddingskosten)
     ctx = _context("onderverzekering evenredigheid verzekerde som herbouwwaarde eigen risico",
-                   ["wetgeving", "polisvoorwaarden"], per_bron=3, grondslag=u.grondslag)
+                   ["wetgeving", "polisvoorwaarden"], per_bron=3, grondslag=u.grondslag,
+                   waar={"wetgeving": VERZEKERINGSRECHT})
     stappen = "\n".join(f"- {s.omschrijving}: {s.formule}" for s in u.stappen)
     gebruiker = (
         f"De berekening is AL UITGEVOERD in deterministische code. Neem deze cijfers "
@@ -224,7 +270,8 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
                                  bool(aansprakelijkheid),
                                  _datum(peildatum, "peildatum"))
     ctx = _context("verjaring rechtsvordering verzekeraar stuiting termijn afwijzing",
-                   ["wetgeving", "kifid"], per_bron=3, grondslag=u.grondslag)
+                   ["wetgeving", "kifid"], per_bron=3, grondslag=u.grondslag,
+                   waar={"wetgeving": VERZEKERINGSRECHT})
     gebruiker = (
         f"De termijnberekening is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{u.toelichting}\n"
@@ -243,7 +290,7 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
     u = rk.provisie_toets(producttype, jaarpremie, provisiepercentage, directe_beloning)
     ctx = _context(f"provisieverbod beloning {producttype} dienstverleningsdocument "
                    f"transparantie complex product", ["wetgeving", "kifid"], per_bron=4,
-                   grondslag=u.grondslag)
+                   grondslag=u.grondslag, waar={"wetgeving": GEDRAGSREGELS})
     bedrag = u.to_dict()["bedrag"]
     gebruiker = (
         f"PRODUCT: {producttype}\n"
@@ -262,7 +309,7 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
 def dossiercheck(dossiertekst: str) -> Dict:
     ctx = _context("passend advies klantprofiel zorgplicht informatieverstrekking "
                    "kennis ervaring doelstelling risicobereidheid financiele positie",
-                   ["wetgeving", "kifid"], per_bron=5)
+                   ["wetgeving", "kifid"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS})
     gebruiker = (
         f"ADVIESDOSSIER:\n---\n{dossiertekst[:4000]}\n---\n\n"
         "Toets dit dossier tegen de zorgplicht- en adviesvereisten uit de bronnen.\n"
@@ -277,22 +324,47 @@ def dossiercheck(dossiertekst: str) -> Dict:
 
 # =============================================================== 7. polisvergelijker
 
+TYPE_VOLGORDE = ["dekking", "uitsluiting", "eigen risico", "verplichting verzekerde",
+                 "schaderegeling", "verjaring"]
+
+
+def _clausules_van(product: str, max_n: int = 10) -> List[Dict]:
+    """
+    Alle clausules van precies dit product, dekking en uitsluitingen eerst. Een vergelijking moet
+    controleerbaar zijn: geen zoekscore die bepaalt wat er wel en niet naast elkaar komt te staan.
+    """
+    p = " ".join((product or "").lower().split())
+    rijen = CORPUS.data.get("polisvoorwaarden", [])
+    kennen = {r.get("product") for r in rijen}
+    gelijk = next((k for k in kennen if k and k.lower() == p), None) or \
+        next((k for k in kennen if k and p and (p in k.lower() or k.lower() in p)), None)
+    if not gelijk:
+        return []
+    mijn = [r for r in rijen if r.get("product") == gelijk]
+    mijn.sort(key=lambda r: (TYPE_VOLGORDE.index(r["type"]) if r.get("type") in TYPE_VOLGORDE else 99,
+                             r.get("clausule_id") or ""))
+    return mijn[:max_n]
+
+
 def polisvergelijker(product_a: str, product_b: str) -> Dict:
     """Verschilanalyse over echte clausules; het model beschrijft, het corpus levert."""
-    ra = CORPUS.zoek("polisvoorwaarden", f"{product_a} uitsluiting dekking eigen risico", 6)
-    rb = CORPUS.zoek("polisvoorwaarden", f"{product_b} uitsluiting dekking eigen risico", 6)
-    docs = [d for _, d in ra] + [d for _, d in rb]
-    blok = (f"=== VARIANT A: {product_a} ===\n{_blok('polisvoorwaarden', ra)}\n\n"
-            f"=== VARIANT B: {product_b} ===\n{_blok('polisvoorwaarden', rb)}")
+    ra, rb = _clausules_van(product_a), _clausules_van(product_b)
+    docs = ra + rb
+    rijen = lambda lst: [(0.0, d) for d in lst]
+    blok = (f"=== VARIANT A: {product_a} ===\n{_blok('polisvoorwaarden', rijen(ra)) or '(geen clausules in het corpus)'}\n\n"
+            f"=== VARIANT B: {product_b} ===\n{_blok('polisvoorwaarden', rijen(rb)) or '(geen clausules in het corpus)'}")
     gebruiker = (
         f"Vergelijk '{product_a}' met '{product_b}' op basis van UITSLUITEND bovenstaande clausules.\n"
         "1. Waar verschillen de UITSLUITINGEN? Noem clausulenummers aan beide kanten.\n"
         "2. Welk concreet dekkingshiaat ontstaat er als een klant overstapt van A naar B?\n"
         "3. Welke vergelijking kun je NIET maken omdat de clausule aan een kant ontbreekt? "
         "Benoem dat expliciet in plaats van het gat te vullen.")
+    bronnen = _bronlijst({"polisvoorwaarden": docs})
+    for i, b in enumerate(bronnen):
+        b["kant"] = "A" if i < len(ra) else "B"        # de UI toont beide varianten naast elkaar
     return {"functie": "polisvergelijker", "systeem": grounding.systeemprompt(blok),
             "gebruiker": gebruiker, "opgehaald": {"polisvoorwaarden": docs},
-            "bronnen": _bronlijst({"polisvoorwaarden": docs}), "berekening": None, "max_tokens": 600}
+            "bronnen": bronnen, "berekening": None, "max_tokens": 600}
 
 
 # =============================================================== 8. klachtroute
@@ -319,7 +391,8 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
 
 def afwijzingsanalyse(brieftekst: str) -> Dict:
     ctx = _context(brieftekst[:600] + " afwijzing dekking uitsluiting mededelingsplicht "
-                   "opzet eigen gebrek", ["polisvoorwaarden", "kifid", "wetgeving"], per_bron=4)
+                   "opzet eigen gebrek", ["polisvoorwaarden", "kifid", "wetgeving"], per_bron=4,
+                   waar={"wetgeving": VERZEKERINGSRECHT})
     gebruiker = (
         f"AFWIJZINGSBRIEF VAN DE VERZEKERAAR:\n---\n{brieftekst[:4000]}\n---\n\n"
         "Analyseer op basis van UITSLUITEND de bronnen:\n"
@@ -338,7 +411,7 @@ def afwijzingsanalyse(brieftekst: str) -> Dict:
 
 def adviesnotitie(klantsituatie: str, advies: str) -> Dict:
     ctx = _context("passend advies vastlegging dossier informatieverstrekking klantprofiel "
-                   "motivering", ["wetgeving"], per_bron=5)
+                   "motivering", ["wetgeving"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS})
     gebruiker = (
         f"KLANTSITUATIE:\n{klantsituatie}\n\nGEGEVEN ADVIES:\n{advies}\n\n"
         "Stel een dossiernotitie op die voldoet aan de vastleggingsvereisten uit de bronnen.\n"

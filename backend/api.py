@@ -95,6 +95,16 @@ def functies():
              "omschrijving": v["omschrijving"]} for k, v in features.FUNCTIES.items()]
 
 
+@app.get("/api/producten")
+def producten():
+    """De producten waarvoor het corpus polisclausules heeft; de UI bouwt hier haar keuzelijsten van."""
+    rijen = features.CORPUS.data.get("polisvoorwaarden", [])
+    telling = {}
+    for r in rijen:
+        telling[r.get("product")] = telling.get(r.get("product"), 0) + 1
+    return [{"product": p, "clausules": n} for p, n in sorted(telling.items()) if p]
+
+
 @app.post("/api/vraag")
 def vraag(a: Aanvraag):
     spec = features.FUNCTIES.get(a.functie)

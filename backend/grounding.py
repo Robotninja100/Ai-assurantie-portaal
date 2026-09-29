@@ -36,13 +36,24 @@ def _kifid_sleutels(docs: List[Dict]) -> set:
     return {str(d.get("uitspraaknummer") or "").strip() for d in docs if d.get("uitspraaknummer")}
 
 
+_NUMMER = re.compile(r"\d+(?:\.\d+)+")
+
+
 def _clausule_sleutels(docs: List[Dict]) -> set:
+    """
+    Een clausule wordt geciteerd als 'art. 11.6', maar staat in het corpus als 'Woonhuis art. 11.6',
+    'art. 2.16 sub f' of 'par. 4.2'. Zonder het kale nummer als sleutel werd een terechte verwijzing
+    naar een opgehaalde clausule als 'niet in corpus' aangemerkt. Alleen documenten die voor DEZE
+    vraag zijn opgehaald tellen mee, dus een nummer dat in twee producten voorkomt wordt hier niet
+    ruimer dan de opgehaalde bronnen.
+    """
     s = set()
     for d in docs:
         c = str(d.get("clausule_id") or "").strip().lower()
         if c:
             s.add(c)
             s.add(re.sub(r"^art(?:ikel)?\.?\s*", "", c).strip())
+            s.update(_NUMMER.findall(c))
     return {x for x in s if x}
 
 

@@ -1,0 +1,274 @@
+// Eén vraag aan het portaal, van invoer tot controle. Bouwt de resultaatkolom op naarmate de
+// gebeurtenissen binnenkomen, in de vaste volgorde: bronnen, berekening, toelichting, controle.
+import { stelVraag } from "./api.js";
+import { renderBerekening } from "./berekening.js";
+import { renderBronnen, toonBron } from "./bronnen.js";
+import { h, icoon, leeg, voegToe } from "./dom.js";
+import { aantal, meervoud } from "./format.js";
+import { HEEFT_BEREKENING } from "./registry.js";
+import { renderAntwoord } from "./tekst.js";
+
+const BEREKENING_TITEL = {
+  schadeberekening: "Berekening", verjaringstoets: "Termijn", provisietoets: "Toets",
+  waardetoets: "Waardebepaling", precedentzoeker: "Verdeling",
+};
+const BRONNEN_DICHT = new Set(["schadeberekening", "verjaringstoets", "provisietoets", "waardetoets"]);
+const SOORT_NAAM = { wetsartikel: "Wetsartikel", kifid: "Kifid-uitspraak", polisclausule: "Polisclausule" };
+
+const OORDEEL = {
+  GEFUNDEERD: { toon: "ok", icoon: "vink", uitleg: "Elke wet, uitspraak of clausule die het antwoord noemt, is teruggevonden in de bronnen die hierboven zijn opgehaald." },
+  ONGEFUNDEERD: { toon: "fout", icoon: "waarschuwing", uitleg: "Deze verwijzingen zijn in het antwoord gemarkeerd. Het model noemde ze zonder dat ze zijn opgehaald. Gebruik ze niet zonder ze zelf te controleren." },
+  GEEN_VERWIJZINGEN: { toon: "let", icoon: "info", uitleg: "Zonder verwijzing naar een wetsartikel, uitspraak of clausule is het antwoord niet te controleren. Lees het als samenvatting, niet als onderbouwing." },
+  GEWEIGERD_GEEN_BRONNEN: { toon: "info", icoon: "info", uitleg: "Er zijn geen bronnen gevonden die deze vraag kunnen onderbouwen. Het portaal geeft daarom geen inhoudelijk antwoord." },
+};
+
+const tijd = (ms) => `${(ms / 1000).toFixed(1).replace(".", ",")} s`;
+
+function sectie(nr, titel, body, { meta = "", klapbaar = false, dicht = false, acties = [] } = {}) {
+  const metaEl = h("span", { class: "sectie-meta" }, meta);
+  const bodyEl = h("div", { class: "sectie-body los" });
+  voegToe(bodyEl, [body]);
+  const el = h("section", { class: "sectie", dataset: { dicht: String(dicht) } });
+  const kop = h("header", { class: "sectie-kop" }, h("span", { class: "sectie-nr" }, String(nr)), h("h3", null, titel), metaEl, ...acties);
+  el.append(kop, bodyEl);
+  const zet = (d) => { el.dataset.dicht = String(d); bodyEl.hidden = d; };
+  if (klapbaar) {
+    kop.style.cursor = "pointer";
+    kop.setAttribute("role", "button"); kop.setAttribute("tabindex", "0");
+    const wissel = () => zet(el.dataset.dicht !== "true");
+    kop.addEventListener("click", (e) => { if (!e.target.closest("button, a")) wissel(); });
+    kop.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); wissel(); } });
+    metaEl.append(" ", h("span", { class: "tag zacht" }, "uitklappen"));
+  }
+  zet(dicht);
+  return { el, body: bodyEl, meta: (t) => { metaEl.textContent = t; }, open: () => zet(false), zet };
+}
+
+function pijplijn(stappen) {
+  const el = h("div", { class: "pijplijn", role: "status", "aria-live": "polite" });
+  const per = {};
+  stappen.forEach((s, i) => {
+    if (i) el.append(h("span", { class: "pijp-pijl" }, icoon("chevron", 14)));
+    per[s.id] = h("span", { class: "pijp-stap" }, h("i", { class: "punt" }), s.naam);
+    el.append(per[s.id]);
+  });
+  const t = h("span", { class: "pijp-tijd" }, "0,0 s");
+  el.append(t);
+  return { el, tijd: t, zet(id, status) { if (per[id]) per[id].className = `pijp-stap ${status}`; } };
+}
+
+export class Uitvoering {
+  constructor(id, cfg, doel, opKlaar, runtime = null) {
+    this.id = id; this.cfg = cfg; this.doel = doel; this.opKlaar = opKlaar; this.runtime = runtime;
+    this.tekst = ""; this.controle = null; this.gemaskeerd = null; this.model = null;
+    this.bronnen = []; this.berekening = null; this.fout = null; this.klaar = false;
+    this.ac = new AbortController();
+  }
+
+  async start(invoer) {
+    this.invoer = invoer;
+    leeg(this.doel);
+    const stappen = [{ id: "bronnen", naam: "Bronnen" }];
+    if (HEEFT_BEREKENING.has(this.id)) stappen.push({ id: "berekening", naam: this.id === "precedentzoeker" ? "Verdeling" : "Berekening" });
+    stappen.push({ id: "antwoord", naam: "Toelichting" }, { id: "controle", naam: "Controle" });
+    this.pijp = pijplijn(stappen);
+    this.doel.append(this.pijp.el);
+    this.pijp.zet("bronnen", "actief");
+    this.t0 = performance.now();
+    this.timer = setInterval(() => { this.pijp.tijd.textContent = tijd(performance.now() - this.t0); }, 200);
+    try {
+      await stelVraag(this.id, invoer, (e) => this.gebeurtenis(e), this.ac.signal);
+    } catch (err) {
+      if (err.name === "AbortError") this.melding("info", "Gestopt door de gebruiker.");
+      else this.storing(err);
+    } finally {
+      clearInterval(this.timer);
+      this.pijp.tijd.textContent = tijd(performance.now() - this.t0);
+      this.klaar = true;
+      this.opKlaar(this);
+    }
+  }
+
+  stop() { this.ac.abort(); }
+
+  volgnummer() { return this.doel.querySelectorAll(".sectie").length + 1; }
+
+  voegSectieToe(s) { this.doel.append(s.el); return s; }
+
+  gebeurtenis(e) {
+    switch (e.type) {
+      case "bronnen": return this.opBronnen(e.bronnen);
+      case "berekening": return this.opBerekening(e.berekening);
+      case "model": return this.opModel(e);
+      case "wacht": return this.opWacht(e.sec);
+      case "tekst": return this.opTekst(e.tekst);
+      case "weigering": return this.opWeigering(e.tekst);
+      case "gemaskeerd": this.gemaskeerd = e.tekst; return;
+      case "controle": return this.opControle(e.controle);
+      case "fout": return this.opFout(e);
+      default: return;
+    }
+  }
+
+  opBronnen(bronnen) {
+    this.bronnen = bronnen;
+    const kanten = this.cfg.tweeKanten ? [this.invoer.product_a, this.invoer.product_b] : null;
+    const { el } = renderBronnen(bronnen, { tweeKanten: kanten });
+    const dicht = BRONNEN_DICHT.has(this.id) && bronnen.length > 0;
+    this.secBronnen = this.voegSectieToe(sectie(this.volgnummer(), "Bronnen", el, {
+      meta: `${meervoud(bronnen.length, "bron", "bronnen")} opgehaald`, klapbaar: dicht, dicht }));
+    this.pijp.zet("bronnen", "klaar");
+    this.pijp.zet(HEEFT_BEREKENING.has(this.id) ? "berekening" : "antwoord", "actief");
+  }
+
+  opBerekening(b) {
+    this.berekening = b;
+    const inhoud = h("div", { class: "sectie-body" }, renderBerekening(this.id, b, (v) => this.naarBron(v)));
+    this.secBer = this.voegSectieToe(sectie(this.volgnummer(), BEREKENING_TITEL[this.id] || "Berekening", inhoud, {
+      meta: this.id === "precedentzoeker" ? "geteld in het corpus" : "uit code, niet uit het model" }));
+    this.pijp.zet("berekening", "klaar");
+    this.pijp.zet("antwoord", "actief");
+  }
+
+  ensureToelichting() {
+    if (this.secTekst) return this.secTekst;
+    this.antwoordEl = h("div", { class: "sectie-body" });
+    const acties = [h("button", { class: "knop klein", type: "button", hidden: true, onClick: () => this.kopieer() },
+      icoon("kopie", 14), "Kopieer")];
+    this.kopieerKnop = acties[0];
+    this.secTekst = this.voegSectieToe(sectie(this.volgnummer(), this.cfg.document ? "Concept-notitie" : "Toelichting", this.antwoordEl,
+      { meta: "", acties }));
+    this.pijp.zet("antwoord", "actief");
+    return this.secTekst;
+  }
+
+  opWacht(sec) {
+    this.ensureToelichting();
+    if (this.tekst) return;
+    leeg(this.antwoordEl);
+    const lokaal = this.runtime && this.runtime.provider === "local";
+    this.antwoordEl.append(h("div", { class: "wacht" }, h("span", { class: "draaier" }),
+      h("span", null, `Het taalmodel formuleert het antwoord… ${sec} s`,
+        sec >= 15 ? " Het lokale model draait op een CPU en heeft hier enkele minuten voor nodig." : "")));
+  }
+
+  opModel(e) {
+    this.ensureToelichting();
+    this.model = e;
+    this.secTekst.meta(`Geschreven door ${e.model}`);
+    if (e.overgeslagen && e.overgeslagen.length) this.secTekst.el.querySelector(".sectie-meta").title = `Overgeslagen: ${e.overgeslagen.join("; ")}`;
+    leeg(this.antwoordEl);
+    this.antwoordVak = h("div");
+    this.antwoordEl.append(this.antwoordVak);
+    if (e.overgeslagen && e.overgeslagen.length) {
+      this.antwoordEl.append(h("p", { class: "hint", stijl: "margin-top:12px" },
+        `Eerdere modellen in de keten waren niet beschikbaar: ${e.overgeslagen.join("; ")}.`));
+    }
+  }
+
+  opTekst(stuk) {
+    this.ensureToelichting();
+    this.tekst += stuk;
+    if (!this.antwoordVak) this.opModel({ model: "taalmodel" });
+    if (!this.raf) this.raf = requestAnimationFrame(() => { this.raf = null; this.tekenAntwoord(false); });
+  }
+
+  tekenAntwoord(klaar) {
+    if (!this.antwoordVak) return;
+    const verw = this.controle ? this.verwijzingen() : [];
+    const antw = renderAntwoord(this.tekst, verw, (v) => this.naarBron(v));
+    if (!klaar) antw.classList.add("cursor");
+    if (this.cfg.document) {
+      this.antwoordVak.className = "document";
+    }
+    leeg(this.antwoordVak).append(antw);
+  }
+
+  verwijzingen() {
+    const c = this.controle;
+    return [...c.gefundeerd.map((v) => ({ ...v, status: "ok" })), ...c.ongefundeerd.map((v) => ({ ...v, status: "slecht" }))];
+  }
+
+  opWeigering(tekst) {
+    this.ensureToelichting();
+    leeg(this.antwoordEl).append(h("div", { class: "melding info" }, icoon("info", 18), h("div", null, ...tekst.split("\n\n").map((p) => h("p", null, p)))));
+    this.pijp.zet("antwoord", "overgeslagen");
+  }
+
+  opControle(c) {
+    this.controle = c;
+    if (this.raf) { cancelAnimationFrame(this.raf); this.raf = null; }
+    this.pijp.zet("antwoord", "klaar");
+    this.tekenAntwoord(true);
+    if (this.secTekst) {
+      this.secTekst.meta(`${this.model ? this.model.model + " · " : ""}${c.duur_sec != null ? tijd(c.duur_sec * 1000) : ""}`);
+      if (this.kopieerKnop) this.kopieerKnop.hidden = false;
+    }
+    const uitleg = OORDEEL[c.oordeel] || OORDEEL.GEEN_VERWIJZINGEN;
+    const nOk = c.gefundeerd.length, nSlecht = c.ongefundeerd.length;
+    const titel = c.oordeel === "GEFUNDEERD" ? `Alle ${meervoud(nOk, "verwijzing", "verwijzingen")} staan in de bronnen`
+      : c.oordeel === "ONGEFUNDEERD" ? `${meervoud(nSlecht, "verwijzing staat", "verwijzingen staan")} niet in de bronnen`
+      : c.oordeel === "GEWEIGERD_GEEN_BRONNEN" ? "Geen bronnen, dus geen inhoudelijk antwoord"
+      : "Het antwoord noemt geen wet, uitspraak of clausule";
+    const rijen = [...c.ongefundeerd.map((v) => ({ ...v, ok: false })), ...c.gefundeerd.map((v) => ({ ...v, ok: true }))];
+    const b = c.bronnen_beschikbaar || {};
+    const lijst = rijen.length ? h("ul", { class: "verwijzingslijst" }, ...rijen.map((v) =>
+      h("li", null, h("span", { class: `tag ${v.ok ? "ok" : "fout"}` }, v.ok ? "In de bronnen" : "Niet in de bronnen"),
+        h("b", null, v.verwijzing), h("span", { class: "soort" }, SOORT_NAAM[v.soort] || v.soort)))) : null;
+    const body = h("div", { class: "sectie-body" },
+      h("div", { class: "controle-kop" },
+        h("div", { class: `oordeel-icoon oordeel ${uitleg.toon}`, stijl: "width:40px;height:40px;padding:0;display:grid;place-items:center;border-radius:10px" }, icoon(uitleg.icoon, 22)),
+        h("div", null, h("h4", null, titel), h("p", null, uitleg.uitleg))),
+      lijst,
+      h("div", { class: "controle-meta" },
+        h("span", null, "Gecontroleerd tegen ", h("b", null, `${aantal(b.wetgeving || 0)} wetsartikelen, ${aantal(b.kifid || 0)} uitspraken, ${aantal(b.polisclausules || 0)} clausules`), " die voor deze vraag zijn opgehaald."),
+        c.duur_sec != null ? h("span", null, "Totale duur ", h("b", null, tijd(c.duur_sec * 1000))) : null));
+    this.voegSectieToe(sectie(this.volgnummer(), "Controle van verwijzingen", body, { meta: "citeer-of-weiger" }));
+    this.pijp.zet("controle", c.oordeel === "ONGEFUNDEERD" ? "fout" : "klaar");
+  }
+
+  opFout(e) {
+    this.fout = e;
+    this.ensureToelichting();
+    if (e.afgebroken && this.tekst) this.tekenAntwoord(true);
+    else if (!this.tekst) leeg(this.antwoordEl);
+    this.antwoordEl.append(h("div", { class: "melding fout", stijl: "margin-top:16px" }, icoon("waarschuwing", 18),
+      h("div", null, h("b", null, e.afgebroken ? "Het antwoord is afgebroken. " : "Geen antwoord van het taalmodel. "), e.fout)));
+    this.pijp.zet("antwoord", "fout");
+    this.pijp.zet("controle", "overgeslagen");
+  }
+
+  storing(err) {
+    if (err.invoerfout) { this.invoerFout = err.message; }
+    leeg(this.doel);
+    this.doel.append(h("div", { class: err.invoerfout ? "melding" : "melding fout" }, icoon("waarschuwing", 18),
+      h("div", null, h("b", null, err.invoerfout ? "De invoer klopt niet. " : "Er ging iets mis. "), err.message)));
+  }
+
+  melding(soort, tekst) {
+    this.doel.append(h("div", { class: `melding ${soort}` }, icoon("info", 18), h("div", null, tekst)));
+  }
+
+  naarBron(v) {
+    if (!this.secBronnen) return;
+    this.secBronnen.open();
+    toonBron(this.secBronnen.body, v);
+  }
+
+  tekstVoorKopie() {
+    const regels = [];
+    if (this.berekening && this.berekening.onderwerp) regels.push(this.berekening.onderwerp);
+    if (this.berekening && this.berekening.toelichting) regels.push(this.berekening.toelichting);
+    regels.push("", this.gemaskeerd || this.tekst, "", "Bronnen:");
+    for (const b of this.bronnen) regels.push(`- ${b.label}${b.titel ? ` (${b.titel})` : ""}${b.url ? ` ${b.url}` : ""}`);
+    if (this.controle) regels.push("", `Controle van verwijzingen: ${this.controle.oordeel}`);
+    return regels.join("\n");
+  }
+
+  async kopieer() {
+    const t = this.tekstVoorKopie();
+    try { await navigator.clipboard.writeText(t); this.kopieerKnop.lastChild.textContent = "Gekopieerd"; }
+    catch { this.kopieerKnop.lastChild.textContent = "Kopiëren mislukt"; }
+    setTimeout(() => { this.kopieerKnop.lastChild.textContent = "Kopieer"; }, 1800);
+  }
+}

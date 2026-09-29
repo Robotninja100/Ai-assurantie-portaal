@@ -23,6 +23,16 @@ def _eur(x) -> Decimal:
     return Decimal(str(x)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
+def _bedrag(x) -> str:
+    """Een bedrag zoals een Nederlander het schrijft: € 1.234,56 (voor teksten, niet voor rekenen)."""
+    tekst = f"{_eur(x):,.2f}"                   # 1,234.56
+    return "€ " + tekst.replace(",", "\x00").replace(".", ",").replace("\x00", ".")
+
+
+def _procent(x) -> str:
+    return f"{_eur(x):.2f}".replace(".", ",") + "%"
+
+
 @dataclass
 class Stap:
     """Eén navolgbare rekenstap. De adviseur moet dit kunnen narekenen op papier."""
@@ -82,29 +92,32 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
 
     if vs >= ww:
         u.stappen.append(Stap("Geen onderverzekering: verzekerde som dekt de waarde",
-                              f"{_eur(vs)} >= {_eur(ww)}"))
+                              f"{_bedrag(vs)} >= {_bedrag(ww)}"))
         basis = min(sch, vs)
         u.grondslag = ["BW:7:955:1"]
+        u.details = {"onderverzekerd": False, "verzekerd_pct": "100.00", "onderverzekering_pct": "0.00"}
         if sch > vs:
             u.waarschuwingen.append(
-                f"Schade ({_eur(sch)}) overstijgt de verzekerde som ({_eur(vs)}); "
+                f"Schade ({_bedrag(sch)}) overstijgt de verzekerde som ({_bedrag(vs)}); "
                 "de uitkering is gemaximeerd op de verzekerde som.")
     else:
         breuk = vs / ww
         u.stappen.append(Stap("Evenredigheidsbreuk bepalen",
-                              f"{_eur(vs)} / {_eur(ww)}", breuk * 100, "%"))
+                              f"{_bedrag(vs)} / {_bedrag(ww)}", breuk * 100, "%"))
         basis = sch * breuk
         u.stappen.append(Stap("Schade naar evenredigheid",
-                              f"{_eur(sch)} x ({_eur(vs)} / {_eur(ww)})", basis))
+                              f"{_bedrag(sch)} x ({_bedrag(vs)} / {_bedrag(ww)})", basis))
         u.grondslag = ["BW:7:958:5"]
+        u.details = {"onderverzekerd": True, "verzekerd_pct": str(_eur(breuk * 100)),
+                     "onderverzekering_pct": str(_eur((1 - breuk) * 100))}
         u.waarschuwingen.append(
-            f"Onderverzekering van {_eur((1 - breuk) * 100)}%. "
+            f"Onderverzekering van {_procent((1 - breuk) * 100)}. "
             "Controleer of een garantie tegen onderverzekering van toepassing is; "
             "die zet de evenredigheidsregel opzij.")
 
     na_er = basis - er
     if er > 0:
-        u.stappen.append(Stap("Eigen risico in mindering", f"{_eur(basis)} - {_eur(er)}", na_er))
+        u.stappen.append(Stap("Eigen risico in mindering", f"{_bedrag(basis)} - {_bedrag(er)}", na_er))
     if na_er < 0:
         u.waarschuwingen.append("Eigen risico overstijgt de berekende uitkering; uitkering is nihil.")
         na_er = Decimal("0")
@@ -117,14 +130,14 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
             u.stappen.append(Stap(
                 "Bereddingskosten eveneens naar evenredigheid verminderd "
                 "(art. 7:959 lid 2 verwijst naar art. 7:958 lid 5)",
-                f"{_eur(bk)} x ({_eur(vs)} / {_eur(ww)})", bk_verg))
+                f"{_bedrag(bk)} x ({_bedrag(vs)} / {_bedrag(ww)})", bk_verg))
         else:
             bk_verg = bk
             u.stappen.append(Stap("Bereddingskosten volledig vergoed",
-                                  f"{_eur(bk)}", bk_verg))
+                                  f"{_bedrag(bk)}", bk_verg))
         u.stappen.append(Stap(
             "Bereddingskosten mogen de verzekerde som overschrijden (art. 7:959 lid 1)",
-            f"{_eur(na_er)} + {_eur(bk_verg)}", na_er + bk_verg))
+            f"{_bedrag(na_er)} + {_bedrag(bk_verg)}", na_er + bk_verg))
         totaal = na_er + bk_verg
         u.grondslag += ["BW:7:957:2", "BW:7:959:1"]
         if onderverzekerd:
@@ -397,10 +410,14 @@ def nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren,
     drempel = nw * Decimal(str(dagwaarde_drempel_pct)) / Decimal("100")
 
     u.stappen.append(Stap("Restlevensduur", f"{levensduur_jaren} - {ouderdom_jaren} = {rest} jaar"))
-    u.stappen.append(Stap("Dagwaarde", f"{_eur(nw)} x ({rest}/{levensduur_jaren})", dagwaarde))
+    u.stappen.append(Stap("Dagwaarde", f"{_bedrag(nw)} x ({rest}/{levensduur_jaren})", dagwaarde))
     u.stappen.append(Stap(f"Drempel ({dagwaarde_drempel_pct}% van nieuwwaarde)",
-                          f"{_eur(nw)} x {dagwaarde_drempel_pct}%", drempel))
+                          f"{_bedrag(nw)} x {dagwaarde_drempel_pct}%", drempel))
 
+    u.details = {
+        "nieuwwaarde": str(_eur(nw)), "dagwaarde": str(_eur(dagwaarde)), "drempel": str(_eur(drempel)),
+        "dagwaarde_pct": str(_eur(factor * 100)), "drempel_pct": str(_eur(Decimal(str(dagwaarde_drempel_pct)))),
+        "toegepast": "dagwaarde" if dagwaarde < drempel else "nieuwwaarde"}
     if dagwaarde < drempel:
         u.bedrag = dagwaarde
         u.toelichting = "Dagwaarde ligt onder de polisdrempel; er wordt op dagwaarde afgewikkeld."
@@ -516,7 +533,7 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
                               f"'{term}' staat in art. 86c lid 1", None, ""))
         if pct > 0:
             u.stappen.append(Stap("Ingevulde provisie (NIET toegestaan voor dit product)",
-                                  f"{_eur(jp)} x {pct}%", prov))
+                                  f"{_bedrag(jp)} x {pct}%", prov))
             u.waarschuwingen.append(
                 "Er is een provisiepercentage ingevuld voor een product onder het provisieverbod. "
                 "Dit is een compliance-signaal, geen rekenfout.")
@@ -539,7 +556,7 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
         u.grondslag = ["BGfo:86d:1", "BGfo:86i:3"]
         u.stappen.append(Stap("Toets: art. 86c lid 1 noemt dit product niet; art. 86d regelt de provisie",
                               f"'{producttype}' is een schadeverzekering", None, ""))
-        u.stappen.append(Stap("Provisie over jaarpremie", f"{_eur(jp)} x {pct}%", prov))
+        u.stappen.append(Stap("Provisie over jaarpremie", f"{_bedrag(jp)} x {pct}%", prov))
         u.bedrag = prov
         u.toelichting = (
             f"Voor '{producttype}' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat "
@@ -562,7 +579,7 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
                               "nee: zie toelichting", None, ""))
         if pct > 0 and jp > 0:
             u.stappen.append(Stap("Voorwaardelijk: provisie als het GEEN verboden product blijkt",
-                                  f"{_eur(jp)} x {pct}%", prov))
+                                  f"{_bedrag(jp)} x {pct}%", prov))
         u.bedrag = None
         u.toelichting = uitleg
         u.volgende_stap = (

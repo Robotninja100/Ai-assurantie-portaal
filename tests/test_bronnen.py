@@ -126,3 +126,20 @@ def test_elke_polisclausule_heeft_een_hash_en_een_bron():
         assert re.fullmatch(r"[0-9a-f]{64}", r["bron_pdf_sha256"]), r["clausule_id"]
         assert r["bron_url"].startswith("https://"), r["clausule_id"]
         assert r["tekst"].strip()
+
+
+def test_clausule_met_voorvoegsel_kan_gewoon_als_artikel_worden_geciteerd():
+    # Regressie: 'Woonhuis art. 11.6' en 'art. 2.16 sub f' werden nooit herkend, waardoor een terechte
+    # verwijzing als 'niet in corpus' werd gemarkeerd.
+    opgehaald = {"polisvoorwaarden": [{"clausule_id": "Woonhuis art. 11.6"},
+                                      {"clausule_id": "art. 2.16 sub f"},
+                                      {"clausule_id": "par. 4.2"}]}
+    r = grounding.controleer("Zie art. 11.6, artikel 2.16 en art. 4.2 van de voorwaarden.", opgehaald)
+    assert r["oordeel"] == "GEFUNDEERD", r
+    assert {x["verwijzing"] for x in r["gefundeerd"]} == {"11.6", "2.16", "4.2"}
+
+
+def test_clausule_die_niet_is_opgehaald_blijft_ongefundeerd():
+    opgehaald = {"polisvoorwaarden": [{"clausule_id": "Woonhuis art. 11.6"}]}
+    r = grounding.controleer("Zie art. 11.7 van de voorwaarden.", opgehaald)
+    assert r["oordeel"] == "ONGEFUNDEERD"
