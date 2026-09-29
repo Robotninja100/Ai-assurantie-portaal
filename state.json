@@ -1,8 +1,8 @@
 {
   "project": "AI-portaal voor Nederlandse assurantieprofessionals",
-  "branch": "claude/dutch-insurance-ai-portal-l5skuo",
-  "status": "RONDE_0_FUNDERING_AF__RONDE_1_NIET_GESTART",
-  "blocker": null,
+  "branch": "claude/sweet-gauss-ab8ep1",
+  "status": "RONDE_1_IN_UITVOERING__FUNDERING_INTERFACE_EN_TESTSTRAAT_STAAN",
+  "blocker": "OPENROUTER_API_KEY ontbreekt in deze omgeving (alleen voor de snelle runtime en de volledige criticusronde).",
   "runtime_audit": {
     "verdict": "LOCAL_FREE_RUNTIME_WORKING",
     "checked": [
@@ -42,7 +42,7 @@
       "provider": "openrouter",
       "keyless": false,
       "cost": "EUR 0 (gratis tier)",
-      "sleutel": "OPENROUTER_API_KEY in .env — .env staat in .gitignore, sleutel staat NIET in git",
+      "sleutel": "OPENROUTER_API_KEY als omgevingsvariabele of in .env (staat in .gitignore). De sleutel uit sessie 1 is niet meegekomen naar een nieuwe container en hoort geroteerd te worden.",
       "modelketen": [
         "inclusionai/ling-3.0-flash-fin:free",
         "nex-agi/nex-n2.5-pro:free",
@@ -77,7 +77,14 @@
         "got": "weigerde correct",
         "pass": true
       }
-    ]
+    ],
+    "lokaal_qwen3_4b": {
+      "status": "WERKT (echte run, geen testdouble)",
+      "installatie": "llama-cpp-python via het CPU-wheel van abetlen.github.io; GGUF van huggingface.co/Qwen/Qwen3-4B-GGUF (2,5 GB, models/qwen3-4b.gguf, gitignored)",
+      "gemeten": "eerste teken na 23 s (incl. laden); schadeberekening via de UI 535 s onder belasting van zes parallelle agents",
+      "gedrag": "rekent de evenredigheid correct over; liep tegen max_tokens aan en stopte midden in een zin (nu gemeld en verruimd)",
+      "valt_terug": "automatisch wanneer OPENROUTER_API_KEY ontbreekt en het modelbestand er ligt; zichtbaar in de zijbalk"
+    }
   },
   "green": {
     "ground_truth_sources": [
@@ -136,9 +143,23 @@
       ],
       "audit": "HERSTELBAAR: 4 fabricaties gevonden en in quarantaine, 164 bruikbare records over",
       "meetlat": "KAPOT - zie meetlat_audit_ronde_0; repareren voor ronde 1"
+    },
+    {
+      "ronde": 1,
+      "naam": "Interface, teststraat en criticus",
+      "uitkomst": "IN UITVOERING",
+      "bewijs": [
+        "frontend gebouwd en in een echte browser getest (9 browsertests); alleen het taalmodel is daarin een gemarkeerde testdouble",
+        "114 tests groen (105 unit, 9 browser); zie scripts/criticus_ronde.py deterministisch voor 96 harde checks op 120 casussen",
+        "echte run met het lokale Qwen3-4B via de UI: berekening en bronnen kloppen; onthulde het stil afgekapte antwoord"
+      ],
+      "nog_niet_bewezen": [
+        "de echte OpenRouter-stroom (geen sleutel in deze sessie); alleen getest tegen een lokale nep-SSE-server",
+        "kwaliteit van de modelantwoorden over alle 120 casussen door onafhankelijke beoordelaars"
+      ]
     }
   ],
-  "next_step_awaiting_user": "Kies een runtime-route (eigen ANTHROPIC_API_KEY als env var in de omgeving), of geef opdracht om alleen de niet-AI fundering te bouwen.",
+  "next_step_awaiting_user": "Zet OPENROUTER_API_KEY als omgevingsvariabele in de instellingen van de cloudomgeving (menu in de titelbalk van de sessie, dan Edit), NIET in de chat. Gebruik een nieuwe sleutel: de vorige is in een chat gedeeld. Zonder sleutel valt het portaal terug op het lokale model (minuten per antwoord); alles behalve snelle modelantwoorden en de volledige criticusronde is zonder sleutel te bouwen en te testen.",
   "architecture_decision": {
     "principle": "Retrieval-grounded, citeer-of-weiger. Model synthetiseert alleen over opgehaalde brontekst.",
     "rules": [
@@ -157,7 +178,7 @@
     "google_ai_studio": 403,
     "note": "401/403 = bereikbaar, key nodig. Gratis tiers bestaan bij Groq/OpenRouter/Google indien gebruiker later een key aanmaakt."
   },
-  "laatst_bijgewerkt": "2026-09-13",
+  "laatst_bijgewerkt": "2026-09-29",
   "corpus": {
     "wetgeving": {
       "records": 53,
@@ -237,11 +258,16 @@
   "gebouwd": {
     "backend/rekenkern.py": "deterministische berekeningen, elke uitkomst met wettelijke grondslag",
     "backend/retrieval.py": "BM25 met de hand geschreven; weigert records met bron_geverifieerd=False",
-    "backend/grounding.py": "citeerbewaker: controleert elke verwijzing tegen de OPGEHAALDE documenten",
+    "backend/grounding.py": "citeerbewaker toetst nu ook bedragen, percentages, data, BGfo-nummers zonder dubbele punt en niet-bestaande leden",
     "backend/features.py": "twaalf structureel verschillende functies",
-    "backend/llm.py": "providerlaag: openrouter | local | anthropic | openai-compatibel",
-    "backend/api.py": "FastAPI + SSE; bronnen worden VOOR het antwoord gestuurd",
-    "scripts/valideer_grondslagen.py": "faalt als de rekenkern naar een artikel verwijst dat niet in het corpus staat"
+    "backend/llm.py": "echte SSE-streaming met modelketen die alleen doorschuift voordat er tekst is, lokale terugval, denkblokfilter, finish_reason",
+    "backend/api.py": "hartslag (thread + queue), opmerkingen bij afgekapte invoer, 'afgekapt' in de controle, 400 bij ongeldige invoer",
+    "scripts/valideer_grondslagen.py": "faalt als de rekenkern naar een artikel verwijst dat niet in het corpus staat",
+    "frontend/": "index.html, app.css (ontwerpsysteem), ES-modules zonder buildstap, Inter zelf gehost (OFL); twaalf functies met eigen invoer en weergave",
+    "tests/": "unit-tests, tests/e2e (Chromium), tests/nep_llm.py (gemarkeerde testdouble), tests/casussen/ (120 rommelige casussen)",
+    "scripts/criticus_ronde.py": "laag 1 deterministisch (zonder taalmodel), laag 2 volledig via de API, hervatbaar, beoordelingsdossiers",
+    "scripts/capture_ours.py": "legt onze eigen schermen vast uit echte runs; storingsmelding in beeld = geladen_ok false",
+    "scripts/blind_ab_beoordelaar.md": "instructie voor de blinde beoordelaars met ankers voor de schaal 1-5"
   },
   "eigen_fouten_gevonden_en_hersteld": [
     {
@@ -260,6 +286,60 @@
       "waarom_fout": "Formeel bereikbaar, materieel niet-citeerbaar: het uitspraaknummer stond niet op de geleverde pagina. Exact de 'uncitable source' uit de opdracht.",
       "gevolg": "PDF (/media/<hash>/) is nu de primaire bron; 46/48 bevestigd door het nummer letterlijk uit de PDF-tekst terug te lezen; 2 geweigerd",
       "hoe_gevonden": "eigen steekproef, niet door de auditor van de workflow"
+    },
+    {
+      "wat": "Verjaring: laatste dag één dag te laat",
+      "waarom_fout": "Art. 7:942 lid 1: de termijn begint op D+1 00.00 uur, dus de laatste dag is D + 3 jaar. De vorige 'fix' verschoof alleen het begin.",
+      "gevolg": "Op de laatste dag zelf: 'nog niet verjaard, 0 dagen resterend' (onveilige richting)",
+      "hoe_gevonden": "opnieuw afleiden uit de wettekst in het corpus"
+    },
+    {
+      "wat": "Verjaring: stuiting zonder reactie genegeerd; aanspraak/reactie na de peildatum telde al mee",
+      "waarom_fout": "Art. 7:942 lid 2: zonder erkenning of afwijzing begint geen nieuwe termijn; wat na de peildatum gebeurt heeft toen nog niets gestuit",
+      "gevolg": "een voorgenomen brief gaf ten onrechte rust",
+      "hoe_gevonden": "eigen afleiding en onafhankelijke casusschrijver (verjaringstoets-09)"
+    },
+    {
+      "wat": "Provisietoets: citeerde 86c voor de 'toegestaan'-tak, classificeerde op productnaam, 'hypotheek + inboedelverzekering' werd schadeverzekering",
+      "waarom_fout": "Voor schadeverzekeringen is art. 86d de grondslag; art. 86c lid 1 noemt alleen de INDIVIDUELE AOV",
+      "gevolg": "verkeerde grondslag en een gok bij onbekende producten; nu ONBEPAALD",
+      "hoe_gevonden": "BGfo 86c/86d/86i gelezen in het corpus; casusschrijver provisietoets-05"
+    },
+    {
+      "wat": "Evenredigheid: geen begrenzing op de verzekerde som bij onderverzekering",
+      "waarom_fout": "Art. 7:955 lid 1: de verzekerde som is het hoogste bedrag",
+      "gevolg": "schade 300k, waarde 200k, som 100k gaf 150k uitkering",
+      "hoe_gevonden": "onafhankelijke casusschrijver (schadeberekening-05)"
+    },
+    {
+      "wat": "Waardetoets: dagwaarde precies op de drempel gaf nieuwwaarde",
+      "waarom_fout": "Klaverblad 2.17.3 sub c: 'meer dan 40%' voor nieuwwaarde",
+      "gevolg": "verkeerde vergoedingsgrondslag op de grens",
+      "hoe_gevonden": "onafhankelijke casusschrijver (waardetoets-06)"
+    },
+    {
+      "wat": "Citeerbewaker: clausules met voorvoegsel nooit herkend; verzonnen BGfo-artikelen zonder dubbele punt nooit gemarkeerd; getallen niet getoetst",
+      "waarom_fout": "sleutelvergelijking op de volledige clausule-ID; kale nummers werden stil overgeslagen",
+      "gevolg": "valse alarmen bij terechte verwijzingen en gemiste verzinsels",
+      "hoe_gevonden": "browsertest en casusschrijver"
+    },
+    {
+      "wat": "Polisvergelijker toonde clausules van andere producten",
+      "waarom_fout": "BM25 zonder productfilter",
+      "gevolg": "twee producten leken op elkaar",
+      "hoe_gevonden": "screenshot van de eerste UI"
+    },
+    {
+      "wat": "Antwoord stil afgekapt tegen max_tokens; wetteksten op 1.200 tekens; dossier stil op 4.000 tekens",
+      "waarom_fout": "finish_reason werd niet doorgegeven; 22 van 53 artikelen zijn langer dan 1.200 tekens",
+      "gevolg": "antwoord eindigde midden in een zin ('De bereddingskosten van €') zonder vervolgstap; Wft 4:23 lid 7 onzichtbaar",
+      "hoe_gevonden": "echte run met het lokale model"
+    },
+    {
+      "wat": "a.s.r. AOV-bron model 221 gaf HTTP 404",
+      "waarom_fout": "a.s.r. haalde het document uit de lijst",
+      "gevolg": "acht clausules met een dode bron",
+      "hoe_gevonden": "scripts/valideer_polisvoorwaarden.py in deze sessie"
     }
   ],
   "comps": {
@@ -286,14 +366,13 @@
     ]
   },
   "openstaand_volgende_sessie": [
-    "1. FRONTEND BESTAAT NOG NIET. backend/api.py serveert frontend/index.html dat er niet is.",
-    "2. MEETLAT IS KAPOT en moet voor ronde 1 gerepareerd. Negen must-fix-punten in state.json -> meetlat_audit_ronde_0.must_fix. Belangrijkste twee: de ronde bevatte nul eigen schermen en gaf toch exitcode 0, en de blindering lekt bij circa 30 van de 41 beelden.",
-    "1b. KIFID-VELD 'oordeel' IS EEN VERTALING, geen brontekst. De precedentzoeker aggregeert er nu op. Overweeg te aggregeren op uitkomst_letterlijk en de nuance zichtbaar te maken.",
-    "3. CORPUSGAT: geen diefstal-/inbraakbeveiligingsclausules. De dekkingscheck weigerde daardoor terecht te antwoorden op een inbraakcasus. Aanvullen vanuit inboedelvoorwaarden.",
-    "4. Ronde 1 criticus: 10 rommelige casussen per feature, 12 features.",
-    "5. Twee Kifid-uitspraken (2026-0832, 2026-0742) opnieuw verifieren; nu uitgesloten.",
-    "6. Streaming voor OpenRouter is nu nagebootst (chunken van een compleet antwoord); echte SSE-streaming van de provider zou beter zijn.",
-    "7. 2026-0832 opnieuw proberen (nummer niet uit PDF-tekstlaag te lezen; mogelijk gescand)."
+    "1. OPENROUTER_API_KEY in de omgeving zetten (zie next_step_awaiting_user) en daarna de VOLLEDIGE criticusronde draaien: python3 scripts/criticus_ronde.py volledig; dossiers met 'dossier'; onafhankelijke beoordelaars per functie (vier fatale fouten). Nu is alleen een deelverzameling lokaal gedraaid.",
+    "2. Meetlat: zie meetlat_herstel_ronde_1 voor wat is gedaan en wat niet. Zonder herstelde meetlat is elke visuele score betekenisloos.",
+    "3. Verifieer de echte OpenRouter-stroom (parser, modelketen, denkblokfilter) met de echte sleutel; nu alleen getest tegen een nep-SSE-server.",
+    "4. Bewaker-grens: 'lid 4' genoemd waar de regel in lid 5 staat is niet te zien. Overweeg per lid tekst mee te sturen en de bewering aan de lidtekst te toetsen.",
+    "5. Kifid 'oordeel' (vertaling) staat nog in het corpus; de UI en de precedentzoeker gebruiken sinds ronde 1 uitkomst_letterlijk. Corpus is nog klein en scheef (42 uitspraken).",
+    "6. Dossiercheck: de vaste zoekvraag is aangevuld met het dossier zelf, maar er is geen inhoudelijke checklist van zorgplichtelementen; die zou uit Wft 4:23 lid 3/7 en BGfo 39-44 gehaald moeten worden.",
+    "7. Twee Kifid-uitspraken (2026-0832, 2026-0742) opnieuw verifieren; nu uitgesloten."
   ],
   "veiligheid": {
     "api_sleutel": "door gebruiker in de chat gedeeld; staat in .env en is via .gitignore buiten git gehouden. AANBEVELING: roteer deze sleutel, want hij is buiten een secret store om gedeeld."
@@ -356,5 +435,9 @@
       "Een positieve controle toevoegen als plafondanker"
     ],
     "les": "De meetlat faalde eerder dan het product. Er was nog geen scherm om te beoordelen, en toch was de beoordelingsmachine al aantoonbaar kapot. Dit eerst repareren, anders is elke score erna betekenisloos."
+  },
+  "pull_requests": {
+    "1": "Fundering (ronde 0), draft, open: https://github.com/Robotninja100/Ai-assurantie-portaal/pull/1",
+    "2": "Ronde 1, gestapeld op #1, draft: https://github.com/Robotninja100/Ai-assurantie-portaal/pull/2"
   }
 }

@@ -162,3 +162,24 @@ def test_op_een_telefoon_zit_de_navigatie_achter_een_menuknop(browser, app):
     p.click("#zij >> text=Verjaringstoets")
     expect(p.locator("h1")).to_have_text("Verjaringstoets")
     ctx.close()
+
+
+def test_klachtroute_rekent_de_termijnen_uit_bgfo_43_en_toont_beide_lezingen(pagina):
+    pagina.goto(pagina.basis + "/#/f/klachtroute")
+    pagina.click("text=Voorbeeld invullen")
+    pagina.fill("input[name=peildatum]", "2026-09-29") if pagina.locator("input[name=peildatum]").count() else None
+    pagina.click("button[type=submit]")
+    termijnen = pagina.locator(".sectie", has=pagina.locator("h3", has_text="Termijnen"))
+    expect(termijnen).to_be_visible(timeout=15000)
+    expect(pagina.locator(".sectie", has_text="Controle van verwijzingen")).to_be_visible(timeout=15000)
+    tekst = termijnen.inner_text()
+    assert "22 oktober 2026" in tekst and "27 oktober 2026" in tekst      # zes weken na bevestiging / acht weken na indienen
+    assert pagina.fouten == []
+
+
+def test_klachtroute_zonder_klachtdatum_heeft_geen_termijnenstap(pagina):
+    pagina.goto(pagina.basis + "/#/f/klachtroute")
+    pagina.fill("textarea[name=situatie]", "Klant klaagt over een afwijzing.")
+    pagina.click("button[type=submit]")
+    expect(pagina.locator(".sectie", has_text="Controle van verwijzingen")).to_be_visible(timeout=15000)
+    assert pagina.locator(".sectie h3", has_text="Termijnen").count() == 0

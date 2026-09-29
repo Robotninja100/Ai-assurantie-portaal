@@ -274,6 +274,20 @@ def _getal(waarde, naam: str, minimum=0, maximum=None):
     return waarde
 
 
+def _bool(waarde, naam: str) -> bool:
+    """Een schakelaar. 'nee' is in Python waar; een API-client die 'nee' stuurt bedoelt onwaar."""
+    if isinstance(waarde, bool):
+        return waarde
+    if waarde is None or waarde == "":
+        return False
+    t = str(waarde).strip().lower()
+    if t in ("ja", "true", "1", "aan", "waar", "yes"):
+        return True
+    if t in ("nee", "false", "0", "uit", "onwaar", "no"):
+        return False
+    raise ValueError(f"{naam}: '{waarde}' is geen ja/nee-waarde")
+
+
 def _datum(waarde: str, veld: str) -> Optional[date]:
     """Leest een ISO-datum (JJJJ-MM-DD). Een onleesbare datum is een invoerfout, geen crash."""
     if not waarde:
@@ -291,7 +305,7 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
     u = rk.verjaring_schadeclaim(_datum(datum_bekend, "datum_bekend"),
                                  _datum(datum_stuiting, "datum_stuiting"),
                                  _datum(datum_reactie, "datum_reactie"),
-                                 bool(aansprakelijkheid),
+                                 _bool(aansprakelijkheid, "aansprakelijkheid"),
                                  _datum(peildatum, "peildatum"))
     ctx = _context("verjaring rechtsvordering verzekeraar stuiting termijn afwijzing",
                    ["wetgeving", "kifid"], per_bron=3, grondslag=u.grondslag,
@@ -414,14 +428,29 @@ def polisvergelijker(product_a: str, product_b: str) -> Dict:
 
 # =============================================================== 8. klachtroute
 
-def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool = False) -> Dict:
-    ctx = _context("klachtprocedure Kifid ontvankelijkheid termijn bindend advies "
-                   "geschilleninstantie interne klachtbehandeling",
-                   ["wetgeving", "kifid"], per_bron=4)
+KLACHT_ARTIKELEN = ["Wft:4:17", "BGfo:39", "BGfo:40", "BGfo:41", "BGfo:42", "BGfo:43", "BGfo:44"]
+
+
+def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool = False,
+                datum_bevestiging: str = "", peildatum: str = "") -> Dict:
+    intern = _bool(intern_afgehandeld, "intern_afgehandeld")
+    d_klacht, d_bev = _datum(datum_klacht, "datum_klacht"), _datum(datum_bevestiging, "datum_bevestiging")
+    u = None
+    if d_klacht:
+        u = rk.klachttermijnen(d_klacht, d_bev, _datum(peildatum, "peildatum"))
+    # De kernartikelen over klachtafhandeling horen bij elke klachtroute; de situatie bepaalt welke
+    # uitspraken erbij passen. Met een vaste zoekvraag kreeg elke casus dezelfde bronnen.
+    ctx = _context(f"{(situatie or '')[:600]} klachtprocedure Kifid ontvankelijkheid termijn bindend advies "
+                   "geschilleninstantie interne klachtafhandeling", ["wetgeving", "kifid"], per_bron=4,
+                   grondslag=KLACHT_ARTIKELEN + (u.grondslag if u else []))
+    termijnen = ""
+    if u:
+        termijnen = ("De termijnen zijn AL BEREKEND. Neem deze data letterlijk over en reken niets na:\n"
+                     + "\n".join(f"- {s.omschrijving}: {s.formule}" for s in u.stappen) + f"\n{u.toelichting}\n\n")
     gebruiker = (
         f"SITUATIE:\n{situatie}\n"
         f"Datum klacht: {datum_klacht or 'niet opgegeven'}\n"
-        f"Interne klachtprocedure doorlopen: {'ja' if intern_afgehandeld else 'nee'}\n\n"
+        f"Interne klachtprocedure doorlopen: {'ja' if intern else 'nee'}\n\n{termijnen}"
         "Beschrijf op basis van de bronnen de route:\n"
         "1. Welke stap is nu aan de orde?\n"
         "2. Welke termijnen gelden en waar blijkt dat uit?\n"
@@ -429,7 +458,7 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
         "Staat een termijn niet in de bronnen, zeg dat dan in plaats van een termijn te noemen.")
     return {"functie": "klachtroute", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
-            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 800}
+            "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict() if u else None, "max_tokens": 800}
 
 
 # =============================================================== 9. afwijzingsanalyse

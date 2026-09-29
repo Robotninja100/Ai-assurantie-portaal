@@ -18,7 +18,7 @@
         "Toont BW art. 7:942 en BW art. 7:943 in de bronnenlijst (de grondslag van de berekening)."
       ],
       "mag_niet": [
-        "Noemt een andere laatste dag dan 16 juni 2028 (bijvoorbeeld 15 of 17 juni 2028). Rekent zelf een eigen einddatum uit of noemt een andere einddatum dan de berekende.",
+        "Noemt een andere laatste dag dan 16 juni 2028 (bijvoorbeeld 15 of 17 juni 2028) of rekent zelf een eigen einddatum uit.",
         "Noemt een andere verjaringstermijn dan de drie jaar van art. 7:942 (bijvoorbeeld vijf of twintig jaar) of beroept zich op artikelen uit Boek 3 BW (algemene verjaringsregels; die staan niet in het corpus) of andere artikelen die niet in de bronnen staan.",
         "Presenteert de meegeleverde Kifid-uitspraken als steun voor de termijn: geen enkele van de 42 bruikbare uitspraken in het corpus gaat over verjaring of stuiting.",
         "Noemt een polisspecifieke termijn of clausule als feit: polisvoorwaarden worden voor deze functie niet opgehaald."
@@ -187,7 +187,7 @@
     "verwachting": {
       "moet": [
         "Signaleert dat de erkenning of afwijzing (3 maart 2025) voor de schriftelijke aanspraak (2 juni 2025) ligt en dus niet als reactie op die aanspraak kan gelden; vraagt de data na te lopen aan de hand van de stukken.",
-        "Presenteert de uitkomst uitdrukkelijk als voorlopig en afhankelijk van die controle; de reactie blijft in de berekening buiten beschouwing (zoals de berekende waarschuwing aangeeft).",
+        "Presenteert de uitkomst uitdrukkelijk als voorlopig en afhankelijk van die controle en volgt daarbij de waarschuwing uit de berekening.",
         "Noemt als vervolgstap: de brief met de aanspraak en de reactie van de verzekeraar erbij pakken, beide data vaststellen en opnieuw toetsen."
       ],
       "mag_niet": [

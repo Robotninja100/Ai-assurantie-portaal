@@ -75,3 +75,29 @@ import pytest
 def test_onzin_in_bedragen_wordt_geweigerd_in_plaats_van_doorgerekend(aanroep):
     with pytest.raises((ValueError, ArithmeticError)):
         aanroep()
+
+
+def test_nee_is_nee_ook_als_een_api_client_het_als_tekst_stuurt():
+    # Regressie: bool('nee') is True in Python.
+    o = features.verjaringstoets("2024-03-10", "2024-05-01", "", "nee", "2026-09-29")
+    assert o["berekening"]["details"]["aansprakelijkheid"] is False
+    o = features.verjaringstoets("2024-03-10", "2024-05-01", "", "ja", "2026-09-29")
+    assert o["berekening"]["details"]["aansprakelijkheid"] is True
+    with pytest.raises(ValueError):
+        features.verjaringstoets("2024-03-10", "", "", "misschien")
+
+
+def test_klachtroute_neemt_de_kernartikelen_altijd_mee_en_de_uitspraken_volgen_de_situatie():
+    a = features.klachtroute("Klant is het niet eens met de afwijzing van een inboedelclaim door de verzekeraar.")
+    b = features.klachtroute("Uitvaartverzekering waarvan de premie ten onrechte is verhoogd.")
+    for o in (a, b):
+        labels = {x["label"] for x in o["bronnen"]}
+        assert {"Wft art. 4:17", "BGfo art. 39", "BGfo art. 40", "BGfo art. 41", "BGfo art. 42",
+                "BGfo art. 43", "BGfo art. 44"} <= labels
+    assert [x["label"] for x in a["bronnen"] if x["soort"] == "kifid"] != [x["label"] for x in b["bronnen"] if x["soort"] == "kifid"]
+
+
+def test_klachtroute_rekent_de_termijnen_uit_als_er_een_klachtdatum_is():
+    o = features.klachtroute("Klacht over een afwijzing", "2026-09-01", False, "2026-09-10", "2026-09-29")
+    assert o["berekening"]["details"]["zes_weken_na_bevestiging"] == "2026-10-22"
+    assert features.klachtroute("Klacht over een afwijzing")["berekening"] is None

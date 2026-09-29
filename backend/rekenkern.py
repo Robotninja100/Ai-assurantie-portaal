@@ -198,13 +198,23 @@ def laatste_dag_termijn(aanvangsgebeurtenis: date) -> date:
     Laatste dag waarop nog kan worden gestuit, bij een termijn van drie jaar die begint met
     "de aanvang van de dag, volgende op die waarop" de gebeurtenis plaatsvond (art. 7:942).
 
-    Afleiding, omdat hier een dag scheelt: de termijn begint op D+1 om 00.00 uur en is drie
-    jaar later verstreken, dus op D+1 (drie jaar later) om 00.00 uur. Dat is het einde van de
-    dag die in nummer overeenkomt met D. Voorbeeld: bekend op 10 maart 2024 -> laatste dag
-    10 maart 2027; per 11 maart 2027 is de vordering verjaard. Een eerdere versie van deze
-    functie rekende tot en met 11 maart en gaf de adviseur daarmee één dag te veel.
+    De termijn begint op S = D+1 om 00.00 uur en is drie jaar later verstreken op S + 3 jaar om
+    00.00 uur; de laatste dag is de dag daarvoor. Voorbeeld: bekend op 10 maart 2024 -> S = 11 maart
+    2024 -> verstreken op 11 maart 2027 om 00.00 uur -> laatste dag 10 maart 2027. Een eerdere versie
+    rekende tot en met 11 maart en gaf de adviseur daarmee één dag te veel.
+
+    Randgevallen die met 'dezelfde dag drie jaar later' verkeerd uitpakken:
+      - bekend op 28 februari 2025: S = 1 maart 2025, verstreken op 1 maart 2028, dus laatste dag
+        29 februari 2028 (2028 is een schrikkeljaar);
+      - S = 29 februari (bekend op 28 februari in een schrikkeljaar): drie jaar later bestaat die dag
+        niet; de termijn eindigt dan op de laatste dag van februari.
     """
-    return _plus_jaren(aanvangsgebeurtenis, 3)
+    s = _dag_erna(aanvangsgebeurtenis)
+    try:
+        verstreken = s.replace(year=s.year + 3)
+    except ValueError:                          # S is 29 februari en het doeljaar heeft er geen
+        return date(s.year + 3, 2, 28)
+    return date.fromordinal(verstreken.toordinal() - 1)
 
 
 def verjaring_schadeclaim(datum_bekend: date,
@@ -676,9 +686,88 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
     return u
 
 
+# ---------------------------------------------------------------- klachttermijnen
+
+def klachttermijnen(datum_klacht: date, datum_bevestiging: Optional[date] = None,
+                    peildatum: Optional[date] = None) -> Uitkomst:
+    """
+    De termijnen uit art. 43 BGfo, letterlijk toegepast op de datum van de klacht.
+
+    Lid 2: de onderneming bevestigt de ontvangst en bericht binnen twee weken na ontvangst binnen welke
+           termijn de klacht wordt afgehandeld.
+    Lid 3: de klager kan de klacht rechtstreeks aan de geschilleninstantie voorleggen "vanaf zes weken
+           na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht".
+           Dat 'of' laat twee lezingen toe; beide data worden getoond en geen van beide wordt
+           weggekozen.
+    Lid 4: vraagt de onderneming nadere informatie, dan worden de termijnen van lid 3 verlengd met de
+           termijn voor beantwoording. Dat is een feit dat hier niet bekend is en dus niet doorgerekend.
+    """
+    peil = peildatum or date.today()
+    u = Uitkomst(onderwerp="Termijnen bij een klacht (art. 43 BGfo)", bedrag=None)
+    u.grondslag = ["BGfo:43:2", "BGfo:43:3"]
+    dag = lambda d, n: date.fromordinal(d.toordinal() + n)
+    bevestiging_uiterlijk = dag(datum_klacht, 14)
+    acht_weken = dag(datum_klacht, 56)
+    u.stappen.append(Stap("Klacht ingediend", _nl(datum_klacht), None, ""))
+    u.stappen.append(Stap("Uiterlijk bevestiging van ontvangst en bericht over de afhandelingstermijn (lid 2: twee weken)",
+                          f"{_nl(datum_klacht)} + 14 dagen = {_nl(bevestiging_uiterlijk)}", None, ""))
+    u.stappen.append(Stap("Naar de geschilleninstantie kan vanaf acht weken na het indienen (lid 3)",
+                          f"{_nl(datum_klacht)} + 56 dagen = {_nl(acht_weken)}", None, ""))
+    zes_weken = None
+    if datum_bevestiging:
+        zes_weken = dag(datum_bevestiging, 42)
+        u.stappen.append(Stap("Naar de geschilleninstantie kan vanaf zes weken na de ontvangstbevestiging (lid 3)",
+                              f"{_nl(datum_bevestiging)} + 42 dagen = {_nl(zes_weken)}", None, ""))
+        if datum_bevestiging > bevestiging_uiterlijk:
+            u.waarschuwingen.append(
+                f"De ontvangstbevestiging ({_nl(datum_bevestiging)}) kwam na de termijn van twee weken "
+                f"({_nl(bevestiging_uiterlijk)}). Leg dat vast; het kan de klacht ondersteunen.")
+    else:
+        u.stappen.append(Stap("Zes weken na de ontvangstbevestiging (lid 3)",
+                              "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen", None, ""))
+    lezingen = [d for d in (acht_weken, zes_weken) if d]
+    vroegste, laatste = min(lezingen), max(lezingen)
+    zeker, mogelijk = peil >= laatste, peil >= vroegste
+    u.details = {"peildatum": peil.isoformat(), "klacht": datum_klacht.isoformat(),
+                 "bevestiging_uiterlijk": bevestiging_uiterlijk.isoformat(), "acht_weken_na_indienen": acht_weken.isoformat(),
+                 "zes_weken_na_bevestiging": zes_weken.isoformat() if zes_weken else None,
+                 "vroegste_datum_geschilleninstantie": vroegste.isoformat(),
+                 "laatste_datum_geschilleninstantie": laatste.isoformat(),
+                 "kan_naar_geschilleninstantie": zeker, "afhankelijk_van_de_lezing": mogelijk and not zeker}
+    if zeker:
+        u.toelichting = (f"Op peildatum {_nl(peil)} kan de klager de klacht rechtstreeks aan de geschilleninstantie "
+                         f"voorleggen: beide data uit art. 43 lid 3 zijn verstreken (uiterlijk {_nl(laatste)}).")
+    elif mogelijk:
+        u.toelichting = (f"Op peildatum {_nl(peil)} hangt het af van de lezing van art. 43 lid 3: volgens de ene lezing kan de "
+                         f"klacht al aan de geschilleninstantie worden voorgelegd (vanaf {_nl(vroegste)}), volgens de andere pas "
+                         f"vanaf {_nl(laatste)}. Wacht tot {_nl(laatste)} als je zeker wilt zijn.")
+    else:
+        u.toelichting = (f"Op peildatum {_nl(peil)} kan de klager de klacht nog niet aan de geschilleninstantie voorleggen; "
+                         f"de vroegste datum volgens art. 43 lid 3 is {_nl(vroegste)}.")
+    u.waarschuwingen.append(
+        "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het "
+        "indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.")
+    u.waarschuwingen.append(
+        "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de "
+        "termijn voor beantwoording (lid 4). Dat is hier niet meegerekend.")
+    u.waarschuwingen.append(
+        "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet "
+        "in het corpus staat.")
+    u.volgende_stap = (
+        "Leg de datum van de klacht en van de ontvangstbevestiging vast. Is de vroegste datum bereikt en is de "
+        "klacht niet naar tevredenheid afgehandeld, vraag dan het reglement van de geschilleninstantie op voor de "
+        "indieningsvoorwaarden."
+        if zeker else
+        "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. "
+        "Wacht met de geschilleninstantie tot de vroegste datum is bereikt en vraag intussen om een schriftelijke "
+        "afhandelingstermijn.")
+    return u
+
+
 REKENFUNCTIES = {
     "evenredigheidsbeginsel": evenredigheidsbeginsel,
     "verjaring": verjaring_schadeclaim,
     "nieuwwaarde_dagwaarde": nieuwwaarde_of_dagwaarde,
     "provisie": provisie_toets,
+    "klachttermijnen": klachttermijnen,
 }

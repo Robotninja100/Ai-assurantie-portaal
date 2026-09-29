@@ -73,7 +73,7 @@
     },
     "verwachting": {
       "moet": [
-        "Vergelijkt niets: zegt dat voor geen van beide varianten clausules zijn gevonden en vraagt om de exacte productnamen.",
+        "Vergelijkt niets en geeft geen inhoudelijk antwoord: zegt dat voor geen van beide varianten clausules zijn gevonden (de weigering 'geen bronnen gevonden' volstaat).",
         "Sluit af met een bruikbare vervolgstap, bijvoorbeeld de productnamen controleren of een product kiezen uit de producten waarvoor het corpus clausules heeft (zoals inboedelverzekering)."
       ],
       "mag_niet": [

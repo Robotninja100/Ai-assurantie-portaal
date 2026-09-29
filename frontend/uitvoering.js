@@ -5,12 +5,12 @@ import { renderBerekening } from "./berekening.js";
 import { renderBronnen, toonBron } from "./bronnen.js";
 import { h, icoon, leeg, voegToe } from "./dom.js";
 import { aantal, meervoud } from "./format.js";
-import { HEEFT_BEREKENING } from "./registry.js";
+import { heeftBerekening } from "./registry.js";
 import { renderAntwoord } from "./tekst.js";
 
 const BEREKENING_TITEL = {
   schadeberekening: "Berekening", verjaringstoets: "Termijn", provisietoets: "Toets",
-  waardetoets: "Waardebepaling", precedentzoeker: "Verdeling",
+  waardetoets: "Waardebepaling", precedentzoeker: "Verdeling", klachtroute: "Termijnen",
 };
 const BRONNEN_DICHT = new Set(["schadeberekening", "verjaringstoets", "provisietoets", "waardetoets"]);
 const SOORT_NAAM = { wetsartikel: "Wetsartikel", kifid: "Kifid-uitspraak", polisclausule: "Polisclausule",
@@ -75,7 +75,7 @@ export class Uitvoering {
     this.invoer = invoer;
     leeg(this.doel);
     const stappen = [{ id: "bronnen", naam: "Bronnen" }];
-    if (HEEFT_BEREKENING.has(this.id)) stappen.push({ id: "berekening", naam: this.id === "precedentzoeker" ? "Verdeling" : "Berekening" });
+    if (heeftBerekening(this.id, invoer)) stappen.push({ id: "berekening", naam: this.id === "precedentzoeker" ? "Verdeling" : this.id === "klachtroute" ? "Termijnen" : "Berekening" });
     stappen.push({ id: "antwoord", naam: "Toelichting" }, { id: "controle", naam: "Controle" });
     this.pijp = pijplijn(stappen);
     this.doel.append(this.pijp.el);
@@ -125,7 +125,7 @@ export class Uitvoering {
     this.secBronnen = this.voegSectieToe(sectie(this.volgnummer(), "Bronnen", el, {
       meta: `${meervoud(bronnen.length, "bron", "bronnen")} opgehaald`, klapbaar: dicht, dicht }));
     this.pijp.zet("bronnen", "klaar");
-    this.pijp.zet(HEEFT_BEREKENING.has(this.id) ? "berekening" : "antwoord", "actief");
+    this.pijp.zet(heeftBerekening(this.id, this.invoer) ? "berekening" : "antwoord", "actief");
   }
 
   opOpmerkingen(lijst) {

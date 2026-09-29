@@ -122,8 +122,8 @@
     },
     "verwachting": {
       "moet": [
-        "Identificeert de afwijzingsgrond uit de slotconclusie: de woning was langer dan drie maanden onbewoond of leeg (art. 3.6.2 in de brief), waardoor volgens de brief slechts de beperkte dekking (art. 3.1.1) zou gelden.",
-        "Gebruikt de hele brief: wordt de brief ingekort of onvolledig geanalyseerd, dan meldt het antwoord dat expliciet en noemt het de afwijzingsgrond niet als vaststaand.",
+        "Wordt de hele brief gelezen: identificeert de afwijzingsgrond uit de slotconclusie (de woning was langer dan drie maanden onbewoond of leeg, art. 3.6.2 in de brief, waardoor volgens de brief slechts de beperkte dekking van art. 3.1.1 zou gelden). Dat is het gewenste gedrag voor een brief van deze lengte.",
+        "Wordt de brief ingekort of onvolledig geanalyseerd: meldt dat expliciet (alleen het eerste deel is getoetst), noemt de afwijzingsgrond niet als vaststaand en vraagt de adviseur het slot van de brief (de conclusie) apart in te sturen.",
         "Zegt dat de inhoud van de 'beperkte dekking' (art. 3.1.1) niet in de bronnen staat en dus niet te toetsen is, en noemt te toetsen feiten: sinds wanneer de woning onbewoond was (1 november 2025 volgens de brief), of er toch sprake was van bewoning of verbouwing.",
         "Sluit af met een concrete vervolgstap (de polisvoorwaarden met de artikelen 3.6.2 en 3.1.1 opvragen)."
       ],
@@ -134,7 +134,7 @@
       ],
       "harde_checks": {}
     },
-    "bron_van_waarheid": "De slotconclusie begint bij teken 5281 van 6052; features.afwijzingsanalyse geeft het model alleen brieftekst[:4000] en gebruikt brieftekst[:600] voor retrieval. Polisclausule: corpus/polisvoorwaarden.json, opstal-/inboedelverzekering (woonverzekering) art. 3.6.2 (langer dan drie maanden onbewoond of leeg: beperkte dekking, art. 3.1.1); art. 3.1.1 staat niet in het corpus. Handmatig: 1 november 2025 -> 12 maart 2026 = 131 dagen; drie maanden na 1 november is 1 februari 2026."
+    "bron_van_waarheid": "De slotconclusie begint bij teken 5281 van 6052; features.afwijzingsanalyse geeft het model hooguit MAX_INVOER (4000) tekens en gebruikt de eerste 600 tekens voor retrieval. Polisclausule: corpus/polisvoorwaarden.json, opstal-/inboedelverzekering (woonverzekering) art. 3.6.2 (langer dan drie maanden onbewoond of leeg: beperkte dekking, art. 3.1.1); art. 3.1.1 staat niet in het corpus. Handmatig: 1 november 2025 -> 12 maart 2026 = 131 dagen; drie maanden na 1 november is 1 februari 2026."
   },
   {
     "id": "afwijzingsanalyse-06",
@@ -151,7 +151,7 @@
       "moet": [
         "Benoemt de grond uit de brief: de fiets was niet beveiligd met een door de verzekeraar goedgekeurd slot (artikel 5.3 van de fietsverzekering).",
         "Zegt dat de bedoelde beveiligingsclausule en de eisen aan het slot niet in de bronnen staan en dat de afwijzing daarom niet kan worden getoetst; geeft geen oordeel over terecht of onterecht.",
-        "Adviseert de polisvoorwaarden van de fietsverzekering (juiste versie en datum, artikel 5.3) en het schadedossier (welk slot, hoe gebruikt, waar gestald) op te vragen.",
+        "Sluit af met een concrete vervolgstap: de polisvoorwaarden van de fietsverzekering (juiste versie en datum, artikel 5.3) en het schadedossier (welk slot, hoe gebruikt, waar gestald) opvragen.",
         "Noemt uitspraken alleen als ze inhoudelijk vergelijkbaar zijn en benoemt het verschil (bijvoorbeeld 2026-0566 gaat over een inboedelverzekering en de uitsluiting van diefstal uit de tuin, niet over een fietsverzekering met slotvereiste)."
       ],
       "mag_niet": [
@@ -210,7 +210,7 @@
         "Signaleert de tegenstrijdigheid: de brief is gedateerd 12 maart 2026, maar de schade zou pas op 3 april 2026 zijn ontstaan (de brief kan de schade dan niet afwijzen); vraagt de originele brief, de brief-datum en de schadedatum na te lopen.",
         "Zegt dat de afwijzingsgrond niet betrouwbaar uit deze samenvatting is vast te stellen ('eigen gebrek ofzo'; de bijlage ontbreekt) en trekt geen definitieve conclusie.",
         "Beschrijft wat de bronnen zeggen over eigen gebrek en constructiefouten (iets in de woning zelf, zoals slechte kwaliteit, verkeerd materiaal of slijtage) zonder te concluderen dat dit hier de grond is.",
-        "Vraagt de ontbrekende stukken: de volledige brief, de bijlage, het polisblad met de polisvoorwaarden en het expertrapport."
+        "Sluit af met een concrete vervolgstap: de ontbrekende stukken opvragen (de volledige brief, de bijlage, het polisblad met de polisvoorwaarden en het expertrapport)."
       ],
       "mag_niet": [
         "Gaat uit van een van de twee data zonder de tegenstrijdigheid te melden.",

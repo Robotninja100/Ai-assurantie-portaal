@@ -136,7 +136,8 @@ const VERJARING = {
 };
 
 const KORT = { bekendheid: "Bekend", stuiting: "Aanspraak", reactie: "Reactie", einde_hoofdtermijn: "Einde hoofdtermijn",
-  einde_nieuwe_termijn: "Einde nieuwe termijn", nu: "Peildatum" };
+  einde_nieuwe_termijn: "Einde nieuwe termijn", nu: "Peildatum", klacht: "Klacht", bevestiging: "Bevestiging uiterlijk",
+  zes_weken: "6 wkn na bevestiging", acht_weken: "8 wkn na indienen" };
 const KADER_BREEDTE = 620;           // aanname voor de botsingsberekening; labels hebben een vaste pixelbreedte
 
 /**
@@ -205,6 +206,28 @@ function verjaring(b, opKlik) {
     ...afsluiting(b, opKlik));
 }
 
+// ---------------------------------------------------------------- klachtroute (art. 43 BGfo)
+
+function klacht(b, opKlik) {
+  const d = b.details || {};
+  const toon = d.kan_naar_geschilleninstantie ? "ok" : d.afhankelijk_van_de_lezing ? "let" : "info";
+  const titel = d.kan_naar_geschilleninstantie ? "Naar de geschilleninstantie kan"
+    : d.afhankelijk_van_de_lezing ? "Hangt af van de lezing van art. 43 lid 3" : "Nog niet naar de geschilleninstantie";
+  const gebeurtenissen = [
+    { datum: d.klacht, soort: "klacht", label: "Klacht ingediend" },
+    { datum: d.bevestiging_uiterlijk, soort: "bevestiging", label: "Uiterlijk bevestigen en termijn melden (lid 2)" },
+    ...(d.zes_weken_na_bevestiging ? [{ datum: d.zes_weken_na_bevestiging, soort: "zes_weken", label: "Zes weken na de ontvangstbevestiging (lid 3)" }] : []),
+    { datum: d.acht_weken_na_indienen, soort: "acht_weken", label: "Acht weken na het indienen van de klacht (lid 3)" },
+  ];
+  return h("div", null,
+    h("div", { class: `oordeel ${toon}` },
+      h("div", { class: "oordeel-icoon" }, icoon(d.kan_naar_geschilleninstantie ? "vink" : "klok", 22)),
+      h("div", null, h("h4", null, titel), h("p", null, b.toelichting))),
+    tijdlijn({ gebeurtenissen, peildatum: d.peildatum, status: "KLACHT" }),
+    grootboek(b.stappen, { kop: "Hoe deze data zijn bepaald" }),
+    ...afsluiting(b, opKlik));
+}
+
 // ---------------------------------------------------------------- precedentzoeker
 
 const SEGMENT = ["kleur-1", "kleur-a", "kleur-2", "kleur-3"];
@@ -232,6 +255,7 @@ export function renderBerekening(functie, b, opKlik) {
     case "provisietoets": return provisie(b, opKlik);
     case "verjaringstoets": return verjaring(b, opKlik);
     case "precedentzoeker": return verdeling(b);
+    case "klachtroute": return klacht(b, opKlik);
     default: return grootboek(b.stappen);
   }
 }

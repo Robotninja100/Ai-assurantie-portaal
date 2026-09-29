@@ -48,8 +48,11 @@ function leegResultaat(cfg, functie) {
     h("p", null, "Vul de gegevens in en start de toets. Het resultaat verschijnt hier, stap voor stap."),
     h("ol", { class: "leeg-stappen" },
       h("li", null, h("span", null, h("b", null, "Bronnen"), "Het portaal haalt de wetsartikelen, uitspraken en clausules op die bij uw invoer passen en toont ze vóór het antwoord.")),
-      berekend ? h("li", null, h("span", null, h("b", null, functie.id === "precedentzoeker" ? "Verdeling" : "Berekening"),
-        functie.id === "precedentzoeker" ? "De uitkomsten worden in het corpus geteld, niet door het model geschat." : "Bedragen en termijnen komen uit code met de wettelijke grondslag erbij. Het model rekent niet.")) : null,
+      berekend ? h("li", null, h("span", null,
+        h("b", null, functie.id === "precedentzoeker" ? "Verdeling" : functie.id === "klachtroute" ? "Termijnen" : "Berekening"),
+        functie.id === "precedentzoeker" ? "De uitkomsten worden in het corpus geteld, niet door het model geschat."
+          : functie.id === "klachtroute" ? "Vult u een klachtdatum in, dan rekent het portaal de termijnen uit art. 43 BGfo uit, met beide lezingen erbij. Het model rekent niet."
+          : "Bedragen en termijnen komen uit code met de wettelijke grondslag erbij. Het model rekent niet.")) : null,
       h("li", null, h("span", null, h("b", null, "Toelichting"), "Het taalmodel formuleert het antwoord uitsluitend op basis van de opgehaalde bronnen.")),
       h("li", null, h("span", null, h("b", null, "Controle"), "Elke verwijzing in het antwoord wordt teruggezocht in de bronnen. Wat er niet in staat, wordt gemarkeerd."))),
     ));

@@ -111,13 +111,15 @@ export const REGISTER = {
     lead: "Welke stap is nu aan de orde, welke termijnen gelden en wat moet er mee? Een termijn die niet in de bronnen staat wordt niet genoemd.",
     velden: [
       { id: "situatie", label: "Situatie", type: "lang", rijen: 6, verplicht: true },
-      { id: "datum_klacht", label: "Datum van de klacht", type: "datum", optioneel: true },
+      { id: "datum_klacht", label: "Datum van de klacht", type: "datum", optioneel: true,
+        hint: "Met een datum berekent het portaal de termijnen uit art. 43 BGfo." },
+      { id: "datum_bevestiging", label: "Datum van de ontvangstbevestiging", type: "datum", optioneel: true },
       { id: "intern_afgehandeld", label: "Interne klachtprocedure doorlopen", type: "schakelaar",
         hint: "Zet dit aan als de verzekeraar de klacht intern al heeft afgehandeld." },
     ],
     voorbeeld: {
       situatie: "De klant is het niet eens met de afwijzing van een inboedelclaim. De verzekeraar stuurde op 12 augustus 2026 een definitieve afwijzing. Er is nog geen klacht ingediend.",
-      datum_klacht: "2026-09-01", intern_afgehandeld: false,
+      datum_klacht: "2026-09-01", datum_bevestiging: "2026-09-10", intern_afgehandeld: false,
     },
   },
   afwijzingsanalyse: {
@@ -167,4 +169,7 @@ export const REGISTER = {
   },
 };
 
-export const HEEFT_BEREKENING = new Set(["schadeberekening", "verjaringstoets", "provisietoets", "waardetoets", "precedentzoeker"]);
+export const HEEFT_BEREKENING = new Set(["schadeberekening", "verjaringstoets", "provisietoets", "waardetoets", "precedentzoeker", "klachtroute"]);
+
+/** De klachtroute rekent alleen als er een klachtdatum is; de andere functies altijd. */
+export const heeftBerekening = (id, invoer) => HEEFT_BEREKENING.has(id) && (id !== "klachtroute" || !!(invoer && invoer.datum_klacht));

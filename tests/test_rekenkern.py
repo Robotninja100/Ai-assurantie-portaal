@@ -267,3 +267,48 @@ def test_dagwaarde_precies_op_de_drempel_geeft_dagwaarde_want_de_clausule_zegt_m
     assert u.details["toegepast"] == "dagwaarde" and eur(u.bedrag) == Decimal("400.00")
     assert any("precies op de drempel" in w for w in u.waarschuwingen)
     assert rk.nieuwwaarde_of_dagwaarde(1000, 5.9, 10).details["toegepast"] == "nieuwwaarde"
+
+
+# ------------------------------------------------------------ de laatste dag: schrikkeljaren
+
+@pytest.mark.parametrize("bekend,laatste", [
+    (date(2024, 3, 10), date(2027, 3, 10)),
+    (date(2025, 2, 28), date(2028, 2, 29)),     # S = 1 maart 2025, verstreken 1 maart 2028: 2028 heeft een 29 februari
+    (date(2024, 2, 28), date(2027, 2, 28)),     # S = 29 februari 2024; die dag bestaat in 2027 niet
+    (date(2024, 2, 29), date(2027, 2, 28)),
+    (date(2020, 2, 29), date(2023, 2, 28)),
+    (date(2023, 12, 31), date(2026, 12, 31)),
+])
+def test_laatste_dag_volgt_de_letterlijke_momentlezing(bekend, laatste):
+    assert rk.laatste_dag_termijn(bekend) == laatste
+
+
+# ------------------------------------------------------------ klachttermijnen (art. 43 BGfo)
+
+def test_klachttermijnen_tonen_beide_lezingen_van_de_of_in_lid_3():
+    u = rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 10), date(2026, 9, 29))
+    d = u.details
+    assert d["bevestiging_uiterlijk"] == "2026-09-15"                 # twee weken
+    assert d["acht_weken_na_indienen"] == "2026-10-27"
+    assert d["zes_weken_na_bevestiging"] == "2026-10-22"
+    assert d["kan_naar_geschilleninstantie"] is False
+
+
+def test_tussen_de_twee_lezingen_zegt_de_toets_dat_het_afhangt():
+    u = rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 10), date(2026, 10, 24))
+    assert u.details["afhankelijk_van_de_lezing"] is True and u.details["kan_naar_geschilleninstantie"] is False
+    assert "hangt het af van de lezing" in u.toelichting
+
+
+def test_na_beide_data_kan_het_zeker():
+    assert rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 10), date(2026, 10, 27)).details["kan_naar_geschilleninstantie"] is True
+
+
+def test_zonder_bevestigingsdatum_wordt_alleen_de_acht_wekenregel_berekend():
+    u = rk.klachttermijnen(date(2026, 9, 1), None, date(2026, 9, 29))
+    assert u.details["zes_weken_na_bevestiging"] is None and u.details["vroegste_datum_geschilleninstantie"] == "2026-10-27"
+
+
+def test_laat_bevestigen_wordt_gesignaleerd():
+    u = rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 20), date(2026, 9, 29))
+    assert any("kwam na de termijn van twee weken" in w for w in u.waarschuwingen)
