@@ -9,7 +9,7 @@ Antwoordvolgorde per aanvraag - bewust deze volgorde:
   3. 'tekst'      : token voor token.
   4. 'controle'   : de citeerbewaker, over het VOLLEDIGE antwoord.
 """
-import json, os, queue, sys, threading, time
+import asyncio, inspect, json, os, sys, threading, time
 sys.path.insert(0, os.path.dirname(__file__))
 
 from fastapi import FastAPI, HTTPException
@@ -37,34 +37,45 @@ def _sse(obj: Dict) -> str:
     return f"data: {json.dumps(obj, ensure_ascii=False)}\n\n"
 
 
-def _model_stroom(systeem: str, gebruiker: str, max_tokens: int):
+async def _model_stroom(systeem: str, gebruiker: str, max_tokens: int):
     """
     Draait het taalmodel in een eigen thread, zodat de HTTP-laag een hartslag kan sturen terwijl
     het model nog niets uitgeeft. Op een lokaal CPU-model duurt het eerste teken minuten; een
     stille verbinding wordt door browsers en proxy's afgekapt en laat de adviseur raden of er iets
     gebeurt. Een 'wacht'-gebeurtenis is een eerlijk teken van leven: de tijd die is verstreken.
+
+    Dit is een async generator, met opzet: sluit de adviseur het tabblad of drukt hij op Stop, dan
+    annuleert de server dit punt direct en gaat `stop` open. Een sync generator wordt pas bij de
+    volgende garbage collection opgeruimd; het model schreef dan nog een heel antwoord voor niemand.
     """
-    q: "queue.Queue" = queue.Queue()
+    loop = asyncio.get_running_loop()
+    q: "asyncio.Queue" = asyncio.Queue()
     stop = threading.Event()
+
+    def zet(e):
+        try:
+            loop.call_soon_threadsafe(q.put_nowait, e)
+        except RuntimeError:          # de event loop is al gesloten: niemand luistert meer
+            pass
 
     def werk():
         try:
-            for e in llm.stream_events(systeem, gebruiker, max_tokens=max_tokens):
-                q.put(e)
+            for e in llm.stream_events(systeem, gebruiker, max_tokens=max_tokens, stop=stop):
                 if stop.is_set():
                     break
+                zet(e)
         except Exception as ex:  # noqa: BLE001
-            q.put({"type": "fout", "fout": f"{type(ex).__name__}: {ex}", "afgebroken": False})
+            zet({"type": "fout", "fout": f"{type(ex).__name__}: {ex}", "afgebroken": False})
         finally:
-            q.put(None)
+            zet(None)
 
     threading.Thread(target=werk, daemon=True).start()
     t0 = time.time()
     try:
         while True:
             try:
-                e = q.get(timeout=HARTSLAG_SEC)
-            except queue.Empty:
+                e = await asyncio.wait_for(q.get(), HARTSLAG_SEC)
+            except asyncio.TimeoutError:
                 yield {"type": "wacht", "sec": int(time.time() - t0)}
                 continue
             if e is None:
@@ -72,6 +83,42 @@ def _model_stroom(systeem: str, gebruiker: str, max_tokens: int):
             yield e
     finally:
         stop.set()
+
+
+MAX_TEKENS = 20_000        # per tekstveld; daarboven is het geen dossier meer maar een misbruik van de dienst
+
+
+def _controleer_invoer(fn, invoer: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Type en lengte van elk veld, vóór de functie het ziet. JSON kent meer typen dan de functies: een
+    getal waar tekst hoort, een lijst waar een bedrag hoort. Dat moet een duidelijke 400 worden,
+    geen 500 en geen dossier van een half miljoen tekens naar het model.
+    """
+    params = inspect.signature(fn).parameters
+    for naam, p in params.items():
+        if p.default is inspect.Parameter.empty and naam not in invoer:
+            raise ValueError(f"{naam}: dit veld is verplicht")
+    schoon = {}
+    for naam, waarde in invoer.items():
+        p = params.get(naam)
+        if p is None:
+            raise ValueError(f"{naam}: onbekend veld")
+        soort = p.annotation if p.annotation is not inspect.Parameter.empty else type(p.default)
+        if soort is str:
+            if waarde is None:
+                waarde = ""
+            if not isinstance(waarde, str):
+                raise ValueError(f"{naam}: verwacht tekst")
+            if len(waarde) > MAX_TEKENS:
+                raise ValueError(f"{naam}: te lang ({len(waarde):,} tekens; maximaal {MAX_TEKENS:,})".replace(",", "."))
+        elif soort in (float, int):
+            if isinstance(waarde, bool) or not isinstance(waarde, (int, float, str)):
+                raise ValueError(f"{naam}: verwacht een getal")
+        elif soort is bool:
+            if not isinstance(waarde, (bool, str, int)) or waarde is None:
+                raise ValueError(f"{naam}: verwacht ja of nee")
+        schoon[naam] = waarde
+    return schoon
 
 
 @app.get("/api/status")
@@ -121,12 +168,14 @@ def vraag(a: Aanvraag):
     if not spec:
         raise HTTPException(404, f"Onbekende functie: {a.functie}")
     try:
-        opdracht = spec["fn"](**a.invoer)
-    except (TypeError, ValueError, ArithmeticError) as e:
-        # ArithmeticError vangt ook decimal.InvalidOperation op: een bedrag als "abc".
+        opdracht = spec["fn"](**_controleer_invoer(spec["fn"], a.invoer))
+    except ArithmeticError:
+        # Ook decimal.InvalidOperation: een bedrag als "abc" of een getal dat de rekenkern niet aankan.
+        raise HTTPException(400, f"Onjuiste invoer voor {a.functie}: een getal is ongeldig of te groot.")
+    except (TypeError, ValueError) as e:
         raise HTTPException(400, f"Onjuiste invoer voor {a.functie}: {e}")
 
-    def gen():
+    async def gen():
         t0 = time.time()
         yield _sse({"type": "bronnen", "bronnen": opdracht["bronnen"]})
         if opdracht.get("berekening"):
@@ -148,8 +197,8 @@ def vraag(a: Aanvraag):
             return
 
         volledig, fout, einde = [], None, None
-        for e in _model_stroom(opdracht["systeem"], opdracht["gebruiker"],
-                               opdracht.get("max_tokens", 600)):
+        async for e in _model_stroom(opdracht["systeem"], opdracht["gebruiker"],
+                                     opdracht.get("max_tokens", 600)):
             if e["type"] == "delta":
                 volledig.append(e["tekst"])
                 yield _sse({"type": "tekst", "tekst": e["tekst"]})
@@ -182,7 +231,8 @@ def vraag(a: Aanvraag):
         controle["duur_sec"] = round(time.time() - t0, 1)
         # Een antwoord dat tegen de maximale lengte aanliep eindigt midden in een zin en mist de
         # vervolgstap. Dat mag nooit voor een volledig antwoord doorgaan.
-        controle["afgekapt"] = einde in ("length", "max_tokens") or bool(fout and fout.get("afgebroken"))
+        controle["afgekapt"] = einde in ("length", "max_tokens", "content_filter") or bool(fout and fout.get("afgebroken"))
+        controle["einde_reden"] = einde
         yield _sse({"type": "controle", "controle": controle})
         if controle["ongefundeerd"]:
             yield _sse({"type": "gemaskeerd", "tekst": grounding.maskeer(antwoord, controle)})

@@ -15,8 +15,40 @@ in het corpus, dan mag de app de bewering NIET als onderbouwd tonen.
 import re
 from dataclasses import dataclass, field, asdict
 from decimal import Decimal, ROUND_HALF_UP
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from typing import Optional, List
+
+
+def _nl_zonder_tijdzonedatabase(nu: datetime) -> date:
+    """Nederlandse datum voor een UTC-tijdstip met de EU-regel voor zomertijd (laatste zondag van maart/oktober, 01.00 UTC)."""
+    def laatste_zondag(jaar, maand):
+        d = date(jaar, maand, 31)
+        return d - timedelta(days=(d.weekday() + 1) % 7)
+    j = nu.year
+    begin = datetime(j, 3, laatste_zondag(j, 3).day, 1, tzinfo=timezone.utc)
+    eind = datetime(j, 10, laatste_zondag(j, 10).day, 1, tzinfo=timezone.utc)
+    return (nu + timedelta(hours=2 if begin <= nu < eind else 1)).date()
+
+
+def vandaag_nl(nu: Optional[datetime] = None) -> date:
+    """
+    De datum van vandaag in Nederland. De server draait op UTC: tussen middernacht en 01.00 of 02.00
+    uur Nederlandse tijd is het hier al morgen, en dan staat de peildatum een dag achter (een termijn
+    lijkt een dag langer te lopen, en 'vandaag bekend' wordt als 'na de peildatum' geweigerd).
+    `nu` (een UTC-tijdstip) is er voor de tests.
+    """
+    nu = nu or datetime.now(timezone.utc)
+    try:
+        from zoneinfo import ZoneInfo
+        return nu.astimezone(ZoneInfo("Europe/Amsterdam")).date()
+    except Exception:  # noqa: BLE001 - geen tijdzonedatabase
+        return _nl_zonder_tijdzonedatabase(nu)
+
+
+def _g(x) -> str:
+    """Een getal zoals een Nederlander het schrijft, zonder overbodige nullen: 12,5 / 40 / 6,5."""
+    d = Decimal(str(x)).normalize()
+    return format(d, "f").replace(".", ",")
 
 
 def _eur(x) -> Decimal:
@@ -157,6 +189,27 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
         if onderverzekerd:
             u.grondslag.append("BW:7:959:2")
 
+    # Wat de verzekerde zelf draagt, in delen: dit bedrag staat niet in de uitkering, maar de adviseur
+    # moet het aan de klant kunnen uitleggen en het model moet het niet zelf hoeven uitrekenen.
+    totale_schade = sch_eff + bk
+    zelf = max(Decimal("0"), totale_schade - totaal)
+    er_toegepast = min(er, basis) if er > 0 else Decimal("0")
+    zelf_boven = zelf - er_toegepast
+    if er > 0 and vs < ww:
+        u.waarschuwingen.append(
+            "De volgorde (eerst de evenredigheidsbreuk, daarna het eigen risico) volgt uit de "
+            "polisvoorwaarden, niet uit de wet. Controleer haar in de voorwaarden van deze verzekeraar: "
+            "wordt het eigen risico eerst afgetrokken, dan valt de uitkomst anders uit.")
+    if bk > 0 and _eur(na_er) + _eur(totaal - na_er) != _eur(totaal):
+        u.waarschuwingen.append(
+            "Bedragen zijn afgerond op hele centen; de getoonde tussenbedragen kunnen daardoor 1 cent "
+            "afwijken van het getoonde totaal.")
+    u.stappen.append(Stap("Zelf te dragen door de verzekerde (schade" + (" en bereddingskosten" if bk > 0 else "") + " min uitkering)",
+                          f"{_bedrag(totale_schade)} - {_bedrag(totaal)}", zelf))
+    u.details.update({"totale_schade": str(_eur(totale_schade)), "zelf_te_dragen": str(_eur(zelf)),
+                      "zelf_te_dragen_door_onderverzekering" if vs < ww else "zelf_te_dragen_boven_verzekerde_som":
+                          str(_eur(zelf_boven)),
+                      "zelf_te_dragen_eigen_risico": str(_eur(er_toegepast))})
     u.bedrag = totaal
     u.toelichting = (
         "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. "
@@ -240,7 +293,7 @@ def verjaring_schadeclaim(datum_bekend: date,
     Ontbreekt de datum van de aanspraak terwijl er wel een reactie is, dan rekent de kern
     voorzichtig met de hoofdtermijn en toont de gunstiger uitkomst alleen als voorwaardelijk.
     """
-    peil = peildatum or date.today()
+    peil = peildatum or vandaag_nl()
     if datum_bekend > peil:
         raise ValueError(f"De bekendheid met de opeisbaarheid ({_nl(datum_bekend)}) ligt na de peildatum ({_nl(peil)}).")
     u = Uitkomst(onderwerp="Verjaring rechtsvordering op de verzekeraar", bedrag=None)
@@ -456,10 +509,10 @@ def nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren,
     dagwaarde = nw * factor
     drempel = nw * Decimal(str(dagwaarde_drempel_pct)) / Decimal("100")
 
-    u.stappen.append(Stap("Restlevensduur", f"{levensduur_jaren} - {ouderdom_jaren} = {rest} jaar"))
-    u.stappen.append(Stap("Dagwaarde", f"{_bedrag(nw)} x ({rest}/{levensduur_jaren})", dagwaarde))
-    u.stappen.append(Stap(f"Drempel ({dagwaarde_drempel_pct}% van nieuwwaarde)",
-                          f"{_bedrag(nw)} x {dagwaarde_drempel_pct}%", drempel))
+    u.stappen.append(Stap("Restlevensduur", f"{_g(levensduur_jaren)} - {_g(ouderdom_jaren)} = {_g(rest)} jaar"))
+    u.stappen.append(Stap("Dagwaarde", f"{_bedrag(nw)} x ({_g(rest)}/{_g(levensduur_jaren)})", dagwaarde))
+    u.stappen.append(Stap(f"Drempel ({_g(dagwaarde_drempel_pct)}% van nieuwwaarde)",
+                          f"{_bedrag(nw)} x {_g(dagwaarde_drempel_pct)}%", drempel))
 
     u.details = {
         "nieuwwaarde": str(_eur(nw)), "dagwaarde": str(_eur(dagwaarde)), "drempel": str(_eur(drempel)),
@@ -706,7 +759,9 @@ def klachttermijnen(datum_klacht: date, datum_bevestiging: Optional[date] = None
     Lid 4: vraagt de onderneming nadere informatie, dan worden de termijnen van lid 3 verlengd met de
            termijn voor beantwoording. Dat is een feit dat hier niet bekend is en dus niet doorgerekend.
     """
-    peil = peildatum or date.today()
+    peil = peildatum or vandaag_nl()
+    if datum_bevestiging and datum_bevestiging < datum_klacht:
+        raise ValueError(f"De ontvangstbevestiging ({_nl(datum_bevestiging)}) ligt vóór de klacht ({_nl(datum_klacht)}).")
     u = Uitkomst(onderwerp="Termijnen bij een klacht (art. 43 BGfo)", bedrag=None)
     u.grondslag = ["BGfo:43:2", "BGfo:43:3"]
     dag = lambda d, n: date.fromordinal(d.toordinal() + n)
@@ -731,7 +786,10 @@ def klachttermijnen(datum_klacht: date, datum_bevestiging: Optional[date] = None
                               "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen", None, ""))
     lezingen = [d for d in (acht_weken, zes_weken) if d]
     vroegste, laatste = min(lezingen), max(lezingen)
-    zeker, mogelijk = peil >= laatste, peil >= vroegste
+    # Zonder datum van de ontvangstbevestiging bestaat maar één van de twee data. Dan kan de tweede
+    # lezing niet worden uitgesloten: hooguit hangt het van die lezing af, zeker is het nooit.
+    zeker = peil >= laatste and zes_weken is not None
+    mogelijk = peil >= vroegste
     u.details = {"peildatum": peil.isoformat(), "klacht": datum_klacht.isoformat(),
                  "bevestiging_uiterlijk": bevestiging_uiterlijk.isoformat(), "acht_weken_na_indienen": acht_weken.isoformat(),
                  "zes_weken_na_bevestiging": zes_weken.isoformat() if zes_weken else None,
@@ -741,6 +799,15 @@ def klachttermijnen(datum_klacht: date, datum_bevestiging: Optional[date] = None
     if zeker:
         u.toelichting = (f"Op peildatum {_nl(peil)} kan de klager de klacht rechtstreeks aan de geschilleninstantie "
                          f"voorleggen: beide data uit art. 43 lid 3 zijn verstreken (uiterlijk {_nl(laatste)}).")
+    elif zes_weken is None:
+        u.toelichting = (
+            (f"Op peildatum {_nl(peil)} is acht weken na het indienen verstreken ({_nl(acht_weken)}). "
+             if mogelijk else
+             f"Op peildatum {_nl(peil)} kan de klager de klacht nog niet voorleggen; acht weken na het indienen is "
+             f"{_nl(acht_weken)}. ")
+            + "De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. "
+              "Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit "
+              "art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.")
     elif mogelijk:
         u.toelichting = (f"Op peildatum {_nl(peil)} hangt het af van de lezing van art. 43 lid 3: volgens de ene lezing kan de "
                          f"klacht al aan de geschilleninstantie worden voorgelegd (vanaf {_nl(vroegste)}), volgens de andere pas "

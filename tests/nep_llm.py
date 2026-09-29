@@ -33,9 +33,13 @@ def antwoord_voor(systeem: str) -> str:
 
 
 class NepLLM:
-    def __init__(self, poort: int = 0, vertraging: float = 0.0, einde: str = "stop", knip: int = 0):
+    def __init__(self, poort: int = 0, vertraging: float = 0.0, einde: str = "stop", knip: int = 0,
+                 stukvertraging: float = 0.0):
         nep = self
         self.verzoeken = []
+        self.onderbroken = threading.Event()   # de client (ons portaal) heeft de verbinding voortijdig gesloten
+        self.stukken = 0                       # zoveel stukken zijn er daadwerkelijk geschreven
+        self.stukvertraging = stukvertraging   # pauze tussen twee stukken: een model dat echt 'denkt'
         self.vertraging = vertraging
         self.einde = einde          # 'length' bootst een model na dat tegen max_tokens aanliep
         self.knip = knip            # bij 'length': na zoveel tekens stoppen
@@ -61,13 +65,18 @@ class NepLLM:
                 self.send_header("Content-Type", "text/event-stream")
                 self.send_header("Transfer-Encoding", "chunked")
                 self.end_headers()
-                self.stuur(": OPENROUTER PROCESSING\n\n")
-                time.sleep(nep.vertraging)
-                for i in range(0, len(tekst), 16):
-                    self.stuur("data: " + json.dumps({"choices": [{"delta": {"content": tekst[i:i + 16]}}]}) + "\n\n")
-                self.stuur("data: " + json.dumps({"choices": [{"delta": {}, "finish_reason": nep.einde}]}) + "\n\n")
-                self.stuur("data: [DONE]\n\n")
-                self.wfile.write(b"0\r\n\r\n")
+                try:
+                    self.stuur(": OPENROUTER PROCESSING\n\n")
+                    time.sleep(nep.vertraging)
+                    for i in range(0, len(tekst), 16):
+                        self.stuur("data: " + json.dumps({"choices": [{"delta": {"content": tekst[i:i + 16]}}]}) + "\n\n")
+                        nep.stukken += 1
+                        time.sleep(nep.stukvertraging)
+                    self.stuur("data: " + json.dumps({"choices": [{"delta": {}, "finish_reason": nep.einde}]}) + "\n\n")
+                    self.stuur("data: [DONE]\n\n")
+                    self.wfile.write(b"0\r\n\r\n")
+                except (BrokenPipeError, ConnectionResetError):
+                    nep.onderbroken.set()
 
         self.server = http.server.ThreadingHTTPServer(("127.0.0.1", poort), Handler)
         self.poort = self.server.server_address[1]

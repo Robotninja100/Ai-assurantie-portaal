@@ -45,6 +45,16 @@ class NepOpenRouter:
                     self.send_header("Content-Length", "0")
                     self.end_headers()
                     return
+                if model in ("jsonfout", "jsonantwoord"):       # een provider die 'stream' negeert
+                    inhoud = ({"error": {"message": "tegoed op"}} if model == "jsonfout" else
+                              {"choices": [{"message": {"content": "Compleet antwoord"}, "finish_reason": "stop"}]})
+                    data = json.dumps(inhoud).encode()
+                    self.send_response(200)
+                    self.send_header("Content-Type", "application/json")
+                    self.send_header("Content-Length", str(len(data)))
+                    self.end_headers()
+                    self.wfile.write(data)
+                    return
                 self.send_response(200)
                 self.send_header("Content-Type", "text/event-stream")
                 self.send_header("Transfer-Encoding", "chunked")
@@ -71,6 +81,10 @@ class NepOpenRouter:
                 elif model == "denk":
                     delta("<thi")
                     delta("nk>redeneren</think>\n\nAntwoord")
+                elif model == "kapot":                          # de verbinding valt weg zonder [DONE] of finish_reason
+                    delta("Een halve ")
+                    self.wfile.write(b"0\r\n\r\n")
+                    return
                 self.stuur("data: [DONE]\n\n")
                 self.wfile.write(b"0\r\n\r\n")
 
@@ -210,7 +224,7 @@ def test_zonder_sleutel_en_zonder_model_is_de_runtime_niet_beschikbaar(monkeypat
 def test_api_stuurt_een_hartslag_zolang_het_model_nog_niets_uitgeeft(monkeypatch):
     from fastapi.testclient import TestClient
 
-    def traag(systeem, gebruiker, max_tokens=600, temperatuur=0.2):
+    def traag(systeem, gebruiker, max_tokens=600, temperatuur=0.2, stop=None):
         time.sleep(0.4)
         yield {"type": "model", "model": "test", "provider": "test"}
         yield {"type": "delta", "tekst": "Antwoord zonder verwijzingen."}
@@ -263,3 +277,52 @@ def test_api_meldt_dat_een_te_lange_invoer_is_afgekapt(monkeypatch):
     events = [json.loads(l[6:]) for l in r.text.splitlines() if l.startswith("data: ") and l != "data: [DONE]"]
     opm = next(e for e in events if e["type"] == "opmerkingen")["opmerkingen"]
     assert "alleen de eerste 4.000" in opm[0]
+
+
+# ------------------------------------------------------------ onvolledige en afwijkende stromen
+
+def test_een_stroom_die_zonder_einde_stopt_geldt_als_afgebroken_niet_als_compleet(nep, monkeypatch):
+    ketens(monkeypatch, "kapot", "ok")
+    events = list(llm.stream_events("s", "g"))
+    assert [e["type"] for e in events] == ["model", "delta", "fout"]
+    assert events[-1]["afgebroken"] is True
+    assert "verbroken" in events[-1]["fout"]
+    assert nep.verzoeken == ["kapot"]                       # geen tweede model achter een half antwoord
+
+
+def test_een_kapotte_stroom_zonder_tekst_schuift_wel_door(nep, monkeypatch):
+    # (nog geen tekst uitgegeven: doorschuiven is veilig) - het model "leeg" levert helemaal niets
+    ketens(monkeypatch, "leeg", "ok")
+    nep.hek.set()
+    assert llm.genereer("s", "g") == "Hallo wereld"
+
+
+def test_een_json_fout_bij_http_200_wordt_als_fout_gemeld_niet_als_leeg_antwoord(nep, monkeypatch):
+    ketens(monkeypatch, "jsonfout", "ok")
+    nep.hek.set()
+    events = list(llm.stream_events("s", "g"))
+    assert events[0]["model"] == "ok"
+    assert events[0]["overgeslagen"] == ["jsonfout: ModelFout: tegoed op"]
+
+
+def test_een_provider_die_stream_negeert_levert_toch_een_antwoord(nep, monkeypatch):
+    ketens(monkeypatch, "jsonantwoord")
+    events = list(llm.stream_events("s", "g"))
+    assert "".join(e["tekst"] for e in events if e["type"] == "delta") == "Compleet antwoord"
+    assert events[-1] == {"type": "einde", "reden": "stop"}
+
+
+def test_een_tijdslimiet_voor_het_hele_antwoord_stopt_eindeloze_keepalives(nep, monkeypatch):
+    monkeypatch.setattr(llm, "TOTAAL_SEC", -1)              # direct verlopen
+    ketens(monkeypatch, "ok")
+    nep.hek.set()
+    events = list(llm.stream_events("s", "g"))
+    assert events[-1]["type"] == "fout" and "tijdslimiet" in events[-1]["fout"]
+
+
+def test_een_gezette_stop_beeindigt_de_stroom_zonder_fout(nep, monkeypatch):
+    ketens(monkeypatch, "ok")
+    nep.hek.set()
+    stop = threading.Event()
+    stop.set()
+    assert list(llm.stream_events("s", "g", stop=stop)) == []

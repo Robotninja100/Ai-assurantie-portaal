@@ -13,7 +13,8 @@ adviseur moet kunnen zien WELK model een antwoord schreef en waarom een ander mo
 import json
 import os
 import threading
-from typing import Dict, Iterator, List
+import time
+from typing import Dict, Iterator, List, Optional
 
 # Standaard in de projectmap (models/ staat in .gitignore). Een pad in een tijdelijke sessiemap
 # verdween met de container en liet het lokale model stil onbereikbaar worden.
@@ -44,6 +45,9 @@ OPENROUTER_MODELLEN = [
 # Tijd die een model mag nemen voor het eerste teken en tussen twee stukken. Gratis modellen
 # staan soms in de wachtrij; daarna komt de tekst binnen enkele seconden.
 TIMEOUT_SEC = int(os.environ.get("ASSURANTIE_TIMEOUT", "120"))
+# Bovengrens voor één antwoord van begin tot eind. Keepalive-regels zetten de leeslimiet steeds terug,
+# dus zonder deze grens kan een hangende verbinding eindeloos "bezig" blijven.
+TOTAAL_SEC = int(os.environ.get("ASSURANTIE_TOTAAL_TIMEOUT", "300"))
 
 
 def _laad_env():
@@ -97,7 +101,7 @@ def runtime_info() -> Dict:
                    if PROVIDER == "openrouter" else "")
                 + "Feiten komen uit het corpus, niet uit het model.")
         else:
-            info["opmerking"] = f"Modelbestand niet gevonden op {MODEL_PATH}"
+            info["opmerking"] = "Het lokale modelbestand ontbreekt (zie ASSURANTIE_MODEL_PATH in de README)."
     elif prov == "openrouter":
         key = os.environ.get("OPENROUTER_API_KEY")
         info["beschikbaar"] = bool(key)
@@ -109,7 +113,7 @@ def runtime_info() -> Dict:
             "Feiten komen uit het corpus, niet uit het model."
             if key else
             "Geen OPENROUTER_API_KEY gevonden en geen lokaal model aanwezig. Zet de sleutel in de "
-            "omgeving of in .env, of plaats een GGUF-model op " + MODEL_PATH + ".")
+            "omgeving of in .env, of plaats een GGUF-model in models/ (zie de README).")
     else:
         key = os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("LLM_API_KEY")
         info["beschikbaar"] = bool(key)
@@ -182,9 +186,28 @@ class ModelFout(Exception):
 
 # ------------------------------------------------------------------ OpenRouter
 
+def _uit_json_body(body: bytes) -> Iterator[Dict]:
+    """Een provider die 'stream' negeert stuurt één JSON-antwoord: een fout, of het complete antwoord."""
+    try:
+        d = json.loads(body.decode("utf-8", "replace"))
+    except ValueError:
+        raise ModelFout("het antwoord was geen server-sent events en ook geen leesbare JSON")
+    if d.get("error"):
+        fout = d["error"]
+        raise ModelFout(fout.get("message") if isinstance(fout, dict) else str(fout))
+    for keuze in d.get("choices") or []:
+        tekst = (keuze.get("message") or {}).get("content")
+        if tekst:
+            yield {"tekst": tekst}
+        yield {"einde": keuze.get("finish_reason") or "stop"}
+
+
 def _openrouter_stukken(model: str, systeem: str, gebruiker: str, max_tokens: int,
-                        temperatuur: float, key: str) -> Iterator[Dict]:
-    """Eén model, echte server-sent events. Geeft {'tekst': ...} zodra tekst binnenkomt en {'einde': reden} aan het eind."""
+                        temperatuur: float, key: str, stop: Optional[threading.Event] = None) -> Iterator[Dict]:
+    """
+    Eén model, echte server-sent events. Geeft {'tekst': ...} zodra tekst binnenkomt en {'einde': reden}
+    aan het eind. Een stroom die stopt zonder [DONE] of finish_reason is afgebroken, niet compleet.
+    """
     import urllib.request
     body = json.dumps({
         "model": model, "max_tokens": max_tokens, "temperature": temperatuur, "stream": True,
@@ -194,10 +217,21 @@ def _openrouter_stukken(model: str, systeem: str, gebruiker: str, max_tokens: in
         OPENROUTER_URL, data=body,
         headers={"content-type": "application/json", "accept": "text/event-stream",
                  "authorization": f"Bearer {key}", "X-Title": "Assurantieportaal"})
+    t0 = time.monotonic()
+    klaar = False
     with urllib.request.urlopen(req, timeout=TIMEOUT_SEC) as r:
+        if "event-stream" not in (r.headers.get("Content-Type") or "").lower():
+            yield from _uit_json_body(r.read(2_000_000))
+            return
         while True:
+            if stop is not None and stop.is_set():
+                return
+            if time.monotonic() - t0 > TOTAAL_SEC:
+                raise ModelFout(f"de tijdslimiet van {TOTAAL_SEC} seconden is overschreden")
             ruw = r.readline()
             if not ruw:
+                if not klaar:
+                    raise ModelFout("de verbinding werd verbroken voordat het antwoord compleet was")
                 return
             regel = ruw.decode("utf-8", "replace").strip()
             # lege regels scheiden gebeurtenissen; ': OPENROUTER PROCESSING' is een keepalive
@@ -218,10 +252,12 @@ def _openrouter_stukken(model: str, systeem: str, gebruiker: str, max_tokens: in
                 if tekst:                 # 'reasoning' staat in een eigen veld en telt niet mee
                     yield {"tekst": tekst}
                 if keuze.get("finish_reason"):
+                    klaar = True
                     yield {"einde": keuze["finish_reason"]}
 
 
-def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]:
+def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur,
+                       stop: Optional[threading.Event] = None) -> Iterator[Dict]:
     """
     Probeert de modellen op volgorde. Gratis modellen zijn wisselend beschikbaar (403, 429, een
     wachtrij, of een leeg antwoord bij redeneermodellen), dus een keten is hier een voorwaarde.
@@ -245,7 +281,7 @@ def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[
             return {"type": "model", "model": model, "provider": "openrouter",
                     "overgeslagen": list(redenen)}
         try:
-            for onderdeel in _openrouter_stukken(model, systeem, gebruiker, max_tokens, temperatuur, key):
+            for onderdeel in _openrouter_stukken(model, systeem, gebruiker, max_tokens, temperatuur, key, stop):
                 if "einde" in onderdeel:
                     eindreden = onderdeel["einde"]
                     continue
@@ -256,6 +292,8 @@ def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[
                     gaf_tekst = True
                     yield kop()
                 yield {"type": "delta", "tekst": uit}
+            if stop is not None and stop.is_set():
+                return                      # de aanvrager is weg: niets meer uitgeven, niets doorschuiven
             rest = filter_.einde()
             if rest:
                 if not gaf_tekst:
@@ -294,23 +332,30 @@ def _get_local():
         return _llm
 
 
-def _stream_local(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]:
+def _stream_local(systeem, gebruiker, max_tokens, temperatuur,
+                  stop: Optional[threading.Event] = None) -> Iterator[Dict]:
     if not os.path.exists(MODEL_PATH):
         yield {"type": "fout", "afgebroken": False,
-               "fout": f"Modelbestand niet gevonden op {MODEL_PATH}"}
+               "fout": "Het lokale modelbestand ontbreekt (zie de README)."}
         return
     filter_ = _ZonderDenkblok()
     gaf_tekst = False
     eindreden = None
     naam = os.path.basename(MODEL_PATH)
     _lokaal_slot.acquire()
+    stroom = None
     try:
+        # Wie tijdens het wachten op het slot is weggegaan mag geen prefill van minuten meer kosten.
+        if stop is not None and stop.is_set():
+            return
         # '/no_think' schakelt bij Qwen3 het redeneerblok uit; op een CPU kost elk token seconden.
         stroom = _get_local().create_chat_completion(
             messages=[{"role": "system", "content": systeem},
                       {"role": "user", "content": gebruiker + "\n\n/no_think"}],
             max_tokens=max_tokens, temperature=temperatuur, stream=True)
         for chunk in stroom:
+            if stop is not None and stop.is_set():
+                return
             if chunk["choices"][0].get("finish_reason"):
                 eindreden = chunk["choices"][0]["finish_reason"]
             stuk = chunk["choices"][0].get("delta", {}).get("content")
@@ -333,6 +378,8 @@ def _stream_local(systeem, gebruiker, max_tokens, temperatuur) -> Iterator[Dict]
                "fout": f"Lokaal model faalde: {type(e).__name__}: {e}"}
         return
     finally:
+        if stroom is not None and hasattr(stroom, "close"):
+            stroom.close()
         _lokaal_slot.release()
     if not gaf_tekst:
         yield {"type": "fout", "afgebroken": False, "fout": "Het lokale model gaf een leeg antwoord."}
@@ -396,7 +443,7 @@ def _stream_volledig(functie, naam: str, systeem, gebruiker, max_tokens, tempera
 # ------------------------------------------------------------------ publieke interface
 
 def stream_events(systeem: str, gebruiker: str, max_tokens: int = 700,
-                  temperatuur: float = 0.2) -> Iterator[Dict]:
+                  temperatuur: float = 0.2, stop: Optional[threading.Event] = None) -> Iterator[Dict]:
     """
     Gebeurtenissen van één generatie:
       {"type": "model", "model", "provider", ["overgeslagen": [...]]}   zodra het eerste teken er is
@@ -407,12 +454,15 @@ def stream_events(systeem: str, gebruiker: str, max_tokens: int = 700,
     Dit is geen cosmetica. Op een lokale CPU-runtime duurt een antwoord van 400 tokens minuten;
     meelezen terwijl het opbouwt maakt het werkbaar. De snelheid van het model is een gegeven, de
     beleving ervan is een ontwerpkeuze.
+
+    `stop` is een Event waarmee de aanvrager zegt dat hij weg is (tabblad dicht, Stop ingedrukt): de
+    generatie houdt dan zo snel mogelijk op en een wachtend lokaal verzoek begint niet meer.
     """
     prov = effectieve_provider()
     if prov == "local":
-        yield from _stream_local(systeem, gebruiker, max_tokens, temperatuur)
+        yield from _stream_local(systeem, gebruiker, max_tokens, temperatuur, stop)
     elif prov == "openrouter":
-        yield from _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur)
+        yield from _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur, stop)
     elif prov == "anthropic":
         yield from _stream_volledig(_volledig_anthropic, "anthropic", systeem, gebruiker,
                                     max_tokens, temperatuur)

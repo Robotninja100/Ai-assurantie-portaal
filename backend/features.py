@@ -12,6 +12,7 @@ Vast patroon per functie:
 """
 import re
 import unicodedata
+from decimal import Decimal
 from typing import Dict, List, Optional
 from datetime import date, datetime
 
@@ -37,6 +38,33 @@ def _uitkomstregel(label: str, u) -> str:
         return (f"{label}: NIET TE BEREKENEN. Reden: {reden} Noem geen bedrag; leg uit wat er ontbreekt "
                 "en wat de volgende stap is.")
     return f"{label}: EUR {d['bedrag']}"
+
+
+def _stappen_tekst(u) -> str:
+    """De rekenstappen zoals het model ze leest, mét uitkomst per stap: het hoeft niets na te rekenen."""
+    regels = []
+    for s in u.stappen:
+        uit = ""
+        if s.uitkomst is not None:
+            uit = f" = {rk._procent(s.uitkomst) if s.eenheid == '%' else rk._bedrag(s.uitkomst)}"
+        regels.append(f"- {s.omschrijving}: {s.formule}{uit}")
+    return "\n".join(regels)
+
+
+def _zelf_te_dragen(u) -> str:
+    """Wat de klant zelf draagt, uit de berekening; het model hoeft en mag dit niet zelf uitrekenen."""
+    d = u.details or {}
+    if "zelf_te_dragen" not in d:
+        return ""
+    delen = []
+    if Decimal(d.get("zelf_te_dragen_door_onderverzekering", "0")) > 0:
+        delen.append(f"door onderverzekering EUR {d['zelf_te_dragen_door_onderverzekering']}")
+    if Decimal(d.get("zelf_te_dragen_boven_verzekerde_som", "0")) > 0:
+        delen.append(f"boven de verzekerde som EUR {d['zelf_te_dragen_boven_verzekerde_som']}")
+    if Decimal(d.get("zelf_te_dragen_eigen_risico", "0")) > 0:
+        delen.append(f"eigen risico EUR {d['zelf_te_dragen_eigen_risico']}")
+    return (f"Zelf te dragen door de klant: EUR {d['zelf_te_dragen']} van een totale schade van EUR "
+            f"{d['totale_schade']}" + (f" ({'; '.join(delen)})" if delen else "") + ".\n")
 
 
 def _uitkomst(d: Dict) -> str:
@@ -320,11 +348,12 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
     ctx = _context("onderverzekering evenredigheid verzekerde som herbouwwaarde eigen risico",
                    ["wetgeving", "polisvoorwaarden"], per_bron=3, grondslag=u.grondslag,
                    waar={"wetgeving": VERZEKERINGSRECHT})
-    stappen = "\n".join(f"- {s.omschrijving}: {s.formule}" for s in u.stappen)
+    stappen = _stappen_tekst(u)
     gebruiker = (
         f"De berekening is AL UITGEVOERD in deterministische code. Neem deze cijfers "
         f"letterlijk over, reken niets na en wijk er niet van af:\n\n"
         f"{_uitkomstregel('Uitkering', u)}\n{stappen}\n"
+        f"{_zelf_te_dragen(u)}"
         f"Waarschuwingen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
         "Leg in helder Nederlands uit wat hier gebeurt en waarom, voor een adviseur die dit "
         "aan een klant moet uitleggen. Noem expliciet wat de klant zelf draagt en waarom.")
@@ -335,7 +364,7 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
 
 # =============================================================== 4. verjaringstoets
 
-def _getal(waarde, naam: str, minimum=0, maximum=None):
+def _getal(waarde, naam: str, minimum=0, maximum=10**12):
     """
     Een bedrag of percentage dat de rekenkern in mag. Onzin (tekst, negatief, een percentage boven
     de 100) wordt geweigerd met een duidelijke melding in plaats van doorgerekend: een rekenkern die
@@ -394,7 +423,7 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
     gebruiker = (
         f"De termijnberekening is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{u.toelichting}\n"
-        + "\n".join(f"- {s.omschrijving}: {s.formule}" for s in u.stappen) +
+        + _stappen_tekst(u) +
         "\n\nLeg uit wat dit betekent en wat de adviseur NU moet doen. Wees concreet over "
         "stuiting. Reken zelf niets na.")
     return {"functie": "verjaringstoets", "systeem": grounding.systeemprompt(ctx["blok"]),
@@ -556,6 +585,8 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
                 datum_bevestiging: str = "", peildatum: str = "") -> Dict:
     intern = _bool(intern_afgehandeld, "intern_afgehandeld")
     d_klacht, d_bev = _datum(datum_klacht, "datum_klacht"), _datum(datum_bevestiging, "datum_bevestiging")
+    if d_bev and not d_klacht:
+        raise ValueError("datum_bevestiging: vul ook de datum van de klacht in")
     u = None
     if d_klacht:
         u = rk.klachttermijnen(d_klacht, d_bev, _datum(peildatum, "peildatum"))
@@ -567,7 +598,7 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
     termijnen = ""
     if u:
         termijnen = ("De termijnen zijn AL BEREKEND. Neem deze data letterlijk over en reken niets na:\n"
-                     + "\n".join(f"- {s.omschrijving}: {s.formule}" for s in u.stappen) + f"\n{u.toelichting}\n\n")
+                     + _stappen_tekst(u) + f"\n{u.toelichting}\n\n")
     gebruiker = (
         f"SITUATIE:\n{situatie}\n"
         f"Datum klacht: {datum_klacht or 'niet opgegeven'}\n"
@@ -626,8 +657,8 @@ def adviesnotitie(klantsituatie: str, advies: str) -> Dict:
 def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: float,
                 drempel_pct: float = 40) -> Dict:
     _getal(nieuwwaarde, "nieuwwaarde")
-    _getal(ouderdom_jaren, "ouderdom")
-    _getal(levensduur_jaren, "levensduur")
+    _getal(ouderdom_jaren, "ouderdom", 0, 1000)
+    _getal(levensduur_jaren, "levensduur", 0, 1000)
     _getal(drempel_pct, "drempel", 0, 100)
     u = rk.nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren, drempel_pct)
     ctx = _context("nieuwwaarde dagwaarde afschrijving vervangingswaarde inboedel",
@@ -635,7 +666,7 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
     gebruiker = (
         f"De waardebepaling is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{_uitkomstregel('Uitkomst', u)} - {u.toelichting}\n"
-        + "\n".join(f"- {s.omschrijving}: {s.formule}" for s in u.stappen) +
+        + _stappen_tekst(u) +
         f"\nWaarschuwingen: {'; '.join(u.waarschuwingen)}\n\n"
         "Leg uit wat dit voor de klant betekent. Benadruk dat de drempel uit de "
         "polisvoorwaarden komt en per verzekeraar verschilt. Reken niets na.")

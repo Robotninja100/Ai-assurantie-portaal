@@ -2,7 +2,7 @@
 Tests voor de deterministische rekenkern. Elke verwachte waarde is met de hand afgeleid uit
 de wettekst in corpus/wetgeving.json, niet uit de uitvoer van de code zelf.
 """
-from datetime import date
+from datetime import date, datetime, timezone
 from decimal import Decimal
 
 import pytest
@@ -113,9 +113,24 @@ def test_reactie_voor_de_aanspraak_wordt_niet_meegeteld():
     assert any("Controleer de invoer" in w for w in u.waarschuwingen)
 
 
-def test_peildatum_is_standaard_vandaag():
+def test_peildatum_is_standaard_vandaag_in_nederland():
     u = rk.verjaring_schadeclaim(date(2024, 3, 10))
-    assert u.details["peildatum"] == date.today().isoformat()
+    assert u.details["peildatum"] == rk.vandaag_nl().isoformat()
+
+
+@pytest.mark.parametrize("utc,verwacht", [
+    (datetime(2026, 9, 29, 21, 59, tzinfo=timezone.utc), date(2026, 9, 29)),    # 23.59 zomertijd: nog dezelfde dag
+    (datetime(2026, 9, 29, 22, 0, tzinfo=timezone.utc), date(2026, 9, 30)),     # middernacht zomertijd: al morgen
+    (datetime(2026, 1, 15, 22, 59, tzinfo=timezone.utc), date(2026, 1, 15)),    # 23.59 wintertijd
+    (datetime(2026, 1, 15, 23, 0, tzinfo=timezone.utc), date(2026, 1, 16)),     # middernacht wintertijd
+    (datetime(2026, 3, 28, 22, 59, tzinfo=timezone.utc), date(2026, 3, 28)),    # nog wintertijd (zomertijd start 29 maart)
+    (datetime(2026, 3, 28, 23, 0, tzinfo=timezone.utc), date(2026, 3, 29)),
+    (datetime(2026, 10, 24, 21, 59, tzinfo=timezone.utc), date(2026, 10, 24)),  # nog zomertijd (wintertijd 25 oktober)
+    (datetime(2026, 10, 24, 22, 0, tzinfo=timezone.utc), date(2026, 10, 25)),
+])
+def test_nederlandse_datum_rond_middernacht_met_en_zonder_tijdzonedatabase(utc, verwacht):
+    assert rk.vandaag_nl(utc) == verwacht
+    assert rk._nl_zonder_tijdzonedatabase(utc) == verwacht
 
 
 # ------------------------------------------------------------ provisie (BGfo 86c/86d)
@@ -312,3 +327,68 @@ def test_zonder_bevestigingsdatum_wordt_alleen_de_acht_wekenregel_berekend():
 def test_laat_bevestigen_wordt_gesignaleerd():
     u = rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 20), date(2026, 9, 29))
     assert any("kwam na de termijn van twee weken" in w for w in u.waarschuwingen)
+
+
+# ------------------------------------------------------------ wat de klant zelf draagt
+
+def test_zelf_te_dragen_is_totale_schade_min_uitkering_en_valt_uiteen_in_delen():
+    # vs 100.000 / ww 200.000: breuk 1/2. Schade 40.000 -> 20.000, ER 500 -> 19.500. Bereddingskosten
+    # 3.000 -> 1.500. Uitkering 21.000. Totale schade 43.000, zelf 22.000 = 21.500 (onderverzekering) + 500 (ER).
+    u = rk.evenredigheidsbeginsel(100000, 200000, 40000, 500, 3000)
+    d = u.details
+    assert u.bedrag == Decimal("21000")
+    assert (d["totale_schade"], d["zelf_te_dragen"]) == ("43000.00", "22000.00")
+    assert d["zelf_te_dragen_door_onderverzekering"] == "21500.00" and d["zelf_te_dragen_eigen_risico"] == "500.00"
+
+
+def test_zelf_te_dragen_zonder_onderverzekering_is_alleen_eigen_risico_en_wat_boven_de_verzekerde_som_uitgaat():
+    u = rk.evenredigheidsbeginsel(200000, 200000, 50000, 500, 0)
+    assert u.details["zelf_te_dragen"] == "500.00" and "zelf_te_dragen_door_onderverzekering" not in u.details
+    u = rk.evenredigheidsbeginsel(100000, 100000, 120000, 0, 0)          # schade 120k > waarde 100k: de waarde geldt
+    assert u.details["totale_schade"] == "100000.00" and u.details["zelf_te_dragen"] == "0.00"
+
+
+def test_zelf_te_dragen_klopt_voor_willekeurige_invoer_binnen_een_cent():
+    import random
+    rnd = random.Random(7)
+    for _ in range(3000):
+        vs, ww = rnd.randint(1, 500) * 1000, rnd.randint(1, 500) * 1000
+        sch, er, bk = rnd.randint(0, 600) * 100 + rnd.random(), rnd.randint(0, 20) * 100, rnd.randint(0, 50) * 100 + rnd.random()
+        u = rk.evenredigheidsbeginsel(vs, ww, sch, er, bk)
+        d = u.details
+        zelf = Decimal(d["zelf_te_dragen"])
+        assert abs(Decimal(d["totale_schade"]) - u.bedrag - zelf) <= Decimal("0.01"), (vs, ww, sch, er, bk)
+        delen = sum(Decimal(v) for k, v in d.items() if k.startswith("zelf_te_dragen_"))
+        assert abs(delen - zelf) <= Decimal("0.01"), (vs, ww, sch, er, bk)
+
+
+def test_eigen_risico_volgorde_is_een_polisafspraak_en_wordt_zo_genoemd():
+    u = rk.evenredigheidsbeginsel(100000, 200000, 40000, 500, 0)
+    assert any("volgt uit de polisvoorwaarden, niet uit de wet" in w for w in u.waarschuwingen)
+
+
+def test_getallen_in_formules_hebben_een_decimale_komma():
+    assert rk._g(12.5) == "12,5" and rk._g(40) == "40" and rk._g("6.50") == "6,5"
+    u = rk.nieuwwaarde_of_dagwaarde(1000, 2.5, 8, 12.5)
+    assert [s.formule for s in u.stappen] == ["8 - 2,5 = 5,5 jaar", "€ 1.000,00 x (5,5/8)", "€ 1.000,00 x 12,5%"]
+    assert u.stappen[2].omschrijving == "Drempel (12,5% van nieuwwaarde)"
+
+
+# ------------------------------------------------------------ klachttermijnen zonder ontvangstbevestiging
+
+def test_zonder_ontvangstbevestiging_is_nooit_zeker_dat_de_klacht_naar_de_geschilleninstantie_kan():
+    u = rk.klachttermijnen(date(2026, 9, 1), None, date(2027, 1, 1))     # ruim na acht weken
+    assert u.details["kan_naar_geschilleninstantie"] is False
+    assert u.details["afhankelijk_van_de_lezing"] is True
+    assert "ontvangstbevestiging ontbreekt" in u.toelichting
+    assert "beide data" not in u.toelichting
+
+
+def test_met_ontvangstbevestiging_na_beide_data_kan_het_wel():
+    u = rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 10), date(2027, 1, 1))
+    assert u.details["kan_naar_geschilleninstantie"] is True
+
+
+def test_ontvangstbevestiging_voor_de_klacht_is_een_invoerfout():
+    with pytest.raises(ValueError, match="vóór de klacht"):
+        rk.klachttermijnen(date(2026, 9, 10), date(2026, 9, 1))
