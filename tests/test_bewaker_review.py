@@ -147,3 +147,15 @@ def test_kleine_kale_getallen_in_de_bronnen_gelden_niet_maar_getallen_met_eenhei
 def test_alles_uit_de_berekening_mag_ook_als_het_een_klein_getal_is():
     ok, slecht, _ = soorten("Het is 5% en € 8.", "geen getallen hier", berekening='{"a": "5", "b": "8.00"}')
     assert not slecht
+
+
+def test_een_tweede_lid_van_een_artikel_van_een_alinea_wordt_gemarkeerd():
+    # BW 7:944 is één alinea zonder ledennummers: lid 1 kan, lid 2 of hoger bestaat niet.
+    import features
+    o = features.verjaringstoets("2024-03-10", "", "", False, "2026-09-29")
+    bw944 = [d for d in features.CORPUS.data["wetgeving"] if d.get("artikel") == "7:944"]
+    assert bw944 and not bw944[0].get("leden")
+    opgehaald = {"wetgeving": bw944}
+    for lid, verwacht in (("1", "GEFUNDEERD"), ("2", "ONGEFUNDEERD"), ("99", "ONGEFUNDEERD")):
+        c = grounding.controleer(f"Zie art. 7:944 lid {lid} BW.", opgehaald, "", "{}")
+        assert c["oordeel"] == verwacht, (lid, c)

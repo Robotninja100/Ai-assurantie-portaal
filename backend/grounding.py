@@ -339,8 +339,12 @@ def controleer(antwoord: str, opgehaald: Dict[str, List[Dict]], toegestaan: Opti
         if not lid:
             return False
         for d in wet_docs:
-            if str(d.get("artikel") or "").lower() == art and d.get("leden"):
-                return not any((l or "").strip().startswith(f"{lid}.") for l in d["leden"])
+            if str(d.get("artikel") or "").lower() == art:
+                if d.get("leden"):
+                    return not any((l or "").strip().startswith(f"{lid}.") for l in d["leden"])
+                # Een artikel van één alinea zonder nummering (BW 7:944, BGfo 39) heeft geen tweede lid.
+                if len([r for r in (d.get("tekst") or "").split("\n") if r.strip()]) <= 1:
+                    return int(lid) >= 2
         return False
 
     def _wetsverwijzing(art: str, lid: Optional[str], begin: int, einde: int):
