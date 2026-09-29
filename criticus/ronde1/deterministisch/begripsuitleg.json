@@ -1,0 +1,503 @@
+[
+ {
+  "id": "begripsuitleg-01",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.10",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.6",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.7",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.0
+ },
+ {
+  "id": "begripsuitleg-02",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0174",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering gedeeltelijk toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0881",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0633",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.0
+ },
+ {
+  "id": "begripsuitleg-03",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [],
+  "berekening": null,
+  "duur_sec": 0.0
+ },
+ {
+  "id": "begripsuitleg-04",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86f",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:10",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0813",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0770",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.0
+ },
+ {
+  "id": "begripsuitleg-05",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:952",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 4.1.5",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub f",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0791",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2024-1054",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering (gedeeltelijk) toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-1045",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "begripsuitleg-06",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86l",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86m",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0814",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2024-1054",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering (gedeeltelijk) toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0791",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.0
+ },
+ {
+  "id": "begripsuitleg-07",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [],
+  "berekening": null,
+  "duur_sec": 0.0
+ },
+ {
+  "id": "begripsuitleg-08",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.4.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 15",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 7",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0770",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0821",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.0
+ },
+ {
+  "id": "begripsuitleg-09",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86m",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86c",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86k",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.0
+ },
+ {
+  "id": "begripsuitleg-10",
+  "functie": "begripsuitleg",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:957",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.6",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 7.7",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.10",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0811",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.0
+ }
+]

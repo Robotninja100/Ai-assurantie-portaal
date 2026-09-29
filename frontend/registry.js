@@ -101,10 +101,10 @@ export const REGISTER = {
     icoon: "kolommen", breed: false, tweeKanten: true,
     lead: "Zet de clausules van twee producten naast elkaar. Waar een kant geen clausule heeft, staat dat er; het gat wordt niet gevuld.",
     velden: [
-      { id: "product_a", label: "Variant A", type: "keuze", bron: "producten", verplicht: true },
-      { id: "product_b", label: "Variant B", type: "keuze", bron: "producten", verplicht: true },
+      { id: "product_a", label: "Variant A", type: "keuze", bron: "varianten", verplicht: true },
+      { id: "product_b", label: "Variant B", type: "keuze", bron: "varianten", verplicht: true },
     ],
-    voorbeeld: { product_a: "inboedelverzekering", product_b: "autoverzekering (WA/casco)" },
+    voorbeeld: { product_a: "autoverzekering (WA/casco) · Klaverblad", product_b: "autoverzekering (WA/casco) · Interpolis" },
   },
   klachtroute: {
     icoon: "bord", breed: false,

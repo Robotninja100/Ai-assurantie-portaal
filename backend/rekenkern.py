@@ -88,6 +88,7 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
 
     if ww <= 0:
         u.waarschuwingen.append("Werkelijke waarde is nul of negatief; breuk niet te bepalen.")
+        u.toelichting = "De uitkering kan niet worden berekend zonder werkelijke waarde."
         u.volgende_stap = "Stel eerst de herbouw-/vervangingswaarde vast, desnoods via een taxatie."
         return u
 
@@ -445,6 +446,9 @@ def nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren,
 
     if levensduur_jaren <= 0:
         u.waarschuwingen.append("Levensduur moet groter dan nul zijn.")
+        u.toelichting = "De waardetoets kan niet worden uitgevoerd zonder levensduur."
+        u.volgende_stap = ("Stel de levensduur vast (uit de polisvoorwaarden, een afschrijvingstabel of een taxatie) "
+                           "en start de toets opnieuw.")
         return u
 
     rest = max(Decimal("0"), Decimal(str(levensduur_jaren)) - Decimal(str(ouderdom_jaren)))

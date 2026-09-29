@@ -1,0 +1,932 @@
+[
+ {
+  "id": "afwijzingsanalyse-01",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 2.8",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0881",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0752",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0633",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "afwijzingsanalyse-02",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub h",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub j",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.1",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub b",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0752",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0813",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0830",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:952",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "afwijzingsanalyse-03",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "reisverzekering art. 7.1",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Algemeen art. 4.1",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 11.1",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0752",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-1045",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0590",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering toegewezen"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:957",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "afwijzingsanalyse-04",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub j",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub b",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub f",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.9",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0752",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0813",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0755",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:952",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "afwijzingsanalyse-05",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "reisverzekering art. 7.1",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0874",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0633",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0964",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:925",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "afwijzingsanalyse-06",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.1",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.2",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0874",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-1045",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "afwijzingsanalyse-07",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.2",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 5.1",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0874",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0087",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0752",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "afwijzingsanalyse-08",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub j",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub f",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 4.1.5",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0752",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0633",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-1045",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:952",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "afwijzingsanalyse-09",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub f",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 4.1.5",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "reisverzekering art. 6.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0087",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-1045",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0473",
+    "type": null,
+    "kant": null,
+    "uitkomst": "uitkomst niet vastgesteld"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:952",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "afwijzingsanalyse-10",
+  "functie": "afwijzingsanalyse",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "reisverzekering art. 6.3",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 2.4",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "reisverzekering art. 6.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0805",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0868",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0854",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:959",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ }
+]

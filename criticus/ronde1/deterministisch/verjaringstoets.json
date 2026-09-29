@@ -1,0 +1,1098 @@
+[
+ {
+  "id": "verjaringstoets-01",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "16 juni 2025 + 1 dag = 17 juni 2025",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "17 juni 2025 + 3 jaar, het einde van de dag ervoor = 16 juni 2028",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 16 juni 2028; per 17 juni 2028 is de vordering verjaard (626 dagen resterend).",
+   "volgende_stap": "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór de laatste dag, en bewaar het verzendbewijs.",
+   "waarschuwingen": [
+    "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "LOOPT",
+    "peildatum": "2026-09-29",
+    "hoofdtermijn_laatste_dag": "2028-06-16",
+    "laatste_dag": "2028-06-16",
+    "eerste_verjaarde_dag": "2028-06-17",
+    "dagen_resterend": 626,
+    "gebeurtenissen": [
+     {
+      "datum": "2025-06-16",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2028-06-16",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     }
+    ],
+    "aansprakelijkheid": false,
+    "voorwaardelijk_alternatief": null
+   }
+  },
+  "duur_sec": 0.002
+ },
+ {
+  "id": "verjaringstoets-02",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "15 januari 2024 + 1 dag = 16 januari 2024",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "16 januari 2024 + 3 jaar, het einde van de dag ervoor = 15 januari 2027",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Schriftelijke aanspraak binnen de termijn stuit de verjaring (lid 2)",
+     "formule": "1 februari 2024 <= 15 januari 2027",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Na erkenning of ondubbelzinnige afwijzing begint een NIEUWE termijn van drie jaar; deze vervangt de oorspronkelijke termijn",
+     "formule": "13 maart 2025 + 1 dag = 14 maart 2025; + 3 jaar, laatste dag = 13 maart 2028",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:942:2",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 13 maart 2028; per 14 maart 2028 is de vordering verjaard (531 dagen resterend).",
+   "volgende_stap": "Houd de einddatum in het dossier bij en stuit tijdig opnieuw, met verzendbewijs, als de verzekeraar niet reageert of de zaak nog loopt.",
+   "waarschuwingen": [
+    "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "LOOPT",
+    "peildatum": "2026-09-29",
+    "hoofdtermijn_laatste_dag": "2027-01-15",
+    "laatste_dag": "2028-03-13",
+    "eerste_verjaarde_dag": "2028-03-14",
+    "dagen_resterend": 531,
+    "gebeurtenissen": [
+     {
+      "datum": "2024-01-15",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2024-02-01",
+      "soort": "stuiting",
+      "label": "Schriftelijke aanspraak"
+     },
+     {
+      "datum": "2025-03-13",
+      "soort": "reactie",
+      "label": "Erkenning of ondubbelzinnige afwijzing"
+     },
+     {
+      "datum": "2027-01-15",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     },
+     {
+      "datum": "2028-03-13",
+      "soort": "einde_nieuwe_termijn",
+      "label": "Einde nieuwe termijn"
+     }
+    ],
+    "aansprakelijkheid": false,
+    "voorwaardelijk_alternatief": null
+   }
+  },
+  "duur_sec": 0.0
+ },
+ {
+  "id": "verjaringstoets-03",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "12 juni 2023 + 1 dag = 13 juni 2023",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "13 juni 2023 + 3 jaar, het einde van de dag ervoor = 12 juni 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 12 juni 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 12 juni 2026; per 13 juni 2026 is de vordering verjaard (vandaag is de laatste dag).",
+   "volgende_stap": "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór de laatste dag, en bewaar het verzendbewijs.",
+   "waarschuwingen": [
+    "Vandaag (12 juni 2026) is de laatste dag om te stuiten: verstuur de aanspraak vandaag nog aantoonbaar.",
+    "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "LOOPT",
+    "peildatum": "2026-06-12",
+    "hoofdtermijn_laatste_dag": "2026-06-12",
+    "laatste_dag": "2026-06-12",
+    "eerste_verjaarde_dag": "2026-06-13",
+    "dagen_resterend": 0,
+    "gebeurtenissen": [
+     {
+      "datum": "2023-06-12",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2026-06-12",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     }
+    ],
+    "aansprakelijkheid": false,
+    "voorwaardelijk_alternatief": null
+   }
+  },
+  "duur_sec": 0.0
+ },
+ {
+  "id": "verjaringstoets-04",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "29 februari 2020 + 1 dag = 1 maart 2020",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "1 maart 2020 + 3 jaar, het einde van de dag ervoor = 28 februari 2023",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "De schriftelijke aanspraak komt na het einde van de hoofdtermijn: geen stuitende werking",
+     "formule": "1 maart 2023 > 28 februari 2023",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 29 september 2026 is de vordering VERJAARD: de laatste dag om te stuiten was 28 februari 2023 (1309 dagen geleden).",
+   "volgende_stap": "Ga na of er eerder rechtsgeldig is gestuit; zonder stuiting is de vordering niet meer afdwingbaar. Onderzoek subsidiair of de adviseur zelf aansprakelijk is voor het laten verlopen van de termijn.",
+   "waarschuwingen": [
+    "De schriftelijke aanspraak van 1 maart 2023 is gedaan nadat de hoofdtermijn op 28 februari 2023 was verstreken en kon de verjaring niet meer stuiten. Ga na of er eerder al is gestuit.",
+    "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "VERJAARD",
+    "peildatum": "2026-09-29",
+    "hoofdtermijn_laatste_dag": "2023-02-28",
+    "laatste_dag": "2023-02-28",
+    "eerste_verjaarde_dag": "2023-03-01",
+    "dagen_resterend": -1309,
+    "gebeurtenissen": [
+     {
+      "datum": "2020-02-29",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2023-02-28",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     }
+    ],
+    "aansprakelijkheid": false,
+    "voorwaardelijk_alternatief": null
+   }
+  },
+  "duur_sec": 0.0
+ },
+ {
+  "id": "verjaringstoets-05",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "12 april 2021 + 1 dag = 13 april 2021",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "13 april 2021 + 3 jaar, het einde van de dag ervoor = 12 april 2024",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Schriftelijke aanspraak binnen de termijn stuit de verjaring (lid 2)",
+     "formule": "3 mei 2021 <= 12 april 2024",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Zolang de verzekeraar de aanspraak niet erkent of ondubbelzinnig afwijst, begint er geen nieuwe termijn (lid 2); de verjaring is gestuit",
+     "formule": "geen lopende termijn",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:942:2",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 29 september 2026 is de verjaring gestuit door de schriftelijke aanspraak van 3 mei 2021. Er loopt nu geen termijn: een nieuwe termijn van drie jaar begint pas op de dag na erkenning of ondubbelzinnige afwijzing door de verzekeraar.",
+   "volgende_stap": "Vraag de verzekeraar schriftelijk om een reactie en leg vast op welke datum de aanspraak wordt erkend of ondubbelzinnig afgewezen: dan begint de nieuwe termijn. Bewaar het verzendbewijs van de stuitende mededeling.",
+   "waarschuwingen": [
+    "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "GESTUIT",
+    "peildatum": "2026-09-29",
+    "hoofdtermijn_laatste_dag": "2024-04-12",
+    "laatste_dag": null,
+    "eerste_verjaarde_dag": null,
+    "dagen_resterend": null,
+    "gebeurtenissen": [
+     {
+      "datum": "2021-04-12",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2021-05-03",
+      "soort": "stuiting",
+      "label": "Schriftelijke aanspraak"
+     },
+     {
+      "datum": "2024-04-12",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     }
+    ],
+    "aansprakelijkheid": false,
+    "voorwaardelijk_alternatief": null
+   }
+  },
+  "duur_sec": 0.0
+ },
+ {
+  "id": "verjaringstoets-06",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "13 januari 2025 + 1 dag = 14 januari 2025",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "14 januari 2025 + 3 jaar, het einde van de dag ervoor = 13 januari 2028",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Schriftelijke aanspraak binnen de termijn stuit de verjaring (lid 2)",
+     "formule": "2 juni 2025 <= 13 januari 2028",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Zolang de verzekeraar de aanspraak niet erkent of ondubbelzinnig afwijst, begint er geen nieuwe termijn (lid 2); de verjaring is gestuit",
+     "formule": "geen lopende termijn",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:942:2",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 29 september 2026 is de verjaring gestuit door de schriftelijke aanspraak van 2 juni 2025. Er loopt nu geen termijn: een nieuwe termijn van drie jaar begint pas op de dag na erkenning of ondubbelzinnige afwijzing door de verzekeraar.",
+   "volgende_stap": "Vraag de verzekeraar schriftelijk om een reactie en leg vast op welke datum de aanspraak wordt erkend of ondubbelzinnig afgewezen: dan begint de nieuwe termijn. Bewaar het verzendbewijs van de stuitende mededeling.",
+   "waarschuwingen": [
+    "De erkenning of ondubbelzinnige afwijzing (3 maart 2025) ligt vóór de schriftelijke aanspraak. Controleer de invoer; de reactie is niet meegeteld.",
+    "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "GESTUIT",
+    "peildatum": "2026-09-29",
+    "hoofdtermijn_laatste_dag": "2028-01-13",
+    "laatste_dag": null,
+    "eerste_verjaarde_dag": null,
+    "dagen_resterend": null,
+    "gebeurtenissen": [
+     {
+      "datum": "2025-01-13",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2025-06-02",
+      "soort": "stuiting",
+      "label": "Schriftelijke aanspraak"
+     },
+     {
+      "datum": "2028-01-13",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     }
+    ],
+    "aansprakelijkheid": false,
+    "voorwaardelijk_alternatief": null
+   }
+  },
+  "duur_sec": 0.0
+ },
+ {
+  "id": "verjaringstoets-07",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "8 mei 2023 + 1 dag = 9 mei 2023",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "9 mei 2023 + 3 jaar, het einde van de dag ervoor = 8 mei 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 29 september 2026 is de hoofdtermijn verstreken op 8 mei 2026. Of de vordering verjaard is, hangt af van één feit dat hier ontbreekt: als de schademelding een schriftelijke aanspraak was en binnen de hoofdtermijn is gedaan, loopt er een nieuwe termijn tot 18 januari 2027.",
+   "volgende_stap": "Zoek de datum van de eerste schriftelijke aanspraak op (schademelding, brief of e-mail) en bepaal of die vóór 8 mei 2026 is gedaan; vul die datum in en toets opnieuw.",
+   "waarschuwingen": [
+    "Er is een erkenning of ondubbelzinnige afwijzing ingevuld maar geen datum van de schriftelijke aanspraak. Volgens lid 2 begint de nieuwe termijn pas na een stuitende mededeling; deze berekening houdt daarom de hoofdtermijn aan (laatste dag 8 mei 2026). Voorwaardelijk: als de schademelding een schriftelijke aanspraak was en binnen de hoofdtermijn is gedaan, loopt er een nieuwe termijn tot 18 januari 2027.",
+    "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "ONZEKER",
+    "peildatum": "2026-09-29",
+    "hoofdtermijn_laatste_dag": "2026-05-08",
+    "laatste_dag": "2026-05-08",
+    "eerste_verjaarde_dag": "2026-05-09",
+    "dagen_resterend": -144,
+    "gebeurtenissen": [
+     {
+      "datum": "2023-05-08",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2024-01-18",
+      "soort": "reactie",
+      "label": "Erkenning of ondubbelzinnige afwijzing"
+     },
+     {
+      "datum": "2026-05-08",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     }
+    ],
+    "aansprakelijkheid": false,
+    "voorwaardelijk_alternatief": {
+     "laatste_dag": "2027-01-18",
+     "voorwaarde": "als de schademelding een schriftelijke aanspraak was en binnen de hoofdtermijn is gedaan, loopt er een nieuwe termijn tot 18 januari 2027"
+    }
+   }
+  },
+  "duur_sec": 0.0
+ },
+ {
+  "id": "verjaringstoets-08",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "16 augustus 2023 + 1 dag = 17 augustus 2023",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "17 augustus 2023 + 3 jaar, het einde van de dag ervoor = 16 augustus 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Onderhandeling binnen de termijn stuit de verjaring (lid 3)",
+     "formule": "21 november 2023 <= 16 augustus 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Na erkenning of afbreken van de onderhandelingen begint een NIEUWE termijn van drie jaar; deze vervangt de oorspronkelijke termijn",
+     "formule": "10 februari 2025 + 1 dag = 11 februari 2025; + 3 jaar, laatste dag = 10 februari 2028",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:942:3",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 10 februari 2028; per 11 februari 2028 is de vordering verjaard (499 dagen resterend).",
+   "volgende_stap": "Houd de einddatum in het dossier bij en stuit tijdig opnieuw, met verzendbewijs, als de verzekeraar niet reageert of de zaak nog loopt.",
+   "waarschuwingen": [
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "LOOPT",
+    "peildatum": "2026-09-29",
+    "hoofdtermijn_laatste_dag": "2026-08-16",
+    "laatste_dag": "2028-02-10",
+    "eerste_verjaarde_dag": "2028-02-11",
+    "dagen_resterend": 499,
+    "gebeurtenissen": [
+     {
+      "datum": "2023-08-16",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2023-11-21",
+      "soort": "stuiting",
+      "label": "Onderhandeling"
+     },
+     {
+      "datum": "2025-02-10",
+      "soort": "reactie",
+      "label": "Erkenning of afbreken van de onderhandelingen"
+     },
+     {
+      "datum": "2026-08-16",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     },
+     {
+      "datum": "2028-02-10",
+      "soort": "einde_nieuwe_termijn",
+      "label": "Einde nieuwe termijn"
+     }
+    ],
+    "aansprakelijkheid": true,
+    "voorwaardelijk_alternatief": null
+   }
+  },
+  "duur_sec": 0.0
+ },
+ {
+  "id": "verjaringstoets-09",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "5 oktober 2023 + 1 dag = 6 oktober 2023",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "6 oktober 2023 + 3 jaar, het einde van de dag ervoor = 5 oktober 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 5 oktober 2026; per 6 oktober 2026 is de vordering verjaard (6 dagen resterend).",
+   "volgende_stap": "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór de laatste dag, en bewaar het verzendbewijs.",
+   "waarschuwingen": [
+    "De schriftelijke aanspraak van 2 oktober 2026 ligt na de peildatum (29 september 2026) en heeft op die dag nog niets gestuit. Verstuur haar vóór 5 oktober 2026, met verzendbewijs.",
+    "Nog maar 6 dagen tot de laatste dag (5 oktober 2026): handel met spoed.",
+    "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "LOOPT",
+    "peildatum": "2026-09-29",
+    "hoofdtermijn_laatste_dag": "2026-10-05",
+    "laatste_dag": "2026-10-05",
+    "eerste_verjaarde_dag": "2026-10-06",
+    "dagen_resterend": 6,
+    "gebeurtenissen": [
+     {
+      "datum": "2023-10-05",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2026-10-02",
+      "soort": "stuiting",
+      "label": "Schriftelijke aanspraak (na de peildatum)"
+     },
+     {
+      "datum": "2026-10-05",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     }
+    ],
+    "aansprakelijkheid": false,
+    "voorwaardelijk_alternatief": null
+   }
+  },
+  "duur_sec": 0.0
+ },
+ {
+  "id": "verjaringstoets-10",
+  "functie": "verjaringstoets",
+  "http_status": 400,
+  "fout": "ValueError: datum_bekend: '14 nov 2023' is geen datum in de vorm JJJJ-MM-DD",
+  "bronnen": [],
+  "berekening": null
+ }
+]

@@ -10,6 +10,8 @@ Vast patroon per functie:
   invoer -> corpus ophalen -> (eventueel) deterministisch rekenen ->
   contextblok -> model formuleert -> citeerbewaker controleert -> uitvoer met bronnen
 """
+import re
+import unicodedata
 from typing import Dict, List, Optional
 from datetime import date, datetime
 
@@ -25,6 +27,16 @@ MAX_INVOER = 4000        # zoveel tekens van een dossier of brief gaan naar het 
 # --------------------------------------------------------------- hulpfuncties
 
 VERPLICHT = 999.0     # score voor artikelen waarop een berekening rust; altijd in de bronnen
+
+
+def _uitkomstregel(label: str, u) -> str:
+    """De uitkomst zoals het model haar leest. Zonder bedrag staat er nooit 'EUR None', maar de reden."""
+    d = u.to_dict()
+    if d["bedrag"] is None:
+        reden = " ".join(u.waarschuwingen) or u.toelichting or "de invoer volstaat niet"
+        return (f"{label}: NIET TE BEREKENEN. Reden: {reden} Noem geen bedrag; leg uit wat er ontbreekt "
+                "en wat de volgende stap is.")
+    return f"{label}: EUR {d['bedrag']}"
 
 
 def _uitkomst(d: Dict) -> str:
@@ -97,15 +109,83 @@ PRODUCT_FAMILIE = {
 }
 
 
+def _sleutel(tekst: str) -> str:
+    """Kleine letters zonder accenten en leestekens; 'a.s.r.' en 'ASR' worden 'asr', 'Univé' wordt 'unive'."""
+    t = unicodedata.normalize("NFKD", (tekst or "").lower().replace(".", ""))
+    t = "".join(c for c in t if not unicodedata.combining(c))
+    return " ".join(re.sub(r"[^a-z0-9]+", " ", t).split())
+
+
+def _als_woord(sleutel: str, tekst: str) -> bool:
+    return bool(sleutel) and re.search(rf"(?<![a-z0-9]){re.escape(sleutel)}(?![a-z0-9])", tekst) is not None
+
+
+def _kort(verzekeraar: str) -> str:
+    """'Klaverblad Verzekeringen' -> 'Klaverblad'; 'Univé (N.V. Univé Schade)' -> 'Univé'."""
+    return re.sub(r"\s*\(.*\)\s*$", "", verzekeraar or "").replace(" Verzekeringen", "").strip()
+
+
+def _verzekeraars() -> Dict[str, str]:
+    """Wie polisvoorwaarden in het corpus heeft: sleutel ('klaverblad') -> volledige naam."""
+    uit = {}
+    for r in CORPUS.data.get("polisvoorwaarden", []):
+        naam = r.get("verzekeraar_of_bron") or ""
+        if _kort(naam):
+            uit[_sleutel(_kort(naam))] = naam
+    return uit
+
+
+# Bekende verzekeraars waarvan het corpus GEEN voorwaarden heeft. Wie er een noemt, krijgt geen
+# clausules van een andere verzekeraar voorgeschoteld onder die naam.
+ANDERE_VERZEKERAARS = (
+    "centraal beheer", "nationale nederlanden", "nationale-nederlanden", "aegon", "allianz", "fbto", "ohra",
+    "delta lloyd", "reaal", "anwb", "de goudse", "goudse", "generali", "avero", "ditzo", "amersfoortse",
+    "movir", "de friesland", "zurich", "unigarant", "vivat", "aviva", "hdi", "verzekeruzelf",
+    "abn amro", "rabobank", "lloyd s", "lloyds",
+)
+
+
+def _noemt_andere_verzekeraar(sleutel_tekst: str) -> Optional[str]:
+    return next((a for a in ANDERE_VERZEKERAARS if _als_woord(_sleutel(a), sleutel_tekst)), None)
+
+
+def _herken(tekst: str) -> Dict:
+    """
+    Wat een productveld aanwijst: welk product uit het corpus en, als de tekst er een noemt, welke
+    verzekeraar. Deterministisch: bij meerdere producten wint de langste naam die in de tekst past;
+    kan het nog steeds meer dan één product zijn, dan is het niet eenduidig en kiezen we er geen.
+    """
+    p = _sleutel(tekst)
+    verz = _verzekeraars()
+    genoemd = [naam for sl, naam in sorted(verz.items()) if _als_woord(sl, p)]
+    vreemd = _noemt_andere_verzekeraar(p)
+    for sl in verz:                                         # de naam van de verzekeraar is geen productnaam
+        p = re.sub(rf"(?<![a-z0-9]){re.escape(sl)}(?![a-z0-9])", " ", p)
+    if vreemd:
+        p = re.sub(rf"(?<![a-z0-9]){re.escape(_sleutel(vreemd))}(?![a-z0-9])", " ", p)
+    p = " ".join(p.split())
+    producten = sorted({r.get("product") for r in CORPUS.data.get("polisvoorwaarden", []) if r.get("product")})
+    uit = {"product": None, "verzekeraar": genoemd[0] if len(genoemd) == 1 else None,
+           "meerdere_verzekeraars": len(genoemd) > 1, "buiten_corpus": vreemd, "eenduidig": True}
+    if not p:
+        return uit
+    gelijk = [k for k in producten if _sleutel(k) == p]
+    bevat = sorted((k for k in producten if _sleutel(k) in p), key=lambda k: (-len(k), k))
+    past_in = [k for k in producten if p in _sleutel(k)]
+    if gelijk:
+        uit["product"] = gelijk[0]
+    elif bevat:
+        uit["product"] = bevat[0]
+    elif len(past_in) == 1:
+        uit["product"] = past_in[0]
+    elif len(past_in) > 1:
+        uit["eenduidig"] = False
+    return uit
+
+
 def _product_filter(product: str):
     """Filter voor Corpus.zoek op de gekozen productsoort; None als er niets is gekozen of herkend."""
-    p = " ".join((product or "").lower().split())
-    if not p:
-        return None
-    kennen = {r.get("product") for r in CORPUS.data.get("polisvoorwaarden", [])}
-    gelijk = next((k for k in kennen if k and k.lower() == p), None)
-    if gelijk is None:
-        gelijk = next((k for k in kennen if k and (p in k.lower() or k.lower() in p)), None)
+    gelijk = _herken(product)["product"]
     if gelijk is None:
         return None
     familie = PRODUCT_FAMILIE.get(gelijk, {gelijk}) | {ALGEMEEN}
@@ -175,11 +255,12 @@ def _bronlijst(opgehaald: Dict) -> List[Dict]:
 # =============================================================== 1. dekkingscheck
 
 def dekkingscheck(situatie: str, product: str = "") -> Dict:
-    vraag = f"{product} {situatie}".strip()
+    gekozen = _herken(product)["product"]         # de herkende productnaam, niet de ruwe invoer
+    vraag = f"{gekozen or ''} {situatie}".strip()
     ctx = _context(vraag, ["polisvoorwaarden", "wetgeving"], per_bron=5,
                    waar={"polisvoorwaarden": _product_filter(product), "wetgeving": VERZEKERINGSRECHT})
     gebruiker = (
-        f"SCHADESITUATIE:\n{situatie}\n\nPRODUCT: {product or 'niet opgegeven'}\n\n"
+        f"SCHADESITUATIE:\n{situatie}\n\nPRODUCT: {gekozen or 'niet opgegeven of niet herkend'}\n\n"
         "Beoordeel op basis van UITSLUITEND de bronnen:\n"
         "1. Welke clausules raken deze situatie? Noem ze bij hun clausulenummer.\n"
         "2. Wijst dit op dekking of op een uitsluiting? Wees expliciet als het onduidelijk is.\n"
@@ -243,7 +324,7 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
     gebruiker = (
         f"De berekening is AL UITGEVOERD in deterministische code. Neem deze cijfers "
         f"letterlijk over, reken niets na en wijk er niet van af:\n\n"
-        f"Uitkering: EUR {u.to_dict()['bedrag']}\n{stappen}\n"
+        f"{_uitkomstregel('Uitkering', u)}\n{stappen}\n"
         f"Waarschuwingen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
         "Leg in helder Nederlands uit wat hier gebeurt en waarom, voor een adviseur die dit "
         "aan een klant moet uitleggen. Noem expliciet wat de klant zelf draagt en waarom.")
@@ -387,42 +468,82 @@ TYPE_VOLGORDE = ["dekking", "uitsluiting", "eigen risico", "verplichting verzeke
                  "schaderegeling", "verjaring"]
 
 
-def _clausules_van(product: str, max_n: int = 10) -> List[Dict]:
+def _kant(tekst: str, plaats: str = "Variant", max_n: int = 10) -> Dict:
     """
-    Alle clausules van precies dit product, dekking en uitsluitingen eerst. Een vergelijking moet
-    controleerbaar zijn: geen zoekscore die bepaalt wat er wel en niet naast elkaar komt te staan.
+    Eén kant van de vergelijking: precies de clausules van het gekozen product, van de gekozen
+    verzekeraar als er een genoemd is. Een vergelijking moet controleerbaar zijn: geen zoekscore die
+    bepaalt wat er wel en niet naast elkaar komt te staan, en geen verzekeraar die stilzwijgend
+    wordt vervangen door een andere.
     """
-    p = " ".join((product or "").lower().split())
+    h = _herken(tekst)
     rijen = CORPUS.data.get("polisvoorwaarden", [])
-    kennen = {r.get("product") for r in rijen}
-    gelijk = next((k for k in kennen if k and k.lower() == p), None) or \
-        next((k for k in kennen if k and p and (p in k.lower() or k.lower() in p)), None)
-    if not gelijk:
-        return []
-    mijn = [r for r in rijen if r.get("product") == gelijk]
-    mijn.sort(key=lambda r: (TYPE_VOLGORDE.index(r["type"]) if r.get("type") in TYPE_VOLGORDE else 99,
+    kant = {"product": h["product"], "verzekeraar": h["verzekeraar"], "rijen": [], "opmerking": ""}
+    if h["buiten_corpus"]:
+        kant["opmerking"] = (f"{plaats}: van {h['buiten_corpus'].title()} staan geen polisvoorwaarden in het corpus, "
+                             "dus daar is niets van te vergelijken.")
+        return kant
+    if h["meerdere_verzekeraars"]:
+        kant["opmerking"] = f"{plaats}: dit veld noemt meer dan één verzekeraar; kies per variant één product van één verzekeraar."
+        return kant
+    if not h["eenduidig"]:
+        kant["opmerking"] = f"{plaats}: dit past op meerdere producten; kies er één uit de lijst."
+        return kant
+    if not h["product"]:
+        kant["opmerking"] = (f"{plaats}: dit product staat niet in het corpus." if (tekst or "").strip()
+                             else f"{plaats}: dit veld is leeg; kies een product en verzekeraar.")
+        return kant
+    mijn = [r for r in rijen if r.get("product") == h["product"]
+            and (not h["verzekeraar"] or r.get("verzekeraar_of_bron") == h["verzekeraar"])]
+    if not mijn:
+        kant["opmerking"] = (f"{plaats}: {_kort(h['verzekeraar'])} heeft in het corpus geen {h['product']}; "
+                             "die kant blijft leeg in plaats van dat er iets van een andere verzekeraar voor in de plaats komt.")
+        return kant
+    aanbieders = sorted({r.get("verzekeraar_of_bron") for r in mijn})
+    if len(aanbieders) > 1:
+        kant["opmerking"] = (f"{plaats}: geen verzekeraar genoemd, dus de clausules van {', '.join(_kort(a) for a in aanbieders)} "
+                             "staan door elkaar. Kies een variant met verzekeraar voor een zuivere vergelijking.")
+    else:
+        kant["verzekeraar"] = aanbieders[0]
+    mijn.sort(key=lambda r: (r.get("verzekeraar_of_bron") or "",
+                             TYPE_VOLGORDE.index(r["type"]) if r.get("type") in TYPE_VOLGORDE else 99,
                              r.get("clausule_id") or ""))
-    return mijn[:max_n]
+    if len(mijn) > max_n:
+        kant["opmerking"] = (kant["opmerking"] + " " if kant["opmerking"] else "") + \
+            f"{plaats}: {len(mijn)} clausules in het corpus; de eerste {max_n} staan hier (dekking en uitsluitingen eerst)."
+    kant["rijen"] = mijn[:max_n]
+    return kant
+
+
+def _kantnaam(k: Dict) -> str:
+    if k["product"]:
+        return f"{k['product']} ({_kort(k['verzekeraar'])})" if k["verzekeraar"] else k["product"]
+    return "een product dat het portaal niet herkent"
 
 
 def polisvergelijker(product_a: str, product_b: str) -> Dict:
     """Verschilanalyse over echte clausules; het model beschrijft, het corpus levert."""
-    ra, rb = _clausules_van(product_a), _clausules_van(product_b)
+    ka, kb = _kant(product_a, "Variant A"), _kant(product_b, "Variant B")
+    ra, rb = ka["rijen"], kb["rijen"]
+    opmerkingen = [k["opmerking"] for k in (ka, kb) if k["opmerking"]]
+    if ka["product"] and (ka["product"], ka["verzekeraar"]) == (kb["product"], kb["verzekeraar"]) and ra:
+        opmerkingen.append("Variant A en B wijzen op hetzelfde product van dezelfde verzekeraar; er is niets te vergelijken.")
     docs = ra + rb
     rijen = lambda lst: [(0.0, d) for d in lst]
-    blok = (f"=== VARIANT A: {product_a} ===\n{_blok('polisvoorwaarden', rijen(ra)) or '(geen clausules in het corpus)'}\n\n"
-            f"=== VARIANT B: {product_b} ===\n{_blok('polisvoorwaarden', rijen(rb)) or '(geen clausules in het corpus)'}")
+    naam_a, naam_b = _kantnaam(ka), _kantnaam(kb)
+    blok = (f"=== VARIANT A: {naam_a} ===\n{_blok('polisvoorwaarden', rijen(ra)) or '(geen clausules in het corpus)'}\n\n"
+            f"=== VARIANT B: {naam_b} ===\n{_blok('polisvoorwaarden', rijen(rb)) or '(geen clausules in het corpus)'}")
     gebruiker = (
-        f"Vergelijk '{product_a}' met '{product_b}' op basis van UITSLUITEND bovenstaande clausules.\n"
+        f"Vergelijk variant A ({naam_a}) met variant B ({naam_b}) op basis van UITSLUITEND bovenstaande clausules.\n"
         "1. Waar verschillen de UITSLUITINGEN? Noem clausulenummers aan beide kanten.\n"
         "2. Welk concreet dekkingshiaat ontstaat er als een klant overstapt van A naar B?\n"
         "3. Welke vergelijking kun je NIET maken omdat de clausule aan een kant ontbreekt? "
-        "Benoem dat expliciet in plaats van het gat te vullen.")
+        "Benoem dat expliciet in plaats van het gat te vullen.\n"
+        + ("".join(f"Let op: {o}\n" for o in opmerkingen)))
     bronnen = _bronlijst({"polisvoorwaarden": docs})
     for i, b in enumerate(bronnen):
         b["kant"] = "A" if i < len(ra) else "B"        # de UI toont beide varianten naast elkaar
     return {"functie": "polisvergelijker", "systeem": grounding.systeemprompt(blok),
-            "gebruiker": gebruiker, "opgehaald": {"polisvoorwaarden": docs},
+            "gebruiker": gebruiker, "opgehaald": {"polisvoorwaarden": docs}, "opmerkingen": opmerkingen,
             "bronnen": bronnen, "berekening": None, "max_tokens": 800}
 
 
@@ -513,7 +634,7 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
                    ["polisvoorwaarden", "wetgeving"], per_bron=3)
     gebruiker = (
         f"De waardebepaling is AL UITGEVOERD. Neem letterlijk over:\n"
-        f"Uitkomst: EUR {u.to_dict()['bedrag']} - {u.toelichting}\n"
+        f"{_uitkomstregel('Uitkomst', u)} - {u.toelichting}\n"
         + "\n".join(f"- {s.omschrijving}: {s.formule}" for s in u.stappen) +
         f"\nWaarschuwingen: {'; '.join(u.waarschuwingen)}\n\n"
         "Leg uit wat dit voor de klant betekent. Benadruk dat de drempel uit de "

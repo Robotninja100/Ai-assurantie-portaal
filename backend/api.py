@@ -97,12 +97,22 @@ def functies():
 
 @app.get("/api/producten")
 def producten():
-    """De producten waarvoor het corpus polisclausules heeft; de UI bouwt hier haar keuzelijsten van."""
+    """
+    De producten waarvoor het corpus polisclausules heeft; de UI bouwt hier haar keuzelijsten van.
+    `varianten` is product x verzekeraar: een vergelijking gaat over het aanbod van één verzekeraar.
+    """
     rijen = features.CORPUS.data.get("polisvoorwaarden", [])
-    telling = {}
+    telling, varianten = {}, {}
     for r in rijen:
-        telling[r.get("product")] = telling.get(r.get("product"), 0) + 1
-    return [{"product": p, "clausules": n} for p, n in sorted(telling.items()) if p]
+        p, v = r.get("product"), r.get("verzekeraar_of_bron")
+        if not p:
+            continue
+        telling[p] = telling.get(p, 0) + 1
+        varianten.setdefault(p, {})[v] = varianten.setdefault(p, {}).get(v, 0) + 1
+    return [{"product": p, "clausules": n,
+             "varianten": [{"waarde": f"{p} · {features._kort(v)}", "verzekeraar": features._kort(v), "clausules": c}
+                           for v, c in sorted(varianten[p].items(), key=lambda kv: str(kv[0])) if v]}
+            for p, n in sorted(telling.items())]
 
 
 @app.post("/api/vraag")

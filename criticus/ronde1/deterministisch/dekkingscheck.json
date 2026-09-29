@@ -1,0 +1,771 @@
+[
+ {
+  "id": "dekkingscheck-01",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub h",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.1",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.2",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:960",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:959",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.004
+ },
+ {
+  "id": "dekkingscheck-02",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 5.1",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 5.2",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 4.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.002
+ },
+ {
+  "id": "dekkingscheck-03",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub h",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.1",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 2.2",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.16 sub n",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.18",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:960",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "dekkingscheck-04",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 4.1.5",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 7.7",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.13.1",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:925",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.002
+ },
+ {
+  "id": "dekkingscheck-05",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.19.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.11.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.2.2",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.18",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:952",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "dekkingscheck-06",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 2.4",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 2.7",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 10.2",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 11.1",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "aansprakelijkheidsverzekering particulieren (AVP) art. 6.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "dekkingscheck-07",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.4.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.2",
+    "type": "verplichting verzekerde",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 7",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "dekkingscheck-08",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.18",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.9",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:929",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "dekkingscheck-09",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.2",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 2.2",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.1",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 7.7",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:928",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.002
+ },
+ {
+  "id": "dekkingscheck-10",
+  "functie": "dekkingscheck",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.10",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.18",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.19.1",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.2.3",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:957",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.005
+ }
+]

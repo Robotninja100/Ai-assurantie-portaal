@@ -63,9 +63,16 @@ function bouwEen(v, producten) {
     uit.lees = () => inp.value;
     uit.zet = (x) => { inp.value = x ?? ""; };
   } else if (v.type === "keuze") {
+    // Een vergelijking gaat over het aanbod van één verzekeraar: dan kiest u product én verzekeraar.
+    const opties = v.bron === "varianten"
+      ? (producten || []).filter((p) => (p.varianten || []).length).map((p) =>
+        h("optgroup", { label: p.product }, ...p.varianten.map((x) =>
+          h("option", { value: x.waarde }, `${x.verzekeraar} (${x.clausules} clausules)`))))
+      : (producten || []).map((p) => h("option", { value: p.product }, p.product));
     const sel = h("select", { id, name: v.id, "aria-describedby": beschrijving },
-      v.leeg ? h("option", { value: "" }, v.leeg) : h("option", { value: "", disabled: true }, "Kies een product"),
-      ...(producten || []).map((p) => h("option", { value: p.product }, p.product)));
+      v.leeg ? h("option", { value: "" }, v.leeg) : h("option", { value: "", disabled: true },
+        v.bron === "varianten" ? "Kies een product en verzekeraar" : "Kies een product"),
+      ...opties);
     uit.el = sel; uit.blok = veldBlok(v, sel);
     uit.lees = () => sel.value;
     uit.zet = (x) => { sel.value = x ?? ""; };
