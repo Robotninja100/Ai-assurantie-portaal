@@ -22,15 +22,22 @@ export function meervoud(n, een, veel) {
 }
 
 /**
- * Leest een bedrag zoals een Nederlander het typt: "250.000", "1.250,50", "€ 5000", "0,5".
+ * Leest een bedrag zoals een Nederlander het typt: "250.000", "1.250,50", "€ 5000", "0,5", "12.500,-".
  * Geeft null bij leeg, NaN bij onleesbaar. Een punt met precies drie cijfers erachter is een
- * duizendtalscheiding, anders een decimaalteken.
+ * duizendtalscheiding, anders een decimaalteken. Staan er een punt en een komma in, dan is het
+ * laatste teken het decimaalteken: "1.234,56" (Nederlands) en "1,234.56" (Engels) betekenen hetzelfde.
  */
 export function leesGetal(tekst) {
-  let t = String(tekst ?? "").replace(/[€\s]/g, "");
+  let t = String(tekst ?? "").replace(/[€\s]/g, "").replace(/[,.]-{1,2}$/, "").replace(/%$/, "");
   if (t === "") return null;
-  if (t.includes(",")) t = t.replace(/\./g, "").replace(",", ".");
-  else if (/^\d{1,3}(\.\d{3})+$/.test(t)) t = t.replace(/\./g, "");
+  const komma = t.lastIndexOf(","), punt = t.lastIndexOf(".");
+  if (komma >= 0 && punt >= 0) {
+    t = komma > punt ? t.replace(/\./g, "").replace(",", ".") : t.replace(/,/g, "");
+  } else if (komma >= 0) {
+    t = t.replace(",", ".");
+  } else if (/^-?\d{1,3}(\.\d{3})+$/.test(t)) {
+    t = t.replace(/\./g, "");
+  }
   return /^-?\d+(\.\d+)?$/.test(t) ? Number(t) : NaN;
 }
 

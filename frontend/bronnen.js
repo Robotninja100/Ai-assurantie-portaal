@@ -58,7 +58,7 @@ function rij(b) {
     h("span", { class: "bron-tags" }, ...tags(b)),
     h("span", { class: "bron-pijl" }, icoon("chevron", 16)));
   el.append(knop, h("div", { class: "bron-detail" },
-    h("blockquote", { class: "bron-citaat" }, b.fragment || "(geen fragment)"), meta(b)));
+    h("blockquote", { class: "bron-citaat", tabindex: "0", "aria-label": `Tekst van ${b.label}` }, b.fragment || "(geen fragment)"), meta(b)));
   return el;
 }
 

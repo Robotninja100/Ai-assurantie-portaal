@@ -71,9 +71,12 @@ export function renderFunctie(id, ctx) {
   const knop = h("button", { class: "knop primair", type: "submit" }, "Toets uitvoeren");
   const stopKnop = h("button", { class: "knop", type: "button", hidden: true, onClick: () => lopend && lopend.stop() }, icoon("stop", 14), "Stop");
   const zetBezig = (bezig) => {
+    const hadFocus = document.activeElement === knop || document.activeElement === stopKnop;
     knop.disabled = bezig;
     knop.replaceChildren(...(bezig ? [h("span", { class: "draaier" }), "Bezig…"] : ["Toets uitvoeren"]));
     stopKnop.hidden = !bezig;
+    // Een uitgeschakelde of verborgen knop laat het toetsenbordfocus in het niets vallen: geef het door.
+    if (hadFocus) (bezig ? stopKnop : knop).focus({ preventScroll: true });
   };
 
   const form = h("form", { class: "kaart invoer", novalidate: true,

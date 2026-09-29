@@ -1,75 +1,9 @@
 """
 End-to-end: de echte pagina in een echte browser, tegen de echte API, corpus en citeerbewaker.
 Alleen het taalmodel is een testdouble (tests/nep_llm.py), zodat de test deterministisch is.
+De fixtures staan in conftest.py.
 """
-import os
-import socket
-import subprocess
-import sys
-import time
-import urllib.request
-
-import pytest
-
-pytest.importorskip("playwright")
-from playwright.sync_api import expect, sync_playwright  # noqa: E402
-
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-sys.path.insert(0, os.path.join(ROOT, "tests"))
-from nep_llm import NepLLM  # noqa: E402
-
-CHROME = os.environ.get("PLAYWRIGHT_CHROMIUM", "/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
-pytestmark = pytest.mark.skipif(not os.path.exists(CHROME), reason="geen Chromium beschikbaar")
-
-
-def vrije_poort():
-    with socket.socket() as s:
-        s.bind(("127.0.0.1", 0))
-        return s.getsockname()[1]
-
-
-@pytest.fixture(scope="module")
-def app():
-    nep = NepLLM(vertraging=0.3)
-    poort = vrije_poort()
-    env = {**os.environ, "OPENROUTER_API_KEY": "test", "ASSURANTIE_LLM_PROVIDER": "openrouter",
-           "ASSURANTIE_OPENROUTER_URL": nep.url, "ASSURANTIE_MODELLEN": "testmodel"}
-    p = subprocess.Popen([sys.executable, "-m", "uvicorn", "api:app", "--app-dir", "backend",
-                          "--port", str(poort), "--log-level", "warning"], cwd=ROOT, env=env)
-    basis = f"http://127.0.0.1:{poort}"
-    for _ in range(60):
-        try:
-            urllib.request.urlopen(basis + "/api/status", timeout=1)
-            break
-        except Exception:
-            time.sleep(0.25)
-    else:
-        p.kill()
-        raise RuntimeError("server startte niet")
-    yield basis
-    p.terminate()
-    p.wait(timeout=10)
-    nep.stop()
-
-
-@pytest.fixture(scope="module")
-def browser():
-    with sync_playwright() as pw:
-        b = pw.chromium.launch(executable_path=CHROME, args=["--no-sandbox"])
-        yield b
-        b.close()
-
-
-@pytest.fixture()
-def pagina(browser, app):
-    ctx = browser.new_context(viewport={"width": 1440, "height": 900}, locale="nl-NL")
-    p = ctx.new_page()
-    p.fouten = []
-    p.on("console", lambda m: p.fouten.append(m.text) if m.type == "error" else None)
-    p.on("pageerror", lambda e: p.fouten.append(str(e)))
-    p.basis = app
-    yield p
-    ctx.close()
+from playwright.sync_api import expect
 
 
 def test_overzicht_toont_alle_twaalf_functies_en_de_corpusstatus(pagina):

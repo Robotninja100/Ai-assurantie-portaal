@@ -104,6 +104,21 @@ def _grondslag_docs(grondslag) -> List[Dict]:
     return uit
 
 
+# Hoeveel tekens van een bron het model krijgt. De adviseur ziet in de bronlijst de VOLLEDIGE tekst, dus
+# altijd minstens wat het model zag; een afgekapt artikel verbergt leden (Wft 4:23 lid 7), daarom heeft een
+# artikel waarop een berekening rust een ruimere grens. 96% van de polisclausules past in 1.500 tekens.
+LIMIET_WET, LIMIET_WET_GRONDSLAG, LIMIET_POLIS, LIMIET_KIFID = 2600, 4000, 1500, 1200
+LIMIET_ZICHTBAAR = 6000
+
+
+def _stuk(tekst: str, lim: int) -> str:
+    """Het begin van een tekst tot een woordgrens, met een teken dat er meer is."""
+    t = tekst or ""
+    if len(t) <= lim:
+        return t
+    return t[:lim].rsplit(" ", 1)[0].rstrip() + " …"
+
+
 def _blok(bron: str, rows: List) -> str:
     """Bouwt het contextblok dat het model als enige feitenbron krijgt."""
     if not rows:
@@ -111,17 +126,17 @@ def _blok(bron: str, rows: List) -> str:
     uit = []
     for score, d in rows:
         if bron == "wetgeving":
-            lim = 4000 if score >= VERPLICHT else 2600     # een afgekapt artikel verbergt leden (Wft 4:23 lid 7)
+            lim = LIMIET_WET_GRONDSLAG if score >= VERPLICHT else LIMIET_WET
             uit.append(f"[{d.get('wet')} art. {d.get('artikel')}] {d.get('titel') or ''}\n"
-                       f"{(d.get('tekst') or '')[:lim]}\nBron: {d.get('bron_url')}")
+                       f"{_stuk(d.get('tekst'), lim)}\nBron: {d.get('bron_url')}")
         elif bron == "kifid":
             uit.append(f"[Kifid {d.get('uitspraaknummer')}] {d.get('titel') or ''}\n"
                        f"Uitkomst (letterlijk uit de uitspraak): {_uitkomst(d)}\n"
-                       f"{(d.get('samenvatting') or d.get('kern_klacht') or '')[:900]}\n"
+                       f"{_stuk(d.get('samenvatting') or d.get('kern_klacht'), LIMIET_KIFID)}\n"
                        f"Bron: {d.get('bron_url')}")
         else:
             uit.append(f"[{d.get('product')} {d.get('clausule_id')} - {d.get('type')}] "
-                       f"{d.get('kop') or ''}\n{(d.get('tekst') or '')[:900]}\n"
+                       f"{d.get('kop') or ''}\n{_stuk(d.get('tekst'), LIMIET_POLIS)}\n"
                        f"Bron: {d.get('bron_url')}")
     return "\n\n".join(uit)
 
@@ -263,20 +278,20 @@ def _bronlijst(opgehaald: Dict) -> List[Dict]:
                             "titel": d.get("onderwerp") or d.get("titel"), "url": d.get("bron_url"),
                             "wet": d.get("wet"), "artikel": d.get("artikel"),
                             "geldig_op": d.get("geldig_op"),
-                            "fragment": (d.get("tekst") or "")[:900]})
+                            "fragment": _stuk(d.get("tekst"), LIMIET_ZICHTBAAR)})
             elif b == "kifid":
                 uit.append({"soort": "kifid", "label": f"Kifid {d.get('uitspraaknummer')}",
                             "titel": d.get("thema") or d.get("titel"), "uitkomst": _uitkomst(d),
                             "url": d.get("bron_url"), "verweerder": d.get("verweerder"),
                             "datum": d.get("datum"), "bindend": d.get("bindend"),
-                            "fragment": (d.get("samenvatting") or d.get("kern_klacht") or "")[:900]})
+                            "fragment": _stuk(d.get("samenvatting") or d.get("kern_klacht"), LIMIET_ZICHTBAAR)})
             else:
                 uit.append({"soort": "polis",
                             "label": f"{d.get('product')} {d.get('clausule_id')}",
                             "titel": d.get("kop"), "type": d.get("type"),
                             "product": d.get("product"), "clausule": d.get("clausule_id"),
                             "verzekeraar": d.get("verzekeraar_of_bron"), "document": d.get("document"),
-                            "url": d.get("bron_url"), "fragment": (d.get("tekst") or "")[:900]})
+                            "url": d.get("bron_url"), "fragment": _stuk(d.get("tekst"), LIMIET_ZICHTBAAR)})
     return uit
 
 

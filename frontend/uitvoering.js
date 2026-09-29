@@ -52,16 +52,39 @@ function sectie(nr, titel, body, { meta = "", klapbaar = false, dicht = false, a
 }
 
 function pijplijn(stappen) {
+  // Het live-gebied bevat alleen de stappen; de lopende tijd staat erbuiten (aria-hidden), anders leest
+  // een schermlezer vijf keer per seconde een nieuwe tijd voor.
   const el = h("div", { class: "pijplijn", role: "status", "aria-live": "polite" });
-  const per = {};
+  const per = {}, status = {};
+  const NAAM = { actief: "bezig", klaar: "klaar", fout: "mislukt", overgeslagen: "overgeslagen" };
   stappen.forEach((s, i) => {
-    if (i) el.append(h("span", { class: "pijp-pijl" }, icoon("chevron", 14)));
-    per[s.id] = h("span", { class: "pijp-stap" }, h("i", { class: "punt" }), s.naam);
+    if (i) el.append(h("span", { class: "pijp-pijl", "aria-hidden": "true" }, icoon("chevron", 14)));
+    status[s.id] = h("span", { class: "alleen-lezers" }, "");
+    per[s.id] = h("span", { class: "pijp-stap" }, h("i", { class: "punt", "aria-hidden": "true" }), s.naam, status[s.id]);
     el.append(per[s.id]);
   });
-  const t = h("span", { class: "pijp-tijd" }, "0,0 s");
+  const t = h("span", { class: "pijp-tijd", "aria-hidden": "true" }, "0,0 s");
   el.append(t);
-  return { el, tijd: t, zet(id, status) { if (per[id]) per[id].className = `pijp-stap ${status}`; } };
+  const api = {
+    el, tijd: t,
+    zet(id, st) {
+      if (!per[id]) return;
+      per[id].className = `pijp-stap ${st}`;
+      status[id].textContent = NAAM[st] ? `: ${NAAM[st]}` : "";
+    },
+    /**
+     * Het werk stopt hier. Wat nog liep krijgt `actiefStatus` (het is niet gelukt en niet stilzwijgend
+     * geslaagd); wat nog moest beginnen is overgeslagen.
+     */
+    eindig(actiefStatus) {
+      for (const id of Object.keys(per)) {
+        const klasse = per[id].classList;
+        if (klasse.contains("actief")) api.zet(id, actiefStatus);
+        else if (!["klaar", "fout", "overgeslagen"].some((k) => klasse.contains(k))) api.zet(id, "overgeslagen");
+      }
+    },
+  };
+  return api;
 }
 
 export class Uitvoering {
@@ -86,7 +109,7 @@ export class Uitvoering {
     try {
       await stelVraag(this.id, invoer, (e) => this.gebeurtenis(e), this.ac.signal);
     } catch (err) {
-      if (err.name === "AbortError") this.melding("info", "Gestopt door de gebruiker.");
+      if (err.name === "AbortError") this.opGestopt();
       else this.storing(err);
     } finally {
       clearInterval(this.timer);
@@ -96,7 +119,19 @@ export class Uitvoering {
     }
   }
 
-  stop() { this.ac.abort(); }
+  stop() { this.gestopt = true; this.ac.abort(); }
+
+  /** Na Stop: wat er staat is onvolledig en ongecontroleerd, en zo staat het er ook. */
+  opGestopt() {
+    if (this.raf) { cancelAnimationFrame(this.raf); this.raf = null; }
+    if (this.tekst && this.antwoordVak) this.tekenAntwoord(true);
+    else if (this.antwoordEl && !this.controle) leeg(this.antwoordEl);          // de wachtspinner weg
+    if (this.secTekst && !this.tekst) this.antwoordEl.append(h("p", { class: "hint" }, "Er kwam nog geen antwoord binnen."));
+    this.pijp.eindig("overgeslagen");
+    this.melding("info", this.tekst && !this.controle
+      ? "Gestopt. Wat hierboven staat is onvolledig en niet gecontroleerd; gebruik het niet zonder het zelf na te lezen."
+      : "Gestopt door de gebruiker.");
+  }
 
   volgnummer() { return this.doel.querySelectorAll(".sectie").length + 1; }
 
@@ -160,9 +195,10 @@ export class Uitvoering {
     if (this.tekst) return;
     leeg(this.antwoordEl);
     const lokaal = this.runtime && this.runtime.provider === "local";
+    const uitleg = lokaal ? (sec >= 15 ? " Het lokale model draait op een CPU en heeft hier enkele minuten voor nodig." : "")
+      : (sec >= 20 ? " Gratis modellen staan soms in de wachtrij; het portaal wacht en probeert daarna het volgende model." : "");
     this.antwoordEl.append(h("div", { class: "wacht" }, h("span", { class: "draaier" }),
-      h("span", null, `Het taalmodel formuleert het antwoord… ${sec} s`,
-        sec >= 15 ? " Het lokale model draait op een CPU en heeft hier enkele minuten voor nodig." : "")));
+      h("span", null, `Het taalmodel formuleert het antwoord… ${sec} s`, uitleg)));
   }
 
   opModel(e) {
@@ -211,7 +247,9 @@ export class Uitvoering {
   opControle(c) {
     this.controle = c;
     if (this.raf) { cancelAnimationFrame(this.raf); this.raf = null; }
-    this.pijp.zet("antwoord", "klaar");
+    const geweigerd = c.oordeel === "GEWEIGERD_GEEN_BRONNEN";
+    // Een afgebroken of afgekapt antwoord is niet 'klaar'; een weigering is een uitkomst, geen antwoord.
+    this.pijp.zet("antwoord", geweigerd ? "overgeslagen" : (c.afgekapt || this.fout) ? "fout" : "klaar");
     this.tekenAntwoord(true);
     if (this.secTekst) {
       this.secTekst.meta(`${this.model ? this.model.model + " · " : ""}${c.duur_sec != null ? tijd(c.duur_sec * 1000) : ""}`);
@@ -220,7 +258,9 @@ export class Uitvoering {
     if (c.afgekapt && this.antwoordEl) {
       this.antwoordEl.append(h("div", { class: "melding", stijl: "margin-top:16px" }, icoon("waarschuwing", 18),
         h("div", null, h("b", null, "Het antwoord is afgekapt. "),
-          "Het model bereikte de maximale lengte. Wat hierboven staat is onvolledig en de vervolgstap ontbreekt mogelijk.")));
+          c.einde_reden === "content_filter"
+            ? "Het model stopte door een inhoudsfilter van de aanbieder. Wat hierboven staat is onvolledig en de vervolgstap ontbreekt mogelijk."
+            : "Het model bereikte de maximale lengte. Wat hierboven staat is onvolledig en de vervolgstap ontbreekt mogelijk.")));
     }
     const uitleg = OORDEEL[c.oordeel] || OORDEEL.GEEN_VERWIJZINGEN;
     const nSlecht = c.ongefundeerd.length;
@@ -248,7 +288,7 @@ export class Uitvoering {
           " tegen ", h("b", null, `${aantal(b.wetgeving || 0)} wetsartikelen, ${aantal(b.kifid || 0)} uitspraken, ${aantal(b.polisclausules || 0)} clausules`), " en de berekening van deze vraag."),
         c.duur_sec != null ? h("span", null, "Totale duur ", h("b", null, tijd(c.duur_sec * 1000))) : null));
     this.voegSectieToe(sectie(this.volgnummer(), "Controle van verwijzingen", body, { meta: "citeer-of-weiger" }));
-    this.pijp.zet("controle", c.oordeel === "ONGEFUNDEERD" ? "fout" : "klaar");
+    this.pijp.zet("controle", c.oordeel === "ONGEFUNDEERD" ? "fout" : geweigerd ? "overgeslagen" : "klaar");
   }
 
   opFout(e) {
@@ -263,10 +303,18 @@ export class Uitvoering {
   }
 
   storing(err) {
-    if (err.invoerfout) { this.invoerFout = err.message; }
-    leeg(this.doel);
-    this.doel.append(h("div", { class: err.invoerfout ? "melding" : "melding fout" }, icoon("waarschuwing", 18),
-      h("div", null, h("b", null, err.invoerfout ? "De invoer klopt niet. " : "Er ging iets mis. "), err.message)));
+    if (err.invoerfout) this.invoerFout = err.message;
+    // Ligt er al iets op het scherm (bronnen, berekening, een deel van het antwoord), dan blijft dat
+    // staan: het is wel gecontroleerd en wel bruikbaar. Alleen een leeg scherm wordt vervangen.
+    const heeftInhoud = !!this.doel.querySelector(".sectie");
+    if (!heeftInhoud) leeg(this.doel);
+    if (this.raf) { cancelAnimationFrame(this.raf); this.raf = null; }
+    if (this.tekst && this.antwoordVak && !this.controle) this.tekenAntwoord(true);
+    if (this.pijp && !this.doel.contains(this.pijp.el)) this.doel.prepend(this.pijp.el);
+    if (this.pijp) this.pijp.eindig("fout");
+    this.doel.append(h("div", { class: err.invoerfout ? "melding" : "melding fout", role: "alert" }, icoon("waarschuwing", 18),
+      h("div", null, h("b", null, err.invoerfout ? "De invoer klopt niet. " : err.onderbroken ? "Onderbroken. " : "Er ging iets mis. "),
+        err.message, heeftInhoud && !err.invoerfout ? " Wat hierboven staat kan onvolledig zijn en is niet compleet gecontroleerd." : "")));
   }
 
   melding(soort, tekst) {
@@ -283,6 +331,9 @@ export class Uitvoering {
     const regels = [];
     if (this.berekening && this.berekening.onderwerp) regels.push(this.berekening.onderwerp);
     if (this.berekening && this.berekening.toelichting) regels.push(this.berekening.toelichting);
+    if (!this.controle) regels.push("ONGECONTROLEERD: de citeercontrole is niet uitgevoerd. Lees dit niet als onderbouwd antwoord.");
+    if (this.fout && this.fout.afgebroken) regels.push("AFGEBROKEN: het model viel weg; dit antwoord is onvolledig.");
+    if (this.controle && this.controle.afgekapt) regels.push("AFGEKAPT: het antwoord is onvolledig en de vervolgstap ontbreekt mogelijk.");
     regels.push("", this.gemaskeerd || this.tekst, "", "Bronnen:");
     for (const b of this.bronnen) regels.push(`- ${b.label}${b.titel ? ` (${b.titel})` : ""}${b.url ? ` ${b.url}` : ""}`);
     if (this.controle) regels.push("", `Controle van verwijzingen: ${this.controle.oordeel}`);

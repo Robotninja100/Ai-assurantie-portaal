@@ -78,7 +78,8 @@ a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 2px; }
 button, input, select, textarea { font: inherit; color: inherit; }
 button { cursor: pointer; }
-:focus-visible { outline: none; box-shadow: var(--focus); border-radius: var(--r-1); }
+[hidden] { display: none !important; }      /* .knop { display: flex } mag het hidden-attribuut niet overschrijven */
+:focus-visible { outline: 2px solid transparent; outline-offset: 2px; box-shadow: var(--focus); border-radius: var(--r-1); }   /* de doorzichtige rand blijft zichtbaar in hoog-contrastmodus */
 .num, .grootboek td.uitkomst, .held-getal, .balk-getal { font-variant-numeric: tabular-nums; }
 .skip { position: absolute; left: -999px; top: 8px; background: var(--vlak); padding: 8px 12px; border-radius: var(--r-1); z-index: 100; }
 .skip:focus { left: 8px; }
@@ -255,7 +256,7 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
 .bron[data-open="true"] .bron-pijl { transform: rotate(90deg); }
 .bron-detail { display: none; padding: 0 var(--s5) var(--s4); }
 .bron[data-open="true"] .bron-detail { display: block; }
-.bron-citaat { margin: 0; padding: var(--s3) var(--s4); border-left: 3px solid var(--lijn-2); background: var(--vlak-2); border-radius: 0 var(--r-1) var(--r-1) 0; font-size: var(--t-sm); line-height: 1.6; color: var(--inkt-2); white-space: pre-line; }
+.bron-citaat { margin: 0; padding: var(--s3) var(--s4); border-left: 3px solid var(--lijn-2); background: var(--vlak-2); border-radius: 0 var(--r-1) var(--r-1) 0; font-size: var(--t-sm); line-height: 1.6; color: var(--inkt-2); white-space: pre-line; max-height: 26rem; overflow: auto; }
 .bron-meta { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s4); margin-top: var(--s3); font-size: var(--t-xs); color: var(--inkt-3); }
 .bron-meta a { font-weight: 600; }
 .bron.geraakt { animation: geraakt 1.6s ease-out; }
@@ -376,6 +377,12 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
 .antwoord strong { font-weight: 600; }
 .antwoord code { font-family: var(--mono); font-size: .9em; background: var(--vlak-2); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--lijn); }
 .antwoord blockquote { margin-left: 0; padding-left: var(--s4); border-left: 3px solid var(--lijn-2); color: var(--inkt-2); }
+.antwoord ul > li > * + *, .antwoord ol > li > div > ul, .antwoord ol > li > div > ol { margin-top: var(--s2); }
+.antwoord em { font-style: italic; }
+.md-tabel { overflow-x: auto; max-width: 100%; }
+.md-tabel table { border-collapse: collapse; font-size: var(--t-sm); line-height: 1.5; min-width: 100%; }
+.md-tabel th, .md-tabel td { text-align: left; vertical-align: top; padding: var(--s2) var(--s3); border-bottom: 1px solid var(--lijn); }
+.md-tabel th { font-weight: 600; color: var(--inkt-2); background: var(--vlak-2); border-bottom-color: var(--lijn-2); }
 .cursor::after { content: ""; display: inline-block; width: 7px; height: 1.05em; margin-left: 2px; vertical-align: text-bottom; background: var(--accent); animation: knip 1s steps(2) infinite; }
 @keyframes knip { 50% { opacity: 0; } }
 .wacht { color: var(--inkt-3); font-size: var(--t-md); display: flex; align-items: center; gap: var(--s3); }

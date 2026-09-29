@@ -1,0 +1,108 @@
+"""
+Gedeelde fixtures voor de browsertests: een echte server (uvicorn) met de echte pagina, API, corpus en
+citeerbewaker. Alleen het taalmodel is een testdouble (tests/nep_llm.py).
+"""
+import os
+import socket
+import subprocess
+import sys
+import time
+import urllib.request
+
+import pytest
+
+pytest.importorskip("playwright")
+from playwright.sync_api import sync_playwright  # noqa: E402
+
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+sys.path.insert(0, os.path.join(ROOT, "tests"))
+from nep_llm import NepLLM  # noqa: E402
+
+CHROME = os.environ.get("PLAYWRIGHT_CHROMIUM", "/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+
+
+def pytest_collection_modifyitems(config, items):
+    if not os.path.exists(CHROME):
+        skip = pytest.mark.skip(reason="geen Chromium beschikbaar")
+        for item in items:
+            if "e2e" in str(item.fspath):
+                item.add_marker(skip)
+
+
+def vrije_poort():
+    with socket.socket() as s:
+        s.bind(("127.0.0.1", 0))
+        return s.getsockname()[1]
+
+
+def start_app(**nep_opties):
+    nep = NepLLM(**nep_opties)
+    poort = vrije_poort()
+    env = {**os.environ, "OPENROUTER_API_KEY": "test", "ASSURANTIE_LLM_PROVIDER": "openrouter",
+           "ASSURANTIE_OPENROUTER_URL": nep.url, "ASSURANTIE_MODELLEN": "testmodel"}
+    p = subprocess.Popen([sys.executable, "-m", "uvicorn", "api:app", "--app-dir", "backend",
+                          "--port", str(poort), "--log-level", "warning"], cwd=ROOT, env=env)
+    basis = f"http://127.0.0.1:{poort}"
+    for _ in range(60):
+        try:
+            urllib.request.urlopen(basis + "/api/status", timeout=1)
+            break
+        except Exception:
+            time.sleep(0.25)
+    else:
+        p.kill()
+        raise RuntimeError("server startte niet")
+    return basis, nep, p
+
+
+def stop_app(nep, p):
+    p.terminate()
+    p.wait(timeout=10)
+    nep.stop()
+
+
+@pytest.fixture(scope="module")
+def app():
+    basis, nep, p = start_app(vertraging=0.3)
+    yield basis
+    stop_app(nep, p)
+
+
+@pytest.fixture(scope="module")
+def traag_app():
+    """Een model dat zijn antwoord in kleine stukjes met pauzes uitgeeft: er is tijd om op Stop te drukken."""
+    basis, nep, p = start_app(vertraging=0.3, stukvertraging=0.25)
+    yield basis
+    stop_app(nep, p)
+
+
+@pytest.fixture(scope="module")
+def browser():
+    with sync_playwright() as pw:
+        b = pw.chromium.launch(executable_path=CHROME, args=["--no-sandbox"])
+        yield b
+        b.close()
+
+
+def maak_pagina(browser, basis, **opties):
+    ctx = browser.new_context(viewport={"width": 1440, "height": 900}, locale="nl-NL", **opties)
+    p = ctx.new_page()
+    p.fouten = []
+    p.on("console", lambda m: p.fouten.append(m.text) if m.type == "error" else None)
+    p.on("pageerror", lambda e: p.fouten.append(str(e)))
+    p.basis = basis
+    return ctx, p
+
+
+@pytest.fixture()
+def pagina(browser, app):
+    ctx, p = maak_pagina(browser, app)
+    yield p
+    ctx.close()
+
+
+@pytest.fixture()
+def traag_pagina(browser, traag_app):
+    ctx, p = maak_pagina(browser, traag_app)
+    yield p
+    ctx.close()

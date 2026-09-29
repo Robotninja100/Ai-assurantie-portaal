@@ -31,7 +31,13 @@ export async function stelVraag(functie, invoer, opGebeurtenis, signal) {
   let buf = "";
   for (;;) {
     const { value, done } = await lezer.read();
-    if (done) break;
+    if (done) {
+      // Alleen [DONE] betekent dat de server klaar was. Een stroom die daarvoor ophoudt is afgebroken
+      // (server gecrasht, verbinding weg); dat mag nooit als een compleet resultaat gelden.
+      const e = new Error("De verbinding met de server werd onderbroken voordat het resultaat compleet was.");
+      e.onderbroken = true;
+      throw e;
+    }
     buf += decoder.decode(value, { stream: true });
     let i;
     while ((i = buf.indexOf("\n\n")) >= 0) {

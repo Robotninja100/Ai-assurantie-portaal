@@ -179,3 +179,28 @@ def test_api_producten_geeft_varianten_per_verzekeraar():
     auto = next(p for p in lijst if p["product"] == "autoverzekering (WA/casco)")
     assert {v["verzekeraar"] for v in auto["varianten"]} == {"Klaverblad", "Interpolis"}
     assert all(v["waarde"].startswith("autoverzekering (WA/casco) · ") for v in auto["varianten"])
+
+
+# ------------------------------------------------------------ de adviseur ziet minstens wat het model zag
+
+def test_de_bronlijst_toont_de_volledige_tekst_van_de_grondslag_inclusief_het_lid_waarop_de_berekening_rust():
+    r = features.schadeberekening(100000, 200000, 40000, 500, 3000)
+    b58 = next(b for b in r["bronnen"] if b["label"] == "BW art. 7:958")
+    corpus = next(d for d in features.CORPUS.data["wetgeving"] if d["wet"] == "BW" and d["artikel"] == "7:958")
+    assert b58["fragment"] == corpus["tekst"]                       # vroeger op 900 tekens afgekapt, vóór lid 5
+    assert "5." in b58["fragment"] and b58["fragment"].rstrip().endswith("waarde.")
+
+
+def test_wat_het_model_kreeg_is_altijd_een_begin_van_wat_de_adviseur_ziet():
+    r = features.dekkingscheck("Inbraak in de woning, dief kwam via een openstaand raam binnen", "inboedelverzekering")
+    for b in r["bronnen"]:
+        if b["soort"] == "polis":
+            model = features._stuk(next(d["tekst"] for d in r["opgehaald"]["polisvoorwaarden"]
+                                        if d["clausule_id"] == b["clausule"] and d["product"] == b["product"]), features.LIMIET_POLIS)
+            assert b["fragment"].startswith(model.removesuffix(" …")), b["label"]
+
+
+def test_stuk_snijdt_op_een_woordgrens_en_zegt_dat_er_meer_is():
+    assert features._stuk("een twee drie vier", 100) == "een twee drie vier"
+    assert features._stuk("een twee drie vier", 10) == "een twee …"
+    assert features._stuk(None, 10) == ""
