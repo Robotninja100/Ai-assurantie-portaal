@@ -383,7 +383,7 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
     u = rk.evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
                                   eigen_risico, bereddingskosten)
     ctx = _context("onderverzekering evenredigheid verzekerde som herbouwwaarde eigen risico",
-                   ["wetgeving", "polisvoorwaarden"], per_bron=3, grondslag=u.grondslag,
+                   ["wetgeving", "polisvoorwaarden"], per_bron=5, grondslag=u.grondslag,
                    waar={"wetgeving": VERZEKERINGSRECHT})
     stappen = _stappen_tekst(u)
     gebruiker = (
@@ -512,13 +512,21 @@ def _afkap(tekst: str, wat: str):
                                        "antwoord dat alleen het eerste deel is getoetst.\n")
 
 
+# De artikelen waartegen elk adviesdossier wordt getoetst: wensen en behoeften vaststellen (4:22a), de
+# ken-uw-klantplicht en de toelichting op het advies (4:23), de zorgplicht (4:24a) en de informatie over
+# dienstverlening en beloning (4:25b). Ze horen altijd bij de bronnen: welke ervan bovenaan de zoekresultaten
+# staat, hangt anders af van de woorden in het dossier.
+DOSSIER_ARTIKELEN = ["Wft:4:22a", "Wft:4:23", "Wft:4:24a", "Wft:4:25b"]
+
+
 def dossiercheck(dossiertekst: str) -> Dict:
     tekst, opmerkingen, afgekapt = _afkap(dossiertekst, "Het dossier")
     # De zoekvraag bestaat niet alleen uit de vaste zorgplichttermen: het dossier zelf bepaalt welke
     # productregels erbij horen (provisie, hypotheek, beleggingsverzekering).
     ctx = _context("passend advies klantprofiel zorgplicht informatieverstrekking "
                    "kennis ervaring doelstelling risicobereidheid financiele positie " + tekst[:800],
-                   ["wetgeving", "kifid"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS})
+                   ["wetgeving", "kifid"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS},
+                   grondslag=DOSSIER_ARTIKELEN)
     gebruiker = (
         f"ADVIESDOSSIER:\n---\n{tekst}\n---\n{afgekapt}\n"
         "Toets dit dossier tegen de zorgplicht- en adviesvereisten uit de bronnen.\n"

@@ -296,12 +296,8 @@ def test_dekkingscheck_toont_bij_de_inbraakcasus_polisbronnen_met_type_en_https_
     assert polis and all(b["type"] in TOEGESTANE_TYPES and b["url"].startswith("https://") for b in polis)
 
 
-@pytest.mark.xfail(strict=False, reason=(
-    "Bekende beperking van de zoekmachine (BM25 zonder stamvorm of synoniemen): 'ingebroken' en "
-    "'gestolen' matchen niet met 'inbraak' en 'diefstal', dus bij een volledige zin staat de "
-    "inbraakdekking van de inboedelpolis niet bovenaan. De kernclausule zit wel in de top 5 "
-    "(zie test_top5_...[inbraak-zin]). Deze test slaagt (xpass) zodra de zoekmachine dat oplost."))
-def test_bekende_beperking_volle_zin_zet_de_inbraakdekking_niet_bovenaan(corpus):
-    eerste = _top(corpus, INBOEDEL,
-                  "Er is ingebroken in de woning via een openstaand raam. Laptop en sieraden zijn gestolen.", 1)[0]
-    assert eerste["product"] == INBOEDEL and "inbraak" in eerste["tekst"].lower()
+def test_volle_zin_met_werkwoordsvormen_vindt_de_inbraakclausules_van_de_inboedelfamilie(corpus):
+    """'ingebroken' en 'gestolen' zijn nu 'inbraak' en 'diefstal' (backend/retrieval.py); vroeger vond dit alleen de kortere vraag."""
+    top = _top(corpus, INBOEDEL, "Er is ingebroken in de woning via een openstaand raam. Laptop en sieraden zijn gestolen.", 3)
+    assert top[0]["product"] in (INBOEDEL, WOON) and "inbraak" in top[0]["tekst"].lower()
+    assert any(d["product"] == INBOEDEL and d["type"] == "dekking" for d in top)

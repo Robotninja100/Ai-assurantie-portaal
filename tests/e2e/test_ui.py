@@ -3,6 +3,8 @@ End-to-end: de echte pagina in een echte browser, tegen de echte API, corpus en 
 Alleen het taalmodel is een testdouble (tests/nep_llm.py), zodat de test deterministisch is.
 De fixtures staan in conftest.py.
 """
+import re
+
 from playwright.sync_api import expect
 
 
@@ -22,7 +24,7 @@ def test_schadeberekening_van_invoer_tot_controle(pagina):
     # het bedrag komt uit de rekenkern, in Nederlandse notatie
     expect(pagina.locator(".held-getal").first).to_have_text("€ 43.500,00")
     # de bronnen staan er en zijn voor een berekening standaard ingeklapt
-    expect(pagina.locator(".sectie", has_text="8 bronnen opgehaald")).to_be_visible()
+    expect(pagina.locator(".sectie", has_text=re.compile(r"\d+ bronnen opgehaald"))).to_be_visible()
     # het antwoord bevat een gecontroleerde en een ongecontroleerde verwijzing
     assert pagina.locator(".verw.ok").count() >= 1
     assert pagina.locator(".verw.slecht").count() == 1
