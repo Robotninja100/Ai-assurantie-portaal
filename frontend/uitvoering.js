@@ -35,15 +35,16 @@ function sectie(nr, titel, body, { meta = "", klapbaar = false, dicht = false, a
   const bodyEl = h("div", { class: "sectie-body los" });
   voegToe(bodyEl, [body]);
   const el = h("section", { class: "sectie", dataset: { dicht: String(dicht) } });
-  const kop = h("header", { class: "sectie-kop" }, h("span", { class: "sectie-nr" }, String(nr)), h("h3", null, titel), metaEl, ...acties);
+  // Uitklappen gaat via een echte knop in de kop (toetsenbord en schermlezer); een klik elders in de kop werkt ook.
+  const knop = klapbaar ? h("button", { class: "sectie-knop", type: "button", "aria-expanded": String(!dicht) }, titel) : null;
+  const kop = h("header", { class: "sectie-kop" }, h("span", { class: "sectie-nr" }, String(nr)),
+    h("h3", null, knop || titel), metaEl, ...acties);
   el.append(kop, bodyEl);
-  const zet = (d) => { el.dataset.dicht = String(d); bodyEl.hidden = d; };
+  const zet = (d) => { el.dataset.dicht = String(d); bodyEl.hidden = d; if (knop) knop.setAttribute("aria-expanded", String(!d)); };
   if (klapbaar) {
     kop.style.cursor = "pointer";
-    kop.setAttribute("role", "button"); kop.setAttribute("tabindex", "0");
     const wissel = () => zet(el.dataset.dicht !== "true");
-    kop.addEventListener("click", (e) => { if (!e.target.closest("button, a")) wissel(); });
-    kop.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); wissel(); } });
+    kop.addEventListener("click", (e) => { if (e.target === knop || !e.target.closest("button, a")) wissel(); });
     metaEl.append(" ", h("span", { class: "tag zacht" }, "uitklappen"));
   }
   zet(dicht);

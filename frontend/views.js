@@ -17,7 +17,9 @@ export function renderOverzicht(ctx) {
     h("p", { class: "kruimel" }, "Overzicht"),
     h("h1", null, "Antwoorden met een bron erbij"),
     h("p", { class: "lead" }, "Het portaal beantwoordt geen vraag zonder bron. Wetsartikelen, Kifid-uitspraken en polisclausules komen uit een geverifieerd corpus, bedragen en termijnen uit deterministische code, en het taalmodel formuleert alleen.")));
-  wortel.append(h("section", { class: "principes" }, ...PRINCIPES.map(([nr, titel, tekst]) =>
+  wortel.append(h("section", { class: "principes", "aria-labelledby": "principes-titel" },
+    h("h2", { id: "principes-titel", class: "alleen-lezers" }, "Drie uitgangspunten"),
+    ...PRINCIPES.map(([nr, titel, tekst]) =>
     h("article", { class: "principe" }, h("span", { class: "principe-nr" }, nr), h("h3", null, titel), h("p", null, tekst)))));
   for (const groep of GROEPEN) {
     const lijst = ctx.functies.filter((f) => f.groep === groep);

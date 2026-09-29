@@ -39,6 +39,7 @@
   --accent-2: #1a3599;
   --accent-bg: #eef2ff;
   --accent-lijn: #c7d3fb;
+  --op-accent: #fff;      /* tekst op een accentvlak */
   --ok: #14663a;       --ok-bg: #e9f6ee;   --ok-lijn: #bfe3cd;
   --let: #8a5300;      --let-bg: #fff6e0;  --let-lijn: #f2dca4;
   --fout: #a12a22;     --fout-bg: #fdeeed; --fout-lijn: #f4c6c2;
@@ -55,7 +56,7 @@
   :root {
     --bg: #0e1116; --vlak: #151a22; --vlak-2: #1a2029; --lijn: #262d38; --lijn-2: #364050;
     --inkt: #eceff4; --inkt-2: #b4bccb; --inkt-3: #8792a4;
-    --accent: #7c9bff; --accent-2: #a9bdff; --accent-bg: #1a2444; --accent-lijn: #2f3f7a;
+    --accent: #7c9bff; --accent-2: #a9bdff; --accent-bg: #1a2444; --accent-lijn: #2f3f7a; --op-accent: #0b1230;
     --ok: #6fd39a; --ok-bg: #12291d; --ok-lijn: #1f4a33;
     --let: #f0c266; --let-bg: #2b2210; --let-lijn: #4d3c17;
     --fout: #ff8f86; --fout-bg: #2d1614; --fout-lijn: #5b2a26;
@@ -99,7 +100,7 @@ button { cursor: pointer; }
 .merk { display: flex; align-items: center; gap: var(--s3); padding: 0 var(--s2) var(--s5); color: var(--inkt); }
 .merk:hover { text-decoration: none; }
 .merk-teken {
-  width: 32px; height: 32px; border-radius: 8px; background: var(--accent); color: #fff;
+  width: 32px; height: 32px; border-radius: 8px; background: var(--accent); color: var(--op-accent);
   display: grid; place-items: center; font-size: var(--t-xl); font-weight: 600; line-height: 1;
 }
 .merk-tekst { display: flex; flex-direction: column; line-height: 1.2; }
@@ -190,13 +191,13 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
   color: var(--inkt); font-weight: 600; font-size: var(--t-md);
 }
 .knop:hover { background: var(--vlak-2); }
-.knop.primair { background: var(--accent); border-color: var(--accent); color: #fff; flex: 1; }
+.knop.primair { background: var(--accent); border-color: var(--accent); color: var(--op-accent); flex: 1; }
 .knop.primair:hover { background: var(--accent-2); border-color: var(--accent-2); }
 .knop[disabled] { opacity: .6; cursor: progress; }
 .knop.klein { height: 32px; padding: 0 var(--s3); font-size: var(--t-sm); }
 .tekstknop { background: none; border: 0; padding: 0; color: var(--accent); font-size: var(--t-sm); font-weight: 500; }
 .tekstknop:hover { text-decoration: underline; text-underline-offset: 2px; }
-.draaier { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.4); border-top-color: #fff; border-radius: 50%; animation: draai .8s linear infinite; }
+.draaier { width: 14px; height: 14px; border: 2px solid color-mix(in srgb, var(--op-accent) 35%, transparent); border-top-color: var(--op-accent); border-radius: 50%; animation: draai .8s linear infinite; }
 @keyframes draai { to { transform: rotate(360deg); } }
 
 /* ------------------------------------------------------------------ resultaat: pijplijn en secties */
@@ -219,6 +220,8 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
 .sectie-kop { display: flex; align-items: center; gap: var(--s3); padding: var(--s3) var(--s5); border-bottom: 1px solid var(--lijn); background: var(--vlak-2); min-height: 48px; }
 .sectie-nr { flex: none; width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--lijn-2); background: var(--vlak); display: grid; place-items: center; font-size: var(--t-xs); font-weight: 600; color: var(--inkt-2); }
 .sectie-kop h3 { font-size: var(--t-md); font-weight: 600; }
+.sectie-knop { font: inherit; color: inherit; letter-spacing: inherit; background: none; border: 0; padding: 0; margin: 0; cursor: pointer; text-align: left; }
+.alleen-lezers { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .sectie-meta { margin-left: auto; font-size: var(--t-xs); color: var(--inkt-3); text-align: right; }
 .sectie-kop .knop { margin-left: var(--s2); }
 .sectie-body { padding: var(--s5); }
