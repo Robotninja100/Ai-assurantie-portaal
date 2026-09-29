@@ -258,7 +258,7 @@
     "nummer_url_binding_geverifieerd": true,
     "bron_html_redirect_naar_register": true,
     "bron_geverifieerd": false,
-    "bron_verificatie_notitie": "ValueError: nummer niet in PDF-tekst"
+    "bron_verificatie_notitie": "nummer niet letterlijk in PDF-tekst: de PDF drukt 'nr. 2026-832' (zonder voorloopnul), het register en dit record gebruiken '2026-0832'; de letterlijke controle is bewust niet versoepeld, dus niet geverifieerd"
   },
   {
     "uitspraaknummer": "2026-0830",
