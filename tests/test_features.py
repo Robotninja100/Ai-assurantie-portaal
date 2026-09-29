@@ -1,5 +1,6 @@
 """Tests voor de functies zelf: productbewuste retrieval, de vergelijker en de bronvelden voor de UI."""
 import features
+import rekenkern as rk
 
 
 def polis(bronnen):
@@ -313,3 +314,49 @@ def test_waardetoets_heeft_een_uitleg_uit_de_code_en_beweert_niets_over_verzeker
     assert "per verzekeraar" not in g and "verschilt" not in g
     assert any("30%" in w and "40%" in w for w in r["berekening"]["waarschuwingen"])   # afwijking van de enige clausule wordt gemeld
     assert not any("ingevoerd" in w for w in features.waardetoets(1200, 4, 10, 40)["berekening"]["waarschuwingen"])
+
+
+def test_de_langste_opdracht_past_in_het_lokale_model():
+    """Het lokale model heeft 12.288 tokens (llm.py: n_ctx) voor opdracht én antwoord (max 900). Bij ~3 tekens per token
+    is 34.000 tekens de grens; de langste opdracht uit de casussen (nu een dossiercheck) blijft daaronder."""
+    import glob
+    import json
+    import os
+    langste = (0, "")
+    for pad in glob.glob(os.path.join(os.path.dirname(__file__), "casussen", "*.json")):
+        casussen = json.load(open(pad, encoding="utf-8"))
+        for c in casussen if isinstance(casussen, list) else casussen.get("casussen", []):
+            fn = features.FUNCTIES[c["functie"]]["fn"]
+            try:
+                o = fn(**{k: v for k, v in c["invoer"].items() if k in fn.__code__.co_varnames})
+            except ValueError:               # de bewust onzinnige invoer wordt geweigerd voordat er een opdracht is
+                continue
+            langste = max(langste, (len(o["systeem"]) + len(o["gebruiker"]), c["id"]))
+    assert langste[0] < 34000, langste
+
+
+def test_kifid_zonder_uitkomst_in_het_register_valt_terug_op_de_uitkomst_uit_de_pdf():
+    assert features._uitkomst({"uitkomst_letterlijk": None, "uitkomst_letterlijk_uit_pdf": "Vordering afgewezen"}) == "vordering afgewezen"
+    assert features._uitkomst({}) == "uitkomst niet vastgesteld"
+    assert not any(features._uitkomst(d) == "uitkomst niet vastgesteld" for d in features.CORPUS.data["kifid"])
+
+
+def test_dossiercheck_neemt_de_provisieartikelen_mee_als_het_dossier_over_beloning_of_een_verboden_product_gaat():
+    def labels(tekst):
+        return {b["label"] for b in features.dossiercheck(tekst)["bronnen"]}
+    for tekst in ("Advies hypotheek, de bank betaalt ons een provisie van 0,7%.", "Klant wil een AOV afsluiten.",
+                  "Onze beloning is een vergoeding van de verzekeraar."):
+        assert {"BGfo art. 86c", "BGfo art. 86d", "BGfo art. 86i"} <= labels(tekst), tekst
+    assert "BGfo art. 86c" not in labels("Klant wil de fiets verzekeren; wensen vastgelegd, risicobereidheid laag.")
+
+
+def test_provisietoets_onderscheidt_bij_schadeverzekeringen_de_consument_van_de_cliënt_die_geen_consument_is():
+    u = rk.provisie_toets("opstalverzekering", 600, 15)
+    assert "onder b, 2°" in u.volgende_stap and "consument" in u.volgende_stap and "op verzoek" in u.volgende_stap
+    assert "onder b, 1°" in u.toelichting and "onder b, 2°" in u.toelichting
+
+
+def test_adviesnotitie_belooft_geen_vastleggingsvereisten_die_het_corpus_niet_kent():
+    g = features.adviesnotitie("Alleenstaande, 34 jaar, huurwoning.", "Inboedelverzekering, eigen risico 250.")["gebruiker"]
+    assert "voldoet aan de vastleggingsvereisten" not in g
+    assert "geen vastleggings- of bewaarplicht" in g

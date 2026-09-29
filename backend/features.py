@@ -95,7 +95,7 @@ def _uitkomst(d: Dict) -> str:
     dat is een vertaling naar gegrond/ongegrond die nuance verliest (een klacht kan materieel
     gegrond zijn terwijl de vordering wordt afgewezen).
     """
-    u = " ".join((d.get("uitkomst_letterlijk") or "").split()).lower().replace("vorderingen", "vordering")
+    u = " ".join((d.get("uitkomst_letterlijk") or d.get("uitkomst_letterlijk_uit_pdf") or "").split()).lower().replace("vorderingen", "vordering")
     return u or "uitkomst niet vastgesteld"
 
 
@@ -128,8 +128,10 @@ def _grondslag_docs(grondslag) -> List[Dict]:
 
 # Hoeveel tekens van een bron het model krijgt. De adviseur ziet in de bronlijst de VOLLEDIGE tekst, dus
 # altijd minstens wat het model zag; een afgekapt artikel verbergt leden (Wft 4:23 lid 7), daarom heeft een
-# artikel waarop een berekening rust een ruimere grens. 96% van de polisclausules past in 1.500 tekens.
-LIMIET_WET, LIMIET_WET_GRONDSLAG, LIMIET_POLIS, LIMIET_KIFID = 2600, 4000, 1500, 1200
+# artikel waarop een berekening rust een ruimere grens. De grenzen liggen boven de langste clausule (2.670 tekens)
+# en de langste samenvatting (1.678) van het corpus, en voor de grondslagartikelen boven Wft 4:23 en 4:24 (4.288 en
+# 4.668): een kleiner model past nog in 12.000 tokens, zie test_de_langste_opdracht_past_in_het_lokale_model.
+LIMIET_WET, LIMIET_WET_GRONDSLAG, LIMIET_POLIS, LIMIET_KIFID = 3500, 4800, 2700, 1800
 LIMIET_ZICHTBAAR = 6000
 
 
@@ -594,15 +596,26 @@ def _afkap(tekst: str, wat: str):
 # staat, hangt anders af van de woorden in het dossier.
 DOSSIER_ARTIKELEN = ["Wft:4:22a", "Wft:4:23", "Wft:4:24a", "Wft:4:25b"]
 
+# Noemt het dossier een provisie of beloning, of een product uit het verbod van art. 86c lid 1, dan horen ook de
+# artikelen erbij die zeggen wanneer beloning via provisie mag: 86c (het verbod) en 86d/86i (schadeverzekeringen).
+# Zonder die artikelen kan het model de vraag 'mag dit?' niet uit de bronnen beantwoorden, ook al staat het antwoord
+# in het corpus.
+PROVISIE_ARTIKELEN = ["BGfo:86c", "BGfo:86d", "BGfo:86i"]
+RE_PROVISIE = re.compile(
+    r"provisie|beloning|commissie|kickback|tegemoetkoming|\bvergoeding\b[^.\n]{0,40}\b(?:bank|verzekeraar|aanbieder|maatschappij)"
+    r"|hypothe\w*|arbeidsongeschikt\w*|\baov\b|overlijdensrisico\w*|uitvaart\w*|betalingsbeschermer|premiepensioen\w*"
+    r"|complex(?:e)? product", re.IGNORECASE)
+
 
 def dossiercheck(dossiertekst: str) -> Dict:
     tekst, opmerkingen, afgekapt = _afkap(dossiertekst, "Het dossier")
     # De zoekvraag bestaat niet alleen uit de vaste zorgplichttermen: het dossier zelf bepaalt welke
     # productregels erbij horen (provisie, hypotheek, beleggingsverzekering).
+    provisie = bool(RE_PROVISIE.search(tekst))
     ctx = _context("passend advies klantprofiel zorgplicht informatieverstrekking "
                    "kennis ervaring doelstelling risicobereidheid financiele positie " + tekst[:800],
-                   ["wetgeving", "kifid"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS},
-                   grondslag=DOSSIER_ARTIKELEN)
+                   ["wetgeving", "kifid"], per_bron=3 if provisie else 5, waar={"wetgeving": GEDRAGSREGELS},
+                   grondslag=DOSSIER_ARTIKELEN + (PROVISIE_ARTIKELEN if provisie else []))
     gebruiker = (
         f"ADVIESDOSSIER:\n---\n{tekst}\n---\n{afgekapt}\n"
         "Toets dit dossier tegen de zorgplicht- en adviesvereisten uit de bronnen.\n"
@@ -788,7 +801,9 @@ def adviesnotitie(klantsituatie: str, advies: str) -> Dict:
                    grondslag=DOSSIER_ARTIKELEN)
     gebruiker = (
         f"KLANTSITUATIE:\n{klantsituatie}\n\nGEGEVEN ADVIES:\n{advies}\n\n"
-        "Stel een dossiernotitie op die voldoet aan de vastleggingsvereisten uit de bronnen.\n"
+        "Stel een dossiernotitie op met de onderdelen die de bronnen als vaststelling of informatie aan de klant noemen. "
+        "De bronnen bevatten geen vastleggings- of bewaarplicht voor adviesdossiers: noem er geen en zeg dat het niet "
+        "in de geraadpleegde bronnen staat als je erover schrijft.\n"
         "Gebruik deze kopjes: Klantsituatie / Doelstelling en risicobereidheid / Overwogen "
         "alternatieven / Advies en motivering / Verstrekte informatie / Vervolgafspraken.\n"
         "Vul NIETS in wat de adviseur niet heeft aangeleverd. Zet bij ontbrekende informatie "

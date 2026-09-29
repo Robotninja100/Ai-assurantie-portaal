@@ -802,12 +802,14 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
             u.bedrag = None
         u.toelichting = (
             f"Voor '{naam}' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat "
-            "afsluit- en doorlopende provisie toe, mits de consument kosteloos en op begrijpelijke "
-            "wijze is geïnformeerd over het bestaan, de aard en het bedrag van de provisie.")
+            "afsluit- en doorlopende provisie toe, mits een consument kosteloos en op begrijpelijke wijze wordt "
+            "geïnformeerd over het bestaan, de aard en het bedrag van de provisie (onder b, 1°); een cliënt die "
+            "geen consument is krijgt die mededeling kosteloos op verzoek (onder b, 2°).")
         u.volgende_stap = (
-            "Leg vast dat de consument uiterlijk tegelijk met het advies is geïnformeerd over het "
-            "bestaan, de aard en het bedrag van de provisie (art. 86i lid 3), en neem de wijze van "
-            "beloning op in het dienstverleningsdocument.")
+            "Leg vast dat een consument uiterlijk tegelijk met het advies is geïnformeerd over het bestaan, de "
+            "aard en het bedrag van de provisie (art. 86i lid 3); is de klant een cliënt die geen consument is, "
+            "dan volstaat mededeling op verzoek (art. 86d lid 1 onder b, 2°). Neem de wijze van beloning op in het "
+            "dienstverleningsdocument.")
         u.waarschuwingen.append(
             "Art. 86d lid 1 staat alleen de daar genoemde provisievormen toe; andere vormen vallen "
             "erbuiten.")

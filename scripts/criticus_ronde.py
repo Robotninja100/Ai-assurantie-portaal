@@ -267,7 +267,7 @@ def draai_standin(casus, antwoorden):
 
 # ------------------------------------------------------------------ dossier voor de beoordelaar
 
-def dossier(functie, casussen, resultaten):
+def dossier(functie, casussen, resultaten, fragment=260):
     regels = [f"# Beoordelingsdossier: {functie}", "",
               "Toets elke casus op vier fatale fouten: (1) VERZONNEN FEIT: een bewering die niet uit de getoonde bronnen of "
               "de berekening volgt; (2) NIET-CITEERBARE BRON: een verwijzing die niet in de bronnen staat of niet klopt; "
@@ -290,7 +290,8 @@ def dossier(functie, casussen, resultaten):
         regels.append("**Getoonde bronnen**")
         for b in r.get("bronnen_volledig") or []:
             regels.append(f"- [{b['soort']}] {b['label']}" + (f" ({b.get('type') or b.get('uitkomst') or ''})" if (b.get('type') or b.get('uitkomst')) else "")
-                          + f": {(b.get('fragment') or '')[:260].replace(chr(10), ' ')}")
+                          + f": {(b.get('fragment') or '')[:fragment].replace(chr(10), ' ')}"
+                          + (" […]" if len(b.get('fragment') or '') > fragment else ""))
         if not r.get("bronnen_volledig") and not r.get("bronnen"):
             regels.append("- (geen bronnen opgehaald)")
         regels.append("")
@@ -351,6 +352,8 @@ def main():
     ap.add_argument("--ronde", default="ronde1")
     ap.add_argument("--functie")
     ap.add_argument("--max", type=int, default=0, help="alleen de eerste N casussen per functie")
+    ap.add_argument("--fragment", type=int, default=260,
+                    help="dossier: zoveel tekens van elke bron in het dossier (standaard 260; voor beoordelaars 2000)")
     ap.add_argument("--basis", default="http://127.0.0.1:8000")
     ap.add_argument("--timeout", type=int, default=900)
     a = ap.parse_args()
@@ -380,7 +383,7 @@ def main():
                 if os.path.exists(pad):
                     res = {r["id"]: r for r in json.load(open(pad, encoding="utf-8"))}
             os.makedirs(os.path.join(uitmap, "dossiers"), exist_ok=True)
-            tekst = dossier(f, [c for c in casussen if c["functie"] == f], res)
+            tekst = dossier(f, [c for c in casussen if c["functie"] == f], res, a.fragment)
             naam = f"{f}.md" if a.dossier_laag in ("auto", "volledig") else f"{f}.{a.dossier_laag}.md"
             open(os.path.join(uitmap, "dossiers", naam), "w", encoding="utf-8").write(tekst)
             print(f"dossier: criticus/{a.ronde}/dossiers/{naam} ({len(res)} uitkomsten)")
