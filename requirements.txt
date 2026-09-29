@@ -1,0 +1,8 @@
+# Runtime van het portaal
+fastapi
+uvicorn[standard]
+# Corpusbouw en validatie
+lxml
+pypdf
+# Alleen nodig voor ASSURANTIE_LLM_PROVIDER=local (lokaal model, zeer traag zonder GPU)
+# llama-cpp-python

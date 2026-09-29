@@ -58,7 +58,8 @@ def vraag(a: Aanvraag):
         raise HTTPException(404, f"Onbekende functie: {a.functie}")
     try:
         opdracht = spec["fn"](**a.invoer)
-    except TypeError as e:
+    except (TypeError, ValueError, ArithmeticError) as e:
+        # ArithmeticError vangt ook decimal.InvalidOperation op: een bedrag als "abc".
         raise HTTPException(400, f"Onjuiste invoer voor {a.functie}: {e}")
 
     def gen():
@@ -89,6 +90,15 @@ def vraag(a: Aanvraag):
             yield f"data: {json.dumps({'type':'fout','fout':f'{type(e).__name__}: {e}'}, ensure_ascii=False)}\n\n"
 
         antwoord = "".join(volledig)
+        if not antwoord.strip():
+            # Een leeg antwoord mag nooit doorgaan voor "geen verwijzingen": dat leest als een
+            # geslaagde controle. Meld het als wat het is, een storing in de runtime.
+            rt = llm.runtime_info()
+            reden = (rt.get("opmerking") or "onbekende reden") if not rt.get("beschikbaar") \
+                else "het taalmodel gaf geen bruikbaar antwoord"
+            yield f"data: {json.dumps({'type':'fout','fout':'Geen antwoord van het taalmodel: ' + reden + ' De bronnen en de berekening hierboven zijn wel volledig en gecontroleerd.'}, ensure_ascii=False)}\n\n"
+            yield "data: [DONE]\n\n"
+            return
         controle = grounding.controleer(antwoord, opdracht["opgehaald"])
         controle["duur_sec"] = round(time.time() - t0, 1)
         yield f"data: {json.dumps({'type':'controle','controle':controle}, ensure_ascii=False)}\n\n"

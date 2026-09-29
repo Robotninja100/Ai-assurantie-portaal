@@ -9,10 +9,11 @@ de correctheid, het model levert alleen de Nederlandse formulering.
 import os, threading, json
 from typing import Optional, List, Dict
 
-MODEL_PATH = os.environ.get(
-    "ASSURANTIE_MODEL_PATH",
-    "/tmp/claude-0/-home-user-Ai-assurantie-portaal/"
-    "a2ab93d0-b5a6-5ccb-a5c5-6eb44b6f32e7/scratchpad/models/qwen3-4b.gguf")
+# Standaard in de projectmap (models/ staat in .gitignore). Een pad in een tijdelijke sessiemap
+# verdween met de container en liet het lokale model stil onbereikbaar worden.
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MODEL_PATH = os.environ.get("ASSURANTIE_MODEL_PATH",
+                            os.path.join(_ROOT, "models", "qwen3-4b.gguf"))
 PROVIDER = os.environ.get("ASSURANTIE_LLM_PROVIDER", "openrouter")
 
 # OpenRouter-modellen die op echte Nederlandse verzekeringsvragen zijn getest: correcte

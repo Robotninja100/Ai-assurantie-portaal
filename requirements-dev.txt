@@ -1,0 +1,7 @@
+-r requirements.txt
+pytest
+httpx
+# Blinde A/B-meetlat en schermopnames
+numpy
+pillow
+playwright

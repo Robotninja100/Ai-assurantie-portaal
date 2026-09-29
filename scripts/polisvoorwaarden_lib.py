@@ -72,6 +72,7 @@ FURNITURE = [
     r"^\s*\*\s*Zie Begrippen\s*$",                        # Klaverblad voetnoot
     r"^\s*terug naar inhoud\s*>\s*$",                     # a.s.r.
     r"^\s*Voorwaarden arbeidsongeschiktheidsverzekering model \d+\s+\d+/\d+\s*$",
+    r"^\s*Voorwaarden arbeidsongeschiktheidsverzekering \| model \d+\s+\d+/\d+\s*$",  # a.s.r. model 231
     r"^\s*Voorwaarden Woonverzekering\s*$",               # Univé
     r"^\s*Algemene voorwaarden\s*$",                      # Univé / Interpolis
     r"^\s*Pagina \d+/\d+\s*$",                            # Univé

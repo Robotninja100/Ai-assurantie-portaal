@@ -23,6 +23,46 @@ CORPUS = Corpus()
 
 # --------------------------------------------------------------- hulpfuncties
 
+VERPLICHT = 999.0     # score voor artikelen waarop een berekening rust; altijd in de bronnen
+
+
+def _uitkomst(d: Dict) -> str:
+    """
+    De uitkomst zoals Kifid die zelf formuleert ('Vordering afgewezen'). Nooit het veld 'oordeel':
+    dat is een vertaling naar gegrond/ongegrond die nuance verliest (een klacht kan materieel
+    gegrond zijn terwijl de vordering wordt afgewezen).
+    """
+    u = " ".join((d.get("uitkomst_letterlijk") or "").split()).lower().replace("vorderingen", "vordering")
+    return u or "uitkomst niet vastgesteld"
+
+
+def _splits_grondslag(g: str):
+    """'BW:7:942:1' -> ('BW', '7:942', '1');  'BGfo:86c:1' -> ('BGfo', '86c', '1')."""
+    d = g.split(":")
+    if d[0] in ("BW", "Wft"):                   # artikelnummers bevatten zelf een dubbele punt
+        return d[0], ":".join(d[1:3]), (d[3] if len(d) > 3 else None)
+    return d[0], d[1], (d[2] if len(d) > 2 else None)
+
+
+def _grondslag_docs(grondslag) -> List[Dict]:
+    """
+    De wetsartikelen waarop een berekening rust, rechtstreeks uit het corpus. Ze horen ALTIJD bij
+    de bronnen: een uitkomst mag niet steunen op een artikel dat de adviseur niet kan inzien, en de
+    citeerbewaker zou een terechte verwijzing ernaar anders als 'niet in corpus' aanmerken.
+    """
+    gezien, uit = set(), []
+    for g in grondslag or []:
+        wet, artikel, _lid = _splits_grondslag(g)
+        if (wet, artikel) in gezien:
+            continue
+        gezien.add((wet, artikel))
+        for d in CORPUS.data.get("wetgeving", []):
+            if d.get("wet") == wet and str(d.get("artikel")).lower() == artikel.lower():
+                uit.append(d)
+                break
+    return uit
+
+
 def _blok(bron: str, rows: List) -> str:
     """Bouwt het contextblok dat het model als enige feitenbron krijgt."""
     if not rows:
@@ -30,11 +70,12 @@ def _blok(bron: str, rows: List) -> str:
     uit = []
     for score, d in rows:
         if bron == "wetgeving":
+            lim = 3000 if score >= VERPLICHT else 1200
             uit.append(f"[{d.get('wet')} art. {d.get('artikel')}] {d.get('titel') or ''}\n"
-                       f"{(d.get('tekst') or '')[:1200]}\nBron: {d.get('bron_url')}")
+                       f"{(d.get('tekst') or '')[:lim]}\nBron: {d.get('bron_url')}")
         elif bron == "kifid":
             uit.append(f"[Kifid {d.get('uitspraaknummer')}] {d.get('titel') or ''}\n"
-                       f"Oordeel: {d.get('oordeel') or 'niet vastgesteld'}\n"
+                       f"Uitkomst (letterlijk uit de uitspraak): {_uitkomst(d)}\n"
                        f"{(d.get('samenvatting') or d.get('kern_klacht') or '')[:900]}\n"
                        f"Bron: {d.get('bron_url')}")
         else:
@@ -44,10 +85,17 @@ def _blok(bron: str, rows: List) -> str:
     return "\n\n".join(uit)
 
 
-def _context(vraag: str, bronnen: List[str], per_bron=4) -> Dict:
+def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=()) -> Dict:
     opgehaald, blokken = {}, []
+    verplicht = _grondslag_docs(grondslag)
+    if verplicht and "wetgeving" not in bronnen:
+        bronnen = ["wetgeving"] + list(bronnen)
     for b in bronnen:
         rows = CORPUS.zoek(b, vraag, per_bron)
+        if b == "wetgeving" and verplicht:
+            ids = {(d.get("wet"), d.get("artikel")) for d in verplicht}
+            rows = ([(VERPLICHT, d) for d in verplicht] +
+                    [(s, d) for s, d in rows if (d.get("wet"), d.get("artikel")) not in ids])
         opgehaald[b] = [d for _, d in rows]
         blk = _blok(b, rows)
         if blk:
@@ -68,7 +116,7 @@ def _bronlijst(opgehaald: Dict) -> List[Dict]:
                             "fragment": (d.get("tekst") or "")[:300]})
             elif b == "kifid":
                 uit.append({"soort": "kifid", "label": f"Kifid {d.get('uitspraaknummer')}",
-                            "titel": d.get("titel"), "oordeel": d.get("oordeel"),
+                            "titel": d.get("titel"), "uitkomst": _uitkomst(d),
                             "url": d.get("bron_url"),
                             "fragment": (d.get("samenvatting") or "")[:300]})
             else:
@@ -108,14 +156,14 @@ def precedentzoeker(geschil: str) -> Dict:
     docs = [d for _, d in rows]
     telling = {}
     for d in docs:
-        o = (d.get("oordeel") or "onbekend").lower()
+        o = _uitkomst(d)
         telling[o] = telling.get(o, 0) + 1
     ctx = {"opgehaald": {"kifid": docs}, "blok": _blok("kifid", rows) or "(geen uitspraken gevonden)"}
 
     samenvatting = ", ".join(f"{v}x {k}" for k, v in sorted(telling.items(), key=lambda x: -x[1]))
     gebruiker = (
         f"GESCHIL:\n{geschil}\n\n"
-        f"Gevonden vergelijkbare uitspraken: {len(docs)}. Verdeling van de oordelen: "
+        f"Gevonden vergelijkbare uitspraken: {len(docs)}. Verdeling van de uitkomsten (zoals Kifid ze zelf formuleert): "
         f"{samenvatting or 'geen'}.\n\n"
         "Analyseer op basis van UITSLUITEND deze uitspraken:\n"
         "1. Welke lijn tekent zich af? Verwijs naar uitspraaknummers.\n"
@@ -126,7 +174,7 @@ def precedentzoeker(geschil: str) -> Dict:
     return {"functie": "precedentzoeker", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
             "bronnen": _bronlijst(ctx["opgehaald"]),
-            "berekening": {"onderwerp": "Verdeling gepubliceerde oordelen",
+            "berekening": {"onderwerp": "Verdeling gepubliceerde uitkomsten",
                            "telling": telling, "aantal_uitspraken": len(docs),
                            "let_op": "Dit is de verdeling binnen de gevonden uitspraken, "
                                      "geen representatieve steekproef van alle Kifid-zaken."},
@@ -140,7 +188,7 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
     u = rk.evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
                                   eigen_risico, bereddingskosten)
     ctx = _context("onderverzekering evenredigheid verzekerde som herbouwwaarde eigen risico",
-                   ["wetgeving", "polisvoorwaarden"], per_bron=3)
+                   ["wetgeving", "polisvoorwaarden"], per_bron=3, grondslag=u.grondslag)
     stappen = "\n".join(f"- {s.omschrijving}: {s.formule}" for s in u.stappen)
     gebruiker = (
         f"De berekening is AL UITGEVOERD in deterministische code. Neem deze cijfers "
@@ -156,12 +204,27 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
 
 # =============================================================== 4. verjaringstoets
 
-def verjaringstoets(datum_bekend: str, datum_afwijzing: str = "",
-                    datum_stuiting: str = "") -> Dict:
-    _d = lambda x: datetime.strptime(x, "%Y-%m-%d").date() if x else None
-    u = rk.verjaring_schadeclaim(_d(datum_bekend), _d(datum_afwijzing), _d(datum_stuiting))
+def _datum(waarde: str, veld: str) -> Optional[date]:
+    """Leest een ISO-datum (JJJJ-MM-DD). Een onleesbare datum is een invoerfout, geen crash."""
+    if not waarde:
+        return None
+    try:
+        return datetime.strptime(waarde.strip(), "%Y-%m-%d").date()
+    except ValueError:
+        raise ValueError(f"{veld}: '{waarde}' is geen datum in de vorm JJJJ-MM-DD")
+
+
+def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: str = "",
+                    aansprakelijkheid: bool = False, peildatum: str = "") -> Dict:
+    if not datum_bekend:
+        raise ValueError("datum_bekend: verplicht (JJJJ-MM-DD)")
+    u = rk.verjaring_schadeclaim(_datum(datum_bekend, "datum_bekend"),
+                                 _datum(datum_stuiting, "datum_stuiting"),
+                                 _datum(datum_reactie, "datum_reactie"),
+                                 bool(aansprakelijkheid),
+                                 _datum(peildatum, "peildatum"))
     ctx = _context("verjaring rechtsvordering verzekeraar stuiting termijn afwijzing",
-                   ["wetgeving", "kifid"], per_bron=3)
+                   ["wetgeving", "kifid"], per_bron=3, grondslag=u.grondslag)
     gebruiker = (
         f"De termijnberekening is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{u.toelichting}\n"
@@ -179,10 +242,13 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
                   directe_beloning: float = 0) -> Dict:
     u = rk.provisie_toets(producttype, jaarpremie, provisiepercentage, directe_beloning)
     ctx = _context(f"provisieverbod beloning {producttype} dienstverleningsdocument "
-                   f"transparantie complex product", ["wetgeving", "kifid"], per_bron=4)
+                   f"transparantie complex product", ["wetgeving", "kifid"], per_bron=4,
+                   grondslag=u.grondslag)
+    bedrag = u.to_dict()["bedrag"]
     gebruiker = (
         f"PRODUCT: {producttype}\n"
-        f"Toets is AL UITGEVOERD: {u.toelichting}\nBedrag: EUR {u.to_dict()['bedrag']}\n"
+        f"Toets is AL UITGEVOERD: {u.toelichting}\n"
+        f"Bedrag: {('EUR ' + bedrag) if bedrag else 'niet vast te stellen'}\n"
         f"Signalen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
         "Onderbouw dit met de wetsartikelen uit de bronnen. Noem ALLEEN artikelen die er "
         "letterlijk in staan. Sluit af met wat de adviseur in het dossier moet vastleggen.")
