@@ -14,10 +14,14 @@ Vier lagen dwingen dat af:
 1. **`backend/retrieval.py`** weigert elk corpusrecord waarvan de bron niet is bevestigd,
    ook als de inhoud zou kloppen.
 2. **`backend/grounding.py`** controleert ná generatie elke verwijzing die het model uitspreekt
-   (wetsartikel, uitspraak, clausule) tegen de documenten die daadwerkelijk zijn opgehaald, en
-   elk bedrag, percentage en elke datum tegen de berekening, de invoer en de bronnen. Wat daar
-   niet in staat, wordt zichtbaar gemarkeerd, niet stil weggefilterd: dan ziet de adviseur het niet.
-   Grens: de controle toont dat een getal uit de berekening komt, niet dat het op de juiste plek staat.
+   (wetsartikel bij de juiste wet, uitspraak, clausule), elk bedrag, percentage en elke datum tegen
+   de berekening, de invoer en de bronnen, en elke aanhaling tussen aanhalingstekens: die moet
+   woordelijk in de invoer of de bronnen staan. Wat daar niet in staat, wordt op elke plek zichtbaar
+   gemarkeerd, niet stil weggefilterd: dan ziet de adviseur het niet.
+   Grens: de controle toont dat een verwijzing bestaat en een getal uit de berekening komt, niet dat
+   de redenering eromheen klopt of dat een getal op de juiste plek staat. Daarom herschrijft het model
+   waar de uitkomst uit code komt de uitleg uit die code (`Uitkomst.uitleg`) en bedenkt het geen redenen:
+   een echte run met een klein lokaal model liet goede bedragen zien met een verzonnen uitleg eromheen.
 3. **`scripts/valideer_grondslagen.py`** past dezelfde regel toe op onze eigen code en faalt
    als de rekenkern naar een artikel verwijst dat niet in het corpus staat.
 4. **`tests/`**: de wettekst in het corpus is de bron van de verwachte waarden, niet de uitvoer
@@ -29,7 +33,7 @@ Vier lagen dwingen dat af:
 |---|---|---|
 | Wft, BGfo, BW Boek 7 titel 17 | 53 artikelen | officiële BWB-XML; alle 53 HTTP-geverifieerd |
 | Kifid-uitspraken | 42 bruikbaar (5 geweigerd) | uitspraaknummer letterlijk teruggelezen uit de bron-PDF |
-| Polisvoorwaarden | zie `state.json` | sha256 per brondocument; elke tekst letterlijk uit de PDF gesneden |
+| Polisvoorwaarden | 119 clausules, 10 producten, 5 verzekeraars | sha256 per brondocument; elke tekst letterlijk uit de PDF gesneden |
 
 Alles reproduceerbaar via de scrapers in `scripts/`. Het Kifid-corpus is klein, scheef naar 2026 en
 naar afwijzingen, en alleen Geschillencommissie: nooit gebruiken voor uitspraken over slagingskansen.
@@ -59,7 +63,7 @@ eerlijk dat er geen antwoord kwam.
 
 ```bash
 pip install -r requirements-dev.txt
-python3 -m pytest tests                      # unit-tests en browsertests (Chromium via Playwright)
+python3 -m pytest tests                      # unit-tests en browsertests (Chromium via Playwright), ruim 270 stuks
 python3 scripts/valideer_grondslagen.py      # elke wetsverwijzing van de rekenkern staat in het corpus
 python3 scripts/valideer_polisvoorwaarden.py # bronnen bereikbaar, hashes kloppen, tekst letterlijk uit de bron
 python3 scripts/criticus_ronde.py deterministisch   # de rommelige casussen door bronnen en berekening

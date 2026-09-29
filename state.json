@@ -1,7 +1,7 @@
 {
   "project": "AI-portaal voor Nederlandse assurantieprofessionals",
   "branch": "claude/sweet-gauss-ab8ep1",
-  "status": "RONDE_1_IN_UITVOERING__FUNDERING_INTERFACE_EN_TESTSTRAAT_STAAN",
+  "status": "RONDE_1_VERWERKT__MEETLAT_IN_HERSTEL__MODELKWALITEIT_ZONDER_SLEUTEL_ONBEWEZEN",
   "blocker": "OPENROUTER_API_KEY ontbreekt in deze omgeving (alleen voor de snelle runtime en de volledige criticusronde).",
   "runtime_audit": {
     "verdict": "LOCAL_FREE_RUNTIME_WORKING",
@@ -127,6 +127,10 @@
       "path": "Klein lokaal CPU-model als runtime",
       "status": "REVERSED",
       "why_reversed": "Eerder afgeschreven op aanname. Live getest: rekent correct, weigert te hallucineren. Met RAG is 4B voldoende omdat het corpus de feiten levert, niet het model."
+    },
+    {
+      "path": "Klein lokaal CPU-model laten uitleggen (zonder uitleg uit code)",
+      "why": "Gemeten (lokale_modelrun_1): fout in de redenering, geen verwijzingen. Als terugval alleen met de uitleg uit code en een zichtbare waarschuwing."
     }
   ],
   "rounds": [
@@ -149,13 +153,16 @@
       "naam": "Interface, teststraat en criticus",
       "uitkomst": "IN UITVOERING",
       "bewijs": [
-        "frontend gebouwd en in een echte browser getest (9 browsertests); alleen het taalmodel is daarin een gemarkeerde testdouble",
-        "114 tests groen (105 unit, 9 browser); zie scripts/criticus_ronde.py deterministisch voor 96 harde checks op 120 casussen",
-        "echte run met het lokale Qwen3-4B via de UI: berekening en bronnen kloppen; onthulde het stil afgekapte antwoord"
+        "frontend in een echte browser getest (24 browsertests); alleen het taalmodel is daarin een gemarkeerde testdouble",
+        "278 tests groen (254 unit, 24 browser) + 1 bekende xfail; 98 harde checks op 120 casussen (scripts/criticus_ronde.py deterministisch)",
+        "corpus 119 polisclausules, gevalideerd tegen de bronnen (13 HTTP 200, teksten letterlijk)",
+        "onafhankelijke review van de code: 17 bevindingen, alle hoge en middelhoge hersteld (zie review_ronde_1)",
+        "echte run met het lokale Qwen3-4B: cijfers goed, uitleg fout (zie lokale_modelrun_1); daarom uitleg uit code"
       ],
       "nog_niet_bewezen": [
-        "de echte OpenRouter-stroom (geen sleutel in deze sessie); alleen getest tegen een lokale nep-SSE-server",
-        "kwaliteit van de modelantwoorden over alle 120 casussen door onafhankelijke beoordelaars"
+        "de echte OpenRouter-stroom (geen sleutel in deze sessie); alleen getest tegen lokale nep-SSE-servers",
+        "kwaliteit van de modelantwoorden over de 120 casussen door onafhankelijke beoordelaars (vier fatale fouten); alleen 1 casus met een echt (klein) model gedraaid",
+        "de meetlat: harnas en opnames worden nog hersteld (zie meetlat_herstel_ronde_1)"
       ]
     }
   ],
@@ -178,7 +185,7 @@
     "google_ai_studio": 403,
     "note": "401/403 = bereikbaar, key nodig. Gratis tiers bestaan bij Groq/OpenRouter/Google indien gebruiker later een key aanmaakt."
   },
-  "laatst_bijgewerkt": "2026-09-29",
+  "laatst_bijgewerkt": "2026-09-30",
   "corpus": {
     "wetgeving": {
       "records": 53,
@@ -198,7 +205,7 @@
       "geweigerd": [
         {
           "nr": "2026-0832",
-          "reden": "ValueError: nummer niet in PDF-tekst"
+          "reden": "Het PDF drukt 'nr. 2026-832' zonder voorloopnul; register, bestandsnaam en record hebben '2026-0832'. Verweerder, beslissing, uitkomst en datum kloppen wel. De eis (nummer letterlijk in de PDF) is niet versoepeld. Wil je voorloopnullen negeren: nummer_letterlijk_in_tekst aanpassen en repareer_kifid_bronnen.py --alleen 2026-0832 draaien."
         },
         {
           "nr": "2026-0826",
@@ -222,50 +229,60 @@
       "scrapers": [
         "scripts/scrape_kifid.py",
         "scripts/repareer_kifid_bronnen.py"
-      ]
+      ],
+      "opmerking_2026_0742": "Bevestigd en bruikbaar (stond ten onrechte als uitgesloten in openstaand)."
     },
     "polisvoorwaarden": {
-      "records": 69,
+      "records": 119,
       "producten": {
-        "aansprakelijkheidsverzekering particulieren (AVP)": 9,
-        "opstalverzekering": 11,
-        "inboedelverzekering": 8,
-        "autoverzekering (WA/casco)": 11,
-        "rechtsbijstandverzekering": 4,
-        "reisverzekering": 3,
-        "opstal-/inboedelverzekering (woonverzekering)": 9,
+        "aansprakelijkheidsverzekering particulieren (AVP)": 10,
         "algemene voorwaarden schadeverzekering": 6,
-        "arbeidsongeschiktheidsverzekering (AOV)": 8
+        "arbeidsongeschiktheidsverzekering (AOV)": 8,
+        "autoverzekering (WA/casco)": 20,
+        "fietsverzekering": 5,
+        "inboedelverzekering": 21,
+        "opstal-/inboedelverzekering (woonverzekering)": 17,
+        "opstalverzekering": 17,
+        "rechtsbijstandverzekering": 6,
+        "reisverzekering": 9
       },
       "types": {
-        "dekking": 4,
-        "uitsluiting": 27,
-        "schaderegeling": 15,
+        "dekking": 39,
+        "uitsluiting": 35,
+        "schaderegeling": 17,
         "verjaring": 6,
-        "verplichting verzekerde": 11,
+        "verplichting verzekerde": 16,
         "eigen risico": 6
       },
-      "brondocumenten": 11,
+      "brondocumenten": 13,
       "verzekeraars": [
+        "De Goudse (Goudse Schadeverzekeringen N.V.)",
         "Interpolis (Achmea Schadeverzekeringen N.V.)",
         "Klaverblad Verzekeringen",
         "Univé (N.V. Univé Schade)",
         "a.s.r. (ASR Schadeverzekering N.V.)"
       ],
-      "verificatie": "bron_pdf_sha256 per document; eigen steekproef Klaverblad AVP reproduceerde de hash exact"
+      "verificatie": "bron_pdf_sha256 per document; scripts/valideer_polisvoorwaarden.py: 13 bronnen HTTP 200 en elke tekst letterlijk uit de bron; herbouw is byte-identiek",
+      "uitbreiding_ronde_1": "69 -> 119 clausules (dekking 4 -> 39, uitsluiting 27 -> 35) voor inbraak, storm, water, diefstal, glas, voorzorg; nieuw product fietsverzekering (Univé) en nieuwe bron De Goudse (POI-2601). De 69 oude records zijn ongewijzigd (vingerafdruktest).",
+      "resterende_gaten": [
+        "BM25 zonder stamvorm of synoniemen: 'ingebroken/gestolen' matchen niet met 'inbraak/diefstal' (xfail-test in tests/test_corpus_dekking.py)",
+        "Univé art. 8 Inbraak staat bij de korte casus op rang 6; geen clausule 'raam niet afgesloten'",
+        "AVP 1 dekkingsclausule, rechtsbijstand 2, reis-medisch 2: dun; Nationale-Nederlanden-voorwaarden gaven HTTP 403 en zijn overgeslagen",
+        "~20 van 42 Kifid-kern_klacht's bevatten paginamarkers ('1/33. De beoordeling'); Kifid 2025-0146 beslissing_letterlijk niet letterlijk; bronartefacten 'betref - fende' (reis 29.3), 'ontvan - gen' (AOV 4.3)"
+      ]
     }
   },
   "gebouwd": {
-    "backend/rekenkern.py": "deterministische berekeningen, elke uitkomst met wettelijke grondslag",
+    "backend/rekenkern.py": "deterministische berekeningen met wettelijke grondslag; verjaring (letterlijke momentlezing, schrikkeldagen), klachttermijnen (BGfo 43, beide lezingen), provisieclassificatie, evenredigheid met 'zelf te dragen' en een uitleg in gewone zinnen uit code (Uitkomst.uitleg); peildatum is vandaag in Nederland",
     "backend/retrieval.py": "BM25 met de hand geschreven; weigert records met bron_geverifieerd=False",
-    "backend/grounding.py": "citeerbewaker toetst nu ook bedragen, percentages, data, BGfo-nummers zonder dubbele punt en niet-bestaande leden",
-    "backend/features.py": "twaalf structureel verschillende functies",
-    "backend/llm.py": "echte SSE-streaming met modelketen die alleen doorschuift voordat er tekst is, lokale terugval, denkblokfilter, finish_reason",
-    "backend/api.py": "hartslag (thread + queue), opmerkingen bij afgekapte invoer, 'afgekapt' in de controle, 400 bij ongeldige invoer",
+    "backend/grounding.py": "citeerbewaker: verwijzingen (wet, Kifid, clausule ook zonder punt), artikel bij de verkeerde wet, ECLI, bedragen/percentages/data (kale getallen < 100 tellen niet als toestemming), woordelijke citaten, elke plek gemarkeerd",
+    "backend/features.py": "twaalf functies; polisvergelijker per product en verzekeraar; de opdracht aan het model bevat de uitleg en vervolgstap uit code en vraagt om herschrijven zonder toevoegingen; vrije invoer komt niet in de opdracht",
+    "backend/llm.py": "echte SSE-streaming, modelketen, stop/annuleren, stroom zonder [DONE] is afgebroken, JSON-body bij HTTP 200, totale tijdslimiet, lokaal slot dat wachtende verzoeken overslaat",
+    "backend/api.py": "async generator met hartslag, annuleert het model bij een weggevallen client; type- en lengtecontrole per veld (400); /api/producten met varianten per verzekeraar",
     "scripts/valideer_grondslagen.py": "faalt als de rekenkern naar een artikel verwijst dat niet in het corpus staat",
-    "frontend/": "index.html, app.css (ontwerpsysteem), ES-modules zonder buildstap, Inter zelf gehost (OFL); twaalf functies met eigen invoer en weergave",
-    "tests/": "unit-tests, tests/e2e (Chromium), tests/nep_llm.py (gemarkeerde testdouble), tests/casussen/ (120 rommelige casussen)",
-    "scripts/criticus_ronde.py": "laag 1 deterministisch (zonder taalmodel), laag 2 volledig via de API, hervatbaar, beoordelingsdossiers",
+    "frontend/": "eerlijke staat bij Stop, storing, afbreken, weigering; [hidden] werkt; focus; geneste lijsten, tabellen, cursief; volledige bronteksten; axe: geen overtredingen (6 schermen x 2 thema's x 2 viewports)",
+    "tests/": "254 unit-/integratietests + 24 browsertests (Chromium) groen, 1 bekende xfail; 120 casussen; tests/nep_llm.py is een gemarkeerde testdouble",
+    "scripts/criticus_ronde.py": "hervatten alleen met complete uitkomsten van dezelfde code en casus (versiesleutel); mislukte runs geven exitcode 1",
     "scripts/capture_ours.py": "legt onze eigen schermen vast uit echte runs; storingsmelding in beeld = geladen_ok false",
     "scripts/blind_ab_beoordelaar.md": "instructie voor de blinde beoordelaars met ankers voor de schaal 1-5"
   },
@@ -366,13 +383,15 @@
     ]
   },
   "openstaand_volgende_sessie": [
-    "1. OPENROUTER_API_KEY in de omgeving zetten (zie next_step_awaiting_user) en daarna de VOLLEDIGE criticusronde draaien: python3 scripts/criticus_ronde.py volledig; dossiers met 'dossier'; onafhankelijke beoordelaars per functie (vier fatale fouten). Nu is alleen een deelverzameling lokaal gedraaid.",
-    "2. Meetlat: zie meetlat_herstel_ronde_1 voor wat is gedaan en wat niet. Zonder herstelde meetlat is elke visuele score betekenisloos.",
-    "3. Verifieer de echte OpenRouter-stroom (parser, modelketen, denkblokfilter) met de echte sleutel; nu alleen getest tegen een nep-SSE-server.",
-    "4. Bewaker-grens: 'lid 4' genoemd waar de regel in lid 5 staat is niet te zien. Overweeg per lid tekst mee te sturen en de bewering aan de lidtekst te toetsen.",
-    "5. Kifid 'oordeel' (vertaling) staat nog in het corpus; de UI en de precedentzoeker gebruiken sinds ronde 1 uitkomst_letterlijk. Corpus is nog klein en scheef (42 uitspraken).",
-    "6. Dossiercheck: de vaste zoekvraag is aangevuld met het dossier zelf, maar er is geen inhoudelijke checklist van zorgplichtelementen; die zou uit Wft 4:23 lid 3/7 en BGfo 39-44 gehaald moeten worden.",
-    "7. Twee Kifid-uitspraken (2026-0832, 2026-0742) opnieuw verifieren; nu uitgesloten."
+    "1. OPENROUTER_API_KEY als omgevingsvariabele zetten (zie next_step_awaiting_user; nooit in de chat) en daarna de VOLLEDIGE criticusronde draaien: python3 scripts/criticus_ronde.py volledig; dossiers met 'dossier'; onafhankelijke beoordelaars per functie op de vier fatale fouten. Tot dan is er 1 casus met een echt (klein) model gedraaid.",
+    "2. Verifieer de echte OpenRouter-stroom (parser, modelketen, denkblokfilter, stop) met de echte sleutel; nu alleen getest tegen nep-SSE-servers.",
+    "3. Meetlat: zie meetlat_herstel_ronde_1. Zonder herstelde meetlat is elke visuele score betekenisloos; ongeldig is een geldige uitkomst.",
+    "4. Bewaker-grens: 'lid 4' genoemd waar de regel in lid 5 staat is niet te zien (het bestaan van het lid wordt getoetst, niet de inhoud); een getal op de verkeerde plek is onzichtbaar. Overweeg per lid de tekst mee te sturen en de bewering aan de lidtekst te toetsen.",
+    "5. Zoekmachine: BM25 zonder stamvorm/synoniemen (ingebroken vs inbraak). Overweeg stamvorming of een klein synoniemenlijstje uit het corpus zelf.",
+    "6. Dossiercheck: geen inhoudelijke checklist van zorgplichtelementen; die zou uit Wft 4:22a, 4:23 lid 1 en 4:25b gehaald moeten worden (met citaatcontrole op het dossier).",
+    "7. Kifid: kern_klacht's met paginamarkers en 2025-0146 beslissing_letterlijk niet letterlijk; 'oordeel' (vertaling) staat nog in het corpus (de UI en precedentzoeker gebruiken uitkomst_letterlijk). Corpus is klein en scheef (42 uitspraken).",
+    "8. Corpus: Nationale-Nederlanden-voorwaarden (HTTP 403), AVP/rechtsbijstand/reis-medisch zijn dun; clausule-ID's zonder punt zijn nu herkenbaar maar niet per lid toetsbaar.",
+    "9. De oude, in een chat gedeelde OpenRouter-sleutel roteren."
   ],
   "veiligheid": {
     "api_sleutel": "door gebruiker in de chat gedeeld; staat in .env en is via .gitignore buiten git gehouden. AANBEVELING: roteer deze sleutel, want hij is buiten een secret store om gedeeld."
@@ -439,5 +458,45 @@
   "pull_requests": {
     "1": "Fundering (ronde 0), draft, open: https://github.com/Robotninja100/Ai-assurantie-portaal/pull/1",
     "2": "Ronde 1, gestapeld op #1, draft: https://github.com/Robotninja100/Ai-assurantie-portaal/pull/2"
+  },
+  "review_ronde_1": {
+    "wie": "onafhankelijke agent die alleen de code las en draaide, met reproducties",
+    "omvang": "17 bevindingen: 4 hoog, 10 middel, 3 laag",
+    "hoog_en_hersteld": [
+      "Stop/tabblad sluiten stopte de generatie niet (sync generator): nu async met een stop-event tot in het lokale slot; test tegen een echte server faalt op de oude implementatie",
+      "Bronfragment afgekapt vóór het lid waarop de berekening rust (BW 7:958 lid 5): de adviseur ziet nu de volledige tekst, het model krijgt 1.500 tekens per polisclausule",
+      "Een stroom zonder [DONE]/finish_reason gold als compleet: nu afgebroken",
+      "[hidden] werd overschreven door .knop{display:flex}: Stop altijd zichtbaar, Kopieer gaf een ongecontroleerd antwoord op het klembord"
+    ],
+    "middel_en_hersteld": [
+      "citaatcontrole paarde aanhalingstekens verkeerd (vals alarm)",
+      "maskeer markeerde alleen de eerste plek",
+      "jaartalbereiken en tijden als Kifid-nummer/artikel",
+      "gemist: artikel bij verkeerde wet, ECLI, clausule zonder punt, percentages als 17.5%",
+      "kale getallen < 100 (opsommingsnummers) gaven elk verzonnen getal vrijgeleide",
+      "storing() wiste bronnen en berekening; pijplijn bleef groen bij afbreken/weigeren",
+      "schermlezer: timer in live-gebied, focus verloren, geen focusring in hoog contrast",
+      "peildatum = UTC-datum (00.00-02.00 een dag te vroeg)",
+      "klachttermijnen zonder ontvangstbevestiging meldde 'beide data verstreken'",
+      "criticus_ronde: hervatten crashte op afgekapte regel, hergebruikte oude uitkomsten, exitcode 0 bij onbereikbare server"
+    ],
+    "laag_en_hersteld_of_bewust_open": [
+      "leesGetal '1,234.56'/'12.500,-' hersteld",
+      "markdown: tabellen, cursief, geneste lijsten, '2024.' als lijst hersteld",
+      "afronding: getoonde tussenbedragen kunnen 1 cent afwijken van het totaal; er staat nu een melding bij (niet aangepast: het rekent exact en rondt aan het eind af)",
+      "api: niet-string JSON gaf 500, geen lengtelimiet, status lekte paden: hersteld"
+    ]
+  },
+  "lokale_modelrun_1": {
+    "model": "Qwen3-4B Q4_K_M (llama.cpp, CPU)",
+    "casus": "schadeberekening-01",
+    "duur_sec": 2253.8,
+    "uitkomst": "Alle bedragen klopten, want ze komen uit de berekening. De uitleg eromheen was fout: 'omdat het object niet volledig is verloren gegaan (75% in goede toestand)', 'de klant draagt hierdoor geen eigen risico' (tegen de eigen berekening in) en er stond geen enkele wettelijke verwijzing in (oordeel GEEN_VERWIJZINGEN).",
+    "les": "Getallen en verwijzingen zijn mechanisch te bewaken; de redenering eromheen niet. Een klein model dat mag uitleggen verzint oorzaken.",
+    "gevolg": "Uitkomst.uitleg: de uitkomst in gewone zinnen uit code, met de artikelen erbij. De opdracht aan het model is nu 'herschrijf uitsluitend wat hierboven staat'. De UI toont de uitleg uit code als 'In gewone woorden' en waarschuwt bij een klein lokaal model. Of een sterker model (OpenRouter) hier beter mee omgaat is onbewezen zonder sleutel."
+  },
+  "meetlat_herstel_ronde_1": {
+    "status": "IN UITVOERING door twee agents (harnas + OCR-lekcontrole + rapport; opnames, comps en decoys); nog niet verwerkt",
+    "regel": "Ongeldig is een geldige uitkomst. Winnen tegen een nepbar is erger dan niet winnen."
   }
 }
