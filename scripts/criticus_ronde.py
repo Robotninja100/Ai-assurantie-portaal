@@ -308,13 +308,28 @@ def main():
         return 1 if ontbreekt else 0
 
     resultaten = {}
+    os.makedirs(os.path.join(uitmap, a.laag), exist_ok=True)
+    voortgang = os.path.join(uitmap, a.laag, "_voortgang.jsonl")
+    if a.laag == "volledig" and os.path.exists(voortgang):
+        # Een run van uren mag niet alles kwijt zijn bij een onderbreking: hervat waar hij bleef.
+        for regel in open(voortgang, encoding="utf-8"):
+            r = json.loads(regel)
+            resultaten[r["id"]] = r
+        if resultaten:
+            print(f"Hervat: {len(resultaten)} casussen staan al in {os.path.relpath(voortgang, ROOT)}", flush=True)
     for i, c in enumerate(casussen, 1):
+        if c["id"] in resultaten:
+            continue
         if a.laag == "deterministisch":
             resultaten[c["id"]] = draai_deterministisch(c)
         else:
             print(f"[{i}/{len(casussen)}] {c['id']} ...", flush=True)
             resultaten[c["id"]] = draai_volledig(c, a.basis, a.timeout)
-    os.makedirs(os.path.join(uitmap, a.laag), exist_ok=True)
+            with open(voortgang, "a", encoding="utf-8") as fh:
+                fh.write(json.dumps(resultaten[c["id"]], ensure_ascii=False) + "\n")
+            print(f"    klaar in {resultaten[c['id']].get('duur_sec')} s; http {resultaten[c['id']].get('http_status')}"
+                  f"; controle {(resultaten[c['id']].get('controle') or {}).get('oordeel')}", flush=True)
+    resultaten = {c["id"]: resultaten[c["id"]] for c in casussen if c["id"] in resultaten}
     for f in sorted({c["functie"] for c in casussen}):
         lijst = [resultaten[c["id"]] for c in casussen if c["functie"] == f]
         with open(os.path.join(uitmap, a.laag, f"{f}.json"), "w", encoding="utf-8") as fh:

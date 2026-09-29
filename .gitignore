@@ -13,3 +13,6 @@ renders/ab/_sleutel.json
 .pytest_cache/
 .claude/
 models/
+
+# Tussenstand van een lopende criticusronde; de afgeronde resultaten per functie worden wel vastgelegd.
+criticus/**/_voortgang.jsonl
