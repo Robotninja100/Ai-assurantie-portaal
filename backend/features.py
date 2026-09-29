@@ -40,6 +40,28 @@ def _uitkomstregel(label: str, u) -> str:
     return f"{label}: EUR {d['bedrag']}"
 
 
+HERSCHRIJF = (
+    "Schrijf hiervan in helder Nederlands een toelichting voor een adviseur die dit aan een klant moet uitleggen. "
+    "Herschrijf UITSLUITEND wat hierboven staat. Voeg geen oorzaken, redenen, voorbeelden of gevolgen toe die er niet "
+    "staan (bijvoorbeeld niets over de toestand van het object of de schuldvraag), laat geen bedrag, datum of artikel "
+    "weg dat de uitleg noemt, en tegenspreek de cijfers niet. Sluit af met de vervolgstap uit de code.")
+
+
+def _uitleg_en_vervolg(u) -> str:
+    """De uitleg en de vervolgstap uit de code, zoals het model ze leest: het herschrijft, het bedenkt niet."""
+    delen = []
+    if u.uitleg:
+        delen.append("UITLEG UIT DE CODE (juist en volledig):\n" + "\n".join(f"- {x}" for x in u.uitleg))
+    if u.volgende_stap:
+        delen.append(f"Vervolgstap uit de code: {u.volgende_stap}")
+    return "\n".join(delen) + ("\n" if delen else "")
+
+
+def _regel(tekst: str, n: int = 120) -> str:
+    """Een vrij invoerveld dat in een opdracht aan het model komt: één regel, begrensd."""
+    return " ".join((tekst or "").split())[:n]
+
+
 def _stappen_tekst(u) -> str:
     """De rekenstappen zoals het model ze leest, mét uitkomst per stap: het hoeft niets na te rekenen."""
     regels = []
@@ -369,9 +391,9 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
         f"letterlijk over, reken niets na en wijk er niet van af:\n\n"
         f"{_uitkomstregel('Uitkering', u)}\n{stappen}\n"
         f"{_zelf_te_dragen(u)}"
+        f"{_uitleg_en_vervolg(u)}"
         f"Waarschuwingen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
-        "Leg in helder Nederlands uit wat hier gebeurt en waarom, voor een adviseur die dit "
-        "aan een klant moet uitleggen. Noem expliciet wat de klant zelf draagt en waarom.")
+        f"{HERSCHRIJF} Noem expliciet wat de klant zelf draagt en waardoor.")
     return {"functie": "schadeberekening", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 900}
@@ -439,8 +461,9 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
         f"De termijnberekening is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{u.toelichting}\n"
         + _stappen_tekst(u) +
-        "\n\nLeg uit wat dit betekent en wat de adviseur NU moet doen. Wees concreet over "
-        "stuiting. Reken zelf niets na.")
+        f"\n{_uitleg_en_vervolg(u)}"
+        f"Waarschuwingen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
+        f"{HERSCHRIJF} Wees concreet over stuiting. Reken zelf niets na.")
     return {"functie": "verjaringstoets", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 650}
@@ -459,12 +482,14 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
                    grondslag=u.grondslag, waar={"wetgeving": GEDRAGSREGELS})
     bedrag = u.to_dict()["bedrag"]
     gebruiker = (
-        f"PRODUCT: {producttype}\n"
+        f"PRODUCT: {_regel(producttype)}\n"
         f"Toets is AL UITGEVOERD: {u.toelichting}\n"
         f"Bedrag: {('EUR ' + bedrag) if bedrag else 'niet vast te stellen'}\n"
-        f"Signalen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
+        f"Signalen: {'; '.join(u.waarschuwingen) or 'geen'}\n"
+        f"{_uitleg_en_vervolg(u)}\n"
         "Onderbouw dit met de wetsartikelen uit de bronnen. Noem ALLEEN artikelen die er "
-        "letterlijk in staan. Sluit af met wat de adviseur in het dossier moet vastleggen.")
+        "letterlijk in staan. Voeg geen feiten toe die hierboven of in de bronnen niet staan. "
+        "Sluit af met wat de adviseur in het dossier moet vastleggen.")
     return {"functie": "provisietoets", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 650}
@@ -682,9 +707,10 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
         f"De waardebepaling is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{_uitkomstregel('Uitkomst', u)} - {u.toelichting}\n"
         + _stappen_tekst(u) +
-        f"\nWaarschuwingen: {'; '.join(u.waarschuwingen)}\n\n"
-        "Leg uit wat dit voor de klant betekent. Benadruk dat de drempel uit de "
-        "polisvoorwaarden komt en per verzekeraar verschilt. Reken niets na.")
+        f"\n{_uitleg_en_vervolg(u)}"
+        f"Waarschuwingen: {'; '.join(u.waarschuwingen)}\n\n"
+        f"{HERSCHRIJF} Benadruk dat de drempel uit de polisvoorwaarden komt en per verzekeraar verschilt. "
+        "Reken niets na.")
     return {"functie": "waardetoets", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 600}

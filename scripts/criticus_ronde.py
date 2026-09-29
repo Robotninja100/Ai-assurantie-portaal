@@ -22,6 +22,7 @@ casussen ontbreken; 0 alleen als alles klopt.
 """
 import argparse
 import glob
+import hashlib
 import json
 import os
 import sys
@@ -144,12 +145,37 @@ def draai_deterministisch(casus):
 
 # ------------------------------------------------------------------ laag 2: volledig via HTTP
 
+_CODE_HASH = None
+
+
+def versie_sleutel(casus):
+    """
+    Identificeert 'deze casus tegen deze code en dit corpus'. Een tussenstand van vóór een codewijziging
+    mag niet worden hergebruikt: die zou een uitkomst van oude code als die van de nieuwe presenteren.
+    """
+    global _CODE_HASH
+    if _CODE_HASH is None:
+        h = hashlib.sha256()
+        for pad in sorted(glob.glob(os.path.join(ROOT, "backend", "*.py")) + glob.glob(os.path.join(ROOT, "corpus", "*.json"))):
+            with open(pad, "rb") as fh:
+                h.update(fh.read())
+        _CODE_HASH = h.hexdigest()
+    h = hashlib.sha256(_CODE_HASH.encode())
+    h.update(json.dumps(casus, sort_keys=True, ensure_ascii=False).encode())
+    return h.hexdigest()[:16]
+
+
+def is_bruikbaar(r):
+    """Een run telt alleen als de server antwoordde (200, of 400 voor een bewust geweigerde invoer) en de stroom af was."""
+    return r.get("http_status") in (200, 400) and not r.get("onvolledig")
+
 def draai_volledig(casus, basis, timeout):
     res = {"id": casus["id"], "functie": casus["functie"], "http_status": 200, "tekst": "", "gebeurtenissen": []}
     body = json.dumps({"functie": casus["functie"], "invoer": casus["invoer"]}).encode()
     req = urllib.request.Request(basis.rstrip("/") + "/api/vraag", data=body,
                                  headers={"content-type": "application/json"})
     t0 = time.time()
+    klaar = False
     try:
         with urllib.request.urlopen(req, timeout=timeout) as r:
             for ruw in r:
@@ -158,6 +184,7 @@ def draai_volledig(casus, basis, timeout):
                     continue
                 data = regel[5:].strip()
                 if data == "[DONE]":
+                    klaar = True
                     break
                 e = json.loads(data)
                 t = e.get("type")
@@ -187,6 +214,9 @@ def draai_volledig(casus, basis, timeout):
         res.update(http_status=e.code, fout=detail, bronnen=[], berekening=None)
     except Exception as e:  # noqa: BLE001
         res.update(http_status=0, fout=f"{type(e).__name__}: {e}")
+    else:
+        if not klaar:
+            res["onvolledig"] = True                      # de stroom hield op zonder [DONE]
     res["duur_sec"] = round(time.time() - t0, 1)
     res.setdefault("bronnen", [])
     res.setdefault("berekening", None)
@@ -310,13 +340,24 @@ def main():
     resultaten = {}
     os.makedirs(os.path.join(uitmap, a.laag), exist_ok=True)
     voortgang = os.path.join(uitmap, a.laag, "_voortgang.jsonl")
+    sleutels = {c["id"]: versie_sleutel(c) for c in casussen}
     if a.laag == "volledig" and os.path.exists(voortgang):
-        # Een run van uren mag niet alles kwijt zijn bij een onderbreking: hervat waar hij bleef.
+        # Een run van uren mag niet alles kwijt zijn bij een onderbreking: hervat waar hij bleef. Alleen
+        # complete uitkomsten van DEZELFDE code en casus tellen; een afgekapte laatste regel wordt overgeslagen.
+        verouderd = onleesbaar = 0
         for regel in open(voortgang, encoding="utf-8"):
-            r = json.loads(regel)
+            try:
+                r = json.loads(regel)
+            except ValueError:
+                onleesbaar += 1
+                continue
+            if r.get("_sleutel") != sleutels.get(r.get("id")) or not is_bruikbaar(r):
+                verouderd += 1
+                continue
             resultaten[r["id"]] = r
-        if resultaten:
-            print(f"Hervat: {len(resultaten)} casussen staan al in {os.path.relpath(voortgang, ROOT)}", flush=True)
+        if resultaten or verouderd or onleesbaar:
+            print(f"Hervat: {len(resultaten)} casussen staan al in {os.path.relpath(voortgang, ROOT)}"
+                  f" ({verouderd} verouderd of mislukt en opnieuw te draaien, {onleesbaar} onleesbaar)", flush=True)
     for i, c in enumerate(casussen, 1):
         if c["id"] in resultaten:
             continue
@@ -325,8 +366,10 @@ def main():
         else:
             print(f"[{i}/{len(casussen)}] {c['id']} ...", flush=True)
             resultaten[c["id"]] = draai_volledig(c, a.basis, a.timeout)
-            with open(voortgang, "a", encoding="utf-8") as fh:
-                fh.write(json.dumps(resultaten[c["id"]], ensure_ascii=False) + "\n")
+            resultaten[c["id"]]["_sleutel"] = sleutels[c["id"]]
+            if is_bruikbaar(resultaten[c["id"]]):          # een mislukte run wordt bij hervatten opnieuw gedaan
+                with open(voortgang, "a", encoding="utf-8") as fh:
+                    fh.write(json.dumps(resultaten[c["id"]], ensure_ascii=False) + "\n")
             print(f"    klaar in {resultaten[c['id']].get('duur_sec')} s; http {resultaten[c['id']].get('http_status')}"
                   f"; controle {(resultaten[c['id']].get('controle') or {}).get('oordeel')}", flush=True)
     resultaten = {c["id"]: resultaten[c["id"]] for c in casussen if c["id"] in resultaten}
@@ -335,7 +378,11 @@ def main():
         with open(os.path.join(uitmap, a.laag, f"{f}.json"), "w", encoding="utf-8") as fh:
             json.dump(lijst, fh, ensure_ascii=False, indent=1)
     fouten = samenvatting(casussen, resultaten, a.laag)
-    return 1 if (fouten or ontbreekt) else 0
+    mislukt = [cid for cid, r in resultaten.items() if a.laag == "volledig" and not is_bruikbaar(r)]
+    if mislukt:
+        print(f"\n{len(mislukt)} RUN(S) MISLUKT (server onbereikbaar, HTTP-fout of stroom zonder einde): "
+              f"{', '.join(mislukt[:8])}{' ...' if len(mislukt) > 8 else ''}", file=sys.stderr)
+    return 1 if (fouten or ontbreekt or mislukt) else 0
 
 
 if __name__ == "__main__":

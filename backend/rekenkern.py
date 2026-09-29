@@ -85,6 +85,9 @@ class Uitkomst:
     volgende_stap: str = ""                              # criticus eist een bruikbare vervolgstap
     waarschuwingen: List[str] = field(default_factory=list)
     details: dict = field(default_factory=dict)          # gestructureerde uitkomst voor de UI
+    # De uitkomst in gewone zinnen, uit code. Het taalmodel herschrijft deze zinnen; het bedenkt geen
+    # redenen erbij. Een klein model dat zelf mag uitleggen, verzint oorzaken die er niet zijn.
+    uitleg: List[str] = field(default_factory=list)
 
     def to_dict(self):
         d = asdict(self)
@@ -210,6 +213,47 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
                       "zelf_te_dragen_door_onderverzekering" if vs < ww else "zelf_te_dragen_boven_verzekerde_som":
                           str(_eur(zelf_boven)),
                       "zelf_te_dragen_eigen_risico": str(_eur(er_toegepast))})
+    # --- dezelfde berekening in gewone zinnen
+    if sch > ww:
+        u.uitleg.append(
+            f"De ingevoerde schade ({_bedrag(sch)}) is hoger dan de werkelijke waarde ({_bedrag(ww)}); de berekening "
+            f"gaat uit van de waarde als hoogste schade ({_bedrag(sch_eff)}).")
+    if vs < ww:
+        u.uitleg.append(
+            f"De verzekerde som ({_bedrag(vs)}) is {_procent(breuk * 100)} van de werkelijke waarde ({_bedrag(ww)}). "
+            f"Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de schade dan naar evenredigheid "
+            f"vergoed, hier {_procent(breuk * 100)} van de schade.")
+        u.uitleg.append(f"Bij een schade van {_bedrag(sch_eff)} is dat {_bedrag(basis)}.")
+    else:
+        u.uitleg.append(
+            f"De verzekerde som ({_bedrag(vs)}) is niet lager dan de werkelijke waarde ({_bedrag(ww)}). Er is geen "
+            "onderverzekering en de schade wordt niet naar evenredigheid verminderd.")
+        if sch_eff > vs:
+            u.uitleg.append(
+                f"De schade ({_bedrag(sch_eff)}) is hoger dan de verzekerde som; de vergoeding is begrensd op de "
+                f"verzekerde som (art. 7:955 lid 1 BW): {_bedrag(basis)}.")
+    if er_toegepast > 0:
+        u.uitleg.append(
+            f"Daarna is het eigen risico van {_bedrag(er_toegepast)} in mindering gebracht; die volgorde volgt uit de "
+            f"polisvoorwaarden. Dat geeft {_bedrag(basis - er_toegepast)}.")
+    if bk > 0:
+        if vs < ww:
+            u.uitleg.append(
+                f"De bereddingskosten ({_bedrag(bk)}) worden bij onderverzekering ook naar evenredigheid vergoed "
+                f"(art. 7:959 lid 2 BW): {_bedrag(bk_verg)}. Ze mogen boven de verzekerde som uitgaan "
+                f"(art. 7:959 lid 1 BW).")
+        else:
+            u.uitleg.append(
+                f"De bereddingskosten ({_bedrag(bk)}) worden volledig vergoed, ook boven de verzekerde som "
+                f"(art. 7:959 lid 1 BW).")
+    delen_zelf = []
+    if zelf_boven > 0:
+        delen_zelf.append(f"{_bedrag(zelf_boven)} " + ("door onderverzekering" if vs < ww else "boven de verzekerde som"))
+    if er_toegepast > 0:
+        delen_zelf.append(f"{_bedrag(er_toegepast)} eigen risico")
+    u.uitleg.append(
+        f"De uitkering is {_bedrag(totaal)}. Van de totale schade van {_bedrag(totale_schade)} draagt de verzekerde "
+        f"zelf {_bedrag(zelf)}" + (f" ({' en '.join(delen_zelf)})" if delen_zelf else "") + ".")
     u.bedrag = totaal
     u.toelichting = (
         "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. "
@@ -644,13 +688,13 @@ def classificeer_product(producttype: str):
     if regimes == {"VERBODEN"}:
         term = treffers[0][1]
         return "VERBODEN", term, (f"Genoemd in art. 86c lid 1 BGfo." if term == pt
-                                  else f"'{producttype}' valt onder '{term}', genoemd in art. 86c lid 1 BGfo.")
+                                  else f"Het ingevoerde producttype valt onder '{term}', genoemd in art. 86c lid 1 BGfo.")
     if regimes == {"ONBEPAALD"}:
         return "ONBEPAALD", None, _ONBEPAALD[treffers[0][1]]
     if regimes == {"SCHADE"}:
         return "SCHADE", None, "Niet genoemd in art. 86c lid 1 BGfo; voor schadeverzekeringen geldt art. 86d."
     return "ONBEPAALD", None, (
-        f"Het producttype '{producttype}' is niet herkend. Bepaal eerst of het onder art. 86c lid 1 BGfo "
+        "Het ingevoerde producttype is niet herkend. Bepaal eerst of het onder art. 86c lid 1 BGfo "
         "valt (verbod) of een schadeverzekering is (art. 86d).")
 
 
@@ -666,6 +710,9 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
     en rekent hij het bedrag alleen voorwaardelijk uit.
     """
     status, term, uitleg = classificeer_product(producttype)
+    # In de teksten staat de herkende wettelijke term, niet de ruwe invoer: dat is korter, klopt met de wet
+    # en laat geen vrije tekst van de gebruiker in de opdracht aan het taalmodel belanden.
+    naam = term or "het ingevoerde product"
     u = Uitkomst(onderwerp="Provisietoets", bedrag=None)
     jp, pct = Decimal(str(jaarpremie or 0)), Decimal(str(provisiepercentage or 0))
     prov = jp * pct / Decimal("100")
@@ -684,7 +731,7 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
         u.stappen.append(Stap("Toegestane beloning: rechtstreeks door de klant verschaft (lid 2 onder a)",
                               "directe beloning door de klant", Decimal(str(directe_beloning or 0))))
         u.toelichting = (
-            f"Voor '{producttype}' geldt het provisieverbod van art. 86c lid 1 BGfo. Beloning loopt "
+            f"Voor '{naam}' geldt het provisieverbod van art. 86c lid 1 BGfo. Beloning loopt "
             "via een rechtstreeks met de klant overeengekomen bedrag, niet via de aanbieder.")
         u.volgende_stap = (
             "Leg de directe beloning vast in het dienstverleningsdocument en laat de klant daar "
@@ -698,7 +745,7 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
     elif status == "SCHADE":
         u.grondslag = ["BGfo:86d:1", "BGfo:86i:3"]
         u.stappen.append(Stap("Toets: art. 86c lid 1 noemt dit product niet; art. 86d regelt de provisie",
-                              f"'{producttype}' is een schadeverzekering", None, ""))
+                              f"'{naam}' is een schadeverzekering", None, ""))
         if jp > 0 and pct > 0:
             u.stappen.append(Stap("Provisie over jaarpremie", f"{_bedrag(jp)} x {pct}%", prov))
             u.bedrag = prov
@@ -708,7 +755,7 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
                                   "vul beide in voor een bedrag", None, ""))
             u.bedrag = None
         u.toelichting = (
-            f"Voor '{producttype}' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat "
+            f"Voor '{naam}' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat "
             "afsluit- en doorlopende provisie toe, mits de consument kosteloos en op begrijpelijke "
             "wijze is geïnformeerd over het bestaan, de aard en het bedrag van de provisie.")
         u.volgende_stap = (

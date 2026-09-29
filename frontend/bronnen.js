@@ -39,7 +39,7 @@ function meta(b) {
   } else if (b.geldig_op) {
     delen.push(h("span", null, `Tekst per ${datum(b.geldig_op)}`));
   }
-  if (b.url) {
+  if (b.url && /^https?:\/\//i.test(b.url)) {          // nooit een javascript:- of data:-adres als link
     delen.push(h("a", { href: b.url, target: "_blank", rel: "noopener noreferrer" },
       "Open de bron ", icoon("extern", 12)));
   }

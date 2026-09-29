@@ -322,6 +322,10 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
 .vervolg { margin-top: var(--s5); padding: var(--s4); border-radius: var(--r-1); border: 1px solid var(--lijn-2); background: var(--vlak-2); }
 .vervolg h4 { font-size: var(--t-xs); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--inkt-3); margin-bottom: var(--s1); }
 .vervolg p { font-size: var(--t-md); line-height: 1.55; }
+.uitleg { margin-top: var(--s5); }
+.uitleg h4 { font-size: var(--t-xs); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--inkt-3); margin-bottom: var(--s2); }
+.uitleg p { font-size: var(--t-md); line-height: 1.6; max-width: 68ch; }
+.uitleg p + p { margin-top: var(--s2); }
 
 /* oordeelkaart (provisie, verjaring) */
 .oordeel { display: grid; grid-template-columns: 40px 1fr; gap: var(--s4); align-items: start; padding: var(--s4); border-radius: var(--r-2); border: 1px solid var(--lijn-2); }

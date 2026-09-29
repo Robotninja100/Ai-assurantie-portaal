@@ -106,15 +106,15 @@ class Corpus:
                 self.data[naam] = rows
                 self.index[naam] = Index(rows, velden)
                 self.status[naam] = {
-                    "geladen": True, "records": len(rows), "pad": pad,
+                    "geladen": True, "records": len(rows), "bestand": os.path.basename(pad),
                     "geweigerd_onbevestigde_bron": len(geweigerd),
                     "geweigerde_ids": [r.get("uitspraaknummer") or r.get("artikel")
                                        or r.get("clausule_id") for r in geweigerd][:10],
                 }
             except Exception as e:
                 self.data[naam], self.index[naam] = [], Index([], velden)
-                self.status[naam] = {"geladen": False, "records": 0, "pad": pad,
-                                     "fout": f"{type(e).__name__}: {e}"}
+                self.status[naam] = {"geladen": False, "records": 0, "bestand": os.path.basename(pad),
+                                     "fout": f"{type(e).__name__}: {str(e).replace(os.path.dirname(pad), '…')}"}
 
     def zoek(self, bron: str, vraag: str, top=6, waar=None):
         return self.index.get(bron).zoek(vraag, top, waar) if bron in self.index else []

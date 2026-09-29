@@ -213,6 +213,10 @@ export class Uitvoering {
       this.antwoordEl.append(h("p", { class: "hint", stijl: "margin-top:12px" },
         `Eerdere modellen in de keten waren niet beschikbaar: ${e.overgeslagen.join("; ")}.`));
     }
+    if (e.provider === "local") {
+      this.antwoordEl.append(h("p", { class: "hint", stijl: "margin-top:12px" },
+        "Geschreven door een klein lokaal model. Dat formuleert, maar kan in de uitleg fouten maken: lees de berekening en de bronnen hierboven als leidend."));
+    }
   }
 
   opTekst(stuk) {

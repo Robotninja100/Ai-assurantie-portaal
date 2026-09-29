@@ -51,6 +51,13 @@ function held(label, getal, onder, zij = null) {
     zij ? h("div", { class: "held-zij" }, h("div", { class: "held-label" }, zij[0]), h("div", { class: "held-getal" }, zij[1])) : null);
 }
 
+/** De uitkomst in gewone zinnen, uit code: wat het taalmodel herschrijft en niet zelf bedenkt. */
+function uitlegBlok(uitleg) {
+  return uitleg && uitleg.length
+    ? h("div", { class: "uitleg" }, h("h4", null, "In gewone woorden"), ...uitleg.map((t) => h("p", null, t)))
+    : null;
+}
+
 function afsluiting(b, opKlik) {
   return [grondslagChips(b.grondslag, opKlik), meldingen(b.waarschuwingen), vervolgstap(b.volgende_stap)];
 }
@@ -81,6 +88,7 @@ function schade(b, opKlik) {
       h("ul", { class: "legenda" },
         h("li", null, h("i", { class: "kleur-1" }), "Verzekerd ", h("b", null, pct(verzekerd))),
         h("li", null, h("i", { class: "kleur-3" }), "Onderverzekering, voor rekening van de verzekerde ", h("b", null, pct(onder))))) : null,
+    uitlegBlok(b.uitleg),
     grootboek(b.stappen, { slot: { omschrijving: "Uitkering", waarde: eur(b.bedrag) } }),
     ...afsluiting(b, opKlik));
 }
@@ -167,7 +175,10 @@ function tijdlijn(d) {
 
   const kader = h("div", { class: "spoor-kader", "aria-hidden": "true" }, h("div", { class: "spoor-lijn" }));
   if (d.laatste_dag && d.status !== "GESTUIT") {
-    const start = (d.gebeurtenissen || []).find((e) => e.soort === "reactie" || e.soort === "bekendheid");
+    // Na een geldige reactie loopt de NIEUWE termijn vanaf die reactie; anders loopt de hoofdtermijn vanaf de bekendheid.
+    const geb = d.gebeurtenissen || [];
+    const start = geb.some((e) => e.soort === "einde_nieuwe_termijn")
+      ? geb.find((e) => e.soort === "reactie") : geb.find((e) => e.soort === "bekendheid");
     const van = start ? pos(start.datum) : 5;
     kader.append(h("div", { class: "spoor-loop", stijl: `left:${van}%;width:${Math.max(pos(d.laatste_dag) - van, 0)}%` }));
   }
