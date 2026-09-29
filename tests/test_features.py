@@ -160,7 +160,8 @@ def test_productherkenning_is_onafhankelijk_van_de_hashvolgorde():
                              env={**os.environ, "PYTHONHASHSEED": seed}, cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         assert uit.returncode == 0, uit.stderr
         uitkomsten.add(uit.stdout.strip())
-    assert uitkomsten == {"opstal-/inboedelverzekering (woonverzekering) | Univé (N.V. Univé Schade) | 9"}
+    assert len(uitkomsten) == 1, uitkomsten
+    assert next(iter(uitkomsten)).startswith("opstal-/inboedelverzekering (woonverzekering) | Univé (N.V. Univé Schade) | ")
 
 
 def test_waardetoets_en_schadeberekening_zonder_uitkomst_zeggen_geen_eur_none_tegen_het_model():

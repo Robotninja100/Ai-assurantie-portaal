@@ -84,7 +84,7 @@ FURNITURE = [
 FURNITURE_RE = [re.compile(p) for p in FURNITURE]
 
 
-def clean_text(raw):
+def clean_text(raw, extra_furniture=None):
     """Normaliseert PDF-tekst zonder de bewoording te veranderen.
 
     - NFC-normalisatie en verwijderen van soft hyphens
@@ -92,16 +92,23 @@ def clean_text(raw):
     - verwijderen van paginameubilair (paginanummers, kop- en voetregels)
     - samentrekken van meervoudige spaties
     Woorden, leestekens en volgorde blijven ongewijzigd.
+
+    extra_furniture: optionele lijst regexen met paginameubilair dat alleen voor
+    DIT document geldt (bijv. een terugkerende paginakop). Zonder argument is het
+    gedrag identiek aan het oorspronkelijke; regels die in het ene document
+    paginameubilair zijn, mogen in een ander document gewoon inhoud zijn.
     """
     t = unicodedata.normalize("NFC", raw)
     t = t.replace("­", "").replace("﻿", "")
     # gesplitste losse letters die pypdf soms produceert in kopteksten
     t = t.replace("T errorisme", "Terrorisme").replace("T otale", "Totale")
     t = t.replace("T eruggevonden", "Teruggevonden")
+    t = t.replace("T oestellen", "Toestellen")
 
+    extra =[re.compile(p) for p in (extra_furniture or [])]
     lines = []
     for line in t.split("\n"):
-        if any(rx.match(line) for rx in FURNITURE_RE):
+        if any(rx.match(line) for rx in FURNITURE_RE) or any(rx.match(line) for rx in extra):
             continue
         lines.append(line.rstrip())
     t = "\n".join(lines)
@@ -121,10 +128,10 @@ def sha256(path):
     return h.hexdigest()
 
 
-def pdf_text(path):
+def pdf_text(path, extra_furniture=None):
     reader = pypdf.PdfReader(path)
     raw = "\n".join((p.extract_text() or "") for p in reader.pages)
-    return clean_text(raw)
+    return clean_text(raw, extra_furniture)
 
 
 def snijd(doctext, start, eind, bron_id=""):
