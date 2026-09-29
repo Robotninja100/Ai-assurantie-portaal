@@ -6,7 +6,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -41,7 +62,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.047
+  "duur_sec": 0.062
  },
  {
   "id": "adviesnotitie-02",
@@ -50,7 +71,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -94,48 +136,11 @@
   "bronnen": [
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:23",
+    "label": "Wft art. 4:22a",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:24",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   }
-  ],
-  "berekening": null,
-  "duur_sec": 0.059
- },
- {
-  "id": "adviesnotitie-04",
-  "functie": "adviesnotitie",
-  "http_status": 200,
-  "bronnen": [
    {
     "soort": "wetgeving",
     "label": "Wft art. 4:23",
@@ -145,88 +150,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
+    "label": "Wft art. 4:24a",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   }
-  ],
-  "berekening": null,
-  "duur_sec": 0.048
- },
- {
-  "id": "adviesnotitie-05",
-  "functie": "adviesnotitie",
-  "http_status": 200,
-  "bronnen": [
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:23",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:24",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   }
-  ],
-  "berekening": null,
-  "duur_sec": 0.047
- },
- {
-  "id": "adviesnotitie-06",
-  "functie": "adviesnotitie",
-  "http_status": 200,
-  "bronnen": [
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:23",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -264,13 +195,34 @@
   "duur_sec": 0.053
  },
  {
-  "id": "adviesnotitie-07",
+  "id": "adviesnotitie-04",
   "functie": "adviesnotitie",
   "http_status": 200,
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -308,13 +260,34 @@
   "duur_sec": 0.051
  },
  {
-  "id": "adviesnotitie-08",
+  "id": "adviesnotitie-05",
   "functie": "adviesnotitie",
   "http_status": 200,
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -349,7 +322,202 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.049
+  "duur_sec": 0.056
+ },
+ {
+  "id": "adviesnotitie-06",
+  "functie": "adviesnotitie",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:22",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:21",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86f",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.065
+ },
+ {
+  "id": "adviesnotitie-07",
+  "functie": "adviesnotitie",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:22",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:21",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86f",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.053
+ },
+ {
+  "id": "adviesnotitie-08",
+  "functie": "adviesnotitie",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:22",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:21",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86f",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.057
  },
  {
   "id": "adviesnotitie-09",
@@ -358,7 +526,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -393,7 +582,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.05
+  "duur_sec": 0.057
  },
  {
   "id": "adviesnotitie-10",
@@ -402,7 +591,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -437,6 +647,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.05
+  "duur_sec": 0.056
  }
 ]

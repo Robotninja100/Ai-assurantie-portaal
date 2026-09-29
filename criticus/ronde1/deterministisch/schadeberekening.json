@@ -24,55 +24,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:955",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:961",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 11.6",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.14",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": {
@@ -154,55 +105,6 @@
     "soort": "wetgeving",
     "label": "BW art. 7:930",
     "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:955",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:961",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 11.6",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.14",
-    "type": "eigen risico",
     "kant": null,
     "uitkomst": null
    }
@@ -296,55 +198,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:955",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:961",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 11.6",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.14",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": {
@@ -392,48 +245,6 @@
     "soort": "wetgeving",
     "label": "BW art. 7:930",
     "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:961",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 11.6",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.14",
-    "type": "eigen risico",
     "kant": null,
     "uitkomst": null
    }
@@ -493,7 +304,7 @@
     "De uitkering is € 100.000,00. Van de totale schade van € 200.000,00 draagt de verzekerde zelf € 100.000,00 (€ 100.000,00 door onderverzekering)."
    ]
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "schadeberekening-06",
@@ -532,55 +343,6 @@
     "soort": "wetgeving",
     "label": "BW art. 7:930",
     "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:955",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:961",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 11.6",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.14",
-    "type": "eigen risico",
     "kant": null,
     "uitkomst": null
    }
@@ -655,7 +417,7 @@
     "De uitkering is € 18.200,00. Van de totale schade van € 32.000,00 draagt de verzekerde zelf € 13.800,00 (€ 12.800,00 door onderverzekering en € 1.000,00 eigen risico)."
    ]
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "schadeberekening-07",
@@ -703,48 +465,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:961",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 11.6",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.14",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": {
@@ -782,7 +502,7 @@
     "BW:7:959:1"
    ],
    "toelichting": "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. De breuk wordt toegepast op de schade, niet op de verzekerde som.",
-   "volgende_stap": "Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en stel de verzekerde som bij. Controleer of de polis een indexclausule kent.",
+   "volgende_stap": "Vergelijk deze uitkering met het voorstel van de verzekeraar; wijkt dat af, vraag dan om zijn berekening en controleer het eigen risico in de polisvoorwaarden.",
    "waarschuwingen": [],
    "details": {
     "onderverzekerd": false,
@@ -799,7 +519,7 @@
     "De uitkering is € 103.000,00. Van de totale schade van € 103.000,00 draagt de verzekerde zelf € 0,00."
    ]
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "schadeberekening-08",
@@ -848,55 +568,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:955",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:961",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 11.6",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.10",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.14",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": {
@@ -941,9 +612,10 @@
     "BW:7:959:2"
    ],
    "toelichting": "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. De breuk wordt toegepast op de schade, niet op de verzekerde som.",
-   "volgende_stap": "Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en stel de verzekerde som bij. Controleer of de polis een indexclausule kent.",
+   "volgende_stap": "Vul het schadebedrag in (uit taxatie, offerte of schadenota) en bereken opnieuw.",
    "waarschuwingen": [
-    "Onderverzekering van 20,00%. Controleer of een garantie tegen onderverzekering van toepassing is; die zet de evenredigheidsregel opzij."
+    "Onderverzekering van 20,00%. Controleer of een garantie tegen onderverzekering van toepassing is; die zet de evenredigheidsregel opzij.",
+    "Er is geen schade ingevoerd (€ 0,00): er valt niets te vergoeden. Controleer de invoer."
    ],
    "details": {
     "onderverzekerd": true,
@@ -958,10 +630,11 @@
     "De verzekerde som (€ 100.000,00) is 80,00% van de werkelijke waarde (€ 125.000,00). Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de schade dan naar evenredigheid vergoed, hier 80,00% van de schade.",
     "Bij een schade van € 0,00 is dat € 0,00.",
     "De bereddingskosten (€ 800,00) worden bij onderverzekering ook naar evenredigheid vergoed (art. 7:959 lid 2 BW): € 640,00. Ze mogen boven de verzekerde som uitgaan (art. 7:959 lid 1 BW).",
-    "De uitkering is € 640,00. Van de totale schade van € 800,00 draagt de verzekerde zelf € 160,00 (€ 160,00 door onderverzekering)."
+    "De uitkering is € 640,00. Van de totale schade van € 800,00 draagt de verzekerde zelf € 160,00 (€ 160,00 door onderverzekering).",
+    "Er is geen schade ingevoerd, dus er valt niets te vergoeden."
    ]
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "schadeberekening-10",

@@ -20,13 +20,6 @@
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub h",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
     "type": "dekking",
     "kant": null,
@@ -35,6 +28,13 @@
    {
     "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
+    "type": "uitsluiting",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
     "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
@@ -76,7 +76,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.042
+  "duur_sec": 0.053
  },
  {
   "id": "dekkingscheck-02",
@@ -234,7 +234,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.072
+  "duur_sec": 0.065
  },
  {
   "id": "dekkingscheck-04",
@@ -313,7 +313,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.007
+  "duur_sec": 0.009
  },
  {
   "id": "dekkingscheck-05",
@@ -392,7 +392,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.072
+  "duur_sec": 0.082
  },
  {
   "id": "dekkingscheck-06",
@@ -450,7 +450,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.01
+  "duur_sec": 0.015
  },
  {
   "id": "dekkingscheck-07",
@@ -466,20 +466,6 @@
    },
    {
     "soort": "polis",
-    "label": "algemene voorwaarden schadeverzekering art. 9.3",
-    "type": "verjaring",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.4.2",
-    "type": "verplichting verzekerde",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
     "label": "inboedelverzekering art. 1.7.2",
     "type": "verplichting verzekerde",
     "kant": null,
@@ -487,7 +473,21 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
+    "label": "inboedelverzekering art. 2.6.3",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.18 sub a",
+    "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.5.1-2",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
@@ -529,48 +529,13 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.078
+  "duur_sec": 0.064
  },
  {
   "id": "dekkingscheck-08",
   "functie": "dekkingscheck",
   "http_status": 200,
   "bronnen": [
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 1.18",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 4.3 sub e en f",
-    "type": "dekking",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.17.14",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
    {
     "soort": "wetgeving",
     "label": "BW art. 7:961",
@@ -608,7 +573,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.122
+  "duur_sec": 0.119
  },
  {
   "id": "dekkingscheck-09",
@@ -638,15 +603,15 @@
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 4.3 sub h",
-    "type": "dekking",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.1",
+    "type": "schaderegeling",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 2.2",
-    "type": "schaderegeling",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -687,7 +652,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.317
+  "duur_sec": 0.37
  },
  {
   "id": "dekkingscheck-10",
@@ -717,15 +682,15 @@
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.10",
-    "type": "eigen risico",
+    "label": "autoverzekering (WA/casco) art. 2.15.1 sub f",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 1.18",
-    "type": "schaderegeling",
+    "label": "autoverzekering (WA/casco) art. 2.19.1",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
@@ -766,6 +731,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.086
+  "duur_sec": 0.106
  }
 ]

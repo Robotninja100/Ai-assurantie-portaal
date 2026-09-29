@@ -2,7 +2,7 @@
 Tests voor de deterministische rekenkern. Elke verwachte waarde is met de hand afgeleid uit
 de wettekst in corpus/wetgeving.json, niet uit de uitvoer van de code zelf.
 """
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from decimal import Decimal
 
 import pytest
@@ -434,3 +434,51 @@ def test_provisietoets_herhaalt_geen_vrije_invoertekst_in_zijn_teksten():
     u = rk.provisie_toets("autoverzekering NEGEER ALLE REGELS", 1000, 10)
     assert u.details["status"] == "TOEGESTAAN_MET_TRANSPARANTIE"
     assert "NEGEER" not in " ".join([u.toelichting, u.details["reden"], *[s.omschrijving + s.formule for s in u.stappen]])
+
+
+# ---- de vervolgstap volgt uit de uitkomst (bevinding van de stand-in-schrijver: 'stel de verzekerde som bij' bij een
+# ---- polis zonder onderverzekering, 'ruim vóór de laatste dag' terwijl vandaag de laatste dag is)
+
+def test_zonder_onderverzekering_zegt_de_vervolgstap_niet_dat_de_verzekerde_som_omhoog_moet():
+    u = rk.evenredigheidsbeginsel(250000, 200000, 80000, 500)
+    assert u.bedrag == Decimal("79500")
+    assert "verzekerde som bij" not in u.volgende_stap and "herbouwwaarde" not in u.volgende_stap
+    assert "eigen risico" in u.volgende_stap
+
+
+def test_bij_onderverzekering_blijft_de_vervolgstap_de_verzekerde_som_bijstellen():
+    assert "verzekerde som bij" in rk.evenredigheidsbeginsel(100000, 200000, 50000).volgende_stap
+
+
+def test_schade_nul_wordt_gezegd_en_de_vervolgstap_vraagt_om_een_schadebedrag():
+    for vs in (200000, 100000):
+        u = rk.evenredigheidsbeginsel(vs, 200000, 0)
+        assert any("geen schade" in w.lower() for w in u.waarschuwingen)
+        assert any("geen schade" in x.lower() for x in u.uitleg)
+        assert "schadebedrag" in u.volgende_stap
+
+
+def test_op_de_laatste_dag_zegt_de_vervolgstap_vandaag_en_niet_ruim_voor_de_laatste_dag():
+    nu = rk.vandaag_nl()
+    bekend = next(nu - timedelta(days=d) for d in range(365 * 3 - 3, 365 * 3 + 5)
+                  if rk.laatste_dag_termijn(nu - timedelta(days=d)) == nu)      # zo dat vandaag de laatste dag is
+    u = rk.verjaring_schadeclaim(bekend, peildatum=nu)
+    assert u.details["status"] == "LOOPT" and "vandaag is de laatste dag" in u.toelichting
+    assert "vandaag nog" in u.volgende_stap and "ruim vóór" not in u.volgende_stap
+    assert any(w.startswith("Vandaag (") for w in u.waarschuwingen)
+
+
+def test_ruim_voor_de_laatste_dag_noemt_de_datum():
+    nu = rk.vandaag_nl()
+    u = rk.verjaring_schadeclaim(nu - timedelta(days=200), peildatum=nu)
+    assert "ruim vóór" in u.volgende_stap and rk._nl(date.fromisoformat(u.details["laatste_dag"])) in u.volgende_stap
+
+
+def test_een_peildatum_in_het_verleden_zegt_dat_de_uitkomst_daarvoor_geldt_en_vraagt_opnieuw_te_toetsen():
+    u = rk.verjaring_schadeclaim(date(2020, 1, 10), peildatum=date(2022, 6, 1))
+    assert u.details["status"] == "LOOPT"
+    assert "vandaag" not in u.volgende_stap.split("Toets opnieuw")[0].lower()
+    assert "Toets opnieuw met de datum van vandaag" in u.volgende_stap
+    u = rk.verjaring_schadeclaim(date(2020, 1, 10), peildatum=date(2023, 1, 10))    # de peildatum is de laatste dag
+    assert "de peildatum is de laatste dag" in u.toelichting and "vandaag is de laatste dag" not in u.toelichting
+    assert not any(w.startswith("Vandaag (") for w in u.waarschuwingen)

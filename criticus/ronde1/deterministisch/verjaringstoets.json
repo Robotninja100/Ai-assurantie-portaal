@@ -31,27 +31,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0526",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -76,7 +55,7 @@
     "BW:7:943:2"
    ],
    "toelichting": "Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 16 juni 2028; per 17 juni 2028 is de vordering verjaard (626 dagen resterend).",
-   "volgende_stap": "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór de laatste dag, en bewaar het verzendbewijs.",
+   "volgende_stap": "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór 16 juni 2028, en bewaar het verzendbewijs.",
    "waarschuwingen": [
     "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
     "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
@@ -140,27 +119,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0526",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -198,7 +156,7 @@
     "BW:7:943:2"
    ],
    "toelichting": "Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 13 maart 2028; per 14 maart 2028 is de vordering verjaard (531 dagen resterend).",
-   "volgende_stap": "Houd de einddatum in het dossier bij en stuit tijdig opnieuw, met verzendbewijs, als de verzekeraar niet reageert of de zaak nog loopt.",
+   "volgende_stap": "Houd de einddatum (13 maart 2028) in het dossier bij en stuit tijdig opnieuw, met verzendbewijs, als de verzekeraar niet reageert of de zaak nog loopt.",
    "waarschuwingen": [
     "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
     "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
@@ -243,7 +201,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.016
+  "duur_sec": 0.013
  },
  {
   "id": "verjaringstoets-03",
@@ -277,27 +235,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0526",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -321,10 +258,10 @@
     "BW:7:942:1",
     "BW:7:943:2"
    ],
-   "toelichting": "Op peildatum 12 juni 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 12 juni 2026; per 13 juni 2026 is de vordering verjaard (vandaag is de laatste dag).",
-   "volgende_stap": "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór de laatste dag, en bewaar het verzendbewijs.",
+   "toelichting": "Op peildatum 12 juni 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 12 juni 2026; per 13 juni 2026 is de vordering verjaard (de peildatum is de laatste dag).",
+   "volgende_stap": "Deze uitkomst geldt voor 12 juni 2026. Toets opnieuw met de datum van vandaag om te zien of er nog kan worden gestuit.",
    "waarschuwingen": [
-    "Vandaag (12 juni 2026) is de laatste dag om te stuiten: verstuur de aanspraak vandaag nog aantoonbaar.",
+    "De peildatum (12 juni 2026) is de laatste dag om te stuiten.",
     "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
     "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
     "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
@@ -353,7 +290,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.016
+  "duur_sec": 0.018
  },
  {
   "id": "verjaringstoets-04",
@@ -387,27 +324,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0526",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -469,7 +385,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.016
+  "duur_sec": 0.023
  },
  {
   "id": "verjaringstoets-05",
@@ -503,27 +419,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0526",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -596,7 +491,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.016
+  "duur_sec": 0.023
  },
  {
   "id": "verjaringstoets-06",
@@ -630,27 +525,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0526",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -724,7 +598,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.016
+  "duur_sec": 0.023
  },
  {
   "id": "verjaringstoets-07",
@@ -758,27 +632,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0526",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -842,7 +695,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.016
+  "duur_sec": 0.023
  },
  {
   "id": "verjaringstoets-08",
@@ -876,27 +729,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0526",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -934,7 +766,7 @@
     "BW:7:943:2"
    ],
    "toelichting": "Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 10 februari 2028; per 11 februari 2028 is de vordering verjaard (499 dagen resterend).",
-   "volgende_stap": "Houd de einddatum in het dossier bij en stuit tijdig opnieuw, met verzendbewijs, als de verzekeraar niet reageert of de zaak nog loopt.",
+   "volgende_stap": "Houd de einddatum (10 februari 2028) in het dossier bij en stuit tijdig opnieuw, met verzendbewijs, als de verzekeraar niet reageert of de zaak nog loopt.",
    "waarschuwingen": [
     "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
     "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
@@ -978,7 +810,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.018
+  "duur_sec": 0.023
  },
  {
   "id": "verjaringstoets-09",
@@ -1012,27 +844,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0526",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -1057,7 +868,7 @@
     "BW:7:943:2"
    ],
    "toelichting": "Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 5 oktober 2026; per 6 oktober 2026 is de vordering verjaard (6 dagen resterend).",
-   "volgende_stap": "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór de laatste dag, en bewaar het verzendbewijs.",
+   "volgende_stap": "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór 5 oktober 2026, en bewaar het verzendbewijs.",
    "waarschuwingen": [
     "De schriftelijke aanspraak van 2 oktober 2026 ligt na de peildatum (29 september 2026) en heeft op die dag nog niets gestuit. Verstuur haar vóór 5 oktober 2026, met verzendbewijs.",
     "Nog maar 6 dagen tot de laatste dag (5 oktober 2026): handel met spoed.",

@@ -250,3 +250,23 @@ def test_afwijzingsanalyse_leest_de_verzekeraar_uit_de_brief():
 
 def test_begripsuitleg_laat_het_model_de_verzekeraar_noemen_bij_elke_clausule():
     assert "noem bij elke clausule van welke verzekeraar" in features.begripsuitleg("eigen risico")["gebruiker"]
+
+
+def test_de_slotzin_over_wat_de_klant_draagt_staat_er_alleen_als_er_iets_is_berekend():
+    assert "wat de klant zelf draagt" in features.schadeberekening(100000, 200000, 50000)["gebruiker"]
+    assert "wat de klant zelf draagt" not in features.schadeberekening(200000, 0, 5000)["gebruiker"]
+
+
+def test_verjaringstoets_en_provisietoets_rusten_op_de_wet_en_tonen_geen_ruis_uit_kifid():
+    # Geen enkele uitspraak in het corpus gaat over verjaring of provisie; de best scorende (op 'verzekeraar',
+    # 'autoverzekering') zou anders als bron in beeld komen en uitnodigen tot een citaat dat niets bewijst.
+    for r in (features.verjaringstoets("2024-03-10", "", "", False, "2026-09-29"),
+              features.provisietoets("autoverzekering", 1000, 10)):
+        assert r["bronnen"] and all(b["soort"] == "wetgeving" for b in r["bronnen"])
+        assert "KIFID" not in r["systeem"]
+
+
+def test_verjaringstoets_laat_het_model_stuiting_alleen_noemen_zoals_de_code_haar_beschrijft():
+    g = features.verjaringstoets("2024-03-10", "", "", False, "2026-09-29")["gebruiker"]
+    assert "Wees concreet over stuiting" not in g
+    assert "alleen zoals de toelichting, de stappen en de vervolgstap hierboven" in g

@@ -45,34 +45,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0791",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0813",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0811",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0964",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -109,7 +81,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.031
+  "duur_sec": 0.042
  },
  {
   "id": "provisietoets-02",
@@ -143,27 +115,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0860",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0415",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0874",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -199,7 +150,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.029
+  "duur_sec": 0.05
  },
  {
   "id": "provisietoets-03",
@@ -275,7 +226,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.02
+  "duur_sec": 0.023
  },
  {
   "id": "provisietoets-04",
@@ -316,34 +267,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0881",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0633",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0860",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0174",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering gedeeltelijk toegewezen"
    }
   ],
   "berekening": {
@@ -420,34 +343,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0465",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0590",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0566",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0860",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -483,7 +378,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.066
+  "duur_sec": 0.044
  },
  {
   "id": "provisietoets-06",
@@ -524,34 +419,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0633",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0756",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0881",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -587,7 +454,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.121
+  "duur_sec": 0.109
  },
  {
   "id": "provisietoets-07",
@@ -628,34 +495,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0868",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0842",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0791",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -692,7 +531,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.222
+  "duur_sec": 0.288
  },
  {
   "id": "provisietoets-08",
@@ -733,34 +572,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0806",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0465",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0860",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0752",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -790,7 +601,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.029
+  "duur_sec": 0.04
  },
  {
   "id": "provisietoets-09",

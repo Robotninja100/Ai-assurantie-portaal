@@ -411,7 +411,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.002
  },
  {
   "id": "polisvergelijker-05",
@@ -937,7 +937,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.002
  },
  {
   "id": "polisvergelijker-09",

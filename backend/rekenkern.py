@@ -259,10 +259,20 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
         "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. "
         "De breuk wordt toegepast op de schade, niet op de verzekerde som."
     )
-    u.volgende_stap = (
-        "Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en "
-        "stel de verzekerde som bij. Controleer of de polis een indexclausule kent."
-    )
+    if sch <= 0:
+        u.waarschuwingen.append("Er is geen schade ingevoerd (€ 0,00): er valt niets te vergoeden. Controleer de invoer.")
+        u.uitleg.append("Er is geen schade ingevoerd, dus er valt niets te vergoeden.")
+        u.volgende_stap = "Vul het schadebedrag in (uit taxatie, offerte of schadenota) en bereken opnieuw."
+    elif vs < ww:
+        u.volgende_stap = (
+            "Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en "
+            "stel de verzekerde som bij. Controleer of de polis een indexclausule kent."
+        )
+    else:
+        u.volgende_stap = (
+            "Vergelijk deze uitkering met het voorstel van de verzekeraar; wijkt dat af, vraag dan om zijn "
+            "berekening en controleer het eigen risico in de polisvoorwaarden."
+        )
     return u
 
 
@@ -455,22 +465,32 @@ def verjaring_schadeclaim(datum_bekend: date,
         else:
             status = "LOOPT"
         if status == "LOOPT":
+            nu = vandaag_nl()
+            laatste_dag = "vandaag is de laatste dag" if peil == nu else "de peildatum is de laatste dag"
             u.toelichting = (
                 f"Op peildatum {_nl(peil)} is de vordering nog niet verjaard. De laatste dag om te "
                 f"stuiten is {_nl(eind)}; per {_nl(_dag_erna(eind))} is de vordering verjaard "
-                f"({'vandaag is de laatste dag' if dagen == 0 else f'{_dagen(dagen)} resterend'}).")
-            u.volgende_stap = (
-                "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op "
-                "uitkering, ruim vóór de laatste dag, en bewaar het verzendbewijs."
-                if not datum_stuiting else
-                "Houd de einddatum in het dossier bij en stuit tijdig opnieuw, met verzendbewijs, "
-                "als de verzekeraar niet reageert of de zaak nog loopt.")
+                f"({laatste_dag if dagen == 0 else f'{_dagen(dagen)} resterend'}).")
+            if eind < nu:                # een peildatum in het verleden: de termijn is inmiddels voorbij
+                u.volgende_stap = (
+                    f"Deze uitkomst geldt voor {_nl(peil)}. Toets opnieuw met de datum van vandaag om te zien "
+                    "of er nog kan worden gestuit.")
+            elif datum_stuiting:
+                u.volgende_stap = (
+                    f"Houd de einddatum ({_nl(eind)}) in het dossier bij en stuit tijdig opnieuw, met "
+                    "verzendbewijs, als de verzekeraar niet reageert of de zaak nog loopt.")
+            else:
+                u.volgende_stap = (
+                    "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, "
+                    + ("vandaag nog" if eind == nu else f"ruim vóór {_nl(eind)}")
+                    + ", en bewaar het verzendbewijs.")
             if dagen < 90:
                 u.waarschuwingen.append(
                     f"Nog maar {_dagen(dagen)} tot de laatste dag ({_nl(eind)}): handel met spoed."
                     if dagen > 0 else
-                    f"Vandaag ({_nl(eind)}) is de laatste dag om te stuiten: verstuur de aanspraak "
-                    "vandaag nog aantoonbaar.")
+                    (f"Vandaag ({_nl(eind)}) is de laatste dag om te stuiten: verstuur de aanspraak "
+                     "vandaag nog aantoonbaar." if peil == nu else
+                     f"De peildatum ({_nl(eind)}) is de laatste dag om te stuiten."))
         elif status == "ONZEKER":
             u.toelichting = (
                 f"Op peildatum {_nl(peil)} is de hoofdtermijn verstreken op {_nl(eind)}. Of de "

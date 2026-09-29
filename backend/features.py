@@ -458,7 +458,7 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
         f"{_zelf_te_dragen(u)}"
         f"{_uitleg_en_vervolg(u)}"
         f"Waarschuwingen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
-        f"{HERSCHRIJF} Noem expliciet wat de klant zelf draagt en waardoor.")
+        f"{HERSCHRIJF}" + (" Noem expliciet wat de klant zelf draagt en waardoor." if u.bedrag is not None else ""))
     return {"functie": "schadeberekening", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": True,
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 900}
@@ -519,8 +519,11 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
                                  _datum(datum_reactie, "datum_reactie"),
                                  _bool(aansprakelijkheid, "aansprakelijkheid"),
                                  _datum(peildatum, "peildatum"))
+    # Alleen de wet: geen enkele Kifid-uitspraak in het corpus gaat over verjaring, en de zoekmachine geeft toch
+    # de best scorende drie terug (op 'verzekeraar' en 'afwijzing'). Een irrelevante uitspraak in de bronnen
+    # nodigt uit tot een citaat dat niets bewijst.
     ctx = _context("verjaring rechtsvordering verzekeraar stuiting termijn afwijzing",
-                   ["wetgeving", "kifid"], per_bron=3, grondslag=u.grondslag,
+                   ["wetgeving"], per_bron=3, grondslag=u.grondslag,
                    waar={"wetgeving": VERZEKERINGSRECHT})
     gebruiker = (
         f"De termijnberekening is AL UITGEVOERD. Neem letterlijk over:\n"
@@ -528,7 +531,8 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
         + _stappen_tekst(u) +
         f"\n{_uitleg_en_vervolg(u)}"
         f"Waarschuwingen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
-        f"{HERSCHRIJF} Wees concreet over stuiting. Reken zelf niets na.")
+        f"{HERSCHRIJF} Noem stuiting alleen zoals de toelichting, de stappen en de vervolgstap hierboven dat doen. "
+        "Reken zelf niets na.")
     return {"functie": "verjaringstoets", "systeem": grounding.systeemprompt(ctx["blok"]),
             "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": True,
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 650}
@@ -542,8 +546,10 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
     _getal(provisiepercentage, "provisiepercentage", 0, 100)
     _getal(directe_beloning, "directe beloning")
     u = rk.provisie_toets(producttype, jaarpremie, provisiepercentage, directe_beloning)
+    # Alleen de wet, om dezelfde reden als bij de verjaringstoets: geen Kifid-uitspraak in het corpus gaat over
+    # provisie of beloning; de autoverzekering-uitspraken die 'producttype' opleverde zeggen hier niets over.
     ctx = _context(f"provisieverbod beloning {producttype} dienstverleningsdocument "
-                   f"transparantie complex product", ["wetgeving", "kifid"], per_bron=4,
+                   f"transparantie complex product", ["wetgeving"], per_bron=4,
                    grondslag=u.grondslag, waar={"wetgeving": GEDRAGSREGELS})
     bedrag = u.to_dict()["bedrag"]
     gebruiker = (

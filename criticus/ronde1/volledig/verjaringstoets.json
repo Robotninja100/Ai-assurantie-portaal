@@ -1,0 +1,238 @@
+[
+ {
+  "id": "verjaringstoets-01",
+  "functie": "verjaringstoets",
+  "http_status": 200,
+  "tekst": "De verjaring is al uitgevoerd. Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 16 juni 2028; per 17 juni 2028 is de vordering verjaard (626 dagen resterend).\n\n- Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1): 16 juni 2025 + 1 dag = 17 juni 2025  \n- Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit: 17 juni 2025 + 3 jaar, het einde van de dag ervoor = 16 juni 2028\n\nVervolgstap uit de code: Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór de laatste dag, en bewaar het verzendbewijs.",
+  "gebeurtenissen": [],
+  "bronnen_volledig": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "titel": "verjaring van de rechtsvordering tegen de verzekeraar",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling1_Artikel942",
+    "wet": "BW",
+    "artikel": "7:942",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Een rechtsvordering tegen de verzekeraar tot het doen van een uitkering verjaart door verloop van drie jaren na de aanvang van de dag, volgende op die waarop de tot uitkering gerechtigde met de opeisbaarheid daarvan bekend is geworden.\n2. De verjaring wordt gestuit door een schriftelijke mededeling, waarbij op uitkering aanspraak wordt gemaakt. Een nieuwe verjaringstermijn van drie jaren begint te lopen met de aanvang van de dag, volgende op die waarop de verzekeraar hetzij de aanspraak erkent, hetzij ondubbelzinnig heeft medegedeeld de aanspraak af te wijzen.\n3. Bij verzekering tegen aansprakelijkheid wordt de verjaring in afwijking van lid 2, eerste zin, gestuit door iedere onderhandeling tussen de verzekeraar en de tot uitkering gerechtigde of de benadeelde. In dat geval begint een nieuwe verjaringstermijn van drie jaren te lopen met de aanvang van de dag, volgende op die waarop de verzekeraar hetzij de aanspraak erkent, hetzij ondubbelzinnig aan degene met wie hij onderhandelt en, indien deze een ander is, aan de tot uitkering gerechtigde heeft medegedeeld dat hij de onderhandelingen afbreekt."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "titel": "dwingend recht bij consumentenverzekeringen",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling1_Artikel943",
+    "wet": "BW",
+    "artikel": "7:943",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Van de artikelen 931, 932, 935 lid 2, 936 en 939 kan niet worden afgeweken.\n2. Van de artikelen 933, eerste lid, eerste zin, 937, 940 leden 1, 3, 5 en 6, 941 leden 1, 2, 4 en 5 en 942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken.\n3. Van de artikelen 928 tot en met 930, 934 en 940 leden 2 en 4 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken indien de verzekeringnemer een natuurlijk persoon is en hij de verzekering sluit anders dan in de uitoefening van een beroep of bedrijf."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "titel": "einde en opzegging van de overeenkomst",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling1_Artikel940",
+    "wet": "BW",
+    "artikel": "7:940",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Bij opzegging tegen het einde van een verzekeringsperiode teneinde verlenging van de overeenkomst te verhinderen, wordt een termijn van twee maanden in acht genomen.\n2. De verzekeringnemer en, tenzij het een persoonsverzekering betreft, de verzekeraar kunnen een overeenkomst die is aangegaan voor een periode van meer dan vijf jaar, of die voor zulk een periode is verlengd, opzeggen tegen het einde van elk vijfde jaar binnen die periode. Daarbij geldt de in lid 1 genoemde termijn.\n3. Indien de verzekeraar de bevoegdheid heeft bedongen de overeenkomst tussentijds op te zeggen, komt de verzekeringnemer een gelijke bevoegdheid toe. Tenzij jegens hem is gehandeld met het opzet tot misleiding neemt de verzekeraar onderscheidenlijk de verzekeringnemer daarbij een termijn van twee maanden in acht. Indien een verzekering dekking biedt tegen schade veroorzaakt door risico’s als bedoeld in artikel 3:38 van de Wet op het financieel toezicht, kan, bij de verwezenlijking van een dergelijk risico of bij een dreiging van het ophanden zijn daarvan, de verzekeraar onderscheidenlijk de verzekeringnemer in afwijking van deze termijn van twee maanden, de overeenkomst met inachtneming van een termijn van zeven dagen opzeggen. De verzekeraar kan slechts tussentijds opzeggen op in de overeenkomst vermelde gronden welke van dien aard zijn dat gebondenheid aan de overeenkomst niet meer van de verzekeraar kan worden gevergd.\n4. Indien de verzekeraar de voorwaarden van de overeenkomst ten nadele van de verzekeringnemer of de tot uitkering gerechtigde wijzigt, is de verzekeringnemer gerechtigd de overeenkomst op te zeggen tegen de dag waarop de wijziging ingaat, en in ieder geval gedurende één maand nadat de wijziging hem is meegedeeld.\n5. De verzekeraar kan een persoonsverzekering niet beëindigen of wijzigen op grond van verzwaring van het gezondheidsrisico, voor zover dat is gelegen in de persoon van degeen, die de verzekering betreft.\n6. De verzekeringnemer kan de overeenkomst steeds langs elektronische weg opzeggen. Bij algemene maatregel van bestuur kunnen regels worden gesteld ten aanzien van de verzending van opzeggingen langs elektronische weg.\n7. De voordracht voor een krachtens het zesde lid vast te stellen algemene maatregel van bestuur wordt niet eerder gedaan dan vier weken nadat het ontwerp aan de beide kamers der Staten-Generaal is overgelegd."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "titel": "meldingsplicht bij verwezenlijking van het risico",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling1_Artikel941",
+    "wet": "BW",
+    "artikel": "7:941",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Zodra de verzekeringnemer of de tot uitkering gerechtigde van de verwezenlijking van het risico op de hoogte is, of behoort te zijn, is hij verplicht aan de verzekeraar de verwezenlijking te melden. Dit geschiedt zo spoedig als redelijkerwijs mogelijk is.\n2. De verzekeringnemer en de tot uitkering gerechtigde zijn verplicht binnen redelijke termijn de verzekeraar alle inlichtingen en bescheiden te verschaffen welke voor deze van belang zijn om zijn uitkeringsplicht te beoordelen.\n3. Indien door de tot uitkering gerechtigde een verplichting als bedoeld in de leden 1 of 2 niet is nagekomen, kan de verzekeraar de uitkering verminderen met de schade die hij daardoor lijdt.\n4. De verzekeraar kan het vervallen van het recht op uitkering wegens niet-nakoming van een verplichting als bedoeld in de leden 1 en 2 slechts bedingen voor het geval hij daardoor in een redelijk belang is geschaad.\n5. Het recht op uitkering vervalt indien de verzekeringnemer of de tot uitkering gerechtigde een verplichting als bedoeld in de leden 1 en 2 niet is nagekomen met het opzet de verzekeraar te misleiden, behoudens voor zover deze misleiding het verval van het recht op uitkering niet rechtvaardigt."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "titel": "auto/WAM",
+    "uitkomst": "vordering afgewezen",
+    "url": "https://www.kifid.nl/media/dnahuyzz/uitspraak-2026-0526-bindend.pdf",
+    "verweerder": "Waarborgfonds Motorverkeer",
+    "datum": "2026-05-29",
+    "bindend": true,
+    "fragment": "De consument stelt dat zijn auto in parkeerstand is aangereden door een onbekend ander motorvoertuig en vordert van het Waarborgfonds vergoeding van zijn schade van € 4220,-. In de avond van 4 september 2025 had de consument zijn auto onbeschadigd geparkeerd bij een vriend. Vervolgens is hij in de nacht van 5 september 2025 met zijn auto naar huis gereden en is hij de volgende dag met zijn auto naar de wasstraat gereden waar hij de schade aan zijn auto heeft ontdekt. Volgens de consument moet de schade aan zijn auto zijn ontstaan toen deze geparkeerd stond bij de vriend. Het Waarborgfonds heeft de claim afgewezen, omdat er onvoldoende bewijs is voor de stelling van de consument. De commissie oordeelt dat het Waarborgfonds de stelling van de consument gemotiveerd heeft betwist en dat niet is komen vast te staan dat de schade aan de auto van de consument is ontstaan toen deze geparkeerd stond. Daardoor is niet aan de bewijslast van artikel 25 lid 1 sub a Wet aansprakelijkheids­verzekering motorrijtuigen (WAM) en 150 van het Wetboek van Burgerlijke Rechtsvordering (Rv) voldaan. Het Waarborgfonds hoeft de schade daarom niet te vergoeden. De klacht is ongegrond en de vordering wordt afgewezen."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "titel": "ORV/leven",
+    "uitkomst": "vordering afgewezen",
+    "url": "https://www.kifid.nl/media/5nsjdgz5/uitspraak-2026-0776-bindend.pdf",
+    "verweerder": "SRLEV N.V., h.o.d.n. Reaal Levensverzekeringen",
+    "datum": "2026-08-07",
+    "bindend": true,
+    "fragment": "De lijfrenteverzekering van de consument bereikte op 1 maart 2022 de einddatum. Op dat moment was bij de verzekeraar geen adres bekend van de consument, waardoor het voor de verzekeraar niet mogelijk was om de consument te informeren over de naderende einddatum van zijn lijfrenteverzekering en de mogelijkheden die de consument had met het eindkapitaal van € 2.059,96. De consument heeft zich na het verstrijken van de wettelijke (fiscale) termijn bij de verzekeraar gemeld, waardoor de verzekeraar gehouden was om de fiscale regels toe te passen die gelden bij een niet tijdig aangewende lijfrente en heeft zodoende slechts een gedeelte van het eindkaptaal van € 628,29,- aan de consument uitgekeerd. De consument is het hier niet mee eens en stelt dat de verzekeraar na de einddatum van zijn verzekering meer zijn best had moeten doen om de consument te bereiken. Hij vordert dat de verzekeraar alsnog het resterende kapitaal van € 1.431,67 aan hem uitkeert. De commissie is van oordeel dat de verzekeraar niet kan worden gehouden het resterende kapitaal aan de consument uit te keren. De commissie wijst de vordering van de consument af."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0814",
+    "titel": "reis",
+    "uitkomst": "vordering toegewezen",
+    "url": "https://www.kifid.nl/media/szsfns3d/uitspraak-2026-0814-bindend.pdf",
+    "verweerder": "Achmea Schadeverzekeringen N.V., h.o.d.n. Interpolis",
+    "datum": "2026-08-18",
+    "bindend": true,
+    "fragment": "Tijdens een rondreis door Namibië is de bagage van de consument gestolen uit de door hem gehuurde truck. De consument heeft zijn schade geclaimd op zijn reisverzekering. De verzekeraar heeft die schadeclaim afgewezen omdat de bagage langer in de truck lag dan strikt noodzakelijk en de consument de bagage op een andere veilige plek had moeten bewaren. De consument is het hiermee niet eens. De bagage lag in de kofferbak van de truck die door dikke metalen platen met een dubbel slot aan elke kant van de truck werd gesloten. Bovendien lag de bagage op aanraden van het autoverhuurbedrijf in de afgesloten achterbak van de truck omdat dit in Namibië de veiligste plek is om je spullen te bewaren. Er was dus geen andere veilige plek. De consument vordert uitkering van zijn schade. De commissie is van oordeel dat de verzekeraar de schade van de consument moet uitkeren en wijst de vordering toe."
+   }
+  ],
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:942",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:943",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:941",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0526",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0776",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0814",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering toegewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Verjaring rechtsvordering op de verzekeraar",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Aanvang hoofdtermijn: de dag volgend op de bekendheid met de opeisbaarheid (lid 1)",
+     "formule": "16 juni 2025 + 1 dag = 17 juni 2025",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Hoofdtermijn van drie jaar (lid 1): laatste dag waarop nog kan worden gestuit",
+     "formule": "17 juni 2025 + 3 jaar, het einde van de dag ervoor = 16 juni 2028",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BW:7:942:1",
+    "BW:7:943:2"
+   ],
+   "toelichting": "Op peildatum 29 september 2026 is de vordering nog niet verjaard. De laatste dag om te stuiten is 16 juni 2028; per 17 juni 2028 is de vordering verjaard (626 dagen resterend).",
+   "volgende_stap": "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, ruim vóór de laatste dag, en bewaar het verzendbewijs.",
+   "waarschuwingen": [
+    "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar aan als dat hier speelt.",
+    "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde worden afgeweken (art. 7:943 lid 2). Controleer daarnaast de polisvoorwaarden op een reactietermijn na een beslissing van de verzekeraar.",
+    "De datum van bekendheid met de opeisbaarheid is een feitelijke vaststelling. Bij twijfel: reken met de vroegste aannemelijke datum."
+   ],
+   "details": {
+    "status": "LOOPT",
+    "peildatum": "2026-09-29",
+    "hoofdtermijn_laatste_dag": "2028-06-16",
+    "laatste_dag": "2028-06-16",
+    "eerste_verjaarde_dag": "2028-06-17",
+    "dagen_resterend": 626,
+    "gebeurtenissen": [
+     {
+      "datum": "2025-06-16",
+      "soort": "bekendheid",
+      "label": "Bekend met de opeisbaarheid"
+     },
+     {
+      "datum": "2028-06-16",
+      "soort": "einde_hoofdtermijn",
+      "label": "Einde hoofdtermijn"
+     }
+    ],
+    "aansprakelijkheid": false,
+    "voorwaardelijk_alternatief": null
+   },
+   "uitleg": []
+  },
+  "model": {
+   "model": "qwen3-4b.gguf",
+   "provider": "local",
+   "overgeslagen": null
+  },
+  "controle": {
+   "oordeel": "GEEN_VERWIJZINGEN",
+   "gefundeerd": [
+    {
+     "soort": "datum",
+     "verwijzing": "29 september 2026",
+     "positie": 44,
+     "einde": 61
+    },
+    {
+     "soort": "datum",
+     "verwijzing": "16 juni 2028",
+     "positie": 129,
+     "einde": 141
+    },
+    {
+     "soort": "datum",
+     "verwijzing": "17 juni 2028",
+     "positie": 147,
+     "einde": 159
+    },
+    {
+     "soort": "datum",
+     "verwijzing": "16 juni 2025",
+     "positie": 295,
+     "einde": 307
+    },
+    {
+     "soort": "datum",
+     "verwijzing": "17 juni 2025",
+     "positie": 318,
+     "einde": 330
+    }
+   ],
+   "ongefundeerd": [],
+   "bronnen_beschikbaar": {
+    "wetgeving": 4,
+    "kifid": 3,
+    "polisclausules": 0
+   },
+   "duur_sec": 643.8,
+   "afgekapt": false,
+   "einde_reden": "stop"
+  },
+  "duur_sec": 643.9,
+  "_sleutel": "d8a39dad2659f2ef"
+ }
+]

@@ -97,7 +97,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.355
+  "duur_sec": 0.383
  },
  {
   "id": "dossiercheck-02",
@@ -197,7 +197,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.117
+  "duur_sec": 0.103
  },
  {
   "id": "dossiercheck-03",
@@ -297,7 +297,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.106
+  "duur_sec": 0.167
  },
  {
   "id": "dossiercheck-04",
@@ -397,7 +397,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.274
+  "duur_sec": 0.406
  },
  {
   "id": "dossiercheck-05",
@@ -490,7 +490,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.32
+  "duur_sec": 0.256
  },
  {
   "id": "dossiercheck-06",
@@ -583,7 +583,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.233
+  "duur_sec": 0.193
  },
  {
   "id": "dossiercheck-07",
@@ -676,7 +676,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.241
+  "duur_sec": 0.27
  },
  {
   "id": "dossiercheck-08",
@@ -776,7 +776,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.278
+  "duur_sec": 0.258
  },
  {
   "id": "dossiercheck-09",
@@ -869,7 +869,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.114
+  "duur_sec": 0.11
  },
  {
   "id": "dossiercheck-10",
@@ -969,6 +969,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.19
+  "duur_sec": 0.201
  }
 ]

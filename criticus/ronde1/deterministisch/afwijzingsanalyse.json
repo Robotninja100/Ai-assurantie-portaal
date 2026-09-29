@@ -90,7 +90,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.115
+  "duur_sec": 0.139
  },
  {
   "id": "afwijzingsanalyse-02",
@@ -183,7 +183,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.216
+  "duur_sec": 0.243
  },
  {
   "id": "afwijzingsanalyse-03",
@@ -276,7 +276,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.084
+  "duur_sec": 0.16
  },
  {
   "id": "afwijzingsanalyse-04",
@@ -369,7 +369,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.115
+  "duur_sec": 0.228
  },
  {
   "id": "afwijzingsanalyse-05",
@@ -462,7 +462,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.186
+  "duur_sec": 0.378
  },
  {
   "id": "afwijzingsanalyse-06",
@@ -555,7 +555,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.112
+  "duur_sec": 0.189
  },
  {
   "id": "afwijzingsanalyse-07",
@@ -648,7 +648,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.13
+  "duur_sec": 0.225
  },
  {
   "id": "afwijzingsanalyse-08",
@@ -741,7 +741,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.007
  },
  {
   "id": "afwijzingsanalyse-09",
@@ -834,7 +834,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.222
+  "duur_sec": 0.384
  },
  {
   "id": "afwijzingsanalyse-10",
@@ -927,6 +927,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.177
+  "duur_sec": 0.26
  }
 ]
