@@ -35,11 +35,11 @@ def vrije_poort():
         return s.getsockname()[1]
 
 
-def start_app(**nep_opties):
+def start_app(env_extra=None, **nep_opties):
     nep = NepLLM(**nep_opties)
     poort = vrije_poort()
     env = {**os.environ, "OPENROUTER_API_KEY": "test", "ASSURANTIE_LLM_PROVIDER": "openrouter",
-           "ASSURANTIE_OPENROUTER_URL": nep.url, "ASSURANTIE_MODELLEN": "testmodel"}
+           "ASSURANTIE_OPENROUTER_URL": nep.url, "ASSURANTIE_MODELLEN": "testmodel", **(env_extra or {})}
     p = subprocess.Popen([sys.executable, "-m", "uvicorn", "api:app", "--app-dir", "backend",
                           "--port", str(poort), "--log-level", "warning"], cwd=ROOT, env=env)
     basis = f"http://127.0.0.1:{poort}"
@@ -77,6 +77,17 @@ def traag_app():
 
 
 @pytest.fixture(scope="module")
+def lokaal_app(tmp_path_factory):
+    """Een portaal dat terugvalt op het (kleine) lokale model: een leeg bestand volstaat, want het model mag hier niet schrijven."""
+    model = tmp_path_factory.mktemp("model") / "klein.gguf"
+    model.write_bytes(b"x")
+    env = {"ASSURANTIE_LLM_PROVIDER": "local", "ASSURANTIE_MODEL_PATH": str(model), "OPENROUTER_API_KEY": ""}
+    basis, nep, p = start_app(env_extra=env)
+    yield basis
+    stop_app(nep, p)
+
+
+@pytest.fixture(scope="module")
 def browser():
     with sync_playwright() as pw:
         b = pw.chromium.launch(executable_path=CHROME, args=["--no-sandbox"])
@@ -104,5 +115,12 @@ def pagina(browser, app):
 @pytest.fixture()
 def traag_pagina(browser, traag_app):
     ctx, p = maak_pagina(browser, traag_app)
+    yield p
+    ctx.close()
+
+
+@pytest.fixture()
+def lokaal_pagina(browser, lokaal_app):
+    ctx, p = maak_pagina(browser, lokaal_app)
     yield p
     ctx.close()

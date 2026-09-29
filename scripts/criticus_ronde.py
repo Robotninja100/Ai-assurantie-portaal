@@ -351,7 +351,9 @@ def main():
             except ValueError:
                 onleesbaar += 1
                 continue
-            if r.get("_sleutel") != sleutels.get(r.get("id")) or not is_bruikbaar(r):
+            if r.get("id") not in sleutels:              # een casus van een andere functie: staat in dezelfde tussenstand
+                continue
+            if r.get("_sleutel") != sleutels[r["id"]] or not is_bruikbaar(r):
                 verouderd += 1
                 continue
             resultaten[r["id"]] = r

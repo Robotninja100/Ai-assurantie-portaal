@@ -146,6 +146,7 @@ export class Uitvoering {
       case "wacht": return this.opWacht(e.sec);
       case "tekst": return this.opTekst(e.tekst);
       case "weigering": return this.opWeigering(e.tekst);
+      case "model_overgeslagen": return this.opModelOvergeslagen(e.reden);
       case "gemaskeerd": this.gemaskeerd = e.tekst; return;
       case "controle": return this.opControle(e.controle);
       case "fout": return this.opFout(e);
@@ -240,6 +241,14 @@ export class Uitvoering {
   verwijzingen() {
     const c = this.controle;
     return [...c.gefundeerd.map((v) => ({ ...v, status: "ok" })), ...c.ongefundeerd.map((v) => ({ ...v, status: "slecht" }))];
+  }
+
+  /** Het portaal liet het model bewust niets schrijven: de uitleg staat al in de berekening, uit code. */
+  opModelOvergeslagen(reden) {
+    this.pijp.zet("antwoord", "overgeslagen");
+    this.pijp.zet("controle", "overgeslagen");
+    this.doel.append(h("div", { class: "melding info", stijl: "margin-top:0" }, icoon("info", 18),
+      h("div", null, h("b", null, "Geen toelichting van een taalmodel. "), reden)));
   }
 
   opWeigering(tekst) {

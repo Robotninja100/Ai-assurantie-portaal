@@ -231,8 +231,8 @@ def test_api_stuurt_een_hartslag_zolang_het_model_nog_niets_uitgeeft(monkeypatch
 
     monkeypatch.setattr(llm, "stream_events", traag)
     monkeypatch.setattr(api, "HARTSLAG_SEC", 0.05)
-    r = TestClient(api.app).post("/api/vraag", json={"functie": "schadeberekening", "invoer": {
-        "verzekerde_som": 100, "werkelijke_waarde": 100, "schade": 10}})
+    r = TestClient(api.app).post("/api/vraag", json={"functie": "dekkingscheck", "invoer": {
+        "situatie": "Inbraak in de woning via een openstaand raam"}})
     events = [json.loads(l[6:]) for l in r.text.splitlines() if l.startswith("data: ") and l != "data: [DONE]"]
     soorten = [e["type"] for e in events]
     assert soorten.count("wacht") >= 2

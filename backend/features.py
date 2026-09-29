@@ -395,7 +395,7 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
         f"Waarschuwingen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
         f"{HERSCHRIJF} Noem expliciet wat de klant zelf draagt en waardoor.")
     return {"functie": "schadeberekening", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": True,
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 900}
 
 
@@ -465,7 +465,7 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
         f"Waarschuwingen: {'; '.join(u.waarschuwingen) or 'geen'}\n\n"
         f"{HERSCHRIJF} Wees concreet over stuiting. Reken zelf niets na.")
     return {"functie": "verjaringstoets", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": True,
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 650}
 
 
@@ -491,7 +491,7 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
         "letterlijk in staan. Voeg geen feiten toe die hierboven of in de bronnen niet staan. "
         "Sluit af met wat de adviseur in het dossier moet vastleggen.")
     return {"functie": "provisietoets", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": True,
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 650}
 
 
@@ -657,7 +657,7 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
         "3. Welke informatie moet mee bij indiening?\n"
         "Staat een termijn niet in de bronnen, zeg dat dan in plaats van een termijn te noemen.")
     return {"functie": "klachtroute", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": bool(u),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict() if u else None, "max_tokens": 800}
 
 
@@ -720,7 +720,7 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
         f"{HERSCHRIJF} Benadruk dat de drempel uit de polisvoorwaarden komt en per verzekeraar verschilt. "
         "Reken niets na.")
     return {"functie": "waardetoets", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": True,
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict(), "max_tokens": 600}
 
 

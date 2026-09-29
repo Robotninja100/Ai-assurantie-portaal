@@ -63,8 +63,13 @@ def test_bronnen_en_berekening_komen_voor_het_antwoord_en_een_storing_wordt_geme
     soorten = [e["type"] for e in sse(r)]
     assert soorten[0] == "bronnen"
     assert soorten[1] == "berekening"
-    assert "fout" in soorten                       # geen runtime: nooit een stil leeg antwoord
+    # geen runtime: nooit een stil leeg antwoord. Waar de uitleg uit code komt, zegt het portaal dat en is dat het antwoord.
+    assert "model_overgeslagen" in soorten and "tekst" not in soorten
+    assert "Er is geen taalmodel beschikbaar" in next(e for e in sse(r) if e["type"] == "model_overgeslagen")["reden"]
     assert "controle" not in soorten               # en dus ook geen schijnbaar geslaagde controle
+    # waar de tekst wel van het model moet komen, blijft een storing een storing
+    r2 = client.post("/api/vraag", json={"functie": "dekkingscheck", "invoer": {"situatie": "Inbraak via een raam"}})
+    assert "fout" in [e["type"] for e in sse(r2)]
     berekening = next(e for e in sse(r) if e["type"] == "berekening")["berekening"]
     assert berekening["bedrag"] == "43500.00"
 
@@ -77,3 +82,51 @@ def test_zonder_bronnen_geen_inhoudelijk_antwoord(client, monkeypatch):
     monkeypatch.setitem(features.FUNCTIES["begripsuitleg"], "fn", features.begripsuitleg)
     events = sse(client.post("/api/vraag", json={"functie": "begripsuitleg", "invoer": {"begrip": "x"}}))
     assert events[-1]["controle"]["oordeel"] == "GEWEIGERD_GEEN_BRONNEN"
+
+
+# ------------------------------------------------------------ het kleine lokale model schrijft geen uitleg bij een berekening
+
+def _lokaal_met_bestand(monkeypatch, tmp_path):
+    model = tmp_path / "klein.gguf"
+    model.write_bytes(b"x")
+    monkeypatch.setattr(llm, "PROVIDER", "local")
+    monkeypatch.setattr(llm, "MODEL_PATH", str(model))
+    monkeypatch.delenv("ASSURANTIE_MODEL_ALTIJD", raising=False)
+
+
+def test_lokaal_model_schrijft_niets_bij_een_berekening_uit_code(monkeypatch, tmp_path):
+    _lokaal_met_bestand(monkeypatch, tmp_path)
+    aangeroepen = []
+    monkeypatch.setattr(llm, "stream_events", lambda *a, **k: aangeroepen.append(1) or iter(()))
+    for functie, invoer in (("schadeberekening", {"verzekerde_som": 100000, "werkelijke_waarde": 200000, "schade": 40000}),
+                            ("verjaringstoets", {"datum_bekend": "2024-03-10"}),
+                            ("waardetoets", {"nieuwwaarde": 1000, "ouderdom_jaren": 3, "levensduur_jaren": 8}),
+                            ("provisietoets", {"producttype": "autoverzekering", "jaarpremie": 1000, "provisiepercentage": 10}),
+                            ("klachtroute", {"situatie": "Afwijzing", "datum_klacht": "2026-09-01"})):
+        events = sse(TestClient(api.app).post("/api/vraag", json={"functie": functie, "invoer": invoer}))
+        soorten = [e["type"] for e in events]
+        assert soorten[0] == "bronnen" and soorten[1] == "berekening", functie
+        assert "model_overgeslagen" in soorten and "tekst" not in soorten and "fout" not in soorten and "controle" not in soorten, functie
+    assert not aangeroepen                                    # het model is niet eens gestart
+
+
+def test_lokaal_model_schrijft_wel_waar_de_tekst_niet_uit_code_komt(monkeypatch, tmp_path):
+    _lokaal_met_bestand(monkeypatch, tmp_path)
+    monkeypatch.setattr(llm, "stream_events", lambda *a, **k: iter([{"type": "model", "model": "m", "provider": "local"},
+                                                                     {"type": "delta", "tekst": "Antwoord."}, {"type": "einde", "reden": "stop"}]))
+    events = sse(TestClient(api.app).post("/api/vraag", json={"functie": "klachtroute", "invoer": {"situatie": "Afwijzing van de klacht"}}))
+    soorten = [e["type"] for e in events]
+    assert "model_overgeslagen" not in soorten and "tekst" in soorten     # klachtroute zonder datum: geen berekening, dus het model schrijft
+    events = sse(TestClient(api.app).post("/api/vraag", json={"functie": "dekkingscheck", "invoer": {"situatie": "Inbraak via een raam"}}))
+    assert "tekst" in [e["type"] for e in events]
+
+
+def test_model_altijd_dwingt_het_lokale_model_af(monkeypatch, tmp_path):
+    _lokaal_met_bestand(monkeypatch, tmp_path)
+    monkeypatch.setenv("ASSURANTIE_MODEL_ALTIJD", "1")
+    monkeypatch.setattr(llm, "stream_events", lambda *a, **k: iter([{"type": "model", "model": "m", "provider": "local"},
+                                                                     {"type": "delta", "tekst": "Antwoord."}, {"type": "einde", "reden": "stop"}]))
+    events = sse(TestClient(api.app).post("/api/vraag", json={"functie": "schadeberekening", "invoer": {
+        "verzekerde_som": 100000, "werkelijke_waarde": 200000, "schade": 40000}}))
+    soorten = [e["type"] for e in events]
+    assert "tekst" in soorten and "model_overgeslagen" not in soorten

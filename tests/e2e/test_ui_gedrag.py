@@ -145,3 +145,27 @@ def test_aangehaalde_tekst_krijgt_de_woordelijk_markering(pagina):
     tekst = 'Het dossier zegt "de klant heeft een risicobereidheid van laag opgegeven" en dat klopt.'
     html = render(pagina, tekst, [{"verwijzing": "de klant heeft een risicobereidheid van laag opgegeven", "soort": "citaat", "status": "ok"}])
     assert 'class="verw citaat ok"' in html
+
+
+# ---------------------------------------------------------------- het kleine lokale model schrijft geen uitleg bij een berekening
+
+def test_met_het_lokale_model_staat_de_uitleg_uit_code_en_schrijft_het_model_niets(lokaal_pagina):
+    p = lokaal_pagina
+    start(p, "schadeberekening")
+    expect(p.locator(".melding.info", has_text="Geen toelichting van een taalmodel")).to_be_visible(timeout=15000)
+    assert "te klein" in p.locator(".melding.info", has_text="Geen toelichting").inner_text()
+    expect(p.locator(".uitleg")).to_contain_text("art. 7:958 lid 5 BW")           # de uitleg uit code staat er
+    assert p.locator(".sectie", has_text="Toelichting").count() == 0 or p.locator(".sectie h3", has_text="Toelichting").count() == 0
+    assert p.locator(".sectie", has_text="Controle van verwijzingen").count() == 0
+    for stap in ("Toelichting", "Controle"):
+        assert "overgeslagen" in p.locator(".pijp-stap", has_text=stap).get_attribute("class")
+    assert p.get_by_role("button", name="Toets uitvoeren").is_enabled()
+    assert p.fouten == []
+
+
+def test_met_het_lokale_model_schrijft_het_model_wel_waar_de_tekst_niet_uit_code_komt(lokaal_pagina):
+    p = lokaal_pagina
+    start(p, "dekkingscheck")
+    # het nepbestand is geen echt model: de storing wordt eerlijk gemeld, niet weggemoffeld
+    expect(p.locator(".melding.fout")).to_be_visible(timeout=20000)
+    assert p.locator(".melding.info", has_text="Geen toelichting van een taalmodel").count() == 0

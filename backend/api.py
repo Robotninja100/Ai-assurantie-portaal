@@ -183,6 +183,20 @@ def vraag(a: Aanvraag):
         if opdracht.get("opmerkingen"):
             yield _sse({"type": "opmerkingen", "opmerkingen": opdracht["opmerkingen"]})
 
+        # Waar berekening, uitleg en vervolgstap volledig uit code komen, schrijft het kleine lokale model
+        # niets: het verzon bij een echte proef redenen die er niet zijn (zie state.json, lokale_modelrun_1).
+        # Is er helemaal geen model, dan is de uitleg uit code ook het volledige antwoord. Een sterker model
+        # (OpenRouter) herschrijft de uitleg wel. ASSURANTIE_MODEL_ALTIJD=1 dwingt het lokale model af.
+        rt0 = llm.runtime_info()
+        if (opdracht.get("tekst_uit_code") and not os.environ.get("ASSURANTIE_MODEL_ALTIJD")
+                and (rt0["provider"] == "local" or not rt0["beschikbaar"])):
+            reden = ("Het lokale model is te klein om dit betrouwbaar uit te leggen: bij een proef verzon het redenen die er niet "
+                     "zijn. " if rt0["beschikbaar"] else "Er is geen taalmodel beschikbaar. ")
+            yield _sse({"type": "model_overgeslagen",
+                        "reden": reden + "De uitleg, de bedragen en de vervolgstap hierboven komen uit code en zijn volledig."})
+            yield "data: [DONE]\n\n"
+            return
+
         # Geen bronnen = geen inhoudelijk antwoord. Dit is de kern van citeer-of-weiger:
         # het portaal zwijgt liever dan dat het ongefundeerd praat.
         if not opdracht["bronnen"]:

@@ -57,7 +57,10 @@ mkdir -p models && curl -L -o models/qwen3-4b.gguf \
 ```
 
 Zonder enig taalmodel toont het portaal nog steeds de bronnen en de berekening, en meldt het
-eerlijk dat er geen antwoord kwam.
+eerlijk dat er geen antwoord kwam. Waar berekening, uitleg en vervolgstap volledig uit code komen
+(schadeberekening, verjaringstoets, waardetoets, provisietoets, klachtroute met datum) schrijft het
+kleine lokale model niets: een echte proef liet zien dat het daar redenen verzint. `ASSURANTIE_MODEL_ALTIJD=1`
+dwingt het af, bijvoorbeeld voor onderzoek; een sterker model via OpenRouter herschrijft de uitleg wel.
 
 ## Testen
 
