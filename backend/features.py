@@ -334,7 +334,11 @@ def _meld(ctx: Dict, opmerkingen=None) -> List[str]:
     return list(opmerkingen or []) + ([m] if (m := _gelezen_als(ctx.get("correcties"))) else [])
 
 
-def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=(), waar=None) -> Dict:
+def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=(), waar=None, eigen=None) -> Dict:
+    """
+    `eigen` is het deel van de zoekvraag dat de adviseur zelf typte. Alleen daarvan meldt het portaal een herstelde
+    spelling ('Zoekopdracht gelezen als'); de vaste woorden die de code aan de vraag toevoegt gaan de adviseur niet aan.
+    """
     opgehaald, blokken = {}, []
     waar = waar or {}
     verplicht = _grondslag_docs(grondslag)
@@ -353,7 +357,7 @@ def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=(), waar=None
                      "polisvoorwaarden": "POLISVOORWAARDEN"}[b]
             blokken.append(f"=== {titel} ===\n{blk}")
     return {"opgehaald": opgehaald, "blok": "\n\n".join(blokken) or "(geen bronnen gevonden)",
-            "correcties": CORPUS.correcties(vraag)}
+            "correcties": CORPUS.correcties(vraag if eigen is None else eigen)}
 
 
 def _bronlijst(opgehaald: Dict) -> List[Dict]:
@@ -456,7 +460,7 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
     # een verbouwing' uit dat niet bij de vraag hoorde. Dat het eigen risico polisafhankelijk is, staat in de waarschuwingen.
     ctx = _context("onderverzekering evenredigheid verzekerde som herbouwwaarde eigen risico",
                    ["wetgeving"], per_bron=3, grondslag=u.grondslag,
-                   waar={"wetgeving": VERZEKERINGSRECHT})
+                   waar={"wetgeving": VERZEKERINGSRECHT}, eigen="")
     stappen = _stappen_tekst(u)
     gebruiker = (
         f"De berekening is AL UITGEVOERD in deterministische code. Neem deze cijfers "
@@ -531,7 +535,7 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
     # nodigt uit tot een citaat dat niets bewijst.
     ctx = _context("verjaring rechtsvordering verzekeraar stuiting termijn afwijzing",
                    ["wetgeving"], per_bron=3, grondslag=u.grondslag,
-                   waar={"wetgeving": VERZEKERINGSRECHT})
+                   waar={"wetgeving": VERZEKERINGSRECHT}, eigen="")
     gebruiker = (
         f"De termijnberekening is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{u.toelichting}\n"
@@ -557,7 +561,7 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
     # provisie of beloning; de autoverzekering-uitspraken die 'producttype' opleverde zeggen hier niets over.
     ctx = _context(f"provisieverbod beloning {producttype} dienstverleningsdocument "
                    f"transparantie complex product", ["wetgeving"], per_bron=4,
-                   grondslag=u.grondslag, waar={"wetgeving": GEDRAGSREGELS})
+                   grondslag=u.grondslag, waar={"wetgeving": GEDRAGSREGELS}, eigen=producttype)
     bedrag = u.to_dict()["bedrag"]
     gebruiker = (
         f"PRODUCT: {_regel(producttype)}\n"
@@ -615,7 +619,7 @@ def dossiercheck(dossiertekst: str) -> Dict:
     ctx = _context("passend advies klantprofiel zorgplicht informatieverstrekking "
                    "kennis ervaring doelstelling risicobereidheid financiele positie " + tekst[:800],
                    ["wetgeving", "kifid"], per_bron=3 if provisie else 5, waar={"wetgeving": GEDRAGSREGELS},
-                   grondslag=DOSSIER_ARTIKELEN + (PROVISIE_ARTIKELEN if provisie else []))
+                   grondslag=DOSSIER_ARTIKELEN + (PROVISIE_ARTIKELEN if provisie else []), eigen=tekst[:800])
     gebruiker = (
         f"ADVIESDOSSIER:\n---\n{tekst}\n---\n{afgekapt}\n"
         "Toets dit dossier tegen de zorgplicht- en adviesvereisten uit de bronnen.\n"
@@ -747,7 +751,7 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
     # uitspraken erbij passen. Met een vaste zoekvraag kreeg elke casus dezelfde bronnen.
     ctx = _context(f"{(situatie or '')[:600]} klachtprocedure Kifid ontvankelijkheid termijn bindend advies "
                    "geschilleninstantie interne klachtafhandeling", ["wetgeving", "kifid"], per_bron=4,
-                   grondslag=KLACHT_ARTIKELEN + (u.grondslag if u else []))
+                   grondslag=KLACHT_ARTIKELEN + (u.grondslag if u else []), eigen=(situatie or "")[:600])
     termijnen = ""
     if u:
         termijnen = ("De termijnen zijn AL BEREKEND. Neem deze data letterlijk over en reken niets na:\n"
@@ -776,7 +780,7 @@ def afwijzingsanalyse(brieftekst: str) -> Dict:
     polisfilter, meldingen, kort = _polisfilter(tekst)
     ctx = _context(tekst[:600] + " afwijzing dekking uitsluiting mededelingsplicht "
                    "opzet eigen gebrek", ["polisvoorwaarden", "kifid", "wetgeving"], per_bron=4,
-                   waar={"wetgeving": VERZEKERINGSRECHT, "polisvoorwaarden": polisfilter})
+                   waar={"wetgeving": VERZEKERINGSRECHT, "polisvoorwaarden": polisfilter}, eigen=tekst[:600])
     opmerkingen = opmerkingen + meldingen
     gebruiker = (
         f"AFWIJZINGSBRIEF VAN DE VERZEKERAAR:\n---\n{tekst}\n---\n{afgekapt}\n"
@@ -798,7 +802,7 @@ def afwijzingsanalyse(brieftekst: str) -> Dict:
 def adviesnotitie(klantsituatie: str, advies: str) -> Dict:
     ctx = _context("passend advies vastlegging dossier informatieverstrekking klantprofiel "
                    "motivering", ["wetgeving"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS},
-                   grondslag=DOSSIER_ARTIKELEN)
+                   grondslag=DOSSIER_ARTIKELEN, eigen="")
     gebruiker = (
         f"KLANTSITUATIE:\n{klantsituatie}\n\nGEGEVEN ADVIES:\n{advies}\n\n"
         "Stel een dossiernotitie op met de onderdelen die de bronnen als vaststelling of informatie aan de klant noemen. "
@@ -824,7 +828,7 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
     _getal(drempel_pct, "drempel", 0, 100)
     u = rk.nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren, drempel_pct)
     ctx = _context("nieuwwaarde dagwaarde afschrijving vervangingswaarde inboedel",
-                   ["polisvoorwaarden", "wetgeving"], per_bron=3)
+                   ["polisvoorwaarden", "wetgeving"], per_bron=3, eigen="")
     gebruiker = (
         f"De waardebepaling is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{_uitkomstregel('Uitkomst', u)} - {u.toelichting}\n"

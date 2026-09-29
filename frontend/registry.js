@@ -149,7 +149,7 @@ export const REGISTER = {
   },
   waardetoets: {
     icoon: "meter", breed: false,
-    lead: "Nieuwwaarde of dagwaarde? Het portaal rekent de dagwaarde uit en zet die naast de drempel uit de polis. Die drempel verschilt per verzekeraar.",
+    lead: "Nieuwwaarde of dagwaarde? Het portaal rekent de dagwaarde uit en zet die naast de drempel uit de polis. Die drempel staat in de polisvoorwaarden, niet in de wet.",
     velden: [
       { id: "nieuwwaarde", label: "Nieuwwaarde", type: "bedrag", verplicht: true },
       { rij: [

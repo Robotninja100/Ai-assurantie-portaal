@@ -169,3 +169,12 @@ def test_met_het_lokale_model_schrijft_het_model_wel_waar_de_tekst_niet_uit_code
     # het nepbestand is geen echt model: de storing wordt eerlijk gemeld, niet weggemoffeld
     expect(p.locator(".melding.fout")).to_be_visible(timeout=20000)
     assert p.locator(".melding.info", has_text="Geen toelichting van een taalmodel").count() == 0
+
+
+def test_waardetoets_toont_de_uitleg_uit_code_en_beweert_niet_dat_de_drempel_per_verzekeraar_verschilt(pagina):
+    p = pagina
+    start(p, "waardetoets")
+    expect(p.locator(".uitleg")).to_contain_text("In gewone woorden", timeout=15000)
+    expect(p.locator(".uitleg")).to_contain_text("volgt uit de polisvoorwaarden, niet uit de wet")
+    assert "verschilt per verzekeraar" not in p.locator("body").inner_text()
+    assert p.fouten == []

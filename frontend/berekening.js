@@ -110,6 +110,7 @@ function waardetoets(b, opKlik) {
         h("span", { class: "meter-streep", stijl: `left:${Math.min(drempel, 100)}%` }),
         h("span", { class: "meter-etiket", stijl: `left:${Math.min(Math.max(drempel, 8), 92)}%` }, "Polisdrempel ", h("b", { class: "num" }, pct(drempel)))),
       h("div", { class: "meter-as" }, h("span", null, "0%"), h("span", null, "100% nieuwwaarde"))),
+    uitlegBlok(b.uitleg),
     grootboek(b.stappen, { slot: { omschrijving: dagwaarde ? "Vergoeding (dagwaarde)" : "Vergoeding (nieuwwaarde)", waarde: eur(b.bedrag) } }),
     ...afsluiting(b, opKlik));
 }

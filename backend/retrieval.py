@@ -150,6 +150,8 @@ class Index:
         for c in self._woordenschat:
             if abs(len(c) - len(t)) > grens or (c[0] != t[0] and c[1:2] != t[1:2] and len(t) < 8):
                 continue
+            if t.startswith(c) and len(t) - len(c) >= 2:      # 'definitieve' is 'definitie' met een uitgang, geen typefout
+                continue
             d = _afstand(t, c, grens)
             if d <= grens:
                 sleutel = (d, -self.idf[c], c)

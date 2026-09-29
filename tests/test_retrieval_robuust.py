@@ -128,3 +128,23 @@ def test_functies_zetten_de_gelezen_spelling_in_de_opmerkingen():
     for fn, kw in ((features.dekkingscheck, {"situatie": "lekkge in de badkamer"}), (features.precedentzoeker, {"geschil": "lekkge"}),
                    (features.klachtroute, {"situatie": "afwijzing onderverzekring"})):
         assert any("gelezen als" in m for m in fn(**kw)["opmerkingen"]), fn.__name__
+
+
+def test_een_uitgang_is_geen_typefout():
+    # 'definitieve' is 'definitie' met een uitgang; het portaal mag dat niet als spelfout herstellen en melden.
+    from retrieval import Corpus
+    c = Corpus()
+    assert c.correcties("De verzekeraar stuurde een definitieve afwijzing.") == []
+    assert ("onderverzekring", "onderverzekering") in c.correcties("onderverzekring bij de opstal")
+
+
+def test_het_portaal_meldt_alleen_spelfouten_in_wat_de_adviseur_typte_niet_in_de_vaste_zoekwoorden():
+    import features
+    r = features.klachtroute("De klant is het niet eens met de afwijzing. De verzekeraar stuurde een definitieve afwijzing.",
+                             "2026-09-01", False, "")
+    assert not any("Zoekopdracht gelezen als" in m for m in r["opmerkingen"])
+    r = features.klachtroute("De klant heeft een klacht ingedient bij de verzekeraar", "", False, "")
+    assert any("'ingedient' → 'ingediend'" in m for m in r["opmerkingen"])
+    for r in (features.schadeberekening(100000, 200000, 40000), features.verjaringstoets("2024-03-10"),
+              features.waardetoets(1200, 4, 10), features.adviesnotitie("Alleenstaande.", "Inboedel.")):
+        assert not any("Zoekopdracht gelezen als" in m for m in r.get("opmerkingen") or []), r["functie"]
