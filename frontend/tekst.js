@@ -63,6 +63,15 @@ function metVerwijzingen(s, ctx) {
     if (m.index > laatste) uit.push(s.slice(laatste, m.index));
     const info = ctx.perTekst.get(m[1].toLowerCase());
     const gefundeerd = info.status === "ok";
+    if (info.soort === "citaat") {                     // aangehaalde tekst: woordelijk in de invoer of de bronnen, of niet
+      uit.push(h("span", {
+        class: `verw citaat ${gefundeerd ? "ok" : "slecht"}`,
+        title: gefundeerd ? "Staat woordelijk in de invoer of de bronnen."
+          : "Dit citaat staat NIET woordelijk in de invoer of de bronnen. Het model heeft het geparafraseerd of verzonnen; lees het in het origineel.",
+      }, m[1]));
+      laatste = m.index + m[0].length;
+      continue;
+    }
     if (GETAL.has(info.soort)) {                       // bedragen, percentages en datums: geen bron om naartoe te gaan
       uit.push(h("span", {
         class: `verw getal ${gefundeerd ? "ok" : "slecht"}`,

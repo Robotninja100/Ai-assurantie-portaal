@@ -388,6 +388,9 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
 .verw.getal { cursor: default; padding: 0 2px; }
 .verw.getal.ok { background: none; border-color: transparent; color: inherit; font-weight: inherit; border-bottom: 1px dotted var(--accent); border-radius: 0; }
 .verw.getal.slecht { cursor: help; }
+.verw.citaat { white-space: normal; cursor: default; font-weight: inherit; }
+.verw.citaat.ok { background: none; border-color: transparent; color: inherit; padding: 0; border-bottom: 1px dotted var(--accent); border-radius: 0; }
+.verw.citaat.slecht { cursor: help; }
 .invulveld { background: var(--let-bg); color: var(--let); border: 1px dashed var(--let-lijn); border-radius: 5px; padding: 0 5px; font-weight: 600; font-size: .92em; }
 
 .document { padding: var(--s6) var(--s7); border: 1px solid var(--lijn); border-radius: var(--r-1); background: var(--vlak); }

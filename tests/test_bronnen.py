@@ -235,3 +235,53 @@ def test_een_lid_dat_niet_bestaat_wordt_gemarkeerd_een_bestaand_lid_niet():
 
 def test_artikel_zonder_bekende_leden_wordt_niet_op_lid_afgekeurd():
     assert ongefundeerd("Zie artikel 43 lid 2 BGfo.") == set()
+
+
+# ------------------------------------------------------------ citaten: tussen aanhalingstekens staat letterlijke tekst
+
+DOSSIER = ("Adviesdossier: De klant heeft een risicobereidheid van laag opgegeven en wenst dekking voor inboedel. "
+           "Er is geen toelichting op het advies vastgelegd.")
+
+
+def _citaten(antwoord, toegestaan=DOSSIER):
+    c = grounding.controleer(antwoord, {}, toegestaan)
+    return ([x for x in c["gefundeerd"] if x["soort"] == "citaat"], [x for x in c["ongefundeerd"] if x["soort"] == "citaat"], c)
+
+
+def test_woordelijk_citaat_uit_de_invoer_is_gefundeerd():
+    ok, slecht, _ = _citaten('Het dossier zegt: "De klant heeft een risicobereidheid van laag opgegeven" en dat klopt.')
+    assert len(ok) == 1 and not slecht
+
+
+def test_geparafraseerd_of_verzonnen_citaat_wordt_gemarkeerd():
+    ok, slecht, c = _citaten('Het dossier zegt: "De klant heeft een hoge risicobereidheid opgegeven en wenst alles".')
+    assert not ok and len(slecht) == 1
+    assert c["oordeel"] == "ONGEFUNDEERD"
+
+
+def test_citaat_mag_hoofdletters_leestekens_en_weglatingen_verschillen_maar_de_woorden_niet():
+    ok, slecht, _ = _citaten('Zie “de klant heeft een RISICOBEREIDHEID van laag [...] wenst dekking voor inboedel”.')
+    assert len(ok) == 1 and not slecht
+
+
+def test_korte_aangehaalde_termen_en_apostrofs_geven_geen_vals_alarm():
+    ok, slecht, _ = _citaten("Zo'n klant belt 's ochtends; het woord 'collectief' en \"laag\" staan er, zo'n dossier is 's avonds klaar.")
+    assert not ok and not slecht
+
+
+def test_citaat_telt_niet_als_verwijzing_voor_het_oordeel():
+    _, _, c = _citaten('Het dossier zegt: "De klant heeft een risicobereidheid van laag opgegeven".')
+    assert c["oordeel"] == "GEEN_VERWIJZINGEN"
+
+
+def test_zonder_toegestane_tekst_worden_citaten_niet_gecontroleerd():
+    c = grounding.controleer('Het dossier zegt: "De klant heeft een hoge risicobereidheid opgegeven en wenst alles".', {})
+    assert not [x for x in c["ongefundeerd"] if x["soort"] == "citaat"]
+
+
+def test_maskeer_zet_de_markering_direct_achter_het_ongecontroleerde_citaat_en_laat_de_rest_staan():
+    antwoord = 'Volgens art. 7:999 staat er "De klant heeft een hoge risicobereidheid opgegeven en wenst alles" in het dossier.'
+    c = grounding.controleer(antwoord, {}, DOSSIER)
+    masked = grounding.maskeer(antwoord, c)
+    assert 'wenst alles" ⚠️[niet letterlijk in de invoer of de bronnen] in het dossier' in masked
+    assert "7:999 ⚠️[niet in de opgehaalde bronnen]" in masked
