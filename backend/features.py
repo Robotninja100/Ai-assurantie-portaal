@@ -269,6 +269,19 @@ VERZEKERINGSRECHT = _wet("BW")
 GEDRAGSREGELS = _wet("Wft", "BGfo")
 
 
+def _gelezen_als(correcties) -> Optional[str]:
+    """De melding bij een herstelde spelling in de zoekopdracht; None als er niets is hersteld."""
+    if not correcties:
+        return None
+    return ("Zoekopdracht gelezen als: " + "; ".join(f"'{a}' → '{b}'" for a, b in correcties)
+            + ". Klopt dat niet, pas dan de spelling aan.")
+
+
+def _meld(ctx: Dict, opmerkingen=None) -> List[str]:
+    """De meldingen bij een aanvraag: wat er met de invoer is gedaan (afgekapt) en hoe de spelling is gelezen."""
+    return list(opmerkingen or []) + ([m] if (m := _gelezen_als(ctx.get("correcties"))) else [])
+
+
 def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=(), waar=None) -> Dict:
     opgehaald, blokken = {}, []
     waar = waar or {}
@@ -287,7 +300,8 @@ def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=(), waar=None
             titel = {"wetgeving": "WETGEVING", "kifid": "KIFID-UITSPRAKEN",
                      "polisvoorwaarden": "POLISVOORWAARDEN"}[b]
             blokken.append(f"=== {titel} ===\n{blk}")
-    return {"opgehaald": opgehaald, "blok": "\n\n".join(blokken) or "(geen bronnen gevonden)"}
+    return {"opgehaald": opgehaald, "blok": "\n\n".join(blokken) or "(geen bronnen gevonden)",
+            "correcties": CORPUS.correcties(vraag)}
 
 
 def _bronlijst(opgehaald: Dict) -> List[Dict]:
@@ -333,7 +347,7 @@ def dekkingscheck(situatie: str, product: str = "") -> Dict:
         "Als de bronnen geen uitsluitsel geven, zeg dat en benoem welke polisvoorwaarden "
         "de adviseur moet opvragen.")
     return {"functie": "dekkingscheck", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": _meld(ctx),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 1000}
 
 
@@ -350,7 +364,8 @@ def precedentzoeker(geschil: str) -> Dict:
     for d in docs:
         o = _uitkomst(d)
         telling[o] = telling.get(o, 0) + 1
-    ctx = {"opgehaald": {"kifid": docs}, "blok": _blok("kifid", rows) or "(geen uitspraken gevonden)"}
+    ctx = {"opgehaald": {"kifid": docs}, "blok": _blok("kifid", rows) or "(geen uitspraken gevonden)",
+           "correcties": CORPUS.correcties(geschil)}
 
     samenvatting = ", ".join(f"{v}x {k}" for k, v in sorted(telling.items(), key=lambda x: -x[1]))
     gebruiker = (
@@ -364,7 +379,7 @@ def precedentzoeker(geschil: str) -> Dict:
         "Tel zelf NIETS; de verdeling hierboven is al berekend. Trek geen conclusie die "
         "breder is dan deze uitspraken dragen.")
     return {"functie": "precedentzoeker", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": _meld(ctx),
             "bronnen": _bronlijst(ctx["opgehaald"]),
             "berekening": {"onderwerp": "Verdeling gepubliceerde uitkomsten",
                            "telling": telling, "aantal_uitspraken": len(docs),
@@ -535,7 +550,7 @@ def dossiercheck(dossiertekst: str) -> Dict:
         "3. Welk concreet risico loopt de adviseur bij een klacht?\n"
         "Wees streng. Een ontbrekend element niet benoemen is erger dan te streng zijn.")
     return {"functie": "dossiercheck", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": opmerkingen,
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": _meld(ctx, opmerkingen),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 900}
 
 
@@ -657,7 +672,7 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
         "3. Welke informatie moet mee bij indiening?\n"
         "Staat een termijn niet in de bronnen, zeg dat dan in plaats van een termijn te noemen.")
     return {"functie": "klachtroute", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": bool(u),
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "tekst_uit_code": bool(u), "opmerkingen": _meld(ctx),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": u.to_dict() if u else None, "max_tokens": 800}
 
 
@@ -678,7 +693,7 @@ def afwijzingsanalyse(brieftekst: str) -> Dict:
         "4. Welk bewijs moet de adviseur verzamelen?\n"
         "Overschat de zaak niet. Als de afwijzing terecht lijkt, zeg dat eerlijk.")
     return {"functie": "afwijzingsanalyse", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": opmerkingen,
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": _meld(ctx, opmerkingen),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 900}
 
 
@@ -686,7 +701,8 @@ def afwijzingsanalyse(brieftekst: str) -> Dict:
 
 def adviesnotitie(klantsituatie: str, advies: str) -> Dict:
     ctx = _context("passend advies vastlegging dossier informatieverstrekking klantprofiel "
-                   "motivering", ["wetgeving"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS})
+                   "motivering", ["wetgeving"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS},
+                   grondslag=DOSSIER_ARTIKELEN)
     gebruiker = (
         f"KLANTSITUATIE:\n{klantsituatie}\n\nGEGEVEN ADVIES:\n{advies}\n\n"
         "Stel een dossiernotitie op die voldoet aan de vastleggingsvereisten uit de bronnen.\n"
@@ -696,7 +712,7 @@ def adviesnotitie(klantsituatie: str, advies: str) -> Dict:
         "letterlijk: '[AAN TE VULLEN DOOR ADVISEUR]'. Een notitie met verzonnen klantgegevens "
         "is erger dan een notitie met gaten.")
     return {"functie": "adviesnotitie", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": _meld(ctx),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 800}
 
 
@@ -737,7 +753,7 @@ def begripsuitleg(begrip: str) -> Dict:
         "Komt het begrip niet in de bronnen voor, zeg dan dat het niet in de geraadpleegde "
         "bronnen staat en leg NIETS uit uit eigen kennis.")
     return {"functie": "begripsuitleg", "systeem": grounding.systeemprompt(ctx["blok"]),
-            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"],
+            "gebruiker": gebruiker, "opgehaald": ctx["opgehaald"], "opmerkingen": _meld(ctx),
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 700}
 
 

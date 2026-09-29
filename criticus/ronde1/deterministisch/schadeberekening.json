@@ -26,6 +26,20 @@
     "uitkomst": null
    },
    {
+    "soort": "wetgeving",
+    "label": "BW art. 7:955",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
     "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 11.6",
     "type": "schaderegeling",
@@ -42,6 +56,20 @@
    {
     "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
@@ -93,7 +121,13 @@
     "zelf_te_dragen": "10500.00",
     "zelf_te_dragen_door_onderverzekering": "10000.00",
     "zelf_te_dragen_eigen_risico": "500.00"
-   }
+   },
+   "uitleg": [
+    "De verzekerde som (€ 150.000,00) is 75,00% van de werkelijke waarde (€ 200.000,00). Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de schade dan naar evenredigheid vergoed, hier 75,00% van de schade.",
+    "Bij een schade van € 40.000,00 is dat € 30.000,00.",
+    "Daarna is het eigen risico van € 500,00 in mindering gebracht; die volgorde volgt uit de polisvoorwaarden. Dat geeft € 29.500,00.",
+    "De uitkering is € 29.500,00. Van de totale schade van € 40.000,00 draagt de verzekerde zelf € 10.500,00 (€ 10.000,00 door onderverzekering en € 500,00 eigen risico)."
+   ]
   },
   "duur_sec": 0.001
  },
@@ -124,6 +158,20 @@
     "uitkomst": null
    },
    {
+    "soort": "wetgeving",
+    "label": "BW art. 7:955",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
     "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 11.6",
     "type": "schaderegeling",
@@ -140,6 +188,20 @@
    {
     "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
@@ -191,9 +253,15 @@
     "zelf_te_dragen": "6916.67",
     "zelf_te_dragen_door_onderverzekering": "6666.67",
     "zelf_te_dragen_eigen_risico": "250.00"
-   }
+   },
+   "uitleg": [
+    "De verzekerde som (€ 100.000,00) is 33,33% van de werkelijke waarde (€ 300.000,00). Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de schade dan naar evenredigheid vergoed, hier 33,33% van de schade.",
+    "Bij een schade van € 10.000,00 is dat € 3.333,33.",
+    "Daarna is het eigen risico van € 250,00 in mindering gebracht; die volgorde volgt uit de polisvoorwaarden. Dat geeft € 3.083,33.",
+    "De uitkering is € 3.083,33. Van de totale schade van € 10.000,00 draagt de verzekerde zelf € 6.916,67 (€ 6.666,67 door onderverzekering en € 250,00 eigen risico)."
+   ]
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "schadeberekening-03",
@@ -230,6 +298,20 @@
     "uitkomst": null
    },
    {
+    "soort": "wetgeving",
+    "label": "BW art. 7:955",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
     "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 11.6",
     "type": "schaderegeling",
@@ -249,6 +331,20 @@
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
    }
   ],
   "berekening": {
@@ -261,7 +357,8 @@
    "waarschuwingen": [
     "Werkelijke waarde is nul of negatief; breuk niet te bepalen."
    ],
-   "details": {}
+   "details": {},
+   "uitleg": []
   },
   "duur_sec": 0.0
  },
@@ -299,6 +396,13 @@
     "uitkomst": null
    },
    {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
     "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 11.6",
     "type": "schaderegeling",
@@ -315,6 +419,20 @@
    {
     "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
@@ -367,7 +485,13 @@
     "zelf_te_dragen": "100000.00",
     "zelf_te_dragen_door_onderverzekering": "100000.00",
     "zelf_te_dragen_eigen_risico": "0.00"
-   }
+   },
+   "uitleg": [
+    "De ingevoerde schade (€ 300.000,00) is hoger dan de werkelijke waarde (€ 200.000,00); de berekening gaat uit van de waarde als hoogste schade (€ 200.000,00).",
+    "De verzekerde som (€ 100.000,00) is 50,00% van de werkelijke waarde (€ 200.000,00). Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de schade dan naar evenredigheid vergoed, hier 50,00% van de schade.",
+    "Bij een schade van € 200.000,00 is dat € 100.000,00.",
+    "De uitkering is € 100.000,00. Van de totale schade van € 200.000,00 draagt de verzekerde zelf € 100.000,00 (€ 100.000,00 door onderverzekering)."
+   ]
   },
   "duur_sec": 0.0
  },
@@ -412,6 +536,20 @@
     "uitkomst": null
    },
    {
+    "soort": "wetgeving",
+    "label": "BW art. 7:955",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
     "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 11.6",
     "type": "schaderegeling",
@@ -428,6 +566,20 @@
    {
     "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
@@ -494,9 +646,16 @@
     "zelf_te_dragen": "13800.00",
     "zelf_te_dragen_door_onderverzekering": "12800.00",
     "zelf_te_dragen_eigen_risico": "1000.00"
-   }
+   },
+   "uitleg": [
+    "De verzekerde som (€ 120.000,00) is 60,00% van de werkelijke waarde (€ 200.000,00). Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de schade dan naar evenredigheid vergoed, hier 60,00% van de schade.",
+    "Bij een schade van € 30.000,00 is dat € 18.000,00.",
+    "Daarna is het eigen risico van € 1.000,00 in mindering gebracht; die volgorde volgt uit de polisvoorwaarden. Dat geeft € 17.000,00.",
+    "De bereddingskosten (€ 2.000,00) worden bij onderverzekering ook naar evenredigheid vergoed (art. 7:959 lid 2 BW): € 1.200,00. Ze mogen boven de verzekerde som uitgaan (art. 7:959 lid 1 BW).",
+    "De uitkering is € 18.200,00. Van de totale schade van € 32.000,00 draagt de verzekerde zelf € 13.800,00 (€ 12.800,00 door onderverzekering en € 1.000,00 eigen risico)."
+   ]
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.0
  },
  {
   "id": "schadeberekening-07",
@@ -546,6 +705,13 @@
     "uitkomst": null
    },
    {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
     "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 11.6",
     "type": "schaderegeling",
@@ -562,6 +728,20 @@
    {
     "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
@@ -612,7 +792,12 @@
     "zelf_te_dragen": "0.00",
     "zelf_te_dragen_boven_verzekerde_som": "0.00",
     "zelf_te_dragen_eigen_risico": "0.00"
-   }
+   },
+   "uitleg": [
+    "De verzekerde som (€ 100.000,00) is niet lager dan de werkelijke waarde (€ 100.000,00). Er is geen onderverzekering en de schade wordt niet naar evenredigheid verminderd.",
+    "De bereddingskosten (€ 3.000,00) worden volledig vergoed, ook boven de verzekerde som (art. 7:959 lid 1 BW).",
+    "De uitkering is € 103.000,00. Van de totale schade van € 103.000,00 draagt de verzekerde zelf € 0,00."
+   ]
   },
   "duur_sec": 0.0
  },
@@ -665,6 +850,20 @@
     "uitkomst": null
    },
    {
+    "soort": "wetgeving",
+    "label": "BW art. 7:955",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
     "soort": "polis",
     "label": "opstalverzekering Woonhuis art. 11.6",
     "type": "schaderegeling",
@@ -681,6 +880,20 @@
    {
     "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
@@ -740,7 +953,13 @@
     "zelf_te_dragen": "160.00",
     "zelf_te_dragen_door_onderverzekering": "160.00",
     "zelf_te_dragen_eigen_risico": "0.00"
-   }
+   },
+   "uitleg": [
+    "De verzekerde som (€ 100.000,00) is 80,00% van de werkelijke waarde (€ 125.000,00). Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de schade dan naar evenredigheid vergoed, hier 80,00% van de schade.",
+    "Bij een schade van € 0,00 is dat € 0,00.",
+    "De bereddingskosten (€ 800,00) worden bij onderverzekering ook naar evenredigheid vergoed (art. 7:959 lid 2 BW): € 640,00. Ze mogen boven de verzekerde som uitgaan (art. 7:959 lid 1 BW).",
+    "De uitkering is € 640,00. Van de totale schade van € 800,00 draagt de verzekerde zelf € 160,00 (€ 160,00 door onderverzekering)."
+   ]
   },
   "duur_sec": 0.0
  },

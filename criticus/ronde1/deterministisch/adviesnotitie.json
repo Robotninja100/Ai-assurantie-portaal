@@ -41,7 +41,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.047
  },
  {
   "id": "adviesnotitie-02",
@@ -85,7 +85,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.048
  },
  {
   "id": "adviesnotitie-03",
@@ -129,7 +129,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.059
  },
  {
   "id": "adviesnotitie-04",
@@ -173,7 +173,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.048
  },
  {
   "id": "adviesnotitie-05",
@@ -217,7 +217,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.047
  },
  {
   "id": "adviesnotitie-06",
@@ -261,7 +261,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.053
  },
  {
   "id": "adviesnotitie-07",
@@ -305,7 +305,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.051
  },
  {
   "id": "adviesnotitie-08",
@@ -349,7 +349,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.049
  },
  {
   "id": "adviesnotitie-09",
@@ -393,7 +393,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.05
  },
  {
   "id": "adviesnotitie-10",
@@ -437,6 +437,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.05
  }
 ]

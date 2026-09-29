@@ -41,13 +41,6 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:960",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
     "label": "BW art. 7:959",
     "type": null,
     "kant": null,
@@ -55,7 +48,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:928",
+    "label": "BW art. 7:960",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:925",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -69,14 +69,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:930",
+    "label": "BW art. 7:944",
     "type": null,
     "kant": null,
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.01
+  "duur_sec": 0.042
  },
  {
   "id": "dekkingscheck-02",
@@ -155,7 +155,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.005
+  "duur_sec": 0.03
  },
  {
   "id": "dekkingscheck-03",
@@ -171,7 +171,7 @@
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 1.1 sub x tot en met z",
+    "label": "opstalverzekering Woonhuis art. 4.3 sub h",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
@@ -185,14 +185,14 @@
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 4.3 sub h",
+    "label": "inboedelverzekering art. 2.8.3 sub i en j",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.8.3 sub i en j",
+    "label": "inboedelverzekering art. 1.1 sub x tot en met z",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
@@ -234,7 +234,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.005
+  "duur_sec": 0.072
  },
  {
   "id": "dekkingscheck-04",
@@ -243,7 +243,7 @@
   "bronnen": [
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.8 Diefstal van de auto",
+    "label": "opstalverzekering Woonhuis art. 4.3 sub j en k",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
@@ -257,15 +257,15 @@
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 4.3 sub j en k",
+    "label": "autoverzekering (WA/casco) art. 2.8 Diefstal van de auto",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.15.1 sub f",
-    "type": "dekking",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
@@ -313,7 +313,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.005
+  "duur_sec": 0.007
  },
  {
   "id": "dekkingscheck-05",
@@ -329,14 +329,14 @@
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.15.1 sub g en h",
+    "label": "autoverzekering (WA/casco) art. 2.15.1 sub a tot en met e",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.16",
+    "label": "autoverzekering (WA/casco) art. 2.15.1 sub g en h",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
@@ -350,7 +350,7 @@
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.8 Diefstal van de auto",
+    "label": "autoverzekering (WA/casco) art. 2.16",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
@@ -364,7 +364,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:954",
+    "label": "BW art. 7:925",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -378,21 +378,21 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:940",
+    "label": "BW art. 7:928",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:952",
+    "label": "BW art. 7:942",
     "type": null,
     "kant": null,
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.005
+  "duur_sec": 0.072
  },
  {
   "id": "dekkingscheck-06",
@@ -450,13 +450,20 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.005
+  "duur_sec": 0.01
  },
  {
   "id": "dekkingscheck-07",
   "functie": "dekkingscheck",
   "http_status": 200,
   "bronnen": [
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
    {
     "soort": "polis",
     "label": "algemene voorwaarden schadeverzekering art. 9.3",
@@ -473,13 +480,6 @@
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 1.7.3",
-    "type": "verjaring",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
     "label": "inboedelverzekering art. 1.7.2",
     "type": "verplichting verzekerde",
     "kant": null,
@@ -487,8 +487,8 @@
    },
    {
     "soort": "polis",
-    "label": "algemene voorwaarden schadeverzekering art. 7",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -529,7 +529,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.005
+  "duur_sec": 0.078
  },
  {
   "id": "dekkingscheck-08",
@@ -608,7 +608,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.122
  },
  {
   "id": "dekkingscheck-09",
@@ -687,20 +687,13 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.005
+  "duur_sec": 0.317
  },
  {
   "id": "dekkingscheck-10",
   "functie": "dekkingscheck",
   "http_status": 200,
   "bronnen": [
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.10",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
    {
     "soort": "polis",
     "label": "autoverzekering (WA/casco) art. 2.18",
@@ -710,8 +703,8 @@
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 1.18",
-    "type": "schaderegeling",
+    "label": "autoverzekering (WA/casco) art. 2.15.1 sub g en h",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
@@ -724,8 +717,15 @@
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.15.1 sub g en h",
-    "type": "dekking",
+    "label": "autoverzekering (WA/casco) art. 2.10",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.18",
+    "type": "schaderegeling",
     "kant": null,
     "uitkomst": null
    },
@@ -745,14 +745,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:957",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
+    "label": "BW art. 7:928",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -763,9 +756,16 @@
     "type": null,
     "kant": null,
     "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:957",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.004
+  "duur_sec": 0.086
  }
 ]

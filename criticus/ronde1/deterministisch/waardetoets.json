@@ -13,21 +13,28 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "label": "autoverzekering (WA/casco) art. 2.17",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
-    "type": "dekking",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.4",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
     "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -69,9 +76,10 @@
     "dagwaarde_pct": "62.50",
     "drempel_pct": "40.00",
     "toegepast": "nieuwwaarde"
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.022
  },
  {
   "id": "waardetoets-02",
@@ -87,21 +95,28 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "label": "autoverzekering (WA/casco) art. 2.17",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
-    "type": "dekking",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.4",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
     "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -143,9 +158,10 @@
     "dagwaarde_pct": "33.33",
     "drempel_pct": "40.00",
     "toegepast": "dagwaarde"
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.022
  },
  {
   "id": "waardetoets-03",
@@ -169,21 +185,28 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "label": "autoverzekering (WA/casco) art. 2.17",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
-    "type": "dekking",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.4",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
     "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -199,9 +222,10 @@
    "waarschuwingen": [
     "Levensduur moet groter dan nul zijn."
    ],
-   "details": {}
+   "details": {},
+   "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.023
  },
  {
   "id": "waardetoets-05",
@@ -217,21 +241,28 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "label": "autoverzekering (WA/casco) art. 2.17",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
-    "type": "dekking",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.4",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
     "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -273,9 +304,10 @@
     "dagwaarde_pct": "0.00",
     "drempel_pct": "40.00",
     "toegepast": "dagwaarde"
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.025
  },
  {
   "id": "waardetoets-06",
@@ -291,21 +323,28 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "label": "autoverzekering (WA/casco) art. 2.17",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
-    "type": "dekking",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.4",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
     "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -348,9 +387,10 @@
     "dagwaarde_pct": "40.00",
     "drempel_pct": "40.00",
     "toegepast": "dagwaarde"
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.048
  },
  {
   "id": "waardetoets-07",
@@ -366,21 +406,28 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.7 Uw inboedel in een auto in Nederland",
+    "label": "autoverzekering (WA/casco) art. 2.17",
     "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.2.1",
-    "type": "dekking",
+    "label": "arbeidsongeschiktheidsverzekering (AOV) art. 7.4",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
     "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -422,9 +469,10 @@
     "dagwaarde_pct": "35.00",
     "drempel_pct": "30.00",
     "toegepast": "nieuwwaarde"
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.052
  },
  {
   "id": "waardetoets-08",

@@ -56,7 +56,7 @@
   {
     "id": "begripsuitleg-03",
     "functie": "begripsuitleg",
-    "titel": "Typefout in het begrip: 'onderverzekring'",
+    "titel": "Typefout in het begrip: 'onderverzekring' (het portaal herstelt de spelling en meldt dat)",
     "rommeligheid": [
       "typefouten",
       "grensgeval (geen enkele treffer)"
@@ -66,18 +66,17 @@
     },
     "verwachting": {
       "moet": [
-        "Geeft geen inhoudelijke uitleg maar meldt dat er geen bronnen zijn gevonden (citeer-of-weiger).",
-        "Noemt een concrete vervolgstap: de spelling controleren of het begrip anders omschrijven."
+        "Het portaal meldt aan de adviseur (melding bij de zoekopdracht, los van het antwoord) dat 'onderverzekring' is gelezen als 'onderverzekering'.",
+        "Legt het begrip uit met uitsluitend de opgehaalde bronnen (BW 7:958 lid 5, de evenredigheidsclausules van inboedel en opstal), zonder eigen kennis.",
+        "Noemt een concrete vervolgstap voor de adviseur."
       ],
       "mag_niet": [
-        "Raadt stilzwijgend het bedoelde begrip (onderverzekering) en legt dat uit eigen kennis uit.",
-        "Noemt een wetsartikel, clausule of uitspraak."
+        "Noemt een wetsartikel, clausule of uitspraak die niet in de aangeleverde bronnen staat.",
+        "Vult de uitleg aan met feiten die niet in de bronnen staan."
       ],
-      "harde_checks": {
-        "geweigerd": true
-      }
+      "harde_checks": {}
     },
-    "bron_van_waarheid": "buiten corpus: het woord 'onderverzekring' komt in geen enkel corpusrecord voor, dus de retrieval levert geen bronnen op en het portaal weigert. Twijfel: een toekomstige versie met spellingcorrectie zou hier wel kunnen antwoorden."
+    "bron_van_waarheid": "BW 7:958 (onderverzekering, lid 5 evenredigheid). Sinds ronde 1 herstelt backend/retrieval.py een typefout (alleen woorden die nergens in het corpus staan) en meldt dat; eerder weigerde het portaal hier."
   },
   {
     "id": "begripsuitleg-04",

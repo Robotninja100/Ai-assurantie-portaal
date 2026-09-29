@@ -92,3 +92,39 @@ def test_zoeken_is_deterministisch_ook_bij_een_andere_hashvolgorde():
     uitkomsten = {subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, cwd=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                                  env={**os.environ, "PYTHONHASHSEED": s}).stdout for s in ("0", "1", "2", "3")}
     assert len(uitkomsten) == 1 and "[" in next(iter(uitkomsten))
+
+
+def test_een_geldig_woord_dat_alleen_in_deze_bron_ontbreekt_wordt_niet_gecorrigeerd(corpus):
+    """'verjaring' staat in de wet en de polissen maar niet in het Kifid-register. Vroeger werd het daar 'verklaring':
+    het portaal vond dan een uitspraak en weigerde niet. Een typefout is een woord dat nergens in het corpus staat."""
+    kifid = corpus.index["kifid"]
+    assert "verjaring" not in kifid.idf and "verjaring" in kifid.bekend
+    assert kifid._dichtstbij("verjaring") == ""
+    assert corpus.zoek("kifid", "verjaring stuiting 7:942", 5) == []
+
+
+def test_precedentzoeker_weigert_bij_een_vraag_waar_het_kifid_register_niets_over_heeft():
+    import features
+    r = features.precedentzoeker("verjaring stuiting 7:942")
+    assert r["bronnen"] == []
+
+
+# ---------------------------------------------------------------- een herstelde spelling wordt altijd gemeld
+
+def test_corpus_meldt_welke_woorden_als_typefout_zijn_gelezen(corpus):
+    assert corpus.correcties("onderverzekring") == [("onderverzekring", "onderverzekering")]
+    assert corpus.correcties("lekkge en stormscade") == [("lekkge", "lekkage"), ("stormscade", "stormschade")]
+    assert corpus.correcties("eigen risico bij inbraak") == []                     # geen typefouten, geen melding
+    assert corpus.correcties("verjaring stuiting") == []                           # geldig woord, alleen niet in elke bron
+
+
+def test_functies_zetten_de_gelezen_spelling_in_de_opmerkingen():
+    import features
+    r = features.begripsuitleg("onderverzekring")
+    assert r["opmerkingen"] == ["Zoekopdracht gelezen als: 'onderverzekring' → 'onderverzekering'. Klopt dat niet, pas dan de spelling aan."]
+    assert r["bronnen"], "met de herstelde spelling zijn er bronnen"
+    assert any("7:958" in b["label"] for b in r["bronnen"])
+    assert features.begripsuitleg("onderverzekering")["opmerkingen"] == []
+    for fn, kw in ((features.dekkingscheck, {"situatie": "lekkge in de badkamer"}), (features.precedentzoeker, {"geschil": "lekkge"}),
+                   (features.klachtroute, {"situatie": "afwijzing onderverzekring"})):
+        assert any("gelezen als" in m for m in fn(**kw)["opmerkingen"]), fn.__name__

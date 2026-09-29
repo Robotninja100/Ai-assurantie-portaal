@@ -27,7 +27,7 @@
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 11.7",
+    "label": "inboedelverzekering art. 2.6.3",
     "type": "schaderegeling",
     "kant": null,
     "uitkomst": null
@@ -41,7 +41,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.004
+  "duur_sec": 0.0
  },
  {
   "id": "begripsuitleg-02",
@@ -98,9 +98,45 @@
   "id": "begripsuitleg-03",
   "functie": "begripsuitleg",
   "http_status": 200,
-  "bronnen": [],
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.10",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.6",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.6.3",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.028
  },
  {
   "id": "begripsuitleg-04",
@@ -130,13 +166,6 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
-    "type": "eigen risico",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
     "label": "inboedelverzekering art. 2.17.14",
     "type": "eigen risico",
     "kant": null,
@@ -144,7 +173,14 @@
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.9",
     "type": "eigen risico",
     "kant": null,
     "uitkomst": null
@@ -165,14 +201,14 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2025-0770",
+    "label": "Kifid 2026-0755",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.024
  },
  {
   "id": "begripsuitleg-05",
@@ -244,7 +280,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.125
  },
  {
   "id": "begripsuitleg-06",
@@ -316,7 +352,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.028
  },
  {
   "id": "begripsuitleg-07",
@@ -324,7 +360,7 @@
   "http_status": 200,
   "bronnen": [],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.056
  },
  {
   "id": "begripsuitleg-08",
@@ -361,15 +397,15 @@
    },
    {
     "soort": "polis",
-    "label": "algemene voorwaarden schadeverzekering art. 15",
-    "type": "schaderegeling",
+    "label": "algemene voorwaarden schadeverzekering art. 7",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "algemene voorwaarden schadeverzekering art. 7",
-    "type": "uitsluiting",
+    "label": "algemene voorwaarden schadeverzekering art. 15",
+    "type": "schaderegeling",
     "kant": null,
     "uitkomst": null
    },
@@ -396,7 +432,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.0
+  "duur_sec": 0.046
  },
  {
   "id": "begripsuitleg-09",
@@ -463,28 +499,28 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 7.7",
-    "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
     "label": "inboedelverzekering art. 2.17.10",
     "type": "schaderegeling",
     "kant": null,
     "uitkomst": null
    },
    {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 7.7",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
     "soort": "kifid",
-    "label": "Kifid 2026-0776",
+    "label": "Kifid 2025-0781",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2025-0781",
+    "label": "Kifid 2026-0776",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
@@ -498,6 +534,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.017
  }
 ]

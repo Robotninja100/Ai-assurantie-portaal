@@ -12,10 +12,16 @@ Twee lagen, want ze bewijzen iets anders:
   volledig         via de HTTP-API van een draaiende server, MET taalmodel. Legt antwoord, controle
                    van verwijzingen, gebruikt model en tijden vast voor de beoordelaar.
 
+  standin          PLAFONDPROEF: dezelfde opdrachten als de API geeft, maar het antwoord komt uit bestanden die een
+                   sterk stand-in-model schreef (zie scripts/criticus_prompts.py), en gaat door dezelfde citeercontrole.
+                   Zegt hoe goed bronnen, opdrachten en bewaker zijn als het model goed is; niets over de gratis
+                   OpenRouter-modellen. Het dossier vermeldt dat de schrijver een stand-in was.
+
 Gebruik:
   python3 scripts/criticus_ronde.py deterministisch
   python3 scripts/criticus_ronde.py volledig --basis http://127.0.0.1:8000 [--functie X] [--max 3]
-  python3 scripts/criticus_ronde.py dossier          # schrijft per functie een leesbaar beoordelingsdossier
+  python3 scripts/criticus_ronde.py standin --antwoorden /pad/naar/prompts/antwoorden
+  python3 scripts/criticus_ronde.py dossier [--laag standin]   # schrijft per functie een leesbaar beoordelingsdossier
 
 De uitvoer staat in criticus/<ronde>/. Exitcode 1 als een harde check faalt (deterministisch) of als er
 casussen ontbreken; 0 alleen als alles klopt.
@@ -223,6 +229,37 @@ def draai_volledig(casus, basis, timeout):
     return res
 
 
+# ------------------------------------------------------------------ laag 3: stand-in (plafondproef)
+
+def draai_standin(casus, antwoorden):
+    import api
+    import features
+    res = {"id": casus["id"], "functie": casus["functie"], "http_status": 200, "tekst": "", "gebeurtenissen": []}
+    try:
+        opdracht = features.FUNCTIES[casus["functie"]]["fn"](**casus["invoer"])
+    except (TypeError, ValueError, ArithmeticError) as e:
+        res.update(http_status=400, fout=f"{type(e).__name__}: {e}", bronnen=[], berekening=None)
+        return res
+    res.update(bronnen_volledig=opdracht["bronnen"], bronnen=bronnen_kort(opdracht["bronnen"]),
+               berekening=opdracht.get("berekening"), opmerkingen=opdracht.get("opmerkingen"))
+    if not opdracht["bronnen"]:
+        res.update(weigering="Er zijn geen bronnen gevonden die deze vraag kunnen onderbouwen. Het portaal geeft daarom geen "
+                             "inhoudelijk antwoord.",
+                   controle={"oordeel": "GEWEIGERD_GEEN_BRONNEN", "gefundeerd": [], "ongefundeerd": []})
+        return res
+    pad = os.path.join(antwoorden, casus["id"] + ".txt")
+    if not os.path.exists(pad):
+        res.update(onvolledig=True, fout="het stand-in-model schreef geen antwoord voor deze casus")
+        return res
+    antwoord = open(pad, encoding="utf-8").read().strip()
+    controle, gemaskeerd = api.beoordeel_antwoord(opdracht, antwoord, "stop", None, None)
+    res.update(tekst=antwoord, controle=controle, model={"model": "stand-in (plafondproef, sterk model)", "provider": "standin",
+                                                         "overgeslagen": None})
+    if gemaskeerd is not None:
+        res["gemaskeerd"] = gemaskeerd
+    return res
+
+
 # ------------------------------------------------------------------ dossier voor de beoordelaar
 
 def dossier(functie, casussen, resultaten):
@@ -243,6 +280,8 @@ def dossier(functie, casussen, resultaten):
         if r.get("http_status") == 400:
             regels += [f"**Uitkomst: HTTP 400 (invoer geweigerd)**: {r.get('fout')}", ""]
             continue
+        for opm in r.get("opmerkingen") or []:
+            regels += [f"**Melding van het portaal aan de adviseur**: {opm}", ""]
         regels.append("**Getoonde bronnen**")
         for b in r.get("bronnen_volledig") or []:
             regels.append(f"- [{b['soort']}] {b['label']}" + (f" ({b.get('type') or b.get('uitkomst') or ''})" if (b.get('type') or b.get('uitkomst')) else "")
@@ -300,7 +339,10 @@ def samenvatting(casussen, resultaten, laag):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("laag", choices=["deterministisch", "volledig", "dossier"])
+    ap.add_argument("laag", choices=["deterministisch", "volledig", "standin", "dossier"])
+    ap.add_argument("--antwoorden", help="standin: map met <id>.txt-antwoorden van het stand-in-model")
+    ap.add_argument("--laag-dossier", "--laag", dest="dossier_laag", choices=["auto", "deterministisch", "volledig", "standin"],
+                    default="auto", help="dossier: uit welke laag; standaard de beste beschikbare")
     ap.add_argument("--ronde", default="ronde1")
     ap.add_argument("--functie")
     ap.add_argument("--max", type=int, default=0, help="alleen de eerste N casussen per functie")
@@ -327,15 +369,32 @@ def main():
         # bouwt uit de beste beschikbare uitvoer: volledig als die er is, anders deterministisch
         for f in sorted({c["functie"] for c in casussen}):
             res = {}
-            for laag in ("deterministisch", "volledig"):
+            lagen = ("deterministisch", "volledig", "standin") if a.dossier_laag == "auto" else (a.dossier_laag,)
+            for laag in lagen:
                 pad = os.path.join(uitmap, laag, f"{f}.json")
                 if os.path.exists(pad):
                     res = {r["id"]: r for r in json.load(open(pad, encoding="utf-8"))}
             os.makedirs(os.path.join(uitmap, "dossiers"), exist_ok=True)
             tekst = dossier(f, [c for c in casussen if c["functie"] == f], res)
-            open(os.path.join(uitmap, "dossiers", f"{f}.md"), "w", encoding="utf-8").write(tekst)
-            print(f"dossier: criticus/{a.ronde}/dossiers/{f}.md ({len(res)} uitkomsten)")
+            naam = f"{f}.md" if a.dossier_laag in ("auto", "volledig") else f"{f}.{a.dossier_laag}.md"
+            open(os.path.join(uitmap, "dossiers", naam), "w", encoding="utf-8").write(tekst)
+            print(f"dossier: criticus/{a.ronde}/dossiers/{naam} ({len(res)} uitkomsten)")
         return 1 if ontbreekt else 0
+
+    if a.laag == "standin":
+        if not a.antwoorden or not os.path.isdir(a.antwoorden):
+            print("standin heeft --antwoorden <map> nodig (zie scripts/criticus_prompts.py)", file=sys.stderr)
+            return 2
+        os.makedirs(os.path.join(uitmap, "standin"), exist_ok=True)
+        resultaten = {c["id"]: draai_standin(c, a.antwoorden) for c in casussen}
+        for f in sorted({c["functie"] for c in casussen}):
+            with open(os.path.join(uitmap, "standin", f"{f}.json"), "w", encoding="utf-8") as fh:
+                json.dump([resultaten[c["id"]] for c in casussen if c["functie"] == f], fh, ensure_ascii=False, indent=1)
+        fouten = samenvatting(casussen, resultaten, "volledig")
+        ontbrekend = [i for i, r in resultaten.items() if r.get("onvolledig")]
+        if ontbrekend:
+            print(f"\n{len(ontbrekend)} antwoord(en) ontbreken: {', '.join(ontbrekend[:8])}", file=sys.stderr)
+        return 1 if (fouten or ontbreekt or ontbrekend) else 0
 
     resultaten = {}
     os.makedirs(os.path.join(uitmap, a.laag), exist_ok=True)

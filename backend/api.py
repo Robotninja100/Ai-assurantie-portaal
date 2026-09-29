@@ -85,6 +85,24 @@ async def _model_stroom(systeem: str, gebruiker: str, max_tokens: int):
         stop.set()
 
 
+def beoordeel_antwoord(opdracht, antwoord, einde=None, fout=None, duur_sec=None):
+    """
+    De citeercontrole over het volledige antwoord: (controle, gemaskeerde tekst of None). Eén plek, ook voor
+    de criticusronde, zodat wat daar wordt beoordeeld exact is wat de adviseur ziet.
+    """
+    # Getallen en citaten mogen alleen uit de berekening, de invoer van de adviseur of de bronnen komen.
+    # De nummers van opsommingen ('1.' t/m '9.' in de regels en de vraagstelling) tellen niet als getal.
+    toegestaan = grounding.zonder_opsomming("\n".join([opdracht["systeem"], opdracht["gebruiker"]]))
+    controle = grounding.controleer(antwoord, opdracht["opgehaald"], toegestaan,
+                                    json.dumps(opdracht.get("berekening") or {}, ensure_ascii=False))
+    controle["duur_sec"] = duur_sec
+    # Een antwoord dat tegen de maximale lengte aanliep eindigt midden in een zin en mist de
+    # vervolgstap. Dat mag nooit voor een volledig antwoord doorgaan.
+    controle["afgekapt"] = einde in ("length", "max_tokens", "content_filter") or bool(fout and fout.get("afgebroken"))
+    controle["einde_reden"] = einde
+    return controle, (grounding.maskeer(antwoord, controle) if controle["ongefundeerd"] else None)
+
+
 MAX_TEKENS = 20_000        # per tekstveld; daarboven is het geen dossier meer maar een misbruik van de dienst
 
 
@@ -238,19 +256,10 @@ def vraag(a: Aanvraag):
         if fout:                                    # halverwege afgebroken: wat er staat is onvolledig
             yield _sse({"type": "fout", "afgebroken": True,
                         "fout": fout["fout"] + " Het antwoord hierboven is onvolledig."})
-        # Getallen en citaten mogen alleen uit de berekening, de invoer van de adviseur of de bronnen komen.
-        # De nummers van opsommingen ('1.' t/m '9.' in de regels en de vraagstelling) tellen niet als getal.
-        toegestaan = grounding.zonder_opsomming("\n".join([opdracht["systeem"], opdracht["gebruiker"]]))
-        controle = grounding.controleer(antwoord, opdracht["opgehaald"], toegestaan,
-                                        json.dumps(opdracht.get("berekening") or {}, ensure_ascii=False))
-        controle["duur_sec"] = round(time.time() - t0, 1)
-        # Een antwoord dat tegen de maximale lengte aanliep eindigt midden in een zin en mist de
-        # vervolgstap. Dat mag nooit voor een volledig antwoord doorgaan.
-        controle["afgekapt"] = einde in ("length", "max_tokens", "content_filter") or bool(fout and fout.get("afgebroken"))
-        controle["einde_reden"] = einde
+        controle, gemaskeerd = beoordeel_antwoord(opdracht, antwoord, einde, fout, round(time.time() - t0, 1))
         yield _sse({"type": "controle", "controle": controle})
-        if controle["ongefundeerd"]:
-            yield _sse({"type": "gemaskeerd", "tekst": grounding.maskeer(antwoord, controle)})
+        if gemaskeerd is not None:
+            yield _sse({"type": "gemaskeerd", "tekst": gemaskeerd})
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(gen(), media_type="text/event-stream",

@@ -83,7 +83,7 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0776",
+    "label": "Kifid 2026-0465",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
@@ -139,9 +139,10 @@
     "laatste_datum_geschilleninstantie": "2026-11-16",
     "kan_naar_geschilleninstantie": false,
     "afhankelijk_van_de_lezing": false
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.006
+  "duur_sec": 0.078
  },
  {
   "id": "klachtroute-02",
@@ -205,11 +206,18 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
+    "soort": "kifid",
+    "label": "Kifid 2026-0868",
     "type": null,
     "kant": null,
-    "uitkomst": null
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0805",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
    },
    {
     "soort": "kifid",
@@ -220,24 +228,10 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0868",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
     "label": "Kifid 2025-0770",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0901",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
    }
   ],
   "berekening": {
@@ -290,9 +284,10 @@
     "laatste_datum_geschilleninstantie": "2026-08-10",
     "kan_naar_geschilleninstantie": false,
     "afhankelijk_van_de_lezing": true
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.039
  },
  {
   "id": "klachtroute-03",
@@ -378,7 +373,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.071
  },
  {
   "id": "klachtroute-04",
@@ -450,13 +445,6 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0811",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
     "label": "Kifid 2025-0901",
     "type": null,
     "kant": null,
@@ -465,6 +453,13 @@
    {
     "soort": "kifid",
     "label": "Kifid 2025-1045",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0811",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
@@ -520,9 +515,10 @@
     "laatste_datum_geschilleninstantie": "2026-07-27",
     "kan_naar_geschilleninstantie": false,
     "afhankelijk_van_de_lezing": true
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.069
  },
  {
   "id": "klachtroute-05",
@@ -581,13 +577,6 @@
    {
     "soort": "wetgeving",
     "label": "BW art. 7:940",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:942",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -671,9 +660,10 @@
     "laatste_datum_geschilleninstantie": "2026-04-27",
     "kan_naar_geschilleninstantie": false,
     "afhankelijk_van_de_lezing": true
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.041
  },
  {
   "id": "klachtroute-06",
@@ -730,20 +720,6 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 57",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
     "soort": "kifid",
     "label": "Kifid 2026-0881",
     "type": null,
@@ -766,7 +742,7 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2025-1045",
+    "label": "Kifid 2025-0874",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
@@ -822,9 +798,10 @@
     "laatste_datum_geschilleninstantie": "2026-09-08",
     "kan_naar_geschilleninstantie": false,
     "afhankelijk_van_de_lezing": true
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.076
  },
  {
   "id": "klachtroute-07",
@@ -881,22 +858,8 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
     "soort": "kifid",
     "label": "Kifid 2026-0811",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0615",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
@@ -914,10 +877,17 @@
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-1045",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.005
+  "duur_sec": 0.052
  },
  {
   "id": "klachtroute-08",
@@ -989,17 +959,17 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2024-1054",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
     "label": "Kifid 2025-0770",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2024-1054",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering (gedeeltelijk) toegewezen"
    },
    {
     "soort": "kifid",
@@ -1010,7 +980,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.064
  },
  {
   "id": "klachtroute-09",
@@ -1067,6 +1037,13 @@
     "uitkomst": null
    },
    {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
     "soort": "kifid",
     "label": "Kifid 2026-0633",
     "type": null,
@@ -1082,17 +1059,17 @@
    },
    {
     "soort": "kifid",
+    "label": "Kifid 2026-0590",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering toegewezen"
+   },
+   {
+    "soort": "kifid",
     "label": "Kifid 2025-0146",
     "type": null,
     "kant": null,
     "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0742",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -1145,9 +1122,10 @@
     "laatste_datum_geschilleninstantie": "2026-08-28",
     "kan_naar_geschilleninstantie": false,
     "afhankelijk_van_de_lezing": true
-   }
+   },
+   "uitleg": []
   },
-  "duur_sec": 0.002
+  "duur_sec": 0.181
  },
  {
   "id": "klachtroute-10",

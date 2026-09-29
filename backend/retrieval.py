@@ -132,19 +132,23 @@ class Index:
         self.avg = (sum(self.len) / self.N) if self.N else 1
         self.idf = {t: math.log(1 + (self.N - n + 0.5) / (n + 0.5)) for t, n in df.items()}
         self._woordenschat = sorted(self.idf)
+        # Alle woorden van ALLE bronnen (Corpus zet dit): een woord dat elders in het corpus voorkomt is geen typefout.
+        self.bekend = set(self.idf)
 
     def _dichtstbij(self, t: str) -> str:
         """
-        Het corpuswoord dat het dichtst bij een onbekend woord ligt ('lekkge' -> 'lekkage'), of ''. Alleen
-        voor woorden die het corpus niet kent, vanaf vijf tekens, met hooguit één fout (twee vanaf negen
-        tekens). Bij gelijke afstand wint het woord met de hoogste idf, daarna alfabetisch: deterministisch.
+        Het corpuswoord dat het dichtst bij een onbekend woord ligt ('lekkge' -> 'lekkage'), of ''. Alleen voor
+        woorden die NERGENS in het corpus voorkomen (een geldig woord dat alleen in deze bron ontbreekt, zoals
+        'verjaring' in het Kifid-register, blijft ontbreken: dan moet het portaal weigeren en niet 'verklaring'
+        vinden), vanaf zes tekens, met hooguit één fout (twee vanaf elf tekens). Bij gelijke afstand wint het
+        woord met de hoogste idf, daarna alfabetisch: deterministisch.
         """
-        if len(t) < 5 or ":" in t or any(c.isdigit() for c in t):
+        if len(t) < 6 or t in self.bekend or ":" in t or any(c.isdigit() for c in t):
             return ""
-        grens = 2 if len(t) >= 9 else 1
+        grens = 2 if len(t) >= 11 else 1
         beste = None
         for c in self._woordenschat:
-            if abs(len(c) - len(t)) > grens or c[0] != t[0] and c[1:2] != t[1:2] and len(t) < 7:
+            if abs(len(c) - len(t)) > grens or (c[0] != t[0] and c[1:2] != t[1:2] and len(t) < 8):
                 continue
             d = _afstand(t, c, grens)
             if d <= grens:
@@ -157,7 +161,7 @@ class Index:
         """`waar` is een optioneel filter op het document; de BM25-statistiek blijft die van het hele corpus."""
         q = [(t, 1.0) for t in tokenize(vraag)]
         # Een woord dat het corpus niet kent is vaak een typefout: het dichtstbijzijnde corpuswoord telt mee, met minder gewicht.
-        q += [(c, 0.7) for t, _ in list(q) if t not in self.idf for c in [self._dichtstbij(t)] if c]
+        q += [(c, 0.6) for t, _ in list(q) if t not in self.idf for c in [self._dichtstbij(t)] if c]
         if not q or not self.docs:
             return []
         scores = []
@@ -217,6 +221,25 @@ class Corpus:
                 self.data[naam], self.index[naam] = [], Index([], velden)
                 self.status[naam] = {"geladen": False, "records": 0, "bestand": os.path.basename(pad),
                                      "fout": f"{type(e).__name__}: {str(e).replace(os.path.dirname(pad), '…')}"}
+
+        alles = set().union(*(ix.idf.keys() for ix in self.index.values())) if self.index else set()
+        for ix in self.index.values():
+            ix.bekend = alles
+
+    def correcties(self, vraag: str, max_n: int = 4) -> List[Tuple[str, str]]:
+        """
+        Welke woorden in de vraag als typefout zijn gelezen: [('onderverzekring', 'onderverzekering')]. Dit hoort bij
+        de zoekopdracht getoond te worden: het portaal mag een spelling herstellen, maar niet stilzwijgend raden.
+        """
+        uit = []
+        for t in dict.fromkeys(tokenize(vraag)):
+            if any(t in ix.bekend for ix in self.index.values()):
+                continue
+            kandidaten = sorted({c for ix in self.index.values() for c in [ix._dichtstbij(t)] if c},
+                                key=lambda c: (_afstand(t, c, 3), c))
+            if kandidaten:
+                uit.append((t, kandidaten[0]))
+        return uit[:max_n]
 
     def zoek(self, bron: str, vraag: str, top=6, waar=None):
         return self.index.get(bron).zoek(vraag, top, waar) if bron in self.index else []

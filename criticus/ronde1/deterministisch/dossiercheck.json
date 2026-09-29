@@ -6,7 +6,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -34,7 +55,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24a",
+    "label": "BGfo art. 86i",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -42,6 +63,13 @@
    {
     "soort": "kifid",
     "label": "Kifid 2026-0465",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0752",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
@@ -62,27 +90,27 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0854",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0781",
+    "label": "Kifid 2026-0806",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.355
  },
  {
   "id": "dossiercheck-02",
   "functie": "dossiercheck",
   "http_status": 200,
   "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
    {
     "soort": "wetgeving",
     "label": "Wft art. 4:23",
@@ -92,14 +120,21 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 40",
+    "label": "Wft art. 4:24a",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24a",
+    "label": "Wft art. 4:25b",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -119,11 +154,11 @@
     "uitkomst": null
    },
    {
-    "soort": "kifid",
-    "label": "Kifid 2024-1054",
+    "soort": "wetgeving",
+    "label": "BGfo art. 86i",
     "type": null,
     "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
+    "uitkomst": null
    },
    {
     "soort": "kifid",
@@ -134,28 +169,35 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2025-0781",
+    "label": "Kifid 2026-0465",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2025-0901",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2024-1054",
     "type": null,
     "kant": null,
     "uitkomst": "vordering (gedeeltelijk) toegewezen"
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0756",
+    "label": "Kifid 2025-0781",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.117
  },
  {
   "id": "dossiercheck-03",
@@ -164,7 +206,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -185,14 +248,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24a",
+    "label": "BGfo art. 86d",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86d",
+    "label": "BGfo art. 86i",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -206,14 +269,21 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2025-0781",
+    "label": "Kifid 2026-0465",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0465",
+    "label": "Kifid 2026-0755",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
@@ -224,17 +294,10 @@
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0752",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.106
  },
  {
   "id": "dossiercheck-04",
@@ -243,7 +306,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -264,14 +348,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24a",
+    "label": "BGfo art. 6",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 6",
+    "label": "BGfo art. 86i",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -306,14 +390,14 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2025-0874",
+    "label": "Kifid 2026-0821",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.274
  },
  {
   "id": "dossiercheck-05",
@@ -322,7 +406,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -337,13 +442,6 @@
    {
     "soort": "wetgeving",
     "label": "BGfo art. 86l",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:24a",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -392,7 +490,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.32
  },
  {
   "id": "dossiercheck-06",
@@ -401,7 +499,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -416,13 +535,6 @@
    {
     "soort": "wetgeving",
     "label": "BGfo art. 86l",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:24a",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -457,27 +569,34 @@
    },
    {
     "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
     "label": "Kifid 2025-0146",
     "type": null,
     "kant": null,
     "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0633",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.233
  },
  {
   "id": "dossiercheck-07",
   "functie": "dossiercheck",
   "http_status": 200,
   "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
    {
     "soort": "wetgeving",
     "label": "Wft art. 4:23",
@@ -487,14 +606,21 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86f",
+    "label": "Wft art. 4:24a",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24a",
+    "label": "Wft art. 4:25b",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -550,7 +676,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.241
  },
  {
   "id": "dossiercheck-08",
@@ -559,7 +685,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -573,7 +720,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24a",
+    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -608,6 +755,13 @@
    },
    {
     "soort": "kifid",
+    "label": "Kifid 2026-0465",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
     "label": "Kifid 2025-0770",
     "type": null,
     "kant": null,
@@ -619,17 +773,10 @@
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-1045",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.278
  },
  {
   "id": "dossiercheck-09",
@@ -638,14 +785,14 @@
   "bronnen": [
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:23",
+    "label": "Wft art. 4:22a",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
+    "label": "Wft art. 4:23",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -659,6 +806,20 @@
    },
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
@@ -666,7 +827,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:22",
+    "label": "BGfo art. 86d",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -694,21 +855,21 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2025-0781",
+    "label": "Kifid 2026-0465",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0465",
+    "label": "Kifid 2025-0781",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.114
  },
  {
   "id": "dossiercheck-10",
@@ -717,7 +878,28 @@
   "bronnen": [
    {
     "soort": "wetgeving",
+    "label": "Wft art. 4:22a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
     "label": "Wft art. 4:23",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:24a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -738,31 +920,17 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 7",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
     "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "kifid",
-    "label": "Kifid 2026-0465",
+    "soort": "wetgeving",
+    "label": "BGfo art. 7",
     "type": null,
     "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0756",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
+    "uitkomst": null
    },
    {
     "soort": "kifid",
@@ -773,20 +941,34 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0415",
+    "label": "Kifid 2026-0752",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0752",
+    "label": "Kifid 2026-0465",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0633",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0756",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.19
  }
 ]
