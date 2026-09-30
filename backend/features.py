@@ -893,7 +893,7 @@ def polisvergelijker(product_a: str, product_b: str) -> Dict:
         b["kant"] = "A" if i < len(ra) else "B"        # de UI toont beide varianten naast elkaar
     return {"functie": "polisvergelijker", "systeem": grounding.systeemprompt(blok),
             "gebruiker": gebruiker, "opgehaald": {"polisvoorwaarden": docs}, "opmerkingen": opmerkingen,
-            "bronnen": bronnen, "berekening": None, "max_tokens": 800}
+            "bronnen": bronnen, "berekening": None, "max_tokens": 1100}     # 14-17 clausules per kant: 800 was krap voor een volledig antwoord met vervolgstap
 
 
 # =============================================================== 8. klachtroute

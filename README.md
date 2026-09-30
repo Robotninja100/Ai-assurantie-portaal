@@ -124,6 +124,15 @@ eerlijk dat er geen antwoord kwam. Waar berekening, uitleg en vervolgstap volled
 kleine lokale model niets: een echte proef liet zien dat het daar redenen verzint. `ASSURANTIE_MODEL_ALTIJD=1`
 dwingt het af, bijvoorbeeld voor onderzoek; een sterker model via OpenRouter herschrijft de uitleg wel.
 
+## Privacy en klantgegevens
+
+Wat je in een tekstveld invult (een schadesituatie, een dossier, een brief) gaat naar het taalmodel. Met OpenRouter is dat een
+externe aanbieder: de tekst verlaat je computer, en gratis modellen kunnen invoer bewaren en gebruiken. Er is geen
+verwerkersovereenkomst met die aanbieders. Vul daarom geen namen, adressen, BSN of medische gegevens van klanten in;
+anonimiseer eerst. De interface zegt dat bij elk tekstveld. Het portaal zelf slaat niets op: geen database, geen cache, geen
+logboek van invoer. Wie wel klantgegevens wil verwerken, gebruikt het lokale model (de tekst blijft op de machine) of een
+aanbieder met een verwerkersovereenkomst, en legt dat voor aan de eigen functionaris gegevensbescherming.
+
 ## Testen
 
 ```bash

@@ -411,6 +411,27 @@ def _openrouter_stukken(model: str, systeem: str, gebruiker: str, max_tokens: in
                     yield {"einde": keuze["finish_reason"]}
 
 
+# Wat een HTTP-fout van OpenRouter voor de gebruiker betekent. Zonder dit staat er "m1: HTTP 401; m2: HTTP 401; ..." en weet
+# niemand wat te doen. Voorzichtig geformuleerd ("kan"): OpenRouter noemt niet altijd de precieze oorzaak.
+_HTTP_UITLEG = {
+    "401": "HTTP 401: OpenRouter accepteert de sleutel niet. Controleer OPENROUTER_API_KEY, en roteer een sleutel die ooit in een chat is gedeeld.",
+    "402": "HTTP 402: er is geen tegoed voor dit model. De gratis modellen (met :free) hebben geen tegoed nodig.",
+    "403": "HTTP 403: toegang geweigerd. Dat kan aan het model, de regio of de instellingen van het OpenRouter-account liggen.",
+    "404": "HTTP 404: het model bestaat niet (meer), of er is geen aanbieder die past bij de privacy-instellingen van het account: gratis "
+           "modellen werken alleen als je toestaat dat prompts worden bewaard (Settings > Privacy bij OpenRouter).",
+    "429": "HTTP 429: verzoeklimiet bereikt. Gratis modellen hebben een limiet per minuut en per dag; wacht even of voeg tegoed toe.",
+}
+
+
+def _uitleg_bij_fouten(redenen: List[str]) -> str:
+    codes = []
+    for r in redenen:
+        m = re.search(r"HTTP (\d{3})", r)
+        if m and m.group(1) in _HTTP_UITLEG and m.group(1) not in codes:
+            codes.append(m.group(1))
+    return "".join(" " + _HTTP_UITLEG[c] for c in codes)
+
+
 def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur,
                        stop: Optional[threading.Event] = None) -> Iterator[Dict]:
     """
@@ -505,7 +526,7 @@ def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur,
         hint = (" Volgens de openbare lijst van OpenRouter bestaat geen enkel ingesteld model nog"
                 " (draai scripts/probe_llm.py --live voor de gratis modellen van nu en zet de keuze in ASSURANTIE_MODELLEN).")
     yield {"type": "fout", "afgebroken": False, "modellen": redenen,
-           "fout": "Alle modellen in de keten faalden: " + "; ".join(redenen) + "." + hint if redenen else
+           "fout": "Alle modellen in de keten faalden: " + "; ".join(redenen) + "." + _uitleg_bij_fouten(redenen) + hint if redenen else
                    "Er is geen model in de keten." + hint}
 
 

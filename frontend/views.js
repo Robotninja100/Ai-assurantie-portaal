@@ -62,6 +62,21 @@ function leegResultaat(cfg, functie) {
     ));
 }
 
+/**
+ * Wat er met de tekst gebeurt die de adviseur invult, alleen bij velden met vrije tekst: dat is wat naar het taalmodel gaat.
+ * Bij een online aanbieder (OpenRouter) verlaat die tekst de computer; gratis modellen kunnen invoer bewaren en gebruiken.
+ * Er is geen verwerkersovereenkomst met die aanbieders, dus geen klantgegevens invullen.
+ */
+function privacyRegel(cfg, rt) {
+  const velden = cfg.velden.flatMap((v) => v.rij || [v]);
+  if (!rt || !velden.some((v) => v.type === "lang" || v.type === "tekst")) return null;
+  const tekst = rt.provider === "local"
+    ? "Uw tekst blijft op deze computer: het lokale model draait zonder netwerk."
+    : "Voer geen namen, adressen, BSN of medische gegevens van klanten in. Deze tekst gaat naar een externe aanbieder van taalmodellen; "
+      + "gratis modellen kunnen invoer bewaren en gebruiken.";
+  return h("p", { class: "privacy" }, icoon("slot", 14), h("span", null, tekst));
+}
+
 export function renderFunctie(id, ctx) {
   const functie = ctx.functies.find((f) => f.id === id);
   const cfg = REGISTER[id];
@@ -95,7 +110,7 @@ export function renderFunctie(id, ctx) {
     } },
     h("div", { class: "kaart-kop" }, h("h2", null, "Invoer"),
       h("button", { class: "tekstknop", type: "button", onClick: () => formulier.zet(cfg.voorbeeld) }, "Voorbeeld invullen")),
-    h("div", { class: "kaart-body" }, formulier.el, h("div", { class: "acties" }, knop, stopKnop)));
+    h("div", { class: "kaart-body" }, formulier.el, h("div", { class: "acties" }, knop, stopKnop), privacyRegel(cfg, ctx.status?.runtime)));
 
   const wortel = h("div");
   wortel.append(h("section", { class: "kop" },

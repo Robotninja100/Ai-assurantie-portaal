@@ -178,3 +178,18 @@ def test_waardetoets_toont_de_uitleg_uit_code_en_beweert_niet_dat_de_drempel_per
     expect(p.locator(".uitleg")).to_contain_text("volgt uit de polisvoorwaarden, niet uit de wet")
     assert "verschilt per verzekeraar" not in p.locator("body").inner_text()
     assert p.fouten == []
+
+
+# ---------------------------------------------------------------- privacy: wat er met de ingevulde tekst gebeurt
+
+def test_bij_vrije_tekst_staat_een_privacyregel_die_bij_de_aanbieder_past(pagina, lokaal_pagina):
+    pagina.goto(pagina.basis + "/#/f/dekkingscheck")
+    expect(pagina.locator(".privacy")).to_contain_text("Voer geen namen, adressen, BSN")
+    expect(pagina.locator(".privacy")).to_contain_text("externe aanbieder")
+    # alleen bedragen en datums: er gaat geen vrije tekst naar een model, dus ook geen waarschuwing
+    pagina.goto(pagina.basis + "/#/f/schadeberekening")
+    pagina.wait_for_selector("h1")
+    assert pagina.locator(".privacy").count() == 0
+    # met het lokale model blijft de tekst op de computer
+    lokaal_pagina.goto(lokaal_pagina.basis + "/#/f/dekkingscheck")
+    expect(lokaal_pagina.locator(".privacy")).to_contain_text("blijft op deze computer")

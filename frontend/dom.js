@@ -54,6 +54,7 @@ const ICONEN = {
   kopie: ["M9 9h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1z", "M5 15V5a1 1 0 0 1 1-1h10"],
   stop: ["M7 7h10v10H7z"],
   klok: [["c", 12, 12, 9], "M12 7v5l3 2"],
+  slot: ["M6 11h12v9H6z", "M8.5 11V8a3.5 3.5 0 0 1 7 0v3"],
 };
 
 export function icoon(naam, grootte = 18) {

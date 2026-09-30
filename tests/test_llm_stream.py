@@ -199,6 +199,17 @@ def test_als_alle_modellen_falen_is_de_reden_per_model_zichtbaar(nep, monkeypatc
     assert llm.genereer("s", "g") == ""
 
 
+def test_de_foutmelding_legt_een_http_code_uit_zodat_de_gebruiker_weet_wat_te_doen(nep, monkeypatch):
+    ketens(monkeypatch, "429", "leeg")
+    fout = list(llm.stream_events("s", "g"))[-1]["fout"]
+    assert "429: HTTP 429" in fout and "verzoeklimiet bereikt" in fout
+    assert "OPENROUTER_API_KEY" not in fout                      # een uitleg per code die voorkomt, niet alle
+    assert "HTTP 404" not in fout and "HTTP 401" not in fout
+    for code in ("401", "402", "403", "404", "429"):
+        assert code in llm._uitleg_bij_fouten([f"m: HTTP {code}"])
+    assert llm._uitleg_bij_fouten(["m: leeg antwoord", "n: TimeoutError"]) == ""
+
+
 def test_valt_een_model_halverwege_uit_dan_wordt_niet_doorgeschoven(nep, monkeypatch):
     # Een tweede model zou een antwoord op een half antwoord schrijven. Dat melden we liever.
     ketens(monkeypatch, "midfout", "ok")

@@ -186,6 +186,8 @@ input[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--
 .schakelaar-tekst span { display: block; font-size: var(--t-xs); color: var(--inkt-3); line-height: 1.45; margin-top: 1px; }
 
 .acties { display: flex; align-items: center; gap: var(--s3); margin-top: var(--s5); padding-top: var(--s5); border-top: 1px solid var(--lijn); }
+.privacy { display: flex; gap: var(--s2); align-items: flex-start; margin-top: var(--s4); font-size: var(--t-xs); line-height: 1.5; color: var(--inkt-3); }
+.privacy svg { flex: none; margin-top: 2px; }
 .knop {
   display: inline-flex; align-items: center; justify-content: center; gap: var(--s2); height: 40px;
   padding: 0 var(--s4); border-radius: 8px; border: 1px solid var(--lijn-2); background: var(--vlak);
