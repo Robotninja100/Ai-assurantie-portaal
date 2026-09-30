@@ -45,7 +45,11 @@ DEFAULT_OUT = ROOT / "renders" / "comps_nl"
 
 DEKKING = ("GEEN echte vertegenwoordiger van een ingelogd Nederlands assurantie-backoffice "
            "beschikbaar: dat soort software zit achter een login of demo-aanvraag en is publiek "
-           "niet vast te leggen zonder account. Wat hier staat zijn publiek toegankelijke "
+           "niet vast te leggen zonder account. Verkend op 2026-09-29 (alleen de openbare pagina's geladen, "
+           "niets ingevuld): Nmbrs (gratis proefperiode = registratie; demo op aanvraag), ANVA (live demo "
+           "op aanvraag, formulier met reCAPTCHA), Faster Forward/Blinqx (demo op aanvraag, reCAPTCHA) en "
+           "AFAS (geen openbare demo-link op de homepage); Exact Online, Moneybird en e-Boekhouden hebben "
+           "publiek alleen marketing- en prijspagina's. Wat hier staat zijn publiek toegankelijke "
            "Nederlandse pagina's: zoek-/registerapplicaties, de eerste stap van publieke offerteformulieren "
            "van verzekeraars en een documentlezer (product_ui; consumentenschermen, geen backoffice) en "
            "marketing- of informatiepagina's van Nederlandse financiele partijen (marketing).")
