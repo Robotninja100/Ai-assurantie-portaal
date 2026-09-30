@@ -15,12 +15,21 @@ import api
 import llm
 
 
+# Het begin van een antwoord wordt door de kopcontrole vastgehouden tot KOP_TEKENS tekens (of het einde). Een
+# testantwoord dat als 'al zichtbaar' moet gelden begint daarom met minstens zoveel tekens gewoon Nederlands.
+OK_BEGIN = "Dit is het begin van een antwoord in gewoon Nederlands, "
+assert len(OK_BEGIN) > llm.KOP_TEKENS
+
+
 class NepOpenRouter:
     def __init__(self):
         self.verzoeken = []                 # modelnamen in volgorde van binnenkomst
         self.poort_geopend = threading.Event()
         self.hek = threading.Event()        # de test opent dit zodra hij het eerste stuk zag
         self.hek_verlopen = False
+        self.live_ids = None                # wat /v1/models teruggeeft; None = de lijst is niet te lezen (HTTP 500)
+        self.live_vertraging = 0.0
+        self.modellen_verzoeken = 0         # zoveel keer is de modellenlijst opgevraagd
         nep = self
 
         class Handler(http.server.BaseHTTPRequestHandler):
@@ -33,6 +42,21 @@ class NepOpenRouter:
                 data = tekst.encode()
                 self.wfile.write(f"{len(data):x}\r\n".encode() + data + b"\r\n")
                 self.wfile.flush()
+
+            def do_GET(self):
+                nep.modellen_verzoeken += 1
+                time.sleep(nep.live_vertraging)
+                if nep.live_ids is None:
+                    self.send_response(500)
+                    self.send_header("Content-Length", "0")
+                    self.end_headers()
+                    return
+                data = json.dumps({"data": [{"id": m} for m in nep.live_ids]}).encode()
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json")
+                self.send_header("Content-Length", str(len(data)))
+                self.end_headers()
+                self.wfile.write(data)
 
             def do_POST(self):
                 lengte = int(self.headers.get("Content-Length", 0))
@@ -69,22 +93,33 @@ class NepOpenRouter:
                 self.stuur(": OPENROUTER PROCESSING\n\n")
                 if model == "ok":
                     delta(None, reasoning="ik denk na")          # redeneerveld: geen antwoord
-                    delta("Hallo ")
+                    delta(OK_BEGIN)
                     if not nep.hek.wait(timeout=5):
                         nep.hek_verlopen = True
                     delta("wereld")
                 elif model == "leeg":
                     pass
-                elif model == "midfout":
+                elif model == "midfout":                        # valt weg NADAT het begin al is uitgegeven
+                    delta(OK_BEGIN)
+                    self.stuur("data: " + json.dumps({"error": {"message": "upstream weggevallen"}}) + "\n\n")
+                elif model == "kortefout":                      # valt weg binnen het vastgehouden begin: nog niets uitgegeven
                     delta("Half ")
                     self.stuur("data: " + json.dumps({"error": {"message": "upstream weggevallen"}}) + "\n\n")
                 elif model == "denk":
                     delta("<thi")
                     delta("nk>redeneren</think>\n\nAntwoord")
                 elif model == "kapot":                          # de verbinding valt weg zonder [DONE] of finish_reason
-                    delta("Een halve ")
+                    delta(OK_BEGIN)
                     self.wfile.write(b"0\r\n\r\n")
                     return
+                elif model == "lekt":                           # zoals Nemotron: de redeneerstappen staan in het antwoord
+                    delta("We need to answer based solely on the sources provided. ")
+                    delta("The user asks about the policy. Let's compute the answer step by step now.")
+                elif model == "engels":
+                    delta("The policy covers damage caused by fire and the insurer must pay the claim ")
+                    delta("within thirty days after the notification of the loss.")
+                elif model == "kort":                           # korter dan het vastgehouden begin, maar gewoon Nederlands
+                    delta("Dit staat niet in de geraadpleegde bronnen.")
                 self.stuur("data: [DONE]\n\n")
                 self.wfile.write(b"0\r\n\r\n")
 
@@ -120,7 +155,7 @@ def test_tekst_komt_binnen_terwijl_de_server_nog_bezig_is(nep, monkeypatch):
     model = next(events)
     eerste = next(events)
     assert model["type"] == "model" and model["model"] == "ok"
-    assert eerste == {"type": "delta", "tekst": "Hallo "}
+    assert eerste == {"type": "delta", "tekst": OK_BEGIN}
     # De server houdt het tweede stuk vast tot wij dit eerste zagen. Zou de client alles bufferen
     # tot het einde, dan zou dit punt pas na de time-out van de server bereikt worden.
     assert nep.hek_verlopen is False
@@ -132,7 +167,7 @@ def test_tekst_komt_binnen_terwijl_de_server_nog_bezig_is(nep, monkeypatch):
 def test_keepalive_en_redeneerveld_worden_genegeerd(nep, monkeypatch):
     ketens(monkeypatch, "ok")
     nep.hek.set()
-    assert llm.genereer("s", "g") == "Hallo wereld"
+    assert llm.genereer("s", "g") == OK_BEGIN + "wereld"
 
 
 # ------------------------------------------------------------ modelketen
@@ -178,6 +213,162 @@ def test_valt_een_model_halverwege_uit_dan_wordt_niet_doorgeschoven(nep, monkeyp
 def test_denkblok_uit_het_antwoord_wordt_gefilterd(nep, monkeypatch):
     ketens(monkeypatch, "denk")
     assert llm.genereer("s", "g") == "Antwoord"
+
+
+# ------------------------------------------------------------ kopcontrole: geen redeneerstappen of Engels naar de adviseur
+
+def test_een_model_dat_redeneerstappen_uitgeeft_wordt_overgeslagen_voordat_de_adviseur_ze_ziet(nep, monkeypatch):
+    ketens(monkeypatch, "lekt", "ok")
+    nep.hek.set()
+    events = list(llm.stream_events("s", "g"))
+    tekst = "".join(e["tekst"] for e in events if e["type"] == "delta")
+    assert events[0]["model"] == "ok"
+    assert events[0]["overgeslagen"] == ["lekt: schrijft redeneerstappen in het antwoord"]
+    assert "We need to" not in tekst and "The user" not in tekst
+    assert nep.verzoeken == ["lekt", "ok"]
+
+
+def test_een_model_dat_engels_schrijft_wordt_overgeslagen(nep, monkeypatch):
+    ketens(monkeypatch, "engels", "ok")
+    nep.hek.set()
+    events = list(llm.stream_events("s", "g"))
+    assert events[0]["model"] == "ok"
+    assert events[0]["overgeslagen"] == ["engels: antwoordt in het Engels"]
+    assert "policy covers" not in "".join(e.get("tekst", "") for e in events)
+
+
+def test_lekken_alle_modellen_dan_krijgt_de_adviseur_niets_en_ziet_hij_waarom(nep, monkeypatch):
+    ketens(monkeypatch, "lekt", "engels")
+    events = list(llm.stream_events("s", "g"))
+    assert [e["type"] for e in events] == ["fout"]
+    assert events[0]["modellen"] == ["lekt: schrijft redeneerstappen in het antwoord", "engels: antwoordt in het Engels"]
+
+
+def test_een_kort_nederlands_antwoord_haalt_de_kopcontrole_en_komt_ongewijzigd_aan(nep, monkeypatch):
+    ketens(monkeypatch, "kort")
+    events = list(llm.stream_events("s", "g"))
+    assert "".join(e["tekst"] for e in events if e["type"] == "delta") == "Dit staat niet in de geraadpleegde bronnen."
+    assert events[-1] == {"type": "einde", "reden": "stop"}
+
+
+def test_valt_een_model_uit_binnen_het_vastgehouden_begin_dan_schuift_de_keten_wel_door(nep, monkeypatch):
+    # Er is nog niets uitgegeven, dus doorschuiven schrijft geen antwoord op een half antwoord.
+    ketens(monkeypatch, "kortefout", "ok")
+    nep.hek.set()
+    events = list(llm.stream_events("s", "g"))
+    assert events[0]["model"] == "ok" and events[0]["overgeslagen"][0].startswith("kortefout: ")
+    assert nep.verzoeken == ["kortefout", "ok"]
+
+
+@pytest.mark.parametrize("tekst,reden", [
+    ("We need to answer based solely on the sources provided.", "redeneerstappen"),
+    ("Okay, so the user wants to know about the policy conditions.", "redeneerstappen"),
+    ("Let's compute the answer step by step before we write it down.", "redeneerstappen"),
+    ("The user asks", "redeneerstappen"),
+    ("The policy covers damage caused by fire and the insurer must pay the claim", "Engels"),
+    ("Let op: de polis dekt alleen schade door brand, niet door opzet.", None),
+    ("We hebben de berekening gecontroleerd; de uitkering is € 20.000.", None),
+    ("De uitkering is lager omdat de verzekerde som lager is dan de werkelijke waarde (art. 7:958 BW).", None),
+    ("**Dekking**\n\nDe polis dekt schade door brand, maar niet door opzet.", None),
+    ("1. **Welke stap is nu aan de orde?** We moeten binnen twee weken bevestigen.", None),
+    ("Dit staat niet in de geraadpleegde bronnen.", None),
+])
+def test_kopcontrole_herkent_gemeten_gedrag_en_laat_nederlands_met_rust(tekst, reden):
+    uitkomst = llm._kop_afgekeurd(tekst)
+    assert (uitkomst is None) if reden is None else (reden in (uitkomst or ""))
+
+
+# ------------------------------------------------------------ de keten van nu: wat OpenRouter niet meer aanbiedt
+
+@pytest.fixture()
+def live(nep, monkeypatch):
+    monkeypatch.setattr(llm, "LIVE_KETEN", True)
+    return nep
+
+
+def test_modellen_die_openrouter_niet_meer_aanbiedt_worden_niet_eens_geprobeerd(live, monkeypatch):
+    ketens(monkeypatch, "weg1", "ok", "weg2")
+    live.live_ids = ["ok", "429"]
+    live.hek.set()
+    keten = llm.modelketen()
+    assert keten["modellen"] == ["ok"] and keten["verdwenen"] == ["weg1", "weg2"] and keten["bron"] == "live"
+    events = list(llm.stream_events("s", "g"))
+    assert events[0]["model"] == "ok" and events[0]["overgeslagen"] == []      # geen ruis over modellen die er niet meer zijn
+    assert live.verzoeken == ["ok"]
+
+
+def test_is_de_lijst_niet_te_lezen_dan_geldt_de_ingestelde_keten_en_wordt_niet_bij_elk_verzoek_opnieuw_geprobeerd(live, monkeypatch):
+    ketens(monkeypatch, "429", "ok")
+    live.live_ids = None                                   # HTTP 500
+    live.hek.set()
+    for _ in range(3):
+        keten = llm.modelketen()
+        assert keten["modellen"] == ["429", "ok"] and keten["bron"] == "statisch" and keten["verdwenen"] == []
+    assert live.modellen_verzoeken == 1                    # een mislukte poging wordt even onthouden
+    events = list(llm.stream_events("s", "g"))
+    assert events[0]["model"] == "ok"                      # en de keten werkt gewoon
+
+
+def test_de_lijst_wordt_een_uur_onthouden(live, monkeypatch):
+    ketens(monkeypatch, "ok")
+    live.live_ids = ["ok"]
+    for _ in range(4):
+        assert llm.modelketen()["bron"] == "live"
+    assert live.modellen_verzoeken == 1
+    # na de geldigheidsduur wordt opnieuw gelezen
+    monkeypatch.setitem(llm._live, "tijd", llm._live["tijd"] - llm.LIVE_TTL_SEC - 1)
+    llm.modelketen()
+    assert live.modellen_verzoeken == 2
+
+
+def test_een_zelf_ingestelde_keten_wordt_nooit_aangepast_alleen_gemeld(live, monkeypatch):
+    ketens(monkeypatch, "weg", "ok")
+    monkeypatch.setattr(llm, "_KETEN_EXPLICIET", True)
+    live.live_ids = ["ok"]
+    keten = llm.modelketen()
+    assert keten["modellen"] == ["weg", "ok"] and keten["bron"] == "ingesteld" and keten["verdwenen"] == ["weg"]
+
+
+def test_bestaat_volgens_de_lijst_niets_meer_dan_wordt_toch_geprobeerd_en_zegt_de_fout_wat_verdween(live, monkeypatch):
+    # De lijst kan onvolledig zijn; liever proberen dan niets. Bestaat het echt niet, dan staat er wat er is gebeurd.
+    ketens(monkeypatch, "429", "leeg")
+    live.live_ids = ["iets-anders"]
+    events = list(llm.stream_events("s", "g"))
+    assert live.verzoeken == ["429", "leeg"]
+    assert events[-1]["type"] == "fout" and events[-1]["modellen"] == ["429: HTTP 429", "leeg: leeg antwoord"]
+    assert "probe_llm.py --live" in events[-1]["fout"]
+
+
+def test_de_status_meldt_de_keten_van_nu_en_wat_ongemeten_is(live, monkeypatch):
+    ketens(monkeypatch, "weg", "qwen/qwen3.8-27b:free", "inclusionai/ling-3.0-flash-sante:free")
+    live.live_ids = ["qwen/qwen3.8-27b:free", "inclusionai/ling-3.0-flash-sante:free"]
+    llm.live_modellen(wacht=True)
+    info = llm.runtime_info()
+    assert info["model"] == "qwen/qwen3.8-27b:free" and info["fallbacks"] == ["inclusionai/ling-3.0-flash-sante:free"]
+    assert info["keten_bron"] == "live" and info["keten_verdwenen"] == ["weg"]
+    assert "niet meer aangeboden" in info["opmerking"] and "nog niet gemeten" in info["opmerking"]
+
+
+def test_de_statuspagina_wacht_nooit_op_het_netwerk(live, monkeypatch):
+    ketens(monkeypatch, "a", "b")
+    live.live_ids = ["a"]
+    live.live_vertraging = 1.5
+    t0 = time.monotonic()
+    info = llm.runtime_info()
+    assert time.monotonic() - t0 < 1.0                     # de lijst wordt op de achtergrond gelezen
+    assert info["keten_bron"] == "statisch"                # nog niets bekend, dus de ingestelde keten
+    for _ in range(100):                                   # de achtergrondtaak rondt af; daarna geldt de live-lijst
+        if not llm._live["bezig"] and llm._live["ids"] is not None:
+            break
+        time.sleep(0.05)
+    assert llm.runtime_info()["keten_bron"] == "live"
+
+
+def test_de_standaardketen_bevat_geen_model_dat_gemeten_en_afgewezen_is():
+    afgewezen = ("gemma-4", "inkling", "laguna", "nemotron-3.5-lightning", "dots-3-note", "lfm-2.5", "content-safety")
+    for m in llm._STANDAARD_KETEN:
+        assert not any(a in m for a in afgewezen), m
+    assert llm._STANDAARD_KETEN[-1] in llm.GEMETEN_LEKT          # het model dat lekt staat onderaan
 
 
 # ------------------------------------------------------------ denkblokfilter
@@ -294,7 +485,7 @@ def test_een_kapotte_stroom_zonder_tekst_schuift_wel_door(nep, monkeypatch):
     # (nog geen tekst uitgegeven: doorschuiven is veilig) - het model "leeg" levert helemaal niets
     ketens(monkeypatch, "leeg", "ok")
     nep.hek.set()
-    assert llm.genereer("s", "g") == "Hallo wereld"
+    assert llm.genereer("s", "g") == OK_BEGIN + "wereld"
 
 
 def test_een_json_fout_bij_http_200_wordt_als_fout_gemeld_niet_als_leeg_antwoord(nep, monkeypatch):

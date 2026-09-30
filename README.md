@@ -102,6 +102,16 @@ modellen via OpenRouter met een terugvalketen, meestal een paar seconden per ant
 valt het portaal zichtbaar terug op een lokaal model, als dat in `models/qwen3-4b.gguf` staat (of
 `ASSURANTIE_MODEL_PATH`): draait zonder netwerk maar duurt minuten per antwoord.
 
+Gratis modellen komen en gaan: op 30 september 2026 bestonden drie van de vijf modellen uit de eerste keten niet
+meer als gratis variant. Het portaal leest daarom bij gebruik de openbare modellenlijst van OpenRouter (geen
+sleutel nodig, een uur onthouden) en probeert alleen modellen die er nog zijn; is de lijst niet te lezen, dan
+geldt de ingestelde keten. Zet je zelf `ASSURANTIE_MODELLEN`, dan wordt die keten nooit aangepast, alleen gemeld.
+Het begin van elk antwoord wordt vastgehouden tot het beoordeeld is: een model dat met uitgelekte redeneerstappen
+of in het Engels begint wordt overgeslagen voordat de adviseur er iets van ziet. Welke modellen ooit zijn gemeten
+en welke niet, staat bij `GEMETEN_GOED`, `ONGEMETEN` en `GEMETEN_LEKT` in `backend/llm.py`; de statusbalk toont
+amber als het eerste model nog niet is gemeten. Met een sleutel meet `python3 scripts/probe_llm.py --live` de
+gratis modellen van nu en stelt een keten voor (een rooktest met één opdracht, geen kwaliteitsmeting).
+
 ```bash
 pip install llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 mkdir -p models && curl -L -o models/qwen3-4b.gguf \
@@ -118,7 +128,7 @@ dwingt het af, bijvoorbeeld voor onderzoek; een sterker model via OpenRouter her
 
 ```bash
 pip install -r requirements-dev.txt
-python3 -m pytest tests                      # unit-tests en browsertests (Chromium via Playwright), ruim 270 stuks
+python3 -m pytest tests                      # unit-tests en browsertests (Chromium via Playwright), ruim 650 stuks
 python3 scripts/valideer_grondslagen.py      # elke wetsverwijzing van de rekenkern staat in het corpus
 python3 scripts/valideer_polisvoorwaarden.py # bronnen bereikbaar, hashes kloppen, tekst letterlijk uit de bron
 python3 scripts/criticus_ronde.py deterministisch   # de rommelige casussen door bronnen en berekening

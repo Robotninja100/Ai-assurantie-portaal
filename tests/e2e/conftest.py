@@ -52,7 +52,8 @@ def start_app(env_extra=None, **nep_opties):
     nep = NepLLM(**nep_opties)
     poort = vrije_poort()
     env = {**os.environ, "OPENROUTER_API_KEY": "test", "ASSURANTIE_LLM_PROVIDER": "openrouter",
-           "ASSURANTIE_OPENROUTER_URL": nep.url, "ASSURANTIE_MODELLEN": "testmodel", **(env_extra or {})}
+           "ASSURANTIE_OPENROUTER_URL": nep.url, "ASSURANTIE_MODELLEN": "testmodel",
+           "ASSURANTIE_LIVE_KETEN": "0", **(env_extra or {})}
     p = subprocess.Popen([sys.executable, "-m", "uvicorn", "api:app", "--app-dir", "backend",
                           "--port", str(poort), "--log-level", "warning"], cwd=ROOT, env=env)
     basis = f"http://127.0.0.1:{poort}"

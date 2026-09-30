@@ -12,6 +12,7 @@ adviseur moet kunnen zien WELK model een antwoord schreef en waarom een ander mo
 """
 import json
 import os
+import re
 import threading
 import time
 from typing import Dict, Iterator, List, Optional
@@ -25,22 +26,48 @@ PROVIDER = os.environ.get("ASSURANTIE_LLM_PROVIDER", "openrouter")
 OPENROUTER_URL = os.environ.get("ASSURANTIE_OPENROUTER_URL",
                                 "https://openrouter.ai/api/v1/chat/completions")
 
-# OpenRouter-modellen die op echte Nederlandse verzekeringsvragen zijn getest: correcte
-# evenredigheidsberekening, bruikbaar Nederlands, en schone 'content' (geen modellen die
-# uitsluitend een reasoning-veld vullen of hun denkstappen in het antwoord laten lekken).
-# Volgorde = voorkeur; bij een fout schuift de keten door naar het volgende model.
-OPENROUTER_MODELLEN = [
-    m.strip() for m in os.environ.get("ASSURANTIE_MODELLEN", ",".join([
-        # Volgorde op GEMETEN gedrag, niet op modelgrootte. Nemotron-super is het
-        # grootste model in de lijst maar lekt zijn redeneerstappen in het antwoord
-        # ("We need to answer based solely on...") en staat daarom onderaan.
-        "inclusionai/ling-3.0-flash-fin:free",
-        "nex-agi/nex-n2.5-pro:free",
-        "inclusionai/ling-3.0-flash-sante:free",
-        "nex-agi/nex-n2.5-mini:free",
-        "nvidia/nemotron-3-super-120b-a12b:free",
-    ])).split(",") if m.strip()
+# Gratis modellen komen en gaan. Op 30 september 2026 bleken drie van de vijf modellen uit de eerste keten niet
+# meer als gratis variant te bestaan (de openbare lijst van OpenRouter, https://openrouter.ai/api/v1/models, heeft ze
+# alleen nog betaald). Daarom kent de keten drie soorten modellen, en kijkt modelketen() bij gebruik welke er nog zijn:
+#
+#   GEMETEN_GOED   in een echte meting (state.json -> runtime_audit.chosen) rekenden ze de evenredigheidsbreuk goed
+#                  en schreven ze bruikbaar Nederlands. Volgorde = voorkeur.
+#   ONGEMETEN      bestaan nu wel, maar zijn nooit gemeten op Nederlandse verzekeringsvragen. Ze staan achter de
+#                  gemeten modellen; scripts/probe_llm.py --live meet ze zodra er een sleutel is.
+#   GEMETEN_LEKT   schrijft redeneerstappen in het antwoord; staat onderaan en wordt bovendien door de kopcontrole
+#                  (_kop_afgekeurd) overgeslagen als het daar weer mee begint.
+#
+# Bewust NIET in de keten, want gemeten en afgewezen (state.json -> afgewezen_modellen): de google/gemma-4-modellen en
+# thinkingmachines/inkling (HTTP 403 met de sleutel van toen), poolside/laguna-s-2.1 (rekende de onderverzekering fout),
+# nvidia/nemotron-3.5-lightning (54 s en Engels), dots-3-note-preview en liquid/lfm-2.5 (leeg antwoord).
+GEMETEN_GOED = [
+    "inclusionai/ling-3.0-flash-fin:free",
+    "nex-agi/nex-n2.5-pro:free",
+    "inclusionai/ling-3.0-flash-sante:free",
+    "nex-agi/nex-n2.5-mini:free",
 ]
+ONGEMETEN = [
+    "qwen/qwen3.8-27b:free",
+    "nvidia/nemotron-3-ultra-550b-a55b:free",
+]
+GEMETEN_LEKT = [
+    "nvidia/nemotron-3-super-120b-a12b:free",
+]
+_STANDAARD_KETEN = GEMETEN_GOED + ONGEMETEN + GEMETEN_LEKT
+# Een keten die de gebruiker zelf instelt wordt niet aangepast: wie modellen kiest, krijgt precies die.
+_KETEN_EXPLICIET = bool(os.environ.get("ASSURANTIE_MODELLEN", "").strip())
+OPENROUTER_MODELLEN = [
+    m.strip() for m in os.environ.get("ASSURANTIE_MODELLEN", ",".join(_STANDAARD_KETEN)).split(",") if m.strip()
+]
+# De openbare modellenlijst controleren (geen sleutel nodig); uit te zetten met ASSURANTIE_LIVE_KETEN=0.
+LIVE_KETEN = os.environ.get("ASSURANTIE_LIVE_KETEN", "1") != "0"
+LIVE_TTL_SEC = 3600            # zo lang blijft een gelezen lijst geldig
+LIVE_MISLUKT_TTL_SEC = 300     # na een mislukte poging even niet opnieuw proberen
+LIVE_TIMEOUT_SEC = 6
+
+# Het begin van een antwoord wordt zo lang vastgehouden als nodig is om te zien of het model zijn redeneerstappen
+# of Engels uitgeeft. Daarna stroomt het antwoord gewoon door. 48 tekens is ruim een halve seconde.
+KOP_TEKENS = 48
 
 # Tijd die een model mag nemen voor het eerste teken en tussen twee stukken. Gratis modellen
 # staan soms in de wachtrij; daarna komt de tekst binnen enkele seconden.
@@ -85,6 +112,121 @@ def effectieve_provider() -> str:
     return PROVIDER
 
 
+# ------------------------------------------------------------------ de keten van nu
+
+_live = {"ids": None, "tijd": 0.0, "mislukt_tot": 0.0, "bezig": False}
+_live_lock = threading.Lock()
+_ophaal_lock = threading.Lock()
+
+
+def _modellen_url() -> str:
+    return (os.environ.get("ASSURANTIE_OPENROUTER_MODELLEN_URL")
+            or OPENROUTER_URL.rsplit("/chat/completions", 1)[0] + "/models")
+
+
+def _lees_live_ids() -> Optional[set]:
+    """De id's die OpenRouter nu aanbiedt (openbare lijst, geen sleutel), of None als die niet te lezen is."""
+    import urllib.request
+    try:
+        req = urllib.request.Request(_modellen_url(), headers={"accept": "application/json", "X-Title": "Assurantieportaal"})
+        with urllib.request.urlopen(req, timeout=LIVE_TIMEOUT_SEC) as r:
+            data = json.loads(r.read(8_000_000).decode("utf-8", "replace"))
+        ids = {m["id"] for m in data.get("data", []) if isinstance(m, dict) and isinstance(m.get("id"), str)}
+        return ids or None
+    except Exception:  # noqa: BLE001 - netwerk, JSON of een andere vorm: in alle gevallen 'dat weet ik niet'
+        return None
+
+
+def _live_vers() -> bool:
+    nu = time.monotonic()
+    return (_live["ids"] is not None and nu - _live["tijd"] < LIVE_TTL_SEC) or nu < _live["mislukt_tot"]
+
+
+def _ververs_live() -> None:
+    with _ophaal_lock:
+        if _live_vers():                      # een ander verzoek was ons voor
+            return
+        ids = _lees_live_ids()
+        with _live_lock:
+            if ids is not None:
+                _live["ids"], _live["tijd"] = ids, time.monotonic()
+            else:
+                _live["mislukt_tot"] = time.monotonic() + LIVE_MISLUKT_TTL_SEC
+            _live["bezig"] = False
+
+
+def live_modellen(wacht: bool = True) -> Optional[set]:
+    """
+    De modellen die OpenRouter nu aanbiedt, uit een cache van een uur. None = onbekend: uitgezet, nog niet gelezen
+    (bij wacht=False) of niet te lezen. Na een mislukte poging wordt vijf minuten niet opnieuw geprobeerd, zodat een
+    storing niet elk verzoek vertraagt; een verlopen lijst blijft dan gelden, want die is beter dan geen. Met
+    wacht=False gebeurt het lezen op de achtergrond, zodat de statuspagina nooit op het netwerk blokkeert.
+    """
+    if not LIVE_KETEN:
+        return None
+    if not _live_vers():
+        if wacht:
+            _ververs_live()
+        else:
+            with _live_lock:
+                start = not _live["bezig"]
+                _live["bezig"] = True
+            if start:
+                threading.Thread(target=_ververs_live, daemon=True).start()
+    with _live_lock:
+        return _live["ids"]
+
+
+def modelketen(wacht: bool = True) -> Dict:
+    """
+    De keten waarmee nu wordt gewerkt, en hoe zeker dat is.
+
+      modellen   in volgorde; alleen wat OpenRouter nu nog aanbiedt. Is de lijst niet te lezen, dan de ingestelde keten
+                 ongewijzigd (bron 'statisch'): liever proberen dan niets. Bestaat er volgens de lijst niets meer van,
+                 dan ook de ingestelde keten (de lijst kan onvolledig zijn); de foutmelding zegt dan wat er verdween.
+      verdwenen  wat is ingesteld maar volgens OpenRouter niet meer bestaat
+      ongemeten  wat in de keten staat zonder dat het ooit op Nederlandse verzekeringsvragen is gemeten
+    Een keten die de gebruiker zelf instelde (ASSURANTIE_MODELLEN) wordt nooit aangepast, alleen gemeld.
+    """
+    ingesteld = list(OPENROUTER_MODELLEN)
+    live = live_modellen(wacht)
+    verdwenen = [m for m in ingesteld if live is not None and m not in live]
+    if _KETEN_EXPLICIET:
+        modellen, bron = ingesteld, "ingesteld"
+    elif live is None:
+        modellen, bron = ingesteld, "statisch"
+    else:
+        modellen, bron = ([m for m in ingesteld if m in live] or ingesteld), "live"
+    ongemeten = [m for m in modellen if m not in GEMETEN_GOED and m not in GEMETEN_LEKT]
+    return {"modellen": modellen, "bron": bron, "verdwenen": verdwenen, "ongemeten": ongemeten}
+
+
+# Wat een antwoord verraadt dat geen antwoord is: uitgelekte redeneerstappen (Nemotron begon met "We need to answer
+# based solely on...") of een model dat Engels schrijft (nemotron-3.5-lightning). Beide zijn gemeten, niet bedacht.
+# "Let op" en "we hebben" zijn Nederlands en horen er niet in te vallen.
+_LEK_BEGIN = re.compile(
+    r"^\W*(?:we (?:need|have|should|must|can|will|are)\b|let(?:'s| me| us)\b|(?:okay|ok)\b[,.!]|so,? the user\b|"
+    r"the user\b|i (?:need|should|will|must|'ll|'m)\b|first,? (?:i|we)\b|thinking\b|analysis\b|reasoning\b|<think>)",
+    re.I)
+_ENGELS = frozenset("the and of to that this with for are you can will should need from by not have has was were "
+                    "which their they there what when would could".split())
+_NEDERLANDS = frozenset("de het een en van is zijn dat dit met voor op te als niet ook bij uit naar wordt worden "
+                        "heeft hebben deze die er kan kunnen moet moeten".split())
+
+
+def _kop_afgekeurd(kop: str) -> Optional[str]:
+    """Waarom dit begin van een antwoord niet naar de adviseur mag, of None."""
+    if _LEK_BEGIN.search(kop[:120]):
+        return "schrijft redeneerstappen in het antwoord"
+    woorden = re.findall(r"[a-z']+", kop.lower())
+    if len(woorden) >= 6:
+        en = sum(w in _ENGELS for w in woorden)
+        nl = sum(w in _NEDERLANDS for w in woorden)
+        if en >= 3 and en > 2 * nl:
+            return "antwoordt in het Engels"
+    return None
+
+
 def runtime_info() -> Dict:
     """Eerlijke status. De UI toont dit; we verbergen niet welk model er draait."""
     prov = effectieve_provider()
@@ -105,12 +247,25 @@ def runtime_info() -> Dict:
     elif prov == "openrouter":
         key = os.environ.get("OPENROUTER_API_KEY")
         info["beschikbaar"] = bool(key)
-        info["model"] = OPENROUTER_MODELLEN[0] if OPENROUTER_MODELLEN else None
-        info["fallbacks"] = OPENROUTER_MODELLEN[1:]
+        k = modelketen(wacht=False)
+        info["model"] = k["modellen"][0] if k["modellen"] else None
+        info["fallbacks"] = k["modellen"][1:]
+        info["keten_bron"] = k["bron"]
+        info["keten_verdwenen"] = k["verdwenen"]
         info["snelheid"] = "snel" if key else None
+        extra = ""
+        if k["verdwenen"] and k["bron"] != "ingesteld":
+            extra += (f" {len(k['verdwenen'])} model(len) uit de ingestelde keten worden door OpenRouter niet meer "
+                      "aangeboden en zijn overgeslagen.")
+        elif k["verdwenen"]:
+            extra += (f" Let op: {len(k['verdwenen'])} model(len) uit de zelf ingestelde keten worden door OpenRouter "
+                      "niet meer aangeboden.")
+        info["model_gemeten"] = info["model"] not in k["ongemeten"]
+        if not info["model_gemeten"]:
+            extra += " Het eerste model is nog niet gemeten op Nederlandse verzekeringsvragen."
         info["opmerking"] = (
             "Gratis modellen via OpenRouter, meestal een paar seconden per antwoord. "
-            "Feiten komen uit het corpus, niet uit het model."
+            "Feiten komen uit het corpus, niet uit het model." + extra
             if key else
             "Geen OPENROUTER_API_KEY gevonden en geen lokaal model aanwezig. Zet de sleutel in de "
             "omgeving of in .env, of plaats een GGUF-model in models/ (zie de README).")
@@ -265,41 +420,67 @@ def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur,
     Doorschuiven naar het volgende model kan ALLEEN zolang er nog geen tekst is uitgegeven. Valt
     een model halverwege uit, dan zou een tweede model een antwoord op een antwoord schrijven: dat
     melden we als afgebroken antwoord, we plakken er niets achter.
+
+    Het begin van een antwoord (KOP_TEKENS) wordt daarom eerst vastgehouden en gecontroleerd: een model dat met
+    uitgelekte redeneerstappen of in het Engels begint wordt overgeslagen voordat de adviseur er iets van ziet.
     """
     import urllib.error
     key = os.environ.get("OPENROUTER_API_KEY")
     if not key:
         yield {"type": "fout", "fout": "Geen OPENROUTER_API_KEY.", "afgebroken": False}
         return
+    keten = modelketen()
     redenen: List[str] = []
-    for model in OPENROUTER_MODELLEN:
+    for model in keten["modellen"]:
         filter_ = _ZonderDenkblok()
         gaf_tekst = False
         eindreden = None
+        kop_tekst = ""                      # het begin van het antwoord, vastgehouden tot het beoordeeld is
+        afgekeurd = None
+        stukken = None
 
         def kop() -> Dict:
             return {"type": "model", "model": model, "provider": "openrouter",
                     "overgeslagen": list(redenen)}
         try:
-            for onderdeel in _openrouter_stukken(model, systeem, gebruiker, max_tokens, temperatuur, key, stop):
+            stukken = _openrouter_stukken(model, systeem, gebruiker, max_tokens, temperatuur, key, stop)
+            for onderdeel in stukken:
                 if "einde" in onderdeel:
                     eindreden = onderdeel["einde"]
                     continue
                 uit = filter_.voer(onderdeel["tekst"])
                 if not uit:
                     continue
-                if not gaf_tekst:
-                    gaf_tekst = True
-                    yield kop()
-                yield {"type": "delta", "tekst": uit}
-            if stop is not None and stop.is_set():
-                return                      # de aanvrager is weg: niets meer uitgeven, niets doorschuiven
-            rest = filter_.einde()
-            if rest:
-                if not gaf_tekst:
-                    gaf_tekst = True
-                    yield kop()
-                yield {"type": "delta", "tekst": rest}
+                if gaf_tekst:
+                    yield {"type": "delta", "tekst": uit}
+                    continue
+                kop_tekst += uit
+                if len(kop_tekst) < KOP_TEKENS:
+                    continue
+                afgekeurd = _kop_afgekeurd(kop_tekst)
+                if afgekeurd:
+                    break
+                gaf_tekst = True
+                yield kop()
+                yield {"type": "delta", "tekst": kop_tekst}
+            if afgekeurd is None:
+                if stop is not None and stop.is_set():
+                    return                      # de aanvrager is weg: niets meer uitgeven, niets doorschuiven
+                rest = filter_.einde()
+                if gaf_tekst:
+                    if rest:
+                        yield {"type": "delta", "tekst": rest}
+                else:
+                    kop_tekst += rest
+                    if kop_tekst:               # een kort antwoord: pas nu beoordeelbaar
+                        afgekeurd = _kop_afgekeurd(kop_tekst)
+                        if afgekeurd is None:
+                            gaf_tekst = True
+                            yield kop()
+                            yield {"type": "delta", "tekst": kop_tekst}
+            if afgekeurd:
+                redenen.append(f"{model}: {afgekeurd}")
+                continue
             if gaf_tekst:
                 yield {"type": "einde", "reden": eindreden or "stop"}
                 return
@@ -316,8 +497,16 @@ def _stream_openrouter(systeem, gebruiker, max_tokens, temperatuur,
                        "fout": f"{model} viel weg tijdens het antwoord ({type(e).__name__}: {e})."}
                 return
             redenen.append(f"{model}: {type(e).__name__}" + (f": {e}" if str(e) else ""))
+        finally:
+            if stukken is not None and hasattr(stukken, "close"):
+                stukken.close()                 # een afgekeurd of weggegooid model houdt geen verbinding open
+    hint = ""
+    if keten["verdwenen"] and len(keten["verdwenen"]) == len(OPENROUTER_MODELLEN):
+        hint = (" Volgens de openbare lijst van OpenRouter bestaat geen enkel ingesteld model nog"
+                " (draai scripts/probe_llm.py --live voor de gratis modellen van nu en zet de keuze in ASSURANTIE_MODELLEN).")
     yield {"type": "fout", "afgebroken": False, "modellen": redenen,
-           "fout": "Alle modellen in de keten faalden: " + "; ".join(redenen)}
+           "fout": "Alle modellen in de keten faalden: " + "; ".join(redenen) + "." + hint if redenen else
+                   "Er is geen model in de keten." + hint}
 
 
 # ------------------------------------------------------------------ lokaal

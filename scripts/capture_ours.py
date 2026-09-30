@@ -4,10 +4,15 @@
 capture_ours.py - legt onze EIGEN schermen vast voor de blinde A/B-meetlat (renders/ours/).
 
 Elk scherm komt uit een echte run tegen een draaiende server: het formulier wordt met het voorbeeld
-gevuld, de toets wordt uitgevoerd en pas als het resultaat er echt staat (inclusief de controle van
-verwijzingen) wordt de opname gemaakt. Staat er een storingsmelding, dan geldt de opname als mislukt
-(geladen_ok = false) en gaat hij niet mee in een ronde: een scherm waarop 'geen antwoord van het
-taalmodel' staat meet de runtime, niet het ontwerp.
+gevuld, de toets wordt uitgevoerd en pas als het resultaat er echt staat wordt de opname gemaakt. Dat is
+of het antwoord met de controle van verwijzingen, of (bij een berekening waarvan de uitleg uit code komt en
+een lokaal model) de melding dat het model bewust niets schreef; beide zijn afgeronde toestanden van het
+portaal en het manifest zegt welke het was (`controle.model_overgeslagen`). Staat er een storingsmelding,
+dan geldt de opname als mislukt (geladen_ok = false) en gaat hij niet mee in een ronde: een scherm waarop
+'geen antwoord van het taalmodel' staat meet de runtime, niet het ontwerp.
+
+Eén run levert beide viewports: het scherm wordt eerst op desktopbreedte opgenomen, daarna wordt hetzelfde
+venster smal gemaakt en opnieuw opgenomen. Dat scheelt de helft van de wachttijd voor het taalmodel.
 
 Het manifest volgt het contract van de meetlat: klasse, domein, taal, geladen_ok, controle,
 wat_het_toont. Bestandsnamen verraden niets; het harnas hernoemt ze toch naar A, B, C.
@@ -41,7 +46,8 @@ SCHERMEN = [
      "toont": "Polisvergelijker met twee varianten naast elkaar, toelichting en citeercontrole."},
 ]
 VIEWPORTS = {"desktop": (1440, 900), "mobile": (390, 844)}
-KLAAR = ".sectie:has-text('Controle van verwijzingen'), .melding.fout"
+KLAAR = (".sectie:has-text('Controle van verwijzingen'), .melding.fout, "
+         ".melding.info:has-text('Geen toelichting van een taalmodel')")
 
 
 def draai(basis, schermen, uit, wacht_sec):
@@ -53,44 +59,54 @@ def draai(basis, schermen, uit, wacht_sec):
         browser = p.chromium.launch(executable_path=CHROME, args=["--no-sandbox", "--lang=nl"],
                                     env={**os.environ, "LANGUAGE": "nl", "LANG": "nl_NL.UTF-8"})
         for sch in schermen:
+            (b0, h0) = VIEWPORTS["desktop"]
+            ctx = browser.new_context(viewport={"width": b0, "height": h0}, device_scale_factor=2, locale="nl-NL")
+            pg = ctx.new_page()
+            fouten = []
+            pg.on("pageerror", lambda e: fouten.append(str(e)))
+            pg.on("console", lambda m: fouten.append(m.text) if m.type == "error" else None)
+            t0 = time.time()
+            gedeeld = {"storing_zichtbaar": False, "model": None, "model_overgeslagen": False}
+            fout = None
+            try:
+                pg.goto(f"{basis}/#{sch['route']}")
+                pg.wait_for_selector("h1", timeout=15000)
+                if sch["run"]:
+                    pg.click("text=Voorbeeld invullen")
+                    pg.click("button[type=submit]")
+                    pg.wait_for_selector(KLAAR, timeout=wacht_sec * 1000)
+                    gedeeld["storing_zichtbaar"] = pg.locator(".melding.fout").count() > 0
+                    gedeeld["model_overgeslagen"] = pg.locator(".melding.info", has_text="Geen toelichting van een taalmodel").count() > 0
+                    if pg.locator(".sectie-meta", has_text="Geschreven door").count():
+                        gedeeld["model"] = pg.locator(".sectie-meta", has_text="Geschreven door").first.inner_text()
+                    if sch.get("open_bron") and pg.locator(".bron-rij").count():
+                        pg.locator(".bron-rij").first.click()
+            except Exception as e:  # noqa: BLE001
+                fout = f"{type(e).__name__}: {e}"
+            duur = round(time.time() - t0, 1)
             for vp, (b, h) in VIEWPORTS.items():
-                ctx = browser.new_context(viewport={"width": b, "height": h}, device_scale_factor=2, locale="nl-NL")
-                pg = ctx.new_page()
-                fouten = []
-                pg.on("pageerror", lambda e: fouten.append(str(e)))
-                pg.on("console", lambda m: fouten.append(m.text) if m.type == "error" else None)
                 bestand = f"scherm-{sch['id']}-{b}.png"
-                rec = {"bestand": bestand, "bron_naam": f"eigen-{sch['id']}", "viewport": vp, "klasse": "ours",
-                       "domein": "ours", "taal": "nl", "wat_het_toont": sch["toont"], "geladen_ok": False,
-                       "controle": {}}
-                t0 = time.time()
-                try:
-                    pg.goto(f"{basis}/#{sch['route']}")
-                    pg.wait_for_selector("h1", timeout=15000)
-                    if sch["run"]:
-                        pg.click("text=Voorbeeld invullen")
-                        pg.click("button[type=submit]")
-                        pg.wait_for_selector(KLAAR, timeout=wacht_sec * 1000)
-                        storing = pg.locator(".melding.fout").count()
-                        rec["controle"]["storing_zichtbaar"] = storing > 0
-                        rec["controle"]["model"] = (pg.locator(".sectie-meta", has_text="Geschreven door").first.inner_text()
-                                                    if pg.locator(".sectie-meta", has_text="Geschreven door").count() else None)
-                        if sch.get("open_bron") and pg.locator(".bron-rij").count():
-                            pg.locator(".bron-rij").first.click()
-                    pg.wait_for_timeout(500)
-                    pg.evaluate("window.scrollTo(0, 0)")
-                    pg.wait_for_timeout(200)
-                    pg.screenshot(path=os.path.join(uit, bestand), full_page=True)
-                    rec["controle"].update({"console_fouten": fouten, "duur_sec": round(time.time() - t0, 1),
-                                            "horizontaal_scrollen": pg.evaluate(
-                                                "document.documentElement.scrollWidth > document.documentElement.clientWidth")})
-                    rec["geladen_ok"] = (not rec["controle"].get("storing_zichtbaar")) and not fouten \
-                        and not rec["controle"]["horizontaal_scrollen"]
-                except Exception as e:  # noqa: BLE001
-                    rec["controle"]["fout"] = f"{type(e).__name__}: {e}"
-                ctx.close()
+                rec = {"bestand": bestand, "bron_naam": f"eigen-{sch['id']}", "viewport": vp, "viewport_naam": vp,
+                       "klasse": "ours", "domein": "ours", "taal": "nl", "soort_scherm": "app/dashboard",
+                       "wat_het_toont": sch["toont"], "geladen_ok": False, "controle": dict(gedeeld)}
+                if fout:
+                    rec["controle"]["fout"] = fout
+                else:
+                    try:
+                        pg.set_viewport_size({"width": b, "height": h})
+                        pg.wait_for_timeout(500)
+                        pg.evaluate("window.scrollTo(0, 0)")
+                        pg.wait_for_timeout(200)
+                        pg.screenshot(path=os.path.join(uit, bestand), full_page=True)
+                        scroll = pg.evaluate("document.documentElement.scrollWidth > document.documentElement.clientWidth")
+                        rec["controle"].update({"console_fouten": list(fouten), "duur_sec": duur, "horizontaal_scrollen": scroll})
+                        rec["geladen_ok"] = (not gedeeld["storing_zichtbaar"]) and not fouten and not scroll
+                    except Exception as e:  # noqa: BLE001
+                        rec["controle"]["fout"] = f"{type(e).__name__}: {e}"
                 manifest.append(rec)
-                print(f"{'OK ' if rec['geladen_ok'] else 'MIS'} {bestand} {rec['controle'].get('duur_sec', '')}s", flush=True)
+                print(f"{'OK ' if rec['geladen_ok'] else 'MIS'} {bestand} {rec['controle'].get('duur_sec', '')}s"
+                      f"{' (model overgeslagen)' if gedeeld['model_overgeslagen'] else ''}", flush=True)
+            ctx.close()
         browser.close()
     with open(os.path.join(uit, "manifest.json"), "w", encoding="utf-8") as f:
         json.dump({"set": "ours", "doel": "Eigen schermen voor de blinde A/B-meetlat; elke run is echt uitgevoerd.",

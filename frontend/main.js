@@ -16,7 +16,8 @@ function statusBlok() {
   const s = ctx.status;
   if (!s) return h("div", { class: "zij-status" }, h("h2", null, "Systeem"), h("div", { class: "status-regel" }, h("i", { class: "stip fout" }), h("span", null, "Geen verbinding met de server.")));
   const rt = s.runtime;
-  const toon = !rt.beschikbaar ? "fout" : rt.provider === "local" ? "let" : "ok";
+  // Amber als het antwoord traag is (lokaal) of het eerste model nog nooit is gemeten; de tooltip legt uit waarom.
+  const toon = !rt.beschikbaar ? "fout" : rt.provider === "local" || rt.model_gemeten === false ? "let" : "ok";
   const naam = { local: "Lokaal model", openrouter: "OpenRouter", anthropic: "Anthropic" }[rt.provider] || rt.provider;
   const c = s.corpus || {};
   return h("div", { class: "zij-status" }, h("h2", null, "Systeem"),
