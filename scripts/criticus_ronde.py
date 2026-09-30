@@ -134,6 +134,27 @@ def bronnen_kort(bronnen):
              "uitkomst": b.get("uitkomst")} for b in bronnen]
 
 
+def model_zag(opdracht):
+    """
+    Precies wat het taalmodel kreeg: het bronnenblok uit de systeemprompt en de opdracht van de gebruiker.
+    De adviseur ziet de bronnen volledig; het model ziet per bron een ingekorte tekst. Een beoordelaar die 'volgt dit
+    uit de bronnen?' toetst, moet tegen het tweede toetsen, niet tegen een fragment dat de runner zelf afkapte.
+    """
+    _, _, blok = (opdracht.get("systeem") or "").partition("BRONNEN:\n")
+    return {"bronnenblok": blok.rstrip("\n"), "gebruiker": opdracht.get("gebruiker") or "",
+            "max_tokens": opdracht.get("max_tokens")}
+
+
+def _model_zag_herberekend(casus):
+    """Voor de laag 'volledig': de server stuurt de prompt niet mee, dus opnieuw opbouwen met dezelfde code en invoer."""
+    import features
+    try:
+        opdracht = features.FUNCTIES[casus["functie"]]["fn"](**casus["invoer"])
+    except (TypeError, ValueError, ArithmeticError):
+        return None
+    return model_zag(opdracht) if opdracht.get("bronnen") else None
+
+
 def draai_deterministisch(casus):
     import features
     spec = features.FUNCTIES[casus["functie"]]
@@ -226,6 +247,10 @@ def draai_volledig(casus, basis, timeout):
     res["duur_sec"] = round(time.time() - t0, 1)
     res.setdefault("bronnen", [])
     res.setdefault("berekening", None)
+    if res["http_status"] == 200 and res["bronnen"]:
+        zag = _model_zag_herberekend(casus)
+        if zag:
+            res["model_zag"] = zag
     return res
 
 
@@ -247,6 +272,8 @@ def draai_standin(casus, antwoorden):
             return res
     res.update(bronnen_volledig=opdracht["bronnen"], bronnen=bronnen_kort(opdracht["bronnen"]),
                berekening=opdracht.get("berekening"), opmerkingen=opdracht.get("opmerkingen"))
+    if opdracht["bronnen"]:
+        res["model_zag"] = model_zag(opdracht)
     if not opdracht["bronnen"]:
         res.update(weigering=features.weigertekst(casus["functie"]),
                    controle={"oordeel": "GEWEIGERD_GEEN_BRONNEN", "gefundeerd": [], "ongefundeerd": []})
@@ -266,10 +293,29 @@ def draai_standin(casus, antwoorden):
 
 # ------------------------------------------------------------------ dossier voor de beoordelaar
 
+def bronnenbestand(casus, r):
+    """Wat het taalmodel kreeg, letterlijk: de opdracht en het bronnenblok. Geen ingekorte weergave."""
+    z = r["model_zag"]
+    return "\n".join([
+        f"# Wat het taalmodel kreeg: {casus['id']}", "",
+        "Dit is precies wat het taalmodel van het portaal te zien kreeg, niets meer en niets minder. Toets tegen deze tekst of "
+        "een bewering 'uit de bronnen volgt'. Of iets juridisch klopt, toets je tegen de wettekst in het corpus.", "",
+        f"Omvang: opdracht {len(z['gebruiker'])} tekens, bronnenblok {len(z['bronnenblok'])} tekens.", "",
+        "## Opdracht (gebruikersbericht)", "", "```text", z["gebruiker"], "```", "",
+        "## Bronnenblok (zoals het onder 'BRONNEN:' in de systeemprompt staat)", "", "```text", z["bronnenblok"], "```", ""])
+
+
 def dossier(functie, casussen, resultaten, fragment=260):
+    """
+    Geeft (tekst, bronnenbestanden): het leesbare dossier en per casus met modelaanroep een apart bestand met wat het
+    model kreeg. Het dossier houdt dat bestand buiten beeld zodat het klein genoeg blijft om te lezen; de beoordelaar
+    opent het bij elke vraag of iets uit de bronnen volgt.
+    """
+    bestanden = {}
     regels = [f"# Beoordelingsdossier: {functie}", "",
-              "Toets elke casus op vier fatale fouten: (1) VERZONNEN FEIT: een bewering die niet uit de getoonde bronnen of "
-              "de berekening volgt; (2) NIET-CITEERBARE BRON: een verwijzing die niet in de bronnen staat of niet klopt; "
+              "Toets elke casus op vier fatale fouten: (1) VERZONNEN FEIT: een bewering die niet uit de bronnen die het taalmodel "
+              "kreeg (`bronnen/<id>.md`) of de berekening volgt; "
+              "(2) NIET-CITEERBARE BRON: een verwijzing die niet in de bronnen staat of niet klopt; "
               "(3) FOUTE VERZEKERINGSLOGICA: juridisch of rekenkundig onjuist (controleer tegen de wettekst in corpus/wetgeving.json); "
               "(4) GEEN BRUIKBARE VERVOLGSTAP. Weigeren wanneer de bronnen ontbreken is GOED gedrag, geen fout.", ""]
     for c in casussen:
@@ -277,7 +323,7 @@ def dossier(functie, casussen, resultaten, fragment=260):
         regels += [f"## {c['id']}: {c['titel']}", "",
                    f"Rommeligheid: {', '.join(c.get('rommeligheid', []))}", "",
                    "**Invoer**", "```json", json.dumps(c["invoer"], ensure_ascii=False, indent=1), "```", "",
-                   "**Verwachting van de casusschrijver**",
+                   "**Verwachting van de casusschrijver** (een hulpmiddel, geen oordeel; de wet en het corpus zijn de waarheid)",
                    *[f"- MOET: {x}" for x in c["verwachting"].get("moet", [])],
                    *[f"- MAG NIET: {x}" for x in c["verwachting"].get("mag_niet", [])],
                    f"- Bron van waarheid: {c.get('bron_van_waarheid', '')}", ""]
@@ -286,7 +332,7 @@ def dossier(functie, casussen, resultaten, fragment=260):
             continue
         for opm in r.get("opmerkingen") or []:
             regels += [f"**Melding van het portaal aan de adviseur**: {opm}", ""]
-        regels.append("**Getoonde bronnen**")
+        regels.append("**Bronnen die de adviseur ziet** (de tekst is hier ingekort; het taalmodel kreeg de tekst in `bronnen/<id>.md`)")
         for b in r.get("bronnen_volledig") or []:
             regels.append(f"- [{b['soort']}] {b['label']}" + (f" ({b.get('type') or b.get('uitkomst') or ''})" if (b.get('type') or b.get('uitkomst')) else "")
                           + f": {(b.get('fragment') or '')[:fragment].replace(chr(10), ' ')}"
@@ -294,6 +340,12 @@ def dossier(functie, casussen, resultaten, fragment=260):
         if not r.get("bronnen_volledig") and not r.get("bronnen"):
             regels.append("- (geen bronnen opgehaald)")
         regels.append("")
+        if r.get("model_zag"):
+            z = r["model_zag"]
+            bestanden[c["id"]] = bronnenbestand(c, r)
+            regels += [f"**Wat het taalmodel kreeg**: bronnenblok van {len(z['bronnenblok'])} tekens en een opdracht van "
+                       f"{len(z['gebruiker'])} tekens, volledig in `bronnen/{c['id']}.md`. De opdracht:", "",
+                       "```text", z["gebruiker"][:3000] + (" […]" if len(z["gebruiker"]) > 3000 else ""), "```", ""]
         if r.get("berekening"):
             regels += ["**Berekening (uit code)**", "```json", json.dumps(r["berekening"], ensure_ascii=False, indent=1)[:2600], "```", ""]
         if "tekst" in r:
@@ -303,6 +355,11 @@ def dossier(functie, casussen, resultaten, fragment=260):
                 c_ = r["controle"]
                 regels += [f"**Citeercontrole van het portaal**: {c_['oordeel']}; niet in de bronnen: "
                            f"{[x['verwijzing'] for x in c_['ongefundeerd']] or 'geen'}", ""]
+                for x in c_["ongefundeerd"]:
+                    if x.get("reden"):
+                        regels += [f"- {x['verwijzing']}: {x['reden']}"]
+                if any(x.get("reden") for x in c_["ongefundeerd"]):
+                    regels.append("")
             if r.get("fout"):
                 regels += [f"**Fout**: {r['fout'] if isinstance(r['fout'], str) else r['fout'].get('fout')}", ""]
         regels += ["**Harde checks**"]
@@ -310,7 +367,7 @@ def dossier(functie, casussen, resultaten, fragment=260):
             regels.append(f"- {sleutel}: verwacht {verwacht!r}, gekregen {gekregen!r} -> " +
                           ("OK" if ok else "NIET TOETSBAAR" if ok is None else "FOUT") + (f" ({opm})" if opm else ""))
         regels += ["", "---", ""]
-    return "\n".join(regels)
+    return "\n".join(regels), bestanden
 
 
 # ------------------------------------------------------------------ hoofdprogramma
@@ -352,7 +409,7 @@ def main():
     ap.add_argument("--functie")
     ap.add_argument("--max", type=int, default=0, help="alleen de eerste N casussen per functie")
     ap.add_argument("--fragment", type=int, default=260,
-                    help="dossier: zoveel tekens van elke bron in het dossier (standaard 260; voor beoordelaars 2000)")
+                    help="dossier: zoveel tekens van elke bron ter oriëntatie in het dossier (standaard 260); het volledige bronnenblok staat in dossiers/bronnen/")
     ap.add_argument("--basis", default="http://127.0.0.1:8000")
     ap.add_argument("--timeout", type=int, default=900)
     a = ap.parse_args()
@@ -382,10 +439,14 @@ def main():
                 if os.path.exists(pad):
                     res = {r["id"]: r for r in json.load(open(pad, encoding="utf-8"))}
             os.makedirs(os.path.join(uitmap, "dossiers"), exist_ok=True)
-            tekst = dossier(f, [c for c in casussen if c["functie"] == f], res, a.fragment)
+            tekst, bronnen = dossier(f, [c for c in casussen if c["functie"] == f], res, a.fragment)
             naam = f"{f}.md" if a.dossier_laag in ("auto", "volledig") else f"{f}.{a.dossier_laag}.md"
             open(os.path.join(uitmap, "dossiers", naam), "w", encoding="utf-8").write(tekst)
-            print(f"dossier: criticus/{a.ronde}/dossiers/{naam} ({len(res)} uitkomsten)")
+            if bronnen:
+                os.makedirs(os.path.join(uitmap, "dossiers", "bronnen"), exist_ok=True)
+                for cid, inhoud in bronnen.items():
+                    open(os.path.join(uitmap, "dossiers", "bronnen", cid + ".md"), "w", encoding="utf-8").write(inhoud)
+            print(f"dossier: criticus/{a.ronde}/dossiers/{naam} ({len(res)} uitkomsten, {len(bronnen)} bronnenbestanden)")
         return 1 if ontbreekt else 0
 
     if a.laag == "standin":

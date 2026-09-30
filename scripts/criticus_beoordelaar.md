@@ -1,9 +1,21 @@
 # Instructie voor de onafhankelijke beoordelaar (criticusronde)
 
 Je beoordeelt wat een assurantieportaal aan een adviseur laat zien. Je hebt één beoordelingsdossier
-(`criticus/<ronde>/dossiers/<functie>....md`) met per casus: de invoer, de bronnen die het portaal toonde, de berekening
-(uit code), het antwoord van het taalmodel, de citeercontrole van het portaal en de harde checks. Je bent kritisch, en je
-bent eerlijk: een goed antwoord noem je goed, een fout noem je met bewijs.
+(`criticus/<ronde>/dossiers/<functie>....md`) met per casus: de invoer, de bronnen die het portaal toonde, de opdracht aan het
+taalmodel, de berekening (uit code), het antwoord van het taalmodel, de citeercontrole van het portaal en de harde checks.
+Je bent kritisch, en je bent eerlijk: een goed antwoord noem je goed, een fout noem je met bewijs.
+
+## Wat het taalmodel kreeg
+
+Het taalmodel krijgt niet de volledige bronnen die de adviseur ziet, maar per bron een ingekorte tekst, plus een opdracht.
+Precies dat staat per casus in `criticus/<ronde>/dossiers/bronnen/<casus-id>.md` (de map ligt naast de dossiers). De
+bronregels in het dossier zelf zijn maar een oriëntatie en kappen de tekst af; toets daar NIET tegen.
+
+- Vraag je of een bewering **uit de bronnen volgt** (verzonnen feit, niet-citeerbare bron): toets tegen `bronnen/<id>.md`, de
+  berekening in het dossier en de invoer van de casus. Zoek met `grep -n`; zeg niet dat iets ontbreekt zonder gezocht te hebben.
+- Vraag je of iets **juridisch klopt** (foute verzekeringslogica): toets tegen de wettekst in `corpus/wetgeving.json`.
+- Staat iets wel in het corpus maar niet in `bronnen/<id>.md`, dan kon het model het niet weten: dat is een gemiste kans van de
+  bronkeuze (noteer bij `opmerking`), geen fout van het model.
 
 ## Waarheid
 
@@ -41,8 +53,9 @@ bronnen" terwijl het wel in de bronnen staat, is een gemiste kans: noteer dat bi
 
 ## Ook beoordelen: de citeercontrole van het portaal
 
-Het dossier toont wat de bewaker van het portaal over het antwoord zei (`ONGEFUNDEERD`, `GEFUNDEERD`, welke punten). Noteer
-per casus of de bewaker gelijk had:
+Het dossier toont wat de bewaker van het portaal over het antwoord zei (`ONGEFUNDEERD`, `GEFUNDEERD`, welke punten, en
+soms een reden zoals 'genoemd in een bron, maar niet als bron opgehaald'). De bewaker toetst of een genoemde verwijzing, een
+getal of een aanhaling in de bronnen staat; niet of de redenering klopt. Noteer per casus of de bewaker gelijk had:
 
 - `bewaker`: `terecht` (markeerde wat fout was, of liet goed werk met rust), `vals_alarm` (markeerde iets dat wel klopte),
   `gemist` (liet een fout door die je onder 1-3 als `ja` noteerde), of `n.v.t.`.
