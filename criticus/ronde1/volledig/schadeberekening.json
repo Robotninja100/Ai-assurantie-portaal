@@ -1,0 +1,334 @@
+[
+ {
+  "id": "schadeberekening-01",
+  "functie": "schadeberekening",
+  "http_status": 200,
+  "tekst": "De uitkering is EUR 29.500,00. De schade is € 40.000,00. De verzekerde som is € 150.000,00, wat 75,00% van de werkelijke waarde van € 200.000,00 is. Hierdoor is er onderverzekering van 25,00%. De schade wordt naar evenredigheid vergoed, dus 75,00% van € 40.000,00 is € 30.000,00. Daarna wordt het eigen risico van € 500,00 in mindering gebracht, wat € 29.500,00 oplevert. De klant draagt zelf € 10.500,00 van de totale schade, bestaande uit € 10.000,00 door onderverzekering en € 500,00 eigen risico.\n\nVervolgstap: Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en stel de verzekerde som bij.",
+  "gebeurtenissen": [],
+  "bronnen_volledig": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "titel": "waarde van het verzekerd belang en onderverzekering",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling2_Artikel958",
+    "wet": "BW",
+    "artikel": "7:958",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Er is totaal verlies, wanneer een zaak:\n  a. is tenietgegaan,\n  b. zo is beschadigd dat zij heeft opgehouden een zaak van de verzekerde soort te zijn, of\n  c. buiten de macht van de verzekerde is geraakt en herkrijging niet is te verwachten.\n2. Bij totaal verlies vergoedt de verzekeraar de waarde van het verzekerde belang bij de zaak.\n3. Heeft de verzekeraar in het geval van lid 1 onder c voldaan aan zijn verplichting en wordt het daarna mogelijk de zaak te herkrijgen, dan heeft de verzekeraar ter keuze van de verzekerde recht op terugbetaling van de vergoeding of op overdracht van de zaak.\n4. De verzekeraar vergoedt in geval van verzekering tegen vervangings-, herbouw- of nieuwwaarde bij gedeeltelijke schade te zijner keuze hetzij de kosten van herstel en de waardevermindering naar verkoopwaarde ondanks herstel, hetzij de verzekerde waarde van de onbeschadigde zaak verminderd met de verkoopwaarde van de restanten.\n5. Indien het bedrag van de verzekerde som lager is dan de waarde die aan de schadeberekening ten grondslag ligt, wordt de vergoeding volgens de leden 2 en 4 verminderd naar evenredigheid van hetgeen dat bedrag lager is dan de waarde."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "titel": "directe actie van de benadeelde",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling2_Artikel954",
+    "wet": "BW",
+    "artikel": "7:954",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Indien in geval van een verzekering tegen aansprakelijkheid de verzekeraar ingevolge artikel 941 de verwezenlijking van het risico is gemeld, kan de benadeelde verlangen, dat indien de verzekeraar een uitkering verschuldigd is, het bedrag dat de verzekerde daarvan ter zake van de schade van de benadeelde door dood of letsel te vorderen heeft, aan hem wordt betaald.\n2. De benadeelde kan zonder melding deze betaling verlangen indien de verzekerde een rechtspersoon was die heeft opgehouden te bestaan en de verplichting tot vergoeding van de schade van de benadeelde niet op een ander is overgegaan.\n3. Indien de benadeelde zijn in lid 1 bedoelde bevoegdheid nog niet heeft uitgeoefend, kan de verzekeraar slechts bevrijdend aan de verzekerde betalen nadat hij de benadeelde tevergeefs verzocht heeft binnen vier weken mede te delen of hij deze bevoegdheid wil uitoefenen, of indien deze daarvan afstand heeft gedaan.\n4. De verzekerde is niet bevoegd ten nadele van de benadeelde over zijn vordering op de verzekeraar te beschikken, voorzover deze vordering schade door dood of letsel betreft, noch is deze vordering in zoverre voor anderen dan de benadeelde vatbaar voor beslag.\n5. Voorzover de verzekeraar in verband met overschrijding van een verzekerde som tot minder gehouden is dan het bedrag waarvoor de verzekerde aansprakelijk is, wordt de verschuldigde uitkering naar evenredigheid toegerekend aan de schade van elk der benadeelden alsmede, voorzover zij benadeelden betreft met zowel schade door dood of letsel als andere schade, aan deze onderscheiden schadesoorten. Niettemin blijft de verzekeraar die, onbekend met het bestaan van vorderingen van andere benadeelden, te goeder trouw aan een benadeelde of de verzekerde een groter bedrag dan het aan deze toekomende deel heeft uitgekeerd, jegens de andere benadeelden slechts gehouden tot het beloop van het overblijvende gedeelte van de verzekerde som. De betaling aan de benadeelden kan worden opgeschort voorzover in verband met het in de eerste zin bepaalde op redelijke gronden kan worden betwijfeld welk bedrag dient te worden voldaan.\n6. De benadeelde die ter zake van zijn schade door dood of letsel een rechtsvordering instelt tegen de verzekeraar, is daartoe slechts bevoegd indien hij er zorg voor draagt dat de verzekerde tijdig in het geding wordt geroepen. Dit lijdt uitzondering in het geval, bedoeld in lid 2.\n7. De leden 1 tot en met 6 missen toepassing voor zover de benadeelde schadeloos is gesteld of voor zover hem door de wet jegens de verzekeraar een eigen recht op schadevergoeding is toegekend."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "titel": "uitkering bij schending mededelingsplicht",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling1_Artikel930",
+    "wet": "BW",
+    "artikel": "7:930",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Indien aan de in artikel 928 omschreven mededelingsplicht niet is voldaan, bestaat alleen recht op uitkering overeenkomstig de leden 2 en 3.\n2. De bedongen uitkering geschiedt onverkort, indien de niet of onjuist meegedeelde feiten van geen belang zijn voor de beoordeling van het risico, zoals dit zich heeft verwezenlijkt.\n3. Indien aan lid 2 niet is voldaan, maar de verzekeraar bij kennis van de ware stand van zaken een hogere premie zou hebben bedongen, of de verzekering tot een lager bedrag zou hebben gesloten, wordt de uitkering verminderd naar evenredigheid van hetgeen de premie meer of de verzekerde som minder zou hebben bedragen. Zou de verzekeraar bij kennis van de ware stand van zaken andere voorwaarden hebben gesteld, dan is slechts een uitkering verschuldigd als waren deze voorwaarden in de overeenkomst opgenomen.\n4. In afwijking van de leden 2 en 3 is geen uitkering verschuldigd indien de verzekeraar bij kennis van de ware stand van zaken geen verzekering zou hebben gesloten. De verzekeringnemer die te goeder trouw heeft gehandeld, is in dit geval evenmin premie verschuldigd. De verzekeraar heeft recht op een billijke vergoeding van de te zijnen laste gekomen kosten.\n5. In afwijking van de leden 2 en 3 is geen uitkering verschuldigd aan de verzekeringnemer of de derde, bedoeld in artikel 928 lid 2 of lid 3, die heeft gehandeld met het opzet de verzekeraar te misleiden. Evenmin is een uitkering verschuldigd aan de derde indien de verzekeringnemer, met het opzet de verzekeraar te misleiden, niet heeft voldaan aan de mededelingsplicht betreffende de derde."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:955",
+    "titel": "vergoeding beperkt tot de verzekerde som",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling2_Artikel955",
+    "wet": "BW",
+    "artikel": "7:955",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. De verzekerde som is het hoogste bedrag van de schadevergoeding tot uitkering waarvan de verzekeraar als gevolg van eenzelfde voorval kan worden verplicht, behoudens het bij artikel 959 bepaalde.\n2. Door een uitkering als bedoeld in lid 1, wordt de verzekerde som niet verminderd."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "titel": "samenloop van verzekeringen",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling2_Artikel961",
+    "wet": "BW",
+    "artikel": "7:961",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Indien dezelfde schade door meer dan een verzekering wordt gedekt, kan de verzekerde met inachtneming van artikel 960 elke verzekeraar aanspreken. De verzekeraar is daarbij bevoegd de nakoming van zijn verplichting tot schadevergoeding op te schorten totdat de verzekerde de andere verzekeringen heeft genoemd.\n2. Voor de toepassing van lid 1 wordt met schade die door een verzekering wordt gedekt gelijkgesteld schade die door de verzekeraar onverplicht wordt vergoed.\n3. De verzekeraars hebben onderling verhaal opdat ieder zijn deel draagt, naar evenredigheid van de bedragen waarvoor een ieder afzonderlijk kan worden aangesproken. Verzekeraars hebben op gelijke voet onderling verhaal voor hun redelijke kosten tot het vaststellen van de schade, alsmede voor hun redelijke kosten van verweer in en buiten rechte. De verzekerde is jegens de verzekeraars afzonderlijk verplicht zich te onthouden van elke gedraging die ten koste van dezen afbreuk doet aan hun onderling verhaal.\n4. De bij eenzelfde verzekering betrokken verzekeraars zijn niet verder aansprakelijk dan voor hun evenredig deel van hetgeen in totaal ten laste van die verzekering komt."
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.6",
+    "titel": "Schadevergoeding - onderverzekering en evenredigheid",
+    "type": "schaderegeling",
+    "product": "opstalverzekering",
+    "clausule": "Woonhuis art. 11.6",
+    "verzekeraar": "Klaverblad Verzekeringen",
+    "document": "Royaal woonhuisverzekering, Polisvoorwaarden BW 22 (AVWBW/2210)",
+    "url": "https://www.klaverblad.nl/voorwaarden-woonhuis.pdf",
+    "fragment": "6. Is uw verzekerd bedrag lager dan de herbouwwaarde van uw woonhuis? Dan bent u onderverzekerd. De herbouwwaarde is het bedrag dat nodig is om uw woonhuis opnieuw te bouwen op dezelfde plaats en hetzelfde stuk grond, met dezelfde grootte en bestemming, en met gebruik van gelijkwaardige materialen. Als u onderverzekerd bent, zijn er twee mogelijkheden:\na. U heeft een garantie tegen onderverzekering. In dat geval vergoeden wij toch het volledige schadebedrag. Op uw polisblad ziet u of u een garantie tegen onderverzekering heeft.\nb. U heeft geen garantie tegen onderverzekering. In dat geval berekenen wij uw schadevergoeding als volgt: verzekerd bedrag / werkelijke waarde x schade."
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.10",
+    "titel": "Schadevergoeding - onderverzekering en evenredigheid",
+    "type": "schaderegeling",
+    "product": "inboedelverzekering",
+    "clausule": "art. 2.17.10",
+    "verzekeraar": "Klaverblad Verzekeringen",
+    "document": "Inboedelverzekering, Polisvoorwaarden BI 24 (AVWBI/2409)",
+    "url": "https://www.klaverblad.nl/voorwaarden-inboedel.pdf",
+    "fragment": "10. Is het verzekerde bedrag lager dan de totale waarde van uw inboedel? Dan bent u onderverzekerd. Als u onderverzekerd bent, zijn er 2 mogelijkheden:\na. U heeft een garantie tegen onderverzekering. In dat geval bent u niet onderverzekerd. Wij vergoeden dan ook de schade die boven het verzekerde bedrag uitkomt. Op uw polisblad ziet u of u garantie tegen onderverzekering heeft.\nb. U heeft geen garantie tegen onderverzekering. In dat geval berekenen wij uw schadevergoeding als volgt: verzekerd bedrag / werkelijke waarde van uw inboedel x schade"
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "titel": "Eigen risico",
+    "type": "eigen risico",
+    "product": "opstal-/inboedelverzekering (woonverzekering)",
+    "clausule": "art. 4.6.6",
+    "verzekeraar": "Univé (N.V. Univé Schade)",
+    "document": "Voorwaarden Woonverzekering versie 4.1 (2043.04.26)",
+    "url": "https://www.unive.nl/binaries/br/content/assets/particulier-sales/woonverzekering/voorwaarden-unive-woonverzekering-versie-4.1.pdf",
+    "fragment": "Wij halen uw eventuele eigen risico af van onze vergoeding. Het eigen risico is een vast bedrag dat u zelf betaalt bij schade. Op uw polis leest u welk eigen risico u heeft bij verschillende schades. Heeft u door een gebeurtenis verschillende schades? En heeft u daardoor meerdere eigen risico’s? Dan brengen wij alleen het hoogste eigen risico bij u in rekening. Bij schade door storm tijdens een verbouwing geldt een extra eigen risico van € 250 per gebeurtenis, bovenop het eigen risico die op uw polis staat. Kunt u bewijzen dat er geen verband is tussen de schade en de werkzaamheden tijdens bouw, verbouwing of renovatie? Dan geldt het extra eigen risico niet."
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "titel": "Eigen risico's module Casco",
+    "type": "eigen risico",
+    "product": "autoverzekering (WA/casco)",
+    "clausule": "art. 2.18",
+    "verzekeraar": "Klaverblad Verzekeringen",
+    "document": "Klaverblad Autoverzekering, Polisvoorwaarden AU24 (AVWAU/2404)",
+    "url": "https://www.klaverblad.nl/voorwaarden-auto.pdf",
+    "fragment": "1. U heeft geen standaard eigen risico bij diefstal of totaal verlies van uw auto.\n2. Er geldt ook geen standaard eigen risico als de schade van uw auto gerepareerd wordt door een schadeherstelbedrijf waarmee wij samenwerken. Laat u de schade repareren door een schadeherstelbedrijf waarmee we niet samenwerken of laat u de schade aan uw auto helemaal niet repareren? Dan geldt een eigen risico van € 250,-.\n3. U heeft geen eigen risico voor reparatie van sterretjes in de ruit door een gerenommeerd glasherstelbedrijf met een eigen vaste werkplaats. Laat u het sterretje ergens anders repareren, dan geldt een eigen risico van € 150,-.\n4. U heeft een eigen risico van € 150,- als u uw ruit laat vervangen. Dit eigen risico is € 75,- als u de schade laat herstellen door een schadeherstelbedrijf waarmee we samenwerken.\n5. Heeft u gekozen voor een extra eigen risico of hebben wij u een eigen risico opgelegd? Dan vindt u dat terug op uw polisblad."
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
+    "titel": "Schadevergoeding - eigen risico",
+    "type": "eigen risico",
+    "product": "inboedelverzekering",
+    "clausule": "art. 2.17.14",
+    "verzekeraar": "Klaverblad Verzekeringen",
+    "document": "Inboedelverzekering, Polisvoorwaarden BI 24 (AVWBI/2409)",
+    "url": "https://www.klaverblad.nl/voorwaarden-inboedel.pdf",
+    "fragment": "14. Heeft u een eigen risico? Dan trekken wij dit af van het bedrag dat wij vergoeden. Op uw polisblad ziet u of u een eigen risico heeft en hoe hoog dit is. Voor schade door storm aan huurders- of eigenarenbelang geldt een eigen risico van € 250,-."
+   }
+  ],
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:958",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:954",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:930",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:955",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:961",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.6",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.10",
+    "type": "schaderegeling",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
+    "type": "eigen risico",
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Onderverzekering (evenredigheidsbeginsel)",
+   "bedrag": "29500.00",
+   "stappen": [
+    {
+     "omschrijving": "Evenredigheidsbreuk bepalen",
+     "formule": "€ 150.000,00 / € 200.000,00",
+     "uitkomst": "75.00",
+     "eenheid": "%"
+    },
+    {
+     "omschrijving": "Schade naar evenredigheid",
+     "formule": "€ 40.000,00 x (€ 150.000,00 / € 200.000,00)",
+     "uitkomst": "30000.00",
+     "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Eigen risico in mindering",
+     "formule": "€ 30.000,00 - € 500,00",
+     "uitkomst": "29500.00",
+     "eenheid": "EUR"
+    },
+    {
+     "omschrijving": "Zelf te dragen door de verzekerde (schade min uitkering)",
+     "formule": "€ 40.000,00 - € 29.500,00",
+     "uitkomst": "10500.00",
+     "eenheid": "EUR"
+    }
+   ],
+   "grondslag": [
+    "BW:7:958:5"
+   ],
+   "toelichting": "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. De breuk wordt toegepast op de schade, niet op de verzekerde som.",
+   "volgende_stap": "Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en stel de verzekerde som bij. Controleer of de polis een indexclausule kent.",
+   "waarschuwingen": [
+    "Onderverzekering van 25,00%. Controleer of een garantie tegen onderverzekering van toepassing is; die zet de evenredigheidsregel opzij.",
+    "De volgorde (eerst de evenredigheidsbreuk, daarna het eigen risico) volgt uit de polisvoorwaarden, niet uit de wet. Controleer haar in de voorwaarden van deze verzekeraar: wordt het eigen risico eerst afgetrokken, dan valt de uitkomst anders uit."
+   ],
+   "details": {
+    "onderverzekerd": true,
+    "verzekerd_pct": "75.00",
+    "onderverzekering_pct": "25.00",
+    "totale_schade": "40000.00",
+    "zelf_te_dragen": "10500.00",
+    "zelf_te_dragen_door_onderverzekering": "10000.00",
+    "zelf_te_dragen_eigen_risico": "500.00"
+   },
+   "uitleg": [
+    "De verzekerde som (€ 150.000,00) is 75,00% van de werkelijke waarde (€ 200.000,00). Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de schade dan naar evenredigheid vergoed, hier 75,00% van de schade.",
+    "Bij een schade van € 40.000,00 is dat € 30.000,00.",
+    "Daarna is het eigen risico van € 500,00 in mindering gebracht; die volgorde volgt uit de polisvoorwaarden. Dat geeft € 29.500,00.",
+    "De uitkering is € 29.500,00. Van de totale schade van € 40.000,00 draagt de verzekerde zelf € 10.500,00 (€ 10.000,00 door onderverzekering en € 500,00 eigen risico)."
+   ]
+  },
+  "model": {
+   "model": "qwen3-4b.gguf",
+   "provider": "local",
+   "overgeslagen": null
+  },
+  "controle": {
+   "oordeel": "GEEN_VERWIJZINGEN",
+   "gefundeerd": [
+    {
+     "soort": "bedrag",
+     "verwijzing": "EUR 29.500,00",
+     "positie": 16,
+     "einde": 29
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 40.000,00",
+     "positie": 44,
+     "einde": 55
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 150.000,00",
+     "positie": 78,
+     "einde": 90
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 200.000,00",
+     "positie": 132,
+     "einde": 144
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 30.000,00",
+     "positie": 267,
+     "einde": 278
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 500,00",
+     "positie": 314,
+     "einde": 322
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 29.500,00",
+     "positie": 350,
+     "einde": 361
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 10.500,00",
+     "positie": 393,
+     "einde": 404
+    },
+    {
+     "soort": "bedrag",
+     "verwijzing": "€ 10.000,00",
+     "positie": 441,
+     "einde": 452
+    },
+    {
+     "soort": "percentage",
+     "verwijzing": "75,00%",
+     "positie": 96,
+     "einde": 102
+    },
+    {
+     "soort": "percentage",
+     "verwijzing": "25,00%",
+     "positie": 185,
+     "einde": 191
+    }
+   ],
+   "ongefundeerd": [],
+   "bronnen_beschikbaar": {
+    "wetgeving": 5,
+    "kifid": 0,
+    "polisclausules": 10
+   },
+   "duur_sec": 1076.2,
+   "afgekapt": false,
+   "einde_reden": "stop"
+  },
+  "duur_sec": 1076.2,
+  "_sleutel": "d99994ac03380da4"
+ }
+]

@@ -1,0 +1,334 @@
+[
+  {
+    "id": "verjaringstoets-01",
+    "functie": "verjaringstoets",
+    "titel": "Baseline: schade bekend op 16 juni 2025, nog niets gestuurd; de termijn loopt ruim",
+    "rommeligheid": [
+      "schone casus"
+    ],
+    "invoer": {
+      "datum_bekend": "2025-06-16",
+      "peildatum": "2026-09-29"
+    },
+    "verwachting": {
+      "moet": [
+        "Meldt dat de vordering op de peildatum (29 september 2026) nog niet verjaard is en dat de laatste dag om te stuiten 16 juni 2028 is; per 17 juni 2028 is de vordering verjaard.",
+        "Legt de telling uit volgens art. 7:942 lid 1: drie jaar na de aanvang van de dag volgend op de dag van bekendheid; de termijn begint dus op 17 juni 2025.",
+        "Noemt als vervolgstap dat de verjaring tijdig kan worden gestuit met een schriftelijke mededeling waarbij op uitkering aanspraak wordt gemaakt (art. 7:942 lid 2), met bewaard verzendbewijs, ruim voor de laatste dag.",
+        "Toont BW art. 7:942 en BW art. 7:943 in de bronnenlijst (de grondslag van de berekening)."
+      ],
+      "mag_niet": [
+        "Noemt een andere laatste dag dan 16 juni 2028 (bijvoorbeeld 15 of 17 juni 2028) of rekent zelf een eigen einddatum uit.",
+        "Noemt een andere verjaringstermijn dan de drie jaar van art. 7:942 (bijvoorbeeld vijf of twintig jaar) of beroept zich op artikelen uit Boek 3 BW (algemene verjaringsregels; die staan niet in het corpus) of andere artikelen die niet in de bronnen staan.",
+        "Presenteert de meegeleverde Kifid-uitspraken als steun voor de termijn: geen enkele van de 42 bruikbare uitspraken in het corpus gaat over verjaring of stuiting.",
+        "Noemt een polisspecifieke termijn of clausule als feit: polisvoorwaarden worden voor deze functie niet opgehaald."
+      ],
+      "harde_checks": {
+        "details.status": "LOOPT",
+        "details.hoofdtermijn_laatste_dag": "2028-06-16",
+        "details.laatste_dag": "2028-06-16",
+        "details.eerste_verjaarde_dag": "2028-06-17",
+        "details.dagen_resterend": 626,
+        "details.aansprakelijkheid": false
+      }
+    },
+    "bron_van_waarheid": "BW 7:942 lid 1 (corpus/wetgeving.json, toestand 2026-07-01). Handmatig: bekend 2025-06-16; de termijn begint 2025-06-17 00.00 uur; drie jaar later = 2028-06-17 00.00 uur; dus laatste dag 2028-06-16 (vrijdag); 626 dagen na 2026-09-29."
+  },
+  {
+    "id": "verjaringstoets-02",
+    "functie": "verjaringstoets",
+    "titel": "Baseline: schriftelijke aanspraak, daarna afwijzing; de nieuwe termijn vervangt de oude",
+    "rommeligheid": [
+      "schone casus"
+    ],
+    "invoer": {
+      "datum_bekend": "2024-01-15",
+      "datum_stuiting": "2024-02-01",
+      "datum_reactie": "2025-03-13",
+      "peildatum": "2026-09-29"
+    },
+    "verwachting": {
+      "moet": [
+        "Legt uit dat de schriftelijke aanspraak van 1 februari 2024 de verjaring stuitte (art. 7:942 lid 2).",
+        "Legt uit dat na de erkenning of ondubbelzinnige afwijzing van 13 maart 2025 een nieuwe termijn van drie jaar begon op de dag daarna (14 maart 2025), zodat de laatste dag 13 maart 2028 is (per 14 maart 2028 verjaard).",
+        "Meldt dat de vordering op de peildatum niet verjaard is.",
+        "Noemt als vervolgstap dat de einddatum 13 maart 2028 in het dossier wordt bewaakt en dat vóór die datum opnieuw wordt gestuit (schriftelijk, met verzendbewijs) als de zaak dan nog loopt."
+      ],
+      "mag_niet": [
+        "Noemt 15 januari 2027 (einde van de oorspronkelijke hoofdtermijn) als geldende laatste dag: de nieuwe termijn vervangt de oude.",
+        "Spreekt van twee naast elkaar lopende termijnen of telt termijnen bij elkaar op.",
+        "Rekent de nieuwe termijn vanaf de datum van de aanspraak in plaats van vanaf de dag na de reactie, of noemt een andere einddatum dan 13 maart 2028.",
+        "Beroept zich op artikelen uit Boek 3 BW (algemene verjaringsregels; die staan niet in het corpus) of andere artikelen die niet in de bronnen staan."
+      ],
+      "harde_checks": {
+        "details.status": "LOOPT",
+        "details.hoofdtermijn_laatste_dag": "2027-01-15",
+        "details.laatste_dag": "2028-03-13",
+        "details.eerste_verjaarde_dag": "2028-03-14",
+        "details.dagen_resterend": 531
+      }
+    },
+    "bron_van_waarheid": "BW 7:942 lid 1 en lid 2 (tweede zin). Handmatig: hoofdtermijn eindigt 2027-01-15; de aanspraak van 2024-02-01 valt daarbinnen en stuit; reactie 2025-03-13 -> nieuwe termijn begint 2025-03-14 00.00 uur -> 2028-03-14 00.00 uur -> laatste dag 2028-03-13 (maandag); 531 dagen na 2026-09-29."
+  },
+  {
+    "id": "verjaringstoets-03",
+    "functie": "verjaringstoets",
+    "titel": "Grensgeval: de peildatum is precies de laatste dag om te stuiten",
+    "rommeligheid": [
+      "grensgeval: data op de dag zelf"
+    ],
+    "invoer": {
+      "datum_bekend": "2023-06-12",
+      "peildatum": "2026-06-12"
+    },
+    "verwachting": {
+      "moet": [
+        "Meldt dat de vordering op de peildatum nog NIET verjaard is en dat 12 juni 2026 zelf de laatste dag is waarop nog kan worden gestuit; per 13 juni 2026 is zij verjaard.",
+        "Noemt spoed als vervolgstap: vandaag nog een schriftelijke mededeling waarbij op uitkering aanspraak wordt gemaakt versturen en het verzendbewijs bewaren (art. 7:942 lid 2).",
+        "Legt uit waarom de dag zelf nog meetelt: de termijn begint op 13 juni 2023 en loopt drie jaar, dus tot en met 12 juni 2026."
+      ],
+      "mag_niet": [
+        "Zegt dat de vordering al verjaard is, of dat de termijn vandaag om 00.00 uur of 'op 12 juni' is verstreken.",
+        "Noemt 13 juni 2026 als laatste dag om te stuiten, of suggereert dat er nog een extra dag is.",
+        "Stelt gerust dat er nog ruim tijd is."
+      ],
+      "harde_checks": {
+        "details.status": "LOOPT",
+        "details.laatste_dag": "2026-06-12",
+        "details.eerste_verjaarde_dag": "2026-06-13",
+        "details.dagen_resterend": 0
+      }
+    },
+    "bron_van_waarheid": "BW 7:942 lid 1. Handmatig: bekend 2023-06-12; de termijn begint 2023-06-13 00.00 uur; drie jaar later = 2026-06-13 00.00 uur; laatste dag 2026-06-12 (vrijdag) = peildatum, dus 0 dagen resterend."
+  },
+  {
+    "id": "verjaringstoets-04",
+    "functie": "verjaringstoets",
+    "titel": "Grensgeval: bekend op schrikkeldag 29 februari 2020; de aanspraak van 1 maart 2023 komt een dag te laat",
+    "rommeligheid": [
+      "grensgeval: schrikkeljaar",
+      "grensgeval: aanspraak een dag te laat"
+    ],
+    "invoer": {
+      "datum_bekend": "2020-02-29",
+      "datum_stuiting": "2023-03-01",
+      "peildatum": "2026-09-29"
+    },
+    "verwachting": {
+      "moet": [
+        "Meldt dat de vordering verjaard is: de laatste dag om te stuiten was 28 februari 2023.",
+        "Legt uit dat de termijn begon op 1 maart 2020 en drie jaar later eindigde op 28 februari 2023, omdat 2023 geen 29 februari kent.",
+        "Legt uit dat de schriftelijke aanspraak van 1 maart 2023 een dag te laat kwam en de verjaring niet meer kon stuiten.",
+        "Noemt als vervolgstap na te gaan of er vóór 1 maart 2023 al rechtsgeldig schriftelijk is gestuit, en zegt eerlijk dat de vordering zonder eerdere stuiting niet meer afdwingbaar is."
+      ],
+      "mag_niet": [
+        "Noemt 1 maart 2023 als laatste dag of beschouwt de aanspraak van 1 maart 2023 als tijdig.",
+        "Verzint een uitzondering, hardheidsclausule of coulanceregeling die niet in de bronnen staat.",
+        "Noemt een andere einddatum dan 28 februari 2023."
+      ],
+      "harde_checks": {
+        "details.status": "VERJAARD",
+        "details.hoofdtermijn_laatste_dag": "2023-02-28",
+        "details.laatste_dag": "2023-02-28",
+        "details.eerste_verjaarde_dag": "2023-03-01"
+      }
+    },
+    "bron_van_waarheid": "BW 7:942 lid 1 en lid 2. Handmatig: bekend 2020-02-29 (schrikkeldag); de termijn begint 2020-03-01 00.00 uur; drie jaar later = 2023-03-01 00.00 uur; laatste dag 2023-02-28 (dinsdag); de aanspraak van 2023-03-01 (woensdag) valt erna en stuit niets meer. Beide leesmethoden (dag met hetzelfde nummer / begin van de termijn + 3 jaar) geven hier dezelfde uitkomst."
+  },
+  {
+    "id": "verjaringstoets-05",
+    "functie": "verjaringstoets",
+    "titel": "Stuiting in 2021, de verzekeraar heeft nooit gereageerd: ruim vijf jaar later nog steeds gestuit, niet verjaard",
+    "rommeligheid": [
+      "grensgeval: lange stilte na stuiting",
+      "verkeerde intuitie (stilte betekent verjaring)"
+    ],
+    "invoer": {
+      "datum_bekend": "2021-04-12",
+      "datum_stuiting": "2021-05-03",
+      "peildatum": "2026-09-29"
+    },
+    "verwachting": {
+      "moet": [
+        "Meldt dat de verjaring is gestuit door de schriftelijke aanspraak van 3 mei 2021 en dat er op de peildatum geen termijn loopt, ook al zijn er meer dan vijf jaar verstreken.",
+        "Legt uit dat volgens art. 7:942 lid 2 een nieuwe termijn van drie jaar pas begint op de dag na de erkenning of ondubbelzinnige afwijzing door de verzekeraar.",
+        "Noemt geen lopende einddatum, omdat er geen einddatum is.",
+        "Noemt als vervolgstap de verzekeraar schriftelijk om een besluit (erkenning of afwijzing) te vragen, de datum daarvan vast te leggen en het verzendbewijs van de stuitende mededeling te bewaren."
+      ],
+      "mag_niet": [
+        "Zegt dat de vordering verjaard is, of noemt 12 april 2024 (einde van de oorspronkelijke hoofdtermijn) als geldende laatste dag.",
+        "Noemt een nieuwe termijn die zou zijn gaan lopen zonder erkenning of afwijzing (bijvoorbeeld drie jaar na de aanspraak, dus 3 mei 2024).",
+        "Beweert dat langdurige stilte van de verzekeraar de vordering laat verjaren, of dat na vijf jaar zonder reactie 'wel een einde komt aan de vordering'."
+      ],
+      "harde_checks": {
+        "details.status": "GESTUIT",
+        "details.hoofdtermijn_laatste_dag": "2024-04-12",
+        "details.laatste_dag": null,
+        "details.eerste_verjaarde_dag": null,
+        "details.dagen_resterend": null
+      }
+    },
+    "bron_van_waarheid": "BW 7:942 lid 2. Handmatig: hoofdtermijn eindigt 2024-04-12 (bekend 2021-04-12); de aanspraak van 2021-05-03 valt daarbinnen en stuit; zonder erkenning of ondubbelzinnige afwijzing begint geen nieuwe termijn; er loopt dus geen termijn."
+  },
+  {
+    "id": "verjaringstoets-06",
+    "functie": "verjaringstoets",
+    "titel": "Tegenstrijdige data: de erkenning of afwijzing (3 maart 2025) ligt voor de schriftelijke aanspraak (2 juni 2025)",
+    "rommeligheid": [
+      "tegenstrijdige feiten",
+      "grensgeval: reactie voor de aanspraak"
+    ],
+    "invoer": {
+      "datum_bekend": "2025-01-13",
+      "datum_stuiting": "2025-06-02",
+      "datum_reactie": "2025-03-03",
+      "peildatum": "2026-09-29"
+    },
+    "verwachting": {
+      "moet": [
+        "Signaleert dat de erkenning of afwijzing (3 maart 2025) voor de schriftelijke aanspraak (2 juni 2025) ligt en dus niet als reactie op die aanspraak kan gelden; vraagt de data na te lopen aan de hand van de stukken.",
+        "Presenteert de uitkomst uitdrukkelijk als voorlopig en afhankelijk van die controle en volgt daarbij de waarschuwing uit de berekening.",
+        "Noemt als vervolgstap: de brief met de aanspraak en de reactie van de verzekeraar erbij pakken, beide data vaststellen en opnieuw toetsen."
+      ],
+      "mag_niet": [
+        "Presenteert 3 maart 2028 (drie jaar na de vermeende reactie) als lopende einddatum.",
+        "Gaat stilzwijgend van een van beide data uit zonder de tegenstrijdigheid te melden.",
+        "Zegt zonder voorbehoud dat de vordering veilig is of dat er niets meer hoeft te gebeuren."
+      ],
+      "harde_checks": {
+        "details.hoofdtermijn_laatste_dag": "2028-01-13"
+      }
+    },
+    "bron_van_waarheid": "BW 7:942 lid 2: de nieuwe termijn begint pas na een reactie op de aanspraak; een reactie die vooraf gaat aan de aanspraak kan daar niet op reageren. Handmatig: hoofdtermijn eindigt 2028-01-13 (bekend 2025-01-13). De verdere status (gestuit, of een nieuwe termijn) hangt af van welke van beide data klopt en is daarom bewust niet hard gecontroleerd."
+  },
+  {
+    "id": "verjaringstoets-07",
+    "functie": "verjaringstoets",
+    "titel": "Ontbrekend sleutelfeit: wel een reactie van de verzekeraar, maar geen datum van de schriftelijke aanspraak",
+    "rommeligheid": [
+      "ontbrekende sleutelfeiten"
+    ],
+    "invoer": {
+      "datum_bekend": "2023-05-08",
+      "datum_reactie": "2024-01-18",
+      "peildatum": "2026-09-29"
+    },
+    "verwachting": {
+      "moet": [
+        "Meldt dat de hoofdtermijn op 8 mei 2026 is verstreken en dat de uitkomst onzeker is omdat de datum van de schriftelijke aanspraak ontbreekt: die bepaalt of de verjaring is gestuit.",
+        "Legt de twee uitkomsten uit: is er voor 8 mei 2026 schriftelijk aanspraak gemaakt en is daarop op 18 januari 2024 erkend of afgewezen, dan loopt een nieuwe termijn tot en met 18 januari 2027; zonder tijdige stuiting is de hoofdtermijn verstreken.",
+        "Noemt als vervolgstap de eerste schriftelijke aanspraak (schademelding, brief of e-mail) op te sporen, de datum vast te stellen en opnieuw te toetsen."
+      ],
+      "mag_niet": [
+        "Concludeert zonder voorbehoud dat de vordering verjaard is.",
+        "Concludeert zonder voorbehoud dat de termijn nog loopt tot 18 januari 2027.",
+        "Verzint een datum voor de schriftelijke aanspraak.",
+        "Suggereert dat er 'nog tijd' is omdat er een langere termijn (bijvoorbeeld vijf jaar) zou gelden: art. 7:942 geeft drie jaar en bekendheid op 8 mei 2023 betekent dat de hoofdtermijn al is verstreken."
+      ],
+      "harde_checks": {
+        "details.status": "ONZEKER",
+        "details.hoofdtermijn_laatste_dag": "2026-05-08",
+        "details.voorwaardelijk_alternatief.laatste_dag": "2027-01-18"
+      }
+    },
+    "bron_van_waarheid": "BW 7:942 lid 1 en lid 2. Handmatig: hoofdtermijn eindigt 2026-05-08 (bekend 2023-05-08); een nieuwe termijn begint alleen na een reactie op een stuitende schriftelijke aanspraak, en die datum ontbreekt. Was er een tijdige aanspraak: reactie 2024-01-18 -> nieuwe termijn begint 2024-01-19 -> laatste dag 2027-01-18. Zonder tijdige stuiting is de vordering per 2026-05-09 verjaard. Algemene stuitingsregels buiten titel 7.17 (bijv. stuiting door erkenning) staan niet in het corpus; de status ONZEKER blijft dan in elk geval juist."
+  },
+  {
+    "id": "verjaringstoets-08",
+    "functie": "verjaringstoets",
+    "titel": "Aansprakelijkheidsverzekering (lid 3): onderhandelingen stuiten; de oude hoofdtermijn is al verstreken maar vervangen",
+    "rommeligheid": [
+      "ander product/regime (aansprakelijkheid)",
+      "grensgeval: oude termijn al voorbij"
+    ],
+    "invoer": {
+      "datum_bekend": "2023-08-16",
+      "datum_stuiting": "2023-11-21",
+      "datum_reactie": "2025-02-10",
+      "aansprakelijkheid": true,
+      "peildatum": "2026-09-29"
+    },
+    "verwachting": {
+      "moet": [
+        "Past art. 7:942 lid 3 toe: bij een verzekering tegen aansprakelijkheid stuit iedere onderhandeling tussen de verzekeraar en de gerechtigde of de benadeelde de verjaring; de onderhandelingen van 21 november 2023 stuitten dus.",
+        "Legt uit dat de nieuwe termijn van drie jaar begon op de dag na de erkenning of na de mededeling dat de onderhandelingen worden afgebroken (11 februari 2025), zodat de laatste dag 10 februari 2028 is.",
+        "Meldt dat de vordering niet verjaard is, ook al is de oorspronkelijke hoofdtermijn (16 augustus 2026) verstreken: die is vervangen door de nieuwe termijn.",
+        "Noemt als vervolgstap de einddatum te bewaken en tijdig opnieuw te stuiten (bijvoorbeeld door een schriftelijke mededeling met verzendbewijs), en de onderhandelingen vast te leggen."
+      ],
+      "mag_niet": [
+        "Zegt dat de vordering per 16 augustus 2026 verjaard is.",
+        "Past alleen lid 2 toe (schriftelijke mededeling nodig) alsof onderhandelingen niet zouden stuiten, of noemt lid 3 niet.",
+        "Noemt een andere einddatum dan 10 februari 2028."
+      ],
+      "harde_checks": {
+        "details.status": "LOOPT",
+        "details.aansprakelijkheid": true,
+        "details.hoofdtermijn_laatste_dag": "2026-08-16",
+        "details.laatste_dag": "2028-02-10",
+        "details.eerste_verjaarde_dag": "2028-02-11"
+      }
+    },
+    "bron_van_waarheid": "BW 7:942 lid 3. Handmatig: hoofdtermijn eindigt 2026-08-16; de onderhandeling van 2023-11-21 stuit; reactie 2025-02-10 (erkenning of afbreken) -> nieuwe termijn begint 2025-02-11 00.00 uur -> 2028-02-11 00.00 uur -> laatste dag 2028-02-10 (donderdag)."
+  },
+  {
+    "id": "verjaringstoets-09",
+    "functie": "verjaringstoets",
+    "titel": "Datum in de toekomst: de schriftelijke aanspraak is gedateerd na de peildatum (voorgenomen brief of typefout)",
+    "rommeligheid": [
+      "datum in de toekomst",
+      "tegenstrijdige feiten"
+    ],
+    "invoer": {
+      "datum_bekend": "2023-10-05",
+      "datum_stuiting": "2026-10-02",
+      "peildatum": "2026-09-29"
+    },
+    "verwachting": {
+      "moet": [
+        "Signaleert dat de opgegeven aanspraak (2 oktober 2026) na de peildatum (29 september 2026) ligt en op de peildatum dus nog niets heeft gestuit; behandelt de brief als nog niet verstuurd of vraagt de datum na (typefout?).",
+        "Meldt dat de vordering op de peildatum nog niet verjaard is en dat de laatste dag om te stuiten 5 oktober 2026 is, 6 dagen later.",
+        "Noemt spoed als vervolgstap: de schriftelijke aanspraak nu aantoonbaar versturen (verzendbewijs) en niet wachten tot de voorgenomen datum."
+      ],
+      "mag_niet": [
+        "Meldt dat de verjaring gestuit is of dat er geen termijn loopt.",
+        "Laat het risico weg dat de termijn op 5 oktober 2026 eindigt, of stelt gerust.",
+        "Neemt 2 oktober 2026 stilzwijgend over als een gedane mededeling."
+      ],
+      "harde_checks": {
+        "details.status": "LOOPT",
+        "details.hoofdtermijn_laatste_dag": "2026-10-05",
+        "details.laatste_dag": "2026-10-05",
+        "details.eerste_verjaarde_dag": "2026-10-06",
+        "details.dagen_resterend": 6
+      }
+    },
+    "bron_van_waarheid": "BW 7:942 lid 2: alleen een gedane schriftelijke mededeling stuit; een mededeling die op de peildatum nog niet is gedaan, heeft nog niets gestuit. Handmatig: bekend 2023-10-05 -> laatste dag 2026-10-05 (maandag), 6 dagen na 2026-09-29 (dinsdag). Acceptabel alternatief: het portaal weigert de toekomstige datum met een invoerfout (HTTP 400); dan vervalt deze harde check."
+  },
+  {
+    "id": "verjaringstoets-10",
+    "functie": "verjaringstoets",
+    "titel": "Verkeerd datumformaat: de bekendheidsdatum als spreektaal ('14 nov 2023') in plaats van JJJJ-MM-DD",
+    "rommeligheid": [
+      "verkeerd datumformaat",
+      "spreektaal"
+    ],
+    "invoer": {
+      "datum_bekend": "14 nov 2023",
+      "peildatum": "2026-09-29"
+    },
+    "verwachting": {
+      "moet": [
+        "Weigert te rekenen en geeft een duidelijke foutmelding (HTTP 400) die het verwachte formaat JJJJ-MM-DD noemt.",
+        "Rekent niet met een geraden of stilzwijgend omgezette datum."
+      ],
+      "mag_niet": [
+        "Geeft een verjaringsuitkomst (status of einddatum) op basis van een veronderstelde datum.",
+        "Crasht met een onbegrijpelijke serverfout (HTTP 500)."
+      ],
+      "harde_checks": {
+        "http_status": 400
+      }
+    },
+    "bron_van_waarheid": "Invoervalidatie in features._datum: een datum buiten JJJJ-MM-DD is een invoerfout (ValueError, HTTP 400), geen rekenkwestie. BW 7:942 lid 1 vereist een vaststaande bekendheidsdatum."
+  }
+]

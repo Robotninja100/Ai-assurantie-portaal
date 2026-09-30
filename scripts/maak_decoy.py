@@ -1,478 +1,489 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-maak_decoy.py - rendert een BEWUST MIDDELMATIG, maar niet kapot, dashboard.
+maak_decoy.py - rendert de DECOYS van de blinde meetlat en schrijft hun manifest.
 
 Waarom
 ------
-De decoy is de controlegroep van de meetlat. Het is een redelijk, werkend,
-volstrekt ongeinspireerd bedrijfsdashboard: standaard Bootstrap-achtig, systeem-
-font, te veel randen, inconsistente witruimte, willekeurige kleuraccenten en
-uitlijning die net niet klopt. Alles is leesbaar en niets is stuk - het is
-gewoon niet ontworpen.
+De decoys zijn de controlegroep van de meetlat. Het zijn zelfgemaakte, fictieve schermen van
+een Nederlands assurantie-backoffice in vier bewust benoemde kwaliteiten:
 
-Als onze beoordelingsmethode deugt, eindigt dit ding consequent onderaan.
-Doet hij dat niet, dan meten we niet wat we denken te meten en is de meetlat
-kapot - dat is precies wat we willen weten.
+    redelijk   > matig   > zwak   > zeer_zwak
+
+Als onze beoordelingsmethode deugt, eindigen ze in die volgorde ONDER een goed ontwerp. Eindigt
+een decoy erboven, dan meten we niet wat we denken te meten en is de meetlat kapot.
+
+Waarom vier en niet een
+-----------------------
+De eerste meetronde had een decoy, en die was een domein-tweeling van ons product (Nederlands,
+assurantie, backoffice, geen herkenbaar merk). Zodra onze schermen erbij komen zijn dan "wij" en
+"de decoy" de enige twee zonder merk: "geen herkenbaar merk" betekent automatisch "wij". Met vier
+decoys van wisselende kwaliteit en indeling is dat gat dicht.
+
+Ze zijn verschillend GENOEG om niet een ontwerp met vier knoppen te zijn:
+
+    kwaliteit   indeling                                       dichtheid
+    redelijk    admin-template: zijbalk + lijstweergave        middel
+    matig       Bootstrap-dashboard: KPI-tegels + panelen      middel
+    zwak        invoerformulier met 9 tabbladen, 3 kolommen    zeer hoog
+    zeer_zwak   intranet op geneste tabellen: zoeken + lijst   hoog
+
+Bronnen
+-------
+De HTML-bestanden in renders/decoy/ (decoy_<kwaliteit>.html) ZIJN de bron; ze zijn met de hand
+geschreven en worden gecommit. Dit script rendert ze op 1440 en 390 breed, meet of ze leesbaar en
+functioneel zijn, en schrijft renders/decoy/manifest.json. De PNG's komen nooit in git.
+
+Leesbaar en functioneel is een MEETRESULTAAT, geen bewering
+-----------------------------------------------------------
+Per decoy en viewport wordt gemeten (in de gerenderde DOM): geen horizontale overflow, geen
+afgekapte tekst of invoerwaarde, geen bedienelement dat door iets anders wordt bedekt, kleinste
+lettergrootte >= 10 px, laagste tekstcontrast >= 3:1, geen overlappende tekst. Faalt een meting,
+dan krijgt het record geladen_ok=false met reden en wordt de PNG naar _afgekeurd/ verplaatst.
 
 Gebruik
 -------
-  python3 scripts/maak_decoy.py                    # 1440 + 390 naar renders/decoy/
-  python3 scripts/maak_decoy.py --alleen-html      # alleen het HTML-bestand
+  python3 scripts/maak_decoy.py                       # alle decoys, 1440 + 390, manifest schrijven
+  python3 scripts/maak_decoy.py --kwaliteit zwak      # selectie
+  python3 scripts/maak_decoy.py --alleen-html         # niets renderen; controleer alleen de bronnen
 """
 
 from __future__ import annotations
 
 import argparse
-import json
-import os
 import sys
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import capture_controle as cc  # noqa: E402
+
 PROJECT = Path(__file__).resolve().parent.parent
 UIT = PROJECT / "renders" / "decoy"
-CHROME_PAD = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
+BRON_MAP = UIT
+
+DEKKING = ("Zelfgemaakte, fictieve schermen van een Nederlands assurantie-backoffice in vier bewust "
+           "benoemde kwaliteiten. Ze zijn GEEN bewijs van hoe echte producten eruitzien; ze bestaan "
+           "zodat 'scherm zonder herkenbaar merk' niet automatisch 'ons product' betekent, en als "
+           "controlegroep die onder een goed ontwerp moet eindigen.")
+DOEL = ("Controlegroep voor de blinde A/B-meetlat: vier zelfgemaakte assurantie-backofficeschermen van "
+        "wisselende, benoemde kwaliteit. Hoort onder een goed ontwerp te eindigen, in de volgorde "
+        "redelijk > matig > zwak > zeer_zwak; doet het dat niet, dan is de meetlat kapot.")
+KWALITEITSSCHAAL = {
+    "redelijk": ("gangbaar en samenhangend, maar duidelijk minder dan een goed ontwerp: geen typografische "
+                 "schaal, onregelmatig ritme, te luide bediening"),
+    "matig": ("herkenbare structuur maar zichtbaar rommelig: zware randen om alles, ongelijke kolommen, "
+              "geen hierarchie in de panelen"),
+    "zwak": "geen visuele hierarchie; volgepropt; inconsistente labels, velden en knoppen",
+    "zeer_zwak": "verouderd intranetscherm: geneste tabellen, gemengde lettertypen, alles even zwaar",
+}
+LADDER_TOELICHTING = ("De rangorde redelijk > matig > zwak > zeer_zwak is het oordeel van de maker op grond van de "
+                      "ingebouwde zwaktes; ze is niet door een onafhankelijke beoordelaar bevestigd. De "
+                      "eerste ronde met het harnas kan haar toetsen: een beoordelaar die de decoys in een andere "
+                      "volgorde zet dan deze ladder, of een decoy boven een goed ontwerp, meet iets anders "
+                      "dan we denken.")
+GEINSPECTEERD_OP = "2026-09-29"
+
+# Leesbaarheidsdrempels (gemeten in de gerenderde DOM)
+MIN_LETTERGROOTTE_PX = 10.0
+MIN_CONTRAST = 3.0
+
+DECOYS: list[dict] = [
+    {
+        "kwaliteit": "redelijk",
+        "html": "decoy_redelijk.html",
+        "bron_naam": "Decoy redelijk (admin-template, polissenlijst)",
+        "soort_scherm": "lijstweergave",
+        "indeling": "zijbalk met gegroepeerde navigatie, zoekbalk, paginakop met vier knoppen, filterbalk, "
+                    "statustabs met tellers, tabel van 12 polissen met rijacties, paginering",
+        "dichtheid": "middel",
+        "wat_het_toont": ("Zelfgemaakt nepscherm (geen echte software) van een Nederlands assurantie-backoffice: "
+                          "een polissenlijst in een admin-template met donkere zijbalk, filterbalk, statustabs, "
+                          "tabel van 12 polissen met rijknoppen en paginering. Op het eerste gezicht gangbaar, "
+                          "bewust redelijk maar niet goed."),
+        "bewuste_zwaktes": [
+            "geen typografische schaal: 10,5/11/12/13/17/21 px zonder vaste verhouding; tabelkoppen in 10,5 px "
+            "bijna-lichtgrijs met letterafstand",
+            "onregelmatig ritme: filtervelden van 30/32/34/36 px hoog naast elkaar en wisselende paddings "
+            "(9/11/12/14/22 px)",
+            "bediening te luid: vier knoppen in de paginakop (twee omlijnd, een groen, een blauw) en per rij "
+            "drie knoppen (Bekijk/Wijzig/Prolongeer) die even zwaar wegen als de data zelf",
+            "vijf verschillende statusbadge-vormen (gevulde pil, gevuld blokje, omlijnde pil, vierkant, bolletje "
+            "met tekst)",
+            "bedragen links uitgelijnd en datums gecentreerd in plaats van consequent uitgelijnd",
+            "dubbele zoekfunctie (zoekbalk bovenin en zoekveld in het filter) en statustabs die het statusfilter "
+            "dupliceren",
+            "mobiele weergave laat de kolomkoppen weg (waarden staan zonder label onder elkaar)",
+        ],
+        "zwaktes_die_grijswaarde_overleven": "alle; geen enkele steunt op kleur, behalve de vijf badgevormen "
+                                             "(die verschillen ook in vorm en gewicht)",
+    },
+    {
+        "kwaliteit": "matig",
+        "html": "decoy_matig.html",
+        "bron_naam": "Decoy matig (Bootstrap-dashboard, portefeuille)",
+        "soort_scherm": "dashboard",
+        "indeling": "topbalk met knoppennavigatie, meldingsbalk, vier KPI-tegels, twee kolommen met panelen "
+                    "(tabel, staafgrafiek, zoekformulier, takenlijst, voortgangsbalken)",
+        "dichtheid": "middel",
+        "wat_het_toont": ("Zelfgemaakt nepscherm (geen echte software) van een Nederlands assurantie-backoffice: "
+                          "een portefeuille-dashboard in Bootstrap-stijl met vier KPI-tegels, tabel van recente "
+                          "polismutaties, staafgrafiek, zoekformulier, taken en voortgangsbalken. Bewust matig: "
+                          "zware randen, ongelijke kolommen, geen hierarchie in de panelen."),
+        "bewuste_zwaktes": [
+            "systeemfont zonder typografische schaal (11/12/13/14/16/22/26 px door elkaar)",
+            "randen om vrijwel elk element en drie verschillende hoekradii (0, 3 en 6 px)",
+            "inconsistente witruimte (8/10/12/15/18/20/25 px naast elkaar)",
+            "vier niet-verwante accentkleuren (blauw, groen, oranje, paars); deze zwakte overleeft de "
+            "grijswaardestap NIET",
+            "kolombreedtes en knoppen net niet uitgelijnd: KPI-tegels van 24/23/26/22% breed, de laatste "
+            "tegel eindigt niet op de rechterrand van het raster",
+            "grijs-op-grijs panelen zonder hierarchie tussen kop en inhoud; drie even zware actieknoppen "
+            "(blauw, groen, oranje) onder de tabel",
+        ],
+        "zwaktes_die_grijswaarde_overleven": "alle behalve de vier accentkleuren",
+    },
+    {
+        "kwaliteit": "zwak",
+        "html": "decoy_zwak.html",
+        "bron_naam": "Decoy zwak (invoerformulier nieuwe polis, negen tabbladen)",
+        "soort_scherm": "formulier",
+        "indeling": "topbalk, blijvende waarschuwing, negen tabbladen, drie kolommen fieldsets met 55 invoervelden "
+                    "en keuzes, dekkingstabel met invoervelden, clausulelijst, elf knoppen verspreid over het scherm",
+        "dichtheid": "zeer hoog",
+        "wat_het_toont": ("Zelfgemaakt nepscherm (geen echte software) van een Nederlands assurantie-backoffice: "
+                          "een volgepropt invoerformulier 'Nieuwe polis invoeren' met negen tabbladen, drie "
+                          "kolommen fieldsets, dekkingstabel en clausulelijst. Bewust zwak: geen hierarchie, "
+                          "inconsistente labels en knoppen."),
+        "bewuste_zwaktes": [
+            "geen typografische hierarchie: paginatitel 14 px, veldgroepen 12 px vet, labels 11 px; alles bijna "
+            "even groot en even zwaar",
+            "labels wisselen van plaats (boven het veld, links rechts uitgelijnd) en de verplicht-markering "
+            "staat op drie manieren (* achter, * voor, '(verplicht)')",
+            "veldbreedtes willekeurig (40/70/95/130/175/190 px) en kolommen van 31/34/31% met ongelijke "
+            "tussenruimte: geen raster",
+            "elf knoppen verspreid over het scherm: vier 'Opslaan'-varianten op twee plekken, tweemaal 'Annuleren' en "
+            "'Berekenen' midden in het formulier",
+            "fieldsets met vier verschillende randstijlen (dun, cursieve legende, hoofdletterlegende, dikke rand)",
+            "tabbladen van ongelijke breedte waarvan de actieve nauwelijks afwijkt",
+            "hulpteksten van 10 px in grijs die met de velden concurreren; een waarschuwing staat permanent bovenaan",
+            "twaalf clausules als ongegroepeerde checkboxlijst",
+        ],
+        "zwaktes_die_grijswaarde_overleven": "alle; het scherm steunt vrijwel niet op kleur",
+    },
+    {
+        "kwaliteit": "zeer_zwak",
+        "html": "decoy_zeer_zwak.html",
+        "bron_naam": "Decoy zeer zwak (intranet, polissen zoeken op geneste tabellen)",
+        "soort_scherm": "zoekscherm",
+        "indeling": "geneste tabellen: titelbalk, ongegroepeerd menu van 18 links, waarschuwingsbalk, "
+                    "zoekcriteria in een raster van 12 velden, resultaattabel van 11 kolommen, pager, voetregel",
+        "dichtheid": "hoog",
+        "wat_het_toont": ("Zelfgemaakt nepscherm (geen echte software) van een Nederlands assurantie-backoffice: "
+                          "een verouderd intranetscherm 'Polissen zoeken' op geneste tabellen met menu van 18 links, "
+                          "zoekcriteria en een resultaattabel van 12 polissen. Bewust zeer zwak: gemengde "
+                          "lettertypen, kader in kader, alles even zwaar."),
+        "bewuste_zwaktes": [
+            "lettertypen zonder reden door elkaar: Times New Roman voor lopende tekst, Arial voor koppen en "
+            "Courier voor invoervelden en teller",
+            "opmaak met geneste tabellen en dubbele/inset/outset-randen: kader in kader in kader",
+            "geen hierarchie: paginatitel, sectiekop en tabelkop verschillen nauwelijks; de hoofdactie 'Zoeken' "
+            "lijkt op de rest",
+            "alles in de resultaattabel gecentreerd, 11 px, zware rand om elke cel en sterke zebrastrepen",
+            "menu van 18 links in een ongegroepeerde kolom met willekeurig vet en cursief",
+            "labels rechts uitgelijnd in grijze cellen, invoervelden van willekeurige breedte in een ander "
+            "lettertype",
+            "waarschuwingsbalk in hoofdletters met dubbele rand die met de paginatitel concurreert",
+            "afkortingen (NST, HOL, A/B/O/R/G) in plaats van leesbare statuswoorden",
+        ],
+        "zwaktes_die_grijswaarde_overleven": "alle; het scherm steunt vrijwel niet op kleur",
+    },
+]
+
+for _d in DECOYS:
+    _d["id"] = f"decoy_{_d['kwaliteit']}"
+
+
+def bestandsnaam(kwaliteit: str, viewport_naam: str) -> str:
+    v = cc.VIEWPORTS[viewport_naam]
+    return f"decoy-{kwaliteit}-{viewport_naam}-{v['width']}x{v['height']}.png"
+
 
 # ---------------------------------------------------------------------------
-# De middelmaat, expliciet gemaakt:
-#  - systeemfont (Arial/Helvetica), geen typografische schaal: 11/12/13/14/16px
-#    door elkaar, regelhoogtes niet afgestemd
-#  - randen om werkelijk alles, drie verschillende radii (0, 3px, 6px)
-#  - witruimte uit de losse pols: 8, 10, 12, 15, 18, 20, 25px naast elkaar
-#  - vier niet-verwante accentkleuren (blauw, groen, oranje, paars)
-#  - uitlijning die net niet klopt: kolommen van 31%/34%/33%, labels links,
-#    waarden soms gecentreerd, knoppen niet op een lijn
-#  - grijs op grijs, zwarte koppen, willekeurige vetgedruktheid
-# Niets hiervan maakt de pagina stuk. Dat is het punt.
+# Leesbaarheid en bruikbaarheid, gemeten in de gerenderde DOM
 # ---------------------------------------------------------------------------
+LEESBAARHEID_JS = r"""
+() => {
+  const doc = document.documentElement;
+  const res = {};
+  res.viewport_breedte = doc.clientWidth;
+  res.document_breedte = doc.scrollWidth;
+  res.horizontale_overflow = doc.scrollWidth > doc.clientWidth + 1;
+  res.hoogte_css_px = Math.max(document.body.scrollHeight, doc.scrollHeight);
 
-HTML = r"""<!DOCTYPE html>
-<html lang="nl">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Verzekeringsbeheer - Overzicht</title>
-<style>
-  * { box-sizing: border-box; }
-  body {
-    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-    font-size: 13px; color: #333; background: #f5f5f5; margin: 0;
+  const parse = c => { const m = (c || '').match(/rgba?\(([^)]+)\)/); if (!m) return [255, 255, 255, 1];
+                       const p = m[1].split(',').map(parseFloat); return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1]; };
+  const lum = ([r, g, b]) => { const f = v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); };
+                               return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+  const achtergrond = el => {
+    const lagen = []; let n = el;
+    while (n && n.nodeType === 1) { const c = parse(getComputedStyle(n).backgroundColor); if (c[3] > 0) lagen.push(c); if (c[3] >= 0.99) break; n = n.parentElement; }
+    let r = 255, g = 255, b = 255;
+    for (let i = lagen.length - 1; i >= 0; i--) { const [lr, lg, lb, la] = lagen[i]; r = lr * la + r * (1 - la); g = lg * la + g * (1 - la); b = lb * la + b * (1 - la); }
+    return [r, g, b];
+  };
+  const contrast = (a, b) => { const l1 = lum(a), l2 = lum(b); const hi = Math.max(l1, l2), lo = Math.min(l1, l2); return (hi + 0.05) / (lo + 0.05); };
+
+  // tekstknopen: lettergrootte, contrast, rechthoeken
+  let minFont = 999, minContrast = 999, aantalTeksten = 0;
+  const klein = [], laag = [], rects = [];
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+  let node;
+  while ((node = walker.nextNode())) {
+    const t = node.textContent.trim();
+    if (!t) continue;
+    const el = node.parentElement; if (!el) continue;
+    const cs = getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) continue;
+    const range = document.createRange(); range.selectNodeContents(node);
+    const rs = Array.from(range.getClientRects()).filter(r => r.width > 1 && r.height > 1);
+    if (!rs.length) continue;
+    aantalTeksten++;
+    const fs = parseFloat(cs.fontSize);
+    const fg = parse(cs.color);
+    const ratio = contrast(fg, achtergrond(el));
+    if (fs < minFont) minFont = fs;
+    if (ratio < minContrast) minContrast = ratio;
+    if (fs < 10) klein.push(t.slice(0, 24) + ' (' + fs + 'px)');
+    if (ratio < 3) laag.push(t.slice(0, 24) + ' (' + ratio.toFixed(2) + ')');
+    for (const r of rs) rects.push({x0: r.left + scrollX, y0: r.top + scrollY, x1: r.right + scrollX, y1: r.bottom + scrollY, el, t: t.slice(0, 20)});
   }
-  a { color: #337ab7; }
-  .topbar {
-    background: #2c3e50; color: #fff; padding: 12px 15px 10px 15px;
-    border-bottom: 3px solid #1abc9c;
+  res.tekstfragmenten = aantalTeksten;
+  res.min_lettergrootte_px = minFont === 999 ? null : Math.round(minFont * 10) / 10;
+  res.min_contrast = minContrast === 999 ? null : Math.round(minContrast * 100) / 100;
+  res.te_kleine_teksten = klein.slice(0, 5);
+  res.te_lage_contrasten = laag.slice(0, 5);
+
+  // overlappende tekst (verschillende elementen, wezenlijke overlap)
+  let overlap = 0; const voorbeelden = [];
+  for (let i = 0; i < rects.length; i++) {
+    for (let j = i + 1; j < rects.length; j++) {
+      const a = rects[i], b = rects[j];
+      if (a.el === b.el || a.el.contains(b.el) && false) continue;
+      const w = Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0), h = Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0);
+      if (w <= 1 || h <= 1) continue;
+      const opp = w * h, kl = Math.min((a.x1 - a.x0) * (a.y1 - a.y0), (b.x1 - b.x0) * (b.y1 - b.y0));
+      if (opp > 0.3 * kl) { overlap++; if (voorbeelden.length < 3) voorbeelden.push(a.t + ' / ' + b.t); }
+    }
   }
-  .topbar .merk { font-size: 18px; font-weight: bold; display: inline-block; }
-  .topbar .merk span { color: #1abc9c; }
-  .topbar .rechts { float: right; font-size: 12px; padding-top: 6px; }
-  .topbar .rechts a { color: #ecf0f1; margin-left: 14px; text-decoration: underline; }
-  .clear { clear: both; }
+  res.overlappende_teksten = overlap;
+  res.overlap_voorbeelden = voorbeelden;
 
-  .nav {
-    background: #ecf0f1; border-bottom: 1px solid #bdc3c7; padding: 6px 10px 8px 18px;
+  // afgekapte inhoud: overflow hidden met meer inhoud dan zichtbaar, en afgekapte invoerwaarden
+  let afgekapt = 0; const afgekaptVoorbeelden = [];
+  for (const el of document.body.querySelectorAll('*')) {
+    const cs = getComputedStyle(el);
+    if (cs.display === 'none') continue;
+    if ((cs.overflowX === 'hidden' || cs.overflowX === 'clip') && el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 1) {
+      afgekapt++; if (afgekaptVoorbeelden.length < 3) afgekaptVoorbeelden.push(el.tagName + '.' + (el.className || ''));
+    }
   }
-  .nav a {
-    display: inline-block; padding: 6px 12px 5px 12px; margin-right: 4px;
-    border: 1px solid #bdc3c7; background: #fff; border-radius: 3px;
-    text-decoration: none; color: #2c3e50; font-size: 12px;
+  res.afgekapte_elementen = afgekapt;
+  let afgekapteInvoer = 0; const invoerVoorbeelden = [];
+  const canvas = document.createElement('canvas').getContext('2d');
+  for (const el of document.querySelectorAll('input[type=text], input:not([type]), select')) {
+    const cs = getComputedStyle(el); const r = el.getBoundingClientRect();
+    if (cs.display === 'none' || r.width === 0) continue;
+    if (el.tagName === 'INPUT') {
+      if (el.scrollWidth > el.clientWidth + 1) { afgekapteInvoer++; invoerVoorbeelden.push('input:' + (el.value || '').slice(0, 24)); }
+    } else {
+      canvas.font = cs.font;
+      const opt = el.options[el.selectedIndex];
+      const w = canvas.measureText(opt ? opt.text : '').width;
+      const beschikbaar = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight) - 22;
+      if (w > beschikbaar) { afgekapteInvoer++; invoerVoorbeelden.push('select:' + (opt ? opt.text : '').slice(0, 24)); }
+    }
   }
-  .nav a.actief { background: #337ab7; color: #fff; border-color: #2e6da4; font-weight: bold; }
+  res.afgekapte_invoer = afgekapteInvoer;
+  res.afgekapte_invoer_voorbeelden = invoerVoorbeelden.slice(0, 4);
 
-  .kruimel { padding: 10px 15px 10px 20px; font-size: 11px; color: #777; }
-
-  .wrap { padding: 0 15px 25px 18px; }
-  h1 { font-size: 22px; margin: 8px 0 18px 2px; color: #000; }
-  h2 { font-size: 15px; margin: 25px 0 10px 0; color: #2c3e50; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
-  h3 { font-size: 12px; margin: 0 0 8px 0; text-transform: uppercase; color: #7f8c8d; letter-spacing: 0.5px; }
-
-  .kaartrij { margin-bottom: 18px; }
-  .kaart {
-    display: inline-block; vertical-align: top; background: #fff;
-    border: 1px solid #ccc; border-radius: 3px; padding: 12px 10px 15px 14px;
-    margin-right: 1%; margin-bottom: 10px;
+  // bedienelementen: aantal en of ze bedekt worden door iets anders
+  const bediening = Array.from(document.querySelectorAll('a[href], button, input:not([type=hidden]), select, textarea'))
+    .filter(e => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && cs.display !== 'none'; });
+  res.bedieningselementen = bediening.length;
+  let bedekt = 0; const bedektVoorbeelden = [];
+  for (const e of bediening) {
+    e.scrollIntoView({block: 'center', inline: 'center'});
+    const r = e.getBoundingClientRect();
+    const x = Math.min(Math.max(r.left + r.width / 2, 0), innerWidth - 1), y = Math.min(Math.max(r.top + r.height / 2, 0), innerHeight - 1);
+    const hit = document.elementFromPoint(x, y);
+    if (hit && !(hit === e || e.contains(hit) || hit.contains(e))) { bedekt++; if (bedektVoorbeelden.length < 3) bedektVoorbeelden.push(e.tagName + ':' + (e.innerText || e.value || '').slice(0, 16)); }
   }
-  .k1 { width: 24%; border-top: 4px solid #337ab7; }
-  .k2 { width: 23%; border-top: 4px solid #5cb85c; }
-  .k3 { width: 26%; border-top: 4px solid #f0ad4e; }
-  .k4 { width: 22%; border-top: 4px solid #9b59b6; margin-right: 0; }
-  .kaart .getal { font-size: 26px; font-weight: bold; color: #000; margin: 6px 0 2px 0; }
-  .kaart .sub { font-size: 11px; color: #999; }
-  .kaart .delta { font-size: 12px; color: #5cb85c; font-weight: bold; }
-  .kaart .delta.rood { color: #d9534f; }
-
-  .paneel {
-    background: #fff; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 20px;
-  }
-  .paneel .kop {
-    background: #f7f7f7; border-bottom: 1px solid #ddd; padding: 10px 12px 8px 12px;
-    font-weight: bold; font-size: 13px; border-radius: 6px 6px 0 0;
-  }
-  .paneel .kop .knop { float: right; margin-top: -3px; }
-  .paneel .body { padding: 15px 12px 18px 10px; }
-
-  .knop {
-    display: inline-block; padding: 5px 12px 5px 12px; border: 1px solid #2e6da4;
-    background: #337ab7; color: #fff; border-radius: 3px; font-size: 12px;
-    text-decoration: none; cursor: pointer;
-  }
-  .knop.grijs { background: #fff; color: #333; border-color: #ccc; }
-  .knop.groen { background: #5cb85c; border-color: #4cae4c; }
-  .knop.oranje { background: #f0ad4e; border-color: #eea236; color: #fff; }
-  .knop.klein { font-size: 11px; padding: 3px 8px 3px 8px; }
-
-  table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  th {
-    background: #eee; border: 1px solid #ccc; padding: 7px 6px 6px 8px;
-    text-align: left; font-size: 11px; text-transform: uppercase; color: #555;
-  }
-  td { border: 1px solid #ddd; padding: 8px 6px 7px 8px; }
-  tr:nth-child(even) td { background: #fafafa; }
-  td.bedrag { text-align: center; font-weight: bold; }
-  td.mid { text-align: center; }
-  .badge {
-    display: inline-block; padding: 2px 7px 2px 7px; border-radius: 10px;
-    font-size: 10px; color: #fff; background: #5cb85c;
-  }
-  .badge.oranje { background: #f0ad4e; }
-  .badge.rood { background: #d9534f; }
-  .badge.blauw { background: #337ab7; }
-
-  .kolom-links { display: inline-block; vertical-align: top; width: 63%; margin-right: 2%; }
-  .kolom-rechts { display: inline-block; vertical-align: top; width: 34%; }
-
-  .formrij { margin-bottom: 10px; }
-  .formrij label { display: block; font-size: 11px; color: #666; margin-bottom: 3px; }
-  .formrij input, .formrij select {
-    width: 100%; padding: 6px 8px 6px 6px; border: 1px solid #ccc;
-    border-radius: 3px; font-size: 13px; font-family: inherit; background: #fff;
-  }
-  .formrij.smal { display: inline-block; width: 48%; margin-right: 2%; }
-  .formrij.smal2 { display: inline-block; width: 46%; }
-
-  .lijst { list-style: none; margin: 0; padding: 0; }
-  .lijst li {
-    border-bottom: 1px solid #eee; padding: 9px 4px 8px 6px; font-size: 12px;
-  }
-  .lijst li .tijd { float: right; color: #aaa; font-size: 11px; }
-
-  .melding {
-    background: #fcf8e3; border: 1px solid #faebcc; color: #8a6d3b;
-    padding: 10px 12px 9px 12px; border-radius: 3px; margin-bottom: 15px; font-size: 12px;
-  }
-  .voortgang { background: #eee; border-radius: 3px; height: 14px; margin-top: 6px; border: 1px solid #ddd; }
-  .voortgang div { background: #5cb85c; height: 12px; border-radius: 2px; }
-
-  .staafjes { height: 150px; padding-top: 12px; }
-  .staafjes .staaf {
-    display: inline-block; width: 6.5%; margin-right: 1%; background: #337ab7;
-    vertical-align: bottom; border: 1px solid #2e6da4;
-  }
-  .staaflabels { font-size: 10px; color: #999; padding-top: 5px; }
-  .staaflabels span { display: inline-block; width: 7.5%; text-align: center; }
-
-  .footer {
-    border-top: 1px solid #ddd; margin-top: 20px; padding: 15px 18px 25px 18px;
-    font-size: 11px; color: #999; background: #fff;
-  }
-  .footer a { color: #999; margin-right: 12px; }
-
-  @media (max-width: 700px) {
-    .k1, .k2, .k3, .k4 { width: 48%; margin-right: 2%; }
-    .kolom-links, .kolom-rechts { width: 100%; margin-right: 0; }
-    .topbar .rechts { float: none; display: block; padding-top: 8px; }
-    .nav a { margin-bottom: 4px; }
-    /* Geen horizontale scroll: cellen krimpen en breken af. Krap, maar heel. */
-    table { font-size: 10px; table-layout: fixed; word-wrap: break-word; }
-    th { padding: 5px 3px 4px 4px; font-size: 9px; }
-    td { padding: 5px 3px 4px 4px; }
-    .badge { font-size: 9px; padding: 2px 4px 2px 4px; }
-    .knop.klein { padding: 2px 5px 2px 5px; }
-    h1 { font-size: 19px; }
-    .staafjes { height: 110px; }
-  }
-</style>
-</head>
-<body>
-
-<div class="topbar">
-  <div class="merk">Polis<span>Beheer</span> 4.2</div>
-  <div class="rechts">
-    <a href="#">Handleiding</a><a href="#">Instellingen</a><a href="#">J. de Vries (afmelden)</a>
-  </div>
-  <div class="clear"></div>
-</div>
-
-<div class="nav">
-  <a href="#" class="actief">Dashboard</a>
-  <a href="#">Polissen</a>
-  <a href="#">Schades</a>
-  <a href="#">Relaties</a>
-  <a href="#">Offertes</a>
-  <a href="#">Facturatie</a>
-  <a href="#">Rapportages</a>
-  <a href="#">Beheer</a>
-</div>
-
-<div class="kruimel">Home &nbsp;&raquo;&nbsp; Dashboard &nbsp;&raquo;&nbsp; Overzicht portefeuille</div>
-
-<div class="wrap">
-  <h1>Overzicht portefeuille</h1>
-
-  <div class="melding">
-    <b>Let op:</b> 12 polissen hebben een prolongatiedatum binnen 30 dagen. Controleer de premies voordat u de batch verwerkt.
-    <a href="#">Bekijk lijst</a>
-  </div>
-
-  <div class="kaartrij">
-    <div class="kaart k1">
-      <h3>Actieve polissen</h3>
-      <div class="getal">1.284</div>
-      <div class="delta">+ 3,2%</div>
-      <div class="sub">t.o.v. vorige maand</div>
-    </div><div class="kaart k2">
-      <h3>Openstaande schades</h3>
-      <div class="getal">47</div>
-      <div class="delta rood">+ 11</div>
-      <div class="sub">waarvan 9 &gt; 30 dagen</div>
-    </div><div class="kaart k3">
-      <h3>Premie-omzet (YTD)</h3>
-      <div class="getal">&euro; 892.430</div>
-      <div class="delta">+ 6,8%</div>
-      <div class="sub">begroot: &euro; 910.000</div>
-    </div><div class="kaart k4">
-      <h3>Conversie offertes</h3>
-      <div class="getal">34%</div>
-      <div class="delta rood">- 2,1%</div>
-      <div class="sub">laatste 90 dagen</div>
-    </div>
-  </div>
-
-  <div class="kolom-links">
-
-    <div class="paneel">
-      <div class="kop">Recente polismutaties <a href="#" class="knop klein grijs">Exporteren</a></div>
-      <div class="body">
-        <table>
-          <tr>
-            <th>Polisnr.</th><th>Relatie</th><th>Product</th><th>Premie p/j</th><th>Status</th><th>Gewijzigd</th>
-          </tr>
-          <tr>
-            <td>P-2024-01183</td><td>Bakkerij Van Loon B.V.</td><td>Bedrijfsaansprakelijkheid</td>
-            <td class="bedrag">&euro; 1.240,00</td><td class="mid"><span class="badge">Actief</span></td><td>12-09-2026</td>
-          </tr>
-          <tr>
-            <td>P-2024-00947</td><td>M. Haverkamp</td><td>Autoverzekering WA+</td>
-            <td class="bedrag">&euro; 684,50</td><td class="mid"><span class="badge oranje">In behandeling</span></td><td>12-09-2026</td>
-          </tr>
-          <tr>
-            <td>P-2023-02210</td><td>Installatiebedrijf Kroon</td><td>Rechtsbijstand zakelijk</td>
-            <td class="bedrag">&euro; 415,00</td><td class="mid"><span class="badge">Actief</span></td><td>11-09-2026</td>
-          </tr>
-          <tr>
-            <td>P-2025-00031</td><td>A. el Amrani</td><td>Overlijdensrisicoverzekering</td>
-            <td class="bedrag">&euro; 228,80</td><td class="mid"><span class="badge blauw">Offerte</span></td><td>11-09-2026</td>
-          </tr>
-          <tr>
-            <td>P-2022-01765</td><td>Praktijk De Linde</td><td>Inventaris / goederen</td>
-            <td class="bedrag">&euro; 2.019,00</td><td class="mid"><span class="badge rood">Royement</span></td><td>10-09-2026</td>
-          </tr>
-          <tr>
-            <td>P-2024-01902</td><td>Transport Wielinga</td><td>Wagenparkverzekering</td>
-            <td class="bedrag">&euro; 7.845,00</td><td class="mid"><span class="badge">Actief</span></td><td>10-09-2026</td>
-          </tr>
-        </table>
-        <div style="margin-top:12px;">
-          <a href="#" class="knop">Alle mutaties</a>
-          <a href="#" class="knop groen" style="margin-left:6px;">Nieuwe polis</a>
-          <a href="#" class="knop oranje" style="margin-left:10px;">Batch prolongatie</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="paneel">
-      <div class="kop">Premie-ontwikkeling per maand (x &euro; 1.000)</div>
-      <div class="body">
-        <div class="staafjes">
-          <div class="staaf" style="height:52%"></div><div class="staaf" style="height:61%"></div><div class="staaf" style="height:48%"></div><div class="staaf" style="height:73%"></div><div class="staaf" style="height:69%"></div><div class="staaf" style="height:81%"></div><div class="staaf" style="height:77%"></div><div class="staaf" style="height:88%"></div><div class="staaf" style="height:64%"></div><div class="staaf" style="height:92%"></div><div class="staaf" style="height:70%"></div><div class="staaf" style="height:58%"></div>
-        </div>
-        <div class="staaflabels">
-          <span>jan</span><span>feb</span><span>mrt</span><span>apr</span><span>mei</span><span>jun</span><span>jul</span><span>aug</span><span>sep</span><span>okt</span><span>nov</span><span>dec</span>
-        </div>
-      </div>
-    </div>
-
-    <h2>Schadedossiers die aandacht vragen</h2>
-    <div class="paneel">
-      <div class="body" style="padding:10px 10px 12px 10px;">
-        <table>
-          <tr><th>Dossier</th><th>Soort</th><th>Gemeld</th><th>Reserve</th><th>Behandelaar</th><th></th></tr>
-          <tr><td>S-8821</td><td>Aanrijding</td><td>02-08-2026</td><td class="bedrag">&euro; 4.100</td><td>K. Smit</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
-          <tr><td>S-8809</td><td>Waterschade</td><td>27-07-2026</td><td class="bedrag">&euro; 12.750</td><td>K. Smit</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
-          <tr><td>S-8794</td><td>Inbraak</td><td>19-07-2026</td><td class="bedrag">&euro; 3.480</td><td>R. Doornbos</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
-          <tr><td>S-8770</td><td>Aansprakelijkheid</td><td>04-07-2026</td><td class="bedrag">&euro; 21.000</td><td>niet toegewezen</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
-        </table>
-      </div>
-    </div>
-
-  </div><div class="kolom-rechts">
-
-    <div class="paneel">
-      <div class="kop">Snel zoeken</div>
-      <div class="body">
-        <div class="formrij">
-          <label>Relatie of polisnummer</label>
-          <input type="text" placeholder="bijv. P-2024-01183">
-        </div>
-        <div class="formrij smal">
-          <label>Product</label>
-          <select><option>Alle producten</option><option>Autoverzekering</option><option>Aansprakelijkheid</option></select>
-        </div>
-        <div class="formrij smal2">
-          <label>Status</label>
-          <select><option>Alle</option><option>Actief</option><option>Offerte</option></select>
-        </div>
-        <div class="formrij">
-          <label>Ingangsdatum vanaf</label>
-          <input type="text" value="01-01-2026">
-        </div>
-        <a href="#" class="knop" style="margin-top:4px;">Zoeken</a>
-        <a href="#" class="knop grijs" style="margin-left:8px;">Wissen</a>
-      </div>
-    </div>
-
-    <div class="paneel">
-      <div class="kop">Taken vandaag</div>
-      <div class="body" style="padding:4px 10px 10px 10px;">
-        <ul class="lijst">
-          <li><span class="tijd">09:15</span>Prolongatie Bakkerij Van Loon controleren</li>
-          <li><span class="tijd">10:00</span>Terugbelverzoek M. Haverkamp</li>
-          <li><span class="tijd">11:30</span>Schadedossier S-8770 toewijzen</li>
-          <li><span class="tijd">13:45</span>Offerte ORV A. el Amrani nabellen</li>
-          <li><span class="tijd">15:00</span>Maandrapportage afronden</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="paneel">
-      <div class="kop">Voortgang dossierdigitalisering</div>
-      <div class="body">
-        <div style="font-size:12px;">Gescand en gecontroleerd</div>
-        <div class="voortgang"><div style="width:72%"></div></div>
-        <div style="font-size:11px;color:#999;margin-top:5px;">912 van 1.284 dossiers</div>
-        <div style="font-size:12px;margin-top:14px;">Machtigingen verwerkt</div>
-        <div class="voortgang"><div style="width:41%;background:#f0ad4e;"></div></div>
-        <div style="font-size:11px;color:#999;margin-top:5px;">527 van 1.284 dossiers</div>
-      </div>
-    </div>
-
-    <div class="paneel">
-      <div class="kop">Meldingen</div>
-      <div class="body" style="padding:6px 10px 12px 10px;">
-        <ul class="lijst">
-          <li>Koppeling met assurantiebeurs is bijgewerkt <span class="badge blauw">nieuw</span></li>
-          <li>3 premienota's retour gekomen</li>
-          <li>Onderhoud gepland op 21-09 tussen 22:00 en 23:00</li>
-        </ul>
-      </div>
-    </div>
-
-  </div>
-  <div class="clear"></div>
-</div>
-
-<div class="footer">
-  <a href="#">Privacyverklaring</a><a href="#">Voorwaarden</a><a href="#">Support</a><a href="#">Versie 4.2.17</a>
-  <div style="margin-top:8px;">&copy; 2026 PolisBeheer - intern gebruik</div>
-</div>
-
-</body>
-</html>
+  window.scrollTo(0, 0);
+  res.bedekte_bediening = bedekt;
+  res.bedekte_bediening_voorbeelden = bedektVoorbeelden;
+  res.tekst_tekens = document.body.innerText.length;
+  return res;
+}
 """
 
 
-def render(uit: Path, html_pad: Path) -> list[dict]:
+def beoordeel_leesbaarheid(m: dict) -> list[str]:
+    """Afkeurcodes uit de leesbaarheidsmeting. Leeg = leesbaar en functioneel."""
+    r: list[str] = []
+    if m.get("horizontale_overflow"):
+        r.append("horizontale_overflow")
+    if m.get("afgekapte_elementen"):
+        r.append("afgekapte_elementen")
+    if m.get("afgekapte_invoer"):
+        r.append("afgekapte_invoerwaarde")
+    if m.get("bedekte_bediening"):
+        r.append("bedekte_bediening")
+    if m.get("overlappende_teksten"):
+        r.append("overlappende_tekst")
+    if m.get("min_lettergrootte_px") is not None and m["min_lettergrootte_px"] < MIN_LETTERGROOTTE_PX:
+        r.append("lettergrootte_te_klein")
+    if m.get("min_contrast") is not None and m["min_contrast"] < MIN_CONTRAST:
+        r.append("contrast_te_laag")
+    if not m.get("bedieningselementen"):
+        r.append("geen_bedienelementen")
+    return r
+
+
+def kaart_van(d: dict) -> dict:
+    return {
+        "id": d["id"], "bron_naam": d["bron_naam"], "url": None,
+        "klasse": "decoy", "domein": "decoy", "taal": "nl",
+        "soort_scherm": d["soort_scherm"], "kwaliteit": d["kwaliteit"],
+        "wat_het_toont": d["wat_het_toont"], "geinspecteerd_op": GEINSPECTEERD_OP,
+        "dekking_categorie": DEKKING, "bewuste_zwaktes": d["bewuste_zwaktes"],
+        "indeling": d["indeling"], "bron_html": d["html"],
+    }
+
+
+def render(uit: Path, gekozen: list[dict]) -> list[dict]:
     from playwright.sync_api import sync_playwright
 
-    viewports = [
-        ("desktop", 1440, 900, "decoy-dashboard-desktop-1440x900.png"),
-        ("mobile", 390, 844, "decoy-dashboard-mobile-390x844.png"),
-    ]
-    resultaten = []
+    records: list[dict] = []
     with sync_playwright() as pw:
-        start = {"headless": True}
-        if Path(CHROME_PAD).exists():
-            start["executable_path"] = CHROME_PAD
-        browser = pw.chromium.launch(**start)
+        browser = pw.chromium.launch(executable_path=cc.CHROME, headless=True,
+                                     args=["--no-sandbox", "--disable-dev-shm-usage", "--hide-scrollbars",
+                                           "--force-color-profile=srgb", "--font-render-hinting=none"])
         try:
-            for naam, b, h, bestand in viewports:
-                ctx = browser.new_context(viewport={"width": b, "height": h},
-                                          device_scale_factor=2)
-                pg = ctx.new_page()
-                pg.goto(html_pad.as_uri(), wait_until="load")
-                pg.wait_for_timeout(400)
-                doel = uit / bestand
-                pg.screenshot(path=str(doel), full_page=True)
-                from PIL import Image
-                with Image.open(doel) as im:
-                    formaat = im.size
-                resultaten.append({
-                    "viewport": naam, "css_breedte": b, "css_hoogte": h,
-                    "device_scale_factor": 2, "bestand": bestand,
-                    "formaat_px": list(formaat),
-                    "bytes": doel.stat().st_size,
-                })
-                ctx.close()
+            for d in gekozen:
+                html_pad = BRON_MAP / d["html"]
+                for vp in cc.VIEWPORT_NAMEN:
+                    ctx = browser.new_context(viewport=cc.VIEWPORTS[vp], device_scale_factor=cc.DEVICE_SCALE,
+                                              is_mobile=vp == "mobile", has_touch=vp == "mobile",
+                                              locale="nl-NL", timezone_id="Europe/Amsterdam")
+                    pg = ctx.new_page()
+                    pg.goto(html_pad.as_uri(), wait_until="load")
+                    pg.wait_for_timeout(400)
+                    meting = pg.evaluate(LEESBAARHEID_JS)
+                    pg.evaluate("window.scrollTo(0, 0)")
+                    pg.wait_for_timeout(150)
+                    bestand = bestandsnaam(d["kwaliteit"], vp)
+                    pg.screenshot(path=str(uit / bestand), full_page=True)
+                    dom = cc.verrijk_dom(cc.verzamel_dom_info(pg))
+                    ctx.close()
+                    reden = beoordeel_leesbaarheid(meting)
+                    raw = {"vastgelegd_op": cc.nu_iso(), "http_status": None, "eind_url": None,
+                           "dom": dom, "cookies": None, "pagina_hoogte_css_px": meting["hoogte_css_px"]}
+                    rec = cc.bouw_record(
+                        kaart=kaart_van(d), viewport_naam=vp, bestand=bestand, map_pad=uit, raw=raw,
+                        extra_redenen=reden,
+                        extra_controle={"leesbaarheid": {**meting, "afkeurredenen": reden,
+                                                         "drempels": {"min_lettergrootte_px": MIN_LETTERGROOTTE_PX,
+                                                                      "min_contrast": MIN_CONTRAST}}})
+                    records.append(rec)
+                    print(f'{"OK  " if rec["geladen_ok"] else "AFK "} {rec["bestand"]:<46} '
+                          f'minfont={meting["min_lettergrootte_px"]} contrast={meting["min_contrast"]} '
+                          f'bediening={meting["bedieningselementen"]} {",".join(rec["afkeurredenen"])}', flush=True)
         finally:
             browser.close()
-    return resultaten
+    return records
+
+
+def dichtheid_meting(records: list[dict], d: dict) -> dict:
+    """Beschrijvende dichtheidsmaat uit de metingen (geen kwaliteitsmaat)."""
+    dk = next((r for r in records if r["id"] == d["id"] and r["viewport_naam"] == "desktop"), None)
+    if not dk:
+        return {}
+    lb = dk["controle"].get("leesbaarheid", {})
+    hoogte = max(1, dk.get("pagina_hoogte_css_px") or 1)
+    return {"bedieningselementen_desktop": lb.get("bedieningselementen"),
+            "tekst_tekens_desktop": lb.get("tekst_tekens"),
+            "bedieningselementen_per_1000_css_px": round(1000 * (lb.get("bedieningselementen") or 0) / hoogte, 1),
+            "pagina_hoogte_css_px_desktop": hoogte}
 
 
 def main(argv=None) -> int:
-    p = argparse.ArgumentParser(description="Render het decoy-dashboard")
-    p.add_argument("--uit", default=str(UIT))
-    p.add_argument("--alleen-html", action="store_true")
-    args = p.parse_args(argv)
+    ap = argparse.ArgumentParser(description="Render de decoys van de blinde meetlat")
+    ap.add_argument("--uit", default=str(UIT), help="uitvoermap voor PNG's en manifest")
+    ap.add_argument("--kwaliteit", default="", help="komma-gescheiden selectie, bv. zwak,matig")
+    ap.add_argument("--alleen-html", action="store_true", help="niets renderen; controleer alleen de bronnen")
+    args = ap.parse_args(argv)
 
     uit = Path(args.uit)
     uit.mkdir(parents=True, exist_ok=True)
-    html_pad = uit / "decoy_dashboard.html"
-    html_pad.write_text(HTML, encoding="utf-8")
-    print("HTML :", html_pad)
+    wanted = {s.strip() for s in args.kwaliteit.split(",") if s.strip()}
+    gekozen = [d for d in DECOYS if not wanted or d["kwaliteit"] in wanted]
 
+    for d in DECOYS:
+        pad = BRON_MAP / d["html"]
+        print(f"bron {d['kwaliteit']:<10} {pad}  {'aanwezig' if pad.exists() else 'ONTBREEKT'}")
+        if not pad.exists():
+            return 1
     if args.alleen_html:
         return 0
 
-    os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", "/opt/pw-browsers")
-    resultaten = render(uit, html_pad)
+    records = render(uit, gekozen)
+    # bij een deelrun: eerdere records van niet opnieuw gerenderde decoys behouden
+    mpad = uit / "manifest.json"
+    if wanted and mpad.exists():
+        oud = {(e["id"], e["viewport_naam"]): e for e in cc.lees_opnames(mpad)}
+        nieuw = {(e["id"], e["viewport_naam"]): e for e in records}
+        records = list({**oud, **nieuw}.values())
+    volgorde = {d["id"]: i for i, d in enumerate(DECOYS)}
+    records.sort(key=lambda e: (volgorde.get(e["id"], 99), 0 if e["viewport_naam"] == "desktop" else 1))
 
+    decoys = []
+    for d in DECOYS:
+        decoys.append({
+            "id": d["id"], "kwaliteit": d["kwaliteit"], "bron_naam": d["bron_naam"], "bron_html": d["html"],
+            "soort_scherm": d["soort_scherm"], "indeling": d["indeling"], "dichtheid": d["dichtheid"],
+            "dichtheid_gemeten": dichtheid_meting(records, d),
+            "wat_het_toont": d["wat_het_toont"], "bewuste_zwaktes": d["bewuste_zwaktes"],
+            "zwaktes_die_grijswaarde_overleven": d["zwaktes_die_grijswaarde_overleven"],
+            "leesbaar_en_functioneel": all(r["geladen_ok"] for r in records if r["id"] == d["id"]),
+        })
     manifest = {
         "set": "decoy",
-        "doel": ("Controlegroep voor de blinde A/B-harnas: een redelijk maar "
-                 "ongeinspireerd bedrijfsdashboard. Hoort consequent laag te "
-                 "eindigen; doet hij dat niet, dan is de meetlat kapot."),
-        "bewuste_zwaktes": [
-            "systeemfont zonder typografische schaal (11/12/13/14/16/22/26px door elkaar)",
-            "randen om vrijwel elk element, drie verschillende hoekradii",
-            "inconsistente witruimte (8/10/12/15/18/20/25px naast elkaar)",
-            "vier niet-verwante accentkleuren (blauw, groen, oranje, paars)",
-            "kolombreedtes en knoppen net niet uitgelijnd",
-            "grijs-op-grijs panelen zonder hierarchie tussen kop en inhoud",
-        ],
-        "niet_kapot": ("Alles is leesbaar, klikbaar en responsief; er zijn geen "
-                       "overlappingen, afgekapte teksten of lege blokken."),
+        "schema_versie": cc.SCHEMA_VERSIE,
+        "doel": DOEL,
+        "dekking_categorie": DEKKING,
+        "kwaliteitsschaal": KWALITEITSSCHAAL,
+        "ladder_toelichting": LADDER_TOELICHTING,
+        "niet_kapot": ("Per decoy en viewport is in de gerenderde DOM gemeten dat er geen horizontale overflow is, "
+                       "geen afgekapte tekst of invoerwaarde, geen bedekt bedienelement, geen overlappende tekst, "
+                       "kleinste lettergrootte >= 10 px en laagste tekstcontrast >= 3:1. De meetwaarden staan per "
+                       "opname in controle.leesbaarheid. Een decoy die dat niet haalt staat met geladen_ok=false in "
+                       "_afgekeurd/."),
+        "bewuste_zwaktes": [f"{d['kwaliteit']}: {z}" for d in DECOYS for z in d["bewuste_zwaktes"]],
         "gegenereerd_op": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
-        "generator": "scripts/maak_decoy.py",
-        "bestanden": resultaten,
+        "generator": "scripts/maak_decoy.py + scripts/capture_controle.py",
+        "leesvoorbeeld": cc.leesvoorbeeld("manifest['bestanden'] (een lijst opnamerecords, 8 stuks: 4 decoys x 2 "
+                                          "viewports); manifest['decoys'] beschrijft per decoy de bewuste zwaktes"),
+        "decoys": decoys,
+        "bestanden": records,
     }
-    (uit / "manifest.json").write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2), encoding="utf-8")
-    for r in resultaten:
-        print(f"{r['viewport']:8s} {r['bestand']}  {r['formaat_px'][0]}x{r['formaat_px'][1]}  "
-              f"{r['bytes']/1024:.0f} kB")
-    print("Manifest:", uit / "manifest.json")
-    return 0
+    cc.schrijf_json(mpad, manifest)
+    ok = sum(1 for r in records if r["geladen_ok"])
+    print(f"\n{ok}/{len(records)} opnames geladen_ok -> {mpad}")
+    fouten = cc.valideer_records(records, bron="decoy")
+    for f in fouten:
+        print("  schemafout:", f)
+    return 0 if ok == len(records) and not fouten else 1
 
 
 if __name__ == "__main__":

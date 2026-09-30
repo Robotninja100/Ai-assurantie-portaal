@@ -1,0 +1,319 @@
+[
+ {
+  "id": "klachtroute-01",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "tekst": "1. **Welke stap is nu aan de orde?**  \n   De eerste stap is het bevestigen van ontvangst van de klacht en het berichten over de afhandelingstermijn. Dit is verplicht onder art. 43 lid 2 van de BGfo. De klacht is op 21 september 2026 ingediend, dus het uiterlijk bevestigingsmoment is 5 oktober 2026. De klant moet binnen twee weken na ontvangst van de klacht (maximaal 5 oktober 2026) bevestigd worden dat de klacht is ontvangen en dat de afhandelingstermijn is vastgelegd. Dit is een verplichte stap volgens de bronnen.\n\n2. **Welke termijnen gelden en waar blijkt dat uit?**  \n   - **Bevestiging van ontvangst en afhandelingstermijn:** Uiterlijk 5 oktober 2026 (2 weken na 21 september 2026). Dit is vastgelegd in art. 43 lid 2 van de BGfo.  \n   - **Voorleggen aan de geschilleninstantie:** Kan vanaf acht weken na het indienen (16 november 2026). Dit is vastgelegd in art. 43 lid 3 van de BGfo.  \n   - **Zes weken na de ontvangstbevestiging:** Deze termijn is niet te berekenen, omdat de datum van de ontvangstbevestiging niet is ingevuld. Zolang er geen ontvangstbevestiging is, is deze termijn niet van toepassing.  \n   - **Termijn voor het indienen van de klacht:** De klacht is op 21 september 2026 ingediend, dus de termijn is al verstreken.  \n   - **Termijn voor het opzeggen van een overeenkomst:** Dit geldt niet in deze situatie, omdat het gaat om een klacht, niet om een overeenkomst.  \n\n3. **Welke informatie moet mee bij indiening?**  \n   Bij indiening van de klacht moet de klant de volgende informatie meebrengen:  \n   - De klacht moet worden ingediend met een duidelijke omschrijving van de gebeurtenis (zoals de staling van de fietsen in de tuin).  \n   - De klant moet de klacht indienen met een duidelijke omschrijving van de klacht, inclusief de datum van de gebeurtenis (21 september 2026).  \n   - De klant moet de klacht indienen met een duidelijke omschrijving van de klacht, inclusief de omschrijving van de fietsen (zoals merk, model, kleur, etc.).  \n   - De klant moet de klacht indienen met een duidelijke omschrijving van de klacht, inclusief de omschrijving van de situatie (zoals de fietsen stonden op slot met een ART3-slot).  \n   - De klant moet de klacht indienen met een duidelijke omschrijving van de klacht, inclusief de omschrijving van de situatie (zoals de fietsen stonden op slot met een ART3-slot).  \n\n**Vervolgstap:**  \nBevestig de ontvangst van de klacht en bericht over de afhandelingstermijn binnen 2 weken (tot 5 oktober ",
+  "gebeurtenissen": [],
+  "bronnen_volledig": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "titel": "klachtafhandeling en aansluiting geschilleninstantie",
+    "url": "https://wetten.overheid.nl/BWBR0020368/2026-09-01#Titeldeel4_Hoofdstuk4.2_Afdeling4.2.2_Artikel4:17",
+    "wet": "Wft",
+    "artikel": "4:17",
+    "geldig_op": "2026-09-01",
+    "fragment": "1. Een beheerder van een icbe, beleggingsonderneming die beleggingsdiensten verleent, een betaaldienstverlener, clearinginstelling, financiëledienstverlener of kredietservicer draagt zorg voor een adequate behandeling van klachten van cliënten, consumenten, deelnemers of kredietnemers over betaaldiensten, financiële diensten of financiële producten van de financiële onderneming. Hiertoe:\n  a. beschikt de financiële onderneming over een interne klachtenprocedure, gericht op een spoedige en zorgvuldige behandeling van klachten; en\n  b. is de financiële onderneming aangesloten bij een door Onze Minister op grond van artikel 16, eerste lid, van de Implementatiewet buitengerechtelijke geschillenbeslechting consumenten aangewezen instantie tot beslechting van geschillen met betrekking tot betaaldiensten, financiële diensten of financiële producten van de financiële onderneming, tenzij er geen zodanige instantie is.\n2. Het eerste lid, onderdeel b, is niet van toepassing op financiële ondernemingen voorzover zij:\n  a. beleggingsdiensten uitsluitend voor professionele beleggers verlenen; of\n  b. optreden als clearinginstelling.\n3. Bij algemene maatregel van bestuur kunnen regels worden gesteld met betrekking tot de afhandeling van klachten. Voorts kunnen, in aanvulling op de Implementatiewet buitengerechtelijke geschillenbeslechting consumenten gestelde regels, bij algemene maatregel van bestuur nadere regels worden gesteld met betrekking tot de aan instanties of procedures tot buitengerechtelijke beslechting van geschillen als bedoeld in het eerste lid, onderdeel b, te stellen eisen, alsmede regels met betrekking tot de door die instanties aan Onze Minister te verstrekken informatie.\n4. Het eerste lid, aanhef en onderdeel a, is van overeenkomstige toepassing op een kredietkoper en kredietservicingaanbieder."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "titel": "reikwijdte interne klachtenprocedure",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk7_Paragraaf7.1_Artikel39",
+    "wet": "BGfo",
+    "artikel": "39",
+    "geldig_op": "2026-08-28",
+    "fragment": "Deze paragraaf is van toepassing op financiële ondernemingen met uitzondering van beleggingsondernemingen waarvoor op grond van artikel 4:17, eerste lid, van de wet de verplichting geldt om over een interne klachtenprocedure te beschikken."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "titel": "interne klachtenprocedure",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk7_Paragraaf7.1_Artikel40",
+    "wet": "BGfo",
+    "artikel": "40",
+    "geldig_op": "2026-08-28",
+    "fragment": "De financiële onderneming stelt aan alle personen die binnen de onderneming betrokken zijn bij de afhandeling van klachten van consumenten, cliënten of deelnemers over betaaldiensten, financiële diensten of financiële producten van de financiële onderneming, een beschrijving beschikbaar van de te volgen procedure voor de afhandeling van die klachten."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "titel": "klachtenadministratie",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk7_Paragraaf7.1_Artikel41",
+    "wet": "BGfo",
+    "artikel": "41",
+    "geldig_op": "2026-08-28",
+    "fragment": "1. De financiële onderneming beschikt met het oog op een adequate behandeling van klachten als bedoeld in artikel 40 over een behoorlijke administratie van klachten, waarin ten minste worden vastgelegd:\n  a. de naam en het adres van de klager;\n  b. de klacht, met daarbij behorende dagtekening van ontvangst;\n  c. een omschrijving van de klacht;\n  d. een beschrijving van de wijze waarop zij de klacht heeft behandeld.\n2. De financiële onderneming bewaart de gegevens, bedoeld in het eerste lid, gedurende een periode van ten minste een jaar nadat de klacht door haar is afgehandeld."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "titel": "informeren over geschilleninstantie bij afwijzing klacht",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk7_Paragraaf7.1_Artikel42",
+    "wet": "BGfo",
+    "artikel": "42",
+    "geldig_op": "2026-08-28",
+    "fragment": "De financiële onderneming informeert de klager bij een gehele of een gedeeltelijke afwijzing van diens klacht over financiële diensten of financiële producten over de mogelijkheid om de klacht voor te leggen aan de de op grond van artikel 16 van de Implementatiewet buitengerechtelijke geschillenbeslechting consumenten aangewezen geschilleninstantie waarbij zij is aangesloten, onder vermelding van de geldende termijnen. Daarbij wordt tevens vermeld dat een geschil ook direct bij een burgerlijke rechter aanhangig kan worden gemaakt."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "titel": "afhandelingstermijn en bevestiging van klachten",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk7_Paragraaf7.1_Artikel43",
+    "wet": "BGfo",
+    "artikel": "43",
+    "geldig_op": "2026-08-28",
+    "fragment": "1. De financiële onderneming draagt er zorg voor dat klachten binnen een redelijke termijn worden afgehandeld.\n2. De financiële onderneming bevestigt de ontvangst van de klacht en bericht de klager binnen twee weken na ontvangst van de klacht binnen welke termijn de klacht zal worden afgehandeld.\n3. De klager kan vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht, de klacht rechtstreeks voorleggen aan de de in artikel 42 bedoelde aangewezen geschilleninstantie waarbij de financiële onderneming is aangesloten.\n4. Indien de financiële onderneming voor de afwikkeling van de klacht nadere informatie nodig heeft van de klager, verzoekt zij deze informatie van de klager en geeft een termijn voor de beantwoording. De termijnen als bedoeld in het derde lid worden verlengd met de termijn voor beantwoording, of met de termijn waarbinnen de verzochte informatie wordt ontvangen door de financiële onderneming.\n5. Dit artikel is niet van toepassing op betaaldienstverleners."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "titel": "waarborgen voor zorgvuldige klachtbehandeling",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk7_Paragraaf7.1_Artikel44",
+    "wet": "BGfo",
+    "artikel": "44",
+    "geldig_op": "2026-08-28",
+    "fragment": "De financiële onderneming voorziet in procedures en maatregelen die waarborgen dat klachten van klagers zorgvuldig, verifieerbaar, consistent en binnen de in artikel 43 en 43a gestelde termijnen worden afgehandeld."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "titel": "einde en opzegging van de overeenkomst",
+    "url": "https://wetten.overheid.nl/BWBR0005290/2026-07-01#Boek7_Titeldeel17_Afdeling1_Artikel940",
+    "wet": "BW",
+    "artikel": "7:940",
+    "geldig_op": "2026-07-01",
+    "fragment": "1. Bij opzegging tegen het einde van een verzekeringsperiode teneinde verlenging van de overeenkomst te verhinderen, wordt een termijn van twee maanden in acht genomen.\n2. De verzekeringnemer en, tenzij het een persoonsverzekering betreft, de verzekeraar kunnen een overeenkomst die is aangegaan voor een periode van meer dan vijf jaar, of die voor zulk een periode is verlengd, opzeggen tegen het einde van elk vijfde jaar binnen die periode. Daarbij geldt de in lid 1 genoemde termijn.\n3. Indien de verzekeraar de bevoegdheid heeft bedongen de overeenkomst tussentijds op te zeggen, komt de verzekeringnemer een gelijke bevoegdheid toe. Tenzij jegens hem is gehandeld met het opzet tot misleiding neemt de verzekeraar onderscheidenlijk de verzekeringnemer daarbij een termijn van twee maanden in acht. Indien een verzekering dekking biedt tegen schade veroorzaakt door risico’s als bedoeld in artikel 3:38 van de Wet op het financieel toezicht, kan, bij de verwezenlijking van een dergelijk risico of bij een dreiging van het ophanden zijn daarvan, de verzekeraar onderscheidenlijk de verzekeringnemer in afwijking van deze termijn van twee maanden, de overeenkomst met inachtneming van een termijn van zeven dagen opzeggen. De verzekeraar kan slechts tussentijds opzeggen op in de overeenkomst vermelde gronden welke van dien aard zijn dat gebondenheid aan de overeenkomst niet meer van de verzekeraar kan worden gevergd.\n4. Indien de verzekeraar de voorwaarden van de overeenkomst ten nadele van de verzekeringnemer of de tot uitkering gerechtigde wijzigt, is de verzekeringnemer gerechtigd de overeenkomst op te zeggen tegen de dag waarop de wijziging ingaat, en in ieder geval gedurende één maand nadat de wijziging hem is meegedeeld.\n5. De verzekeraar kan een persoonsverzekering niet beëindigen of wijzigen op grond van verzwaring van het gezondheidsrisico, voor zover dat is gelegen in de persoon van degeen, die de verzekering betreft.\n6. De verzekeringnemer kan de overeenkomst steeds langs elektronische weg opzeggen. Bij algemene maatregel van bestuur kunnen regels worden gesteld ten aanzien van de verzending van opzeggingen langs elektronische weg.\n7. De voordracht voor een krachtens het zesde lid vast te stellen algemene maatregel van bestuur wordt niet eerder gedaan dan vier weken nadat het ontwerp aan de beide kamers der Staten-Generaal is overgelegd."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "titel": "inboedel",
+    "uitkomst": "vordering afgewezen",
+    "url": "https://www.kifid.nl/media/njvffthf/uitspraak-2026-0566-bindend.pdf",
+    "verweerder": "ASR Schadeverzekering N.V.",
+    "datum": "2026-06-12",
+    "bindend": true,
+    "fragment": "Op 28 augustus 2025 zijn er twee racefietsen en een e-step gestolen uit de achtertuin van de consument. De fietsen en de step stonden op slot met een ART3-slot. Voor vergoeding van de schade heeft de consument een beroep gedaan op zijn inboedelverzekering. De verzekeraar heeft de dekking afgewezen omdat diefstal uit de tuin is uitgesloten van dekking. De consument is het niet eens met de afwijzing en vordert een bedrag van € 11.541,- van de verzekeraar. De commissie oordeelt dat de verzekeraar een beroep toekomt op de genoemde uitsluiting en de verzekeraar de dekking mocht afwijzen. De klacht is ongegrond."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "titel": "uitvaart",
+    "uitkomst": "vordering afgewezen",
+    "url": "https://www.kifid.nl/media/yqunqjui/uitspraak-2025-0781-bindend.pdf",
+    "verweerder": "Corné Kuiper Assurantiën",
+    "datum": "2025-10-02",
+    "bindend": true,
+    "fragment": "Uitvaartverzekering. Onderverzekering. De tussenpersoon heeft toen de verzekeringen bij hem in beheer kwamen, verzuimd te onderzoeken of deze nog passend waren. In zoverre is de klacht gegrond. De commissie kan echter niet vaststellen dat de consument als gevolg daarvan schade lijdt of zal lijden."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0874",
+    "titel": "AVP",
+    "uitkomst": "vordering afgewezen",
+    "url": "https://www.kifid.nl/media/j52prrxo/uitspraak-2025-0874-bindend.pdf",
+    "verweerder": "Interpolis",
+    "datum": "2025-11-04",
+    "bindend": true,
+    "fragment": "Aansprakelijkheidsverzekering. De consument heeft schade veroorzaakt aan de auto van de benadeelde. De consument struikelde met zijn fiets in de hand. De fiets is op de motorkap van de auto van de benadeelde gevallen. Voor vergoeding van de schade is een beroep gedaan op de aansprakelijkheidsverzekering van de consument. De verzekeraar heeft de claim afgewezen, omdat geen sprake is van een onrechtmatige gedraging door de consument. De schade is veroorzaakt door een ongelukkige samenloop van omstandigheden. De commissie oordeelt dat de verzekeraar de claim op de grond heeft mogen afwijzen. De klacht van de consument is ongegrond en de vordering wordt afgewezen."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-1045",
+    "titel": "AVP",
+    "uitkomst": "vordering afgewezen",
+    "url": "https://www.kifid.nl/media/jrhhsoq3/uitspraak-2025-1045-bindend.pdf",
+    "verweerder": "ASR Schadeverzekering N.V., h.o.d.n. Ik kies zelf van a.s.r",
+    "datum": "2025-12-29",
+    "bindend": true,
+    "fragment": "Aansprakelijkheidsverzekering. De consument vordert vergoeding van schade aan een telefoon van een vriendin onder haar aansprakelijkheidsverzekering voor particulieren (AVP). De schade is ontstaan toen een fietser haar raakte waardoor de telefoon van een vriendin uit haar hand viel terwijl zij een foto maakte met die telefoon. De commissie oordeelt dat de consument niet wettelijk aansprakelijk is. Zij heeft zelf niet onrechtmatig gehandeld; de schade is veroorzaakt door een derde. De vordering wordt afgewezen."
+   }
+  ],
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BW art. 7:940",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0566",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0781",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0874",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-1045",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Termijnen bij een klacht (art. 43 BGfo)",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Klacht ingediend",
+     "formule": "21 september 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Uiterlijk bevestiging van ontvangst en bericht over de afhandelingstermijn (lid 2: twee weken)",
+     "formule": "21 september 2026 + 14 dagen = 5 oktober 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Naar de geschilleninstantie kan vanaf acht weken na het indienen (lid 3)",
+     "formule": "21 september 2026 + 56 dagen = 16 november 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Zes weken na de ontvangstbevestiging (lid 3)",
+     "formule": "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BGfo:43:2",
+    "BGfo:43:3"
+   ],
+   "toelichting": "Op peildatum 30 september 2026 kan de klager de klacht nog niet voorleggen; acht weken na het indienen is 16 november 2026. De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. Wacht met de geschilleninstantie tot de vroegste datum is bereikt en vraag intussen om een schriftelijke afhandelingstermijn.",
+   "waarschuwingen": [
+    "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
+    "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording (lid 4). Dat is hier niet meegerekend.",
+    "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
+   ],
+   "details": {
+    "peildatum": "2026-09-30",
+    "klacht": "2026-09-21",
+    "bevestiging_uiterlijk": "2026-10-05",
+    "acht_weken_na_indienen": "2026-11-16",
+    "zes_weken_na_bevestiging": null,
+    "vroegste_datum_geschilleninstantie": "2026-11-16",
+    "laatste_datum_geschilleninstantie": "2026-11-16",
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": false
+   },
+   "uitleg": []
+  },
+  "model": {
+   "model": "qwen3-4b.gguf",
+   "provider": "local",
+   "overgeslagen": null
+  },
+  "controle": {
+   "oordeel": "GEFUNDEERD",
+   "gefundeerd": [
+    {
+     "soort": "wetsartikel",
+     "verwijzing": "43",
+     "positie": 177,
+     "einde": 185
+    },
+    {
+     "soort": "datum",
+     "verwijzing": "21 september 2026",
+     "positie": 215,
+     "einde": 232
+    },
+    {
+     "soort": "datum",
+     "verwijzing": "5 oktober 2026",
+     "positie": 284,
+     "einde": 298
+    },
+    {
+     "soort": "datum",
+     "verwijzing": "16 november 2026",
+     "positie": 830,
+     "einde": 846
+    }
+   ],
+   "ongefundeerd": [],
+   "bronnen_beschikbaar": {
+    "wetgeving": 8,
+    "kifid": 4,
+    "polisclausules": 0
+   },
+   "duur_sec": 2116.8,
+   "afgekapt": true,
+   "einde_reden": "length"
+  },
+  "duur_sec": 2116.9,
+  "_sleutel": "1b316de37eb2b166"
+ }
+]

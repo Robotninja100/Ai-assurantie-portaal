@@ -1,0 +1,260 @@
+[
+ {
+  "id": "provisietoets-01",
+  "functie": "provisietoets",
+  "http_status": 200,
+  "tekst": "De consument is uiterlijk tegelijk met het advies geïnformeerd over het bestaan, de aard en het bedrag van de provisie, zoals verplicht door art. 86i lid 3 BGfo. Dit is letterlijk uit de bronnen gevolgd. Verder is de wijze van beloning opgenomen in het dienstverleningsdocument, zoals vereist door art. 86i lid 4 BGfo. De provisie is van de toegestane vormen (afsluit- en doorlopende provisie) en is in overeenstemming met art. 86d lid 1 BGfo, mits de consument kosteloos en op begrijpelijke wijze is geïnformeerd. De toepassing van art. 86d lid 1 is geldig voor overeenkomsten aangegaan op of na 1 juli 2024, zoals verplicht door art. 86d lid 4 BGfo. De adviseur moet in het dossier vastleggen dat de consument is geïnformeerd over het bestaan, de aard en het bedrag van de provisie en dat de wijze van beloning is opgenomen in het dienstverleningsdocument.",
+  "gebeurtenissen": [],
+  "bronnen_volledig": [
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86d",
+    "titel": "provisieregels schadeverzekeringen",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk8_Afdeling8.2_Paragraaf8.2.2_Artikel86d",
+    "wet": "BGfo",
+    "artikel": "86d",
+    "geldig_op": "2026-08-28",
+    "fragment": "1. Een aanbieder, bemiddelaar of adviseur verschaft of ontvangt voor het bemiddelen of adviseren inzake een schadeverzekering, niet zijnde een betalingsbeschermer, individuele arbeidsongeschiktheidsverzekering of een overlijdensrisicoverzekering, geen andere provisies dan:\n  a. provisies die worden verschaft door of aan de cliënt of degene die namens hem optreedt, tenzij de hoogte van deze provisies kennelijk onredelijk is gelet op de aard en reikwijdte van de financiële dienstverlening;\n  b. afsluitprovisies of doorlopende provisies, mits de bemiddelaar of adviseur:\n    1°. indien het een consument betreft: de consument kosteloos en op begrijpelijke wijze mededeling doet van het bestaan, de aard en het bedrag van de provisies of, indien het bedrag nog niet bekend is, een zo nauwkeurig mogelijke indicatie van dat bedrag of, in het geval van provisie in natura, de waarde in het economisch verkeer; of\n    2°. indien het een cliënt betreft, niet zijnde een consument: kosteloos op verzoek van de cliënt op begrijpelijke wijze mededeling doet van het bestaan, de aard en het bedrag van de provisies of, indien het bedrag nog niet bekend is, de wijze van berekening van de provisie of in het geval van provisie in natura, de waarde in het economisch verkeer;\n  c. provisies die noodzakelijk zijn voor het verlenen van de financiële dienst of de desbetreffende dienst mogelijk maken; of\n  d. relatiegeschenken, voor zover de gezamenlijke waarde daarvan op jaarbasis niet meer bedraagt dan € 100.\n2. Voor de toepassing van het eerste lid, wordt onder «consument» in de definities van afsluitprovisie en doorlopende provisie in artikel 1, mede verstaan een cliënt, niet zijnde een consument.\n3. Bij ministeriële regeling kunnen regels worden gesteld met betrekking tot de wijze waarop de bemiddelaar of adviseur de indicatie, bedoeld in het eerste lid, onderdeel b, onder 1°, berekent, en de daarbij in aanmerking te nemen factoren.\n4. Dit artikel is van toepassing op overeenkomsten inzake schadeverzekeringen die zijn aangegaan op of na 1 juli 2024. Op overeenkomsten die zijn aangegaan voor die datum, blijft dit artikel zoals het op 30 juni 2024 luidde van toepassing."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86i",
+    "titel": "provisietransparantie bij schadeverzekeringen",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk8_Afdeling8.2_Paragraaf8.2.2_Artikel86i",
+    "wet": "BGfo",
+    "artikel": "86i",
+    "geldig_op": "2026-08-28",
+    "fragment": "1. Een adviseur die de aanbevolen schadeverzekering niet tevens aanbiedt, informeert de cliënt uiterlijk tegelijk met zijn advies inzake een schadeverzekering, niet zijnde een betalingsbeschermer, individuele arbeidsongeschiktheidsverzekering of overlijdensrisicoverzekering, over de volgende onderwerpen:\n  a. of hij adviseert op grond van een objectieve analyse;\n  b. of hij een contractuele verplichting heeft uitsluitend voor een of meer aanbieders te adviseren, in welk geval hij de cliënt desgevraagd tevens de namen van deze aanbieders meedeelt;\n  c. of hij geen contractuele verplichting heeft uitsluitend voor een of meer aanbieders te adviseren en hij niet adviseert op grond van een objectieve analyse, in welk geval hij de cliënt desgevraagd tevens de namen meedeelt van de aanbieders waarvoor hij adviseert of kan adviseren;\n  d. op welke wijze hij wordt beloond;\n  e. de hoogte van de provisie, of, indien het bedrag van de provisie op dat moment niet bekend is, de wijze van berekening van de provisie indien de provisie rechtstreeks wordt verschaft door de cliënt of degene die namens hem optreedt;\n  f. de kenmerken van zijn dienstverlening;\n  g. of hij een gekwalificeerde deelneming in een bepaalde aanbieder houdt; en\n  h. of een bepaalde aanbieder of een bepaalde moedermaatschappij van een aanbieder een gekwalificeerde deelneming in hem houdt.\n2. Een bemiddelaar informeert de cliënt voorafgaande aan de totstandkoming van een overeenkomst inzake een schadeverzekering, met uitzondering van een betalingsbeschermer, individuele arbeidsongeschiktheidsverzekering of een overlijdensrisicoverzekering, over de onderwerpen, bedoeld in het eerste lid.\n3. Een adviseur of bemiddelaar die afsluitprovisies of doorlopende provisies als bedoeld in artikel 86d, eerste lid, onderdeel b, ontvangt, verstrekt een consument uiterlijk tegelijk met zijn advies, onderscheidenlijk voorafgaand aan de totstandkoming van de overeenkomst, de in het eerste lid, onderdeel b, onder 1°, van dat artikel bedoelde informatie.\n4. Indien uit hoofde van de overeenkomst inzake een verzekering na de totstandkoming van de overeenkomst andere kosten bij de cliënt in rekening worden gebracht dan de premies en voorzienbare kosten, voldoet de financiëledienstverlener voor die bijkomende kosten aan het eerste lid.\n5. Een objectieve analyse als bedoeld in het eerste lid is een analyse van een toereikend aantal op de markt verkrijgbare vergelijkbare schadeverzekeringen die de adviseur of bemiddelaar in staat stelt een schadeverzekering aan te bevelen dat aan de behoeften van de cliënt voldoet."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25a",
+    "titel": "grondslag beloningsregels en provisieverbod",
+    "url": "https://wetten.overheid.nl/BWBR0020368/2026-09-01#Titeldeel4_Hoofdstuk4.2_Afdeling4.2.3_Artikel4:25a",
+    "wet": "Wft",
+    "artikel": "4:25a",
+    "geldig_op": "2026-09-01",
+    "fragment": "1. Bij of krachtens algemene maatregel van bestuur kunnen regels worden gesteld met betrekking tot:\n  a. de beloning of vergoeding, in welke vorm ook, voor het aanbieden, adviseren, bemiddelen of optreden als gevolmachtigde agent of ondergevolmachtigde agent inzake een financieel product, en de wijze van uitbetaling daarvan;\n  b. een verbod op het verschaffen of ontvangen van nader aan te wijzen provisies.\n2. De Autoriteit Financiële Markten kan op aanvraag geheel of gedeeltelijk, al dan niet voor bepaalde tijd, ontheffing verlenen van de krachtens het eerste lid gestelde regels, indien de aanvrager aantoont dat daaraan redelijkerwijs niet kan worden voldaan en dat de doeleinden die dit artikel beoogt te bereiken anderszins worden bereikt."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86f",
+    "titel": "vergelijkingskaart bij producten onder het provisieverbod",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk8_Afdeling8.2_Paragraaf8.2.2_Artikel86f",
+    "wet": "BGfo",
+    "artikel": "86f",
+    "geldig_op": "2026-08-28",
+    "fragment": "1. Een financiëledienstverlener verstrekt voorafgaand aan het verlenen van een financiële dienst inzake een financieel product als bedoeld in artikel 86c, eerste lid, een vergelijkingskaart aan de consument of, indien het een verzekering betreft, de cliënt, die betrekking heeft op de gevraagde dienstverlening.\n2. De vergelijkingskaart bevat de volgende informatie over de financiëledienstverlener en zijn dienstverlening:\n  a. of hij adviseert, en zo ja, of dit geschiedt op onafhankelijke basis;\n  b. of hij een contractuele verplichting heeft om uitsluitend voor een of meer bepaalde aanbieders te bemiddelen, in welk geval hij desgevraagd aan de consument of de cliënt de namen van deze aanbieders meedeelt;\n  c. of hij geen contractuele verplichting heeft uitsluitend voor een of meer aanbieders te bemiddelen, en niet adviseert op onafhankelijke basis, in welk geval hij de consument of cliënt desgevraagd tevens de namen meedeelt van de aanbieders waarvoor hij bemiddelt of kan bemiddelen;\n  d. of hij naast het geven van advies ook bemiddelt, in welk geval hij de hoogte van de kosten die hiervoor in rekening worden gebracht, weergeeft in de totale kosten van de dienstverlening, bedoeld in de onderdelen i en j;\n  e. of hij na de totstandkoming van de overeenkomst andere diensten voor de consument of cliënt kan verrichten, in welk geval hij de wijze waarop hij de kosten die voor deze diensten in rekening worden gebracht, meedeelt;\n  f. of hij uitsluitend adviseert over eigen producten, dan wel tevens over producten van andere aanbieders;\n  g. of hij een gekwalificeerde deelneming in een bepaalde aanbieder of een moedermaatschappij van een bepaalde aanbieder houdt;\n  h. of een bepaalde aanbieder of een moedermaatschappij van een bepaalde aanbieder een gekwalificeerde deelneming in hem houdt;\n  i. indien hij een bemiddelaar of adviseur is die niet tevens aanbiedt: het nominale bedrag van de beloning die door hem gemiddeld voor de financiële dienst in rekening wordt gebracht, alsmede de manier waarop deze beloning bij de consument of cliënt in rekening wordt gebracht;\n  j. indien hij een aanbieder is: de nominale kosten die door hem gemiddeld bij de consument of cliënt in rekening worden gebracht voor advies en distributie van een financieel product dat beantwoordt aan de dienstverleningsvraag, alsmede de wijze waarop deze kosten in rekening worden gebracht;\n  k. indien hij een verzekeraar is: informatie over de aard van de vergoeding die zijn werknemers ontvangen die financiële diensten verlenen met betrekking tot verzekeringen; en\n  l. andere bij ministeriële regeling bepaalde informatie.\n3. Indien de financiëledienstverlener op grond van het tweede lid, onderdelen f, g, en h, tevens andere belangen bij het verlenen van een financiële dienst heeft dan het belang van de consument of cliënt, wijst hij de consument of cliënt erop dat deze belangen ertoe kunnen leiden dat bepaalde financiële producten worden geadviseerd.\n4. Van advies op onafhankelijke basis is sprake indien:\n  a. de financiëledienstverlener een toereikend aantal op de markt verkrijgbare financiële producten beoordeelt die voldoende divers zijn wat type en aanbieder betreft, zodat een voor de consument of, indien het een verzekering betreft, de cliënt, geschikt product kan worden geadviseerd; en\n  b. de financiële producten niet uitsluitend worden aangeboden door:\n    1°. de financiëledienstverlener zelf;\n    2°. een aanbieder of de moedermaatschappij daarvan als bedoeld in het tweede lid, onderdeel g;\n    3°. een aanbieder of de moedermaatschappij daarvan als bedoeld in het tweede lid, onderdeel h; of\n    4°. entiteiten waarmee de financiëledienstverlener in een zodanig nauw juridisch of economisch verband staat dat het risico bestaat dat dit afbreuk doet aan de onafhankelijkheid van het verstrekte advies.\n5. De financiëledienstverlener publiceert, indien hij beschikt over een website, de vergelijkingskaart op zijn website.\n6. De vergelijkingskaart wordt verstrekt door de financiëledienstverlener die rechtstreeks door de consument of cliënt is benaderd voor het verlenen van de financiële dienst.\n7. De Autoriteit Financiële Markten stelt regels ten aanzien van de vormgeving en wijze van verstrekking van de vergelijkingskaart en kan nadere regels stellen met betrekking tot de gevraagde dienstverlening, bedoeld in het eerste lid, en de informatie, bedoeld in het tweede en derde lid."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86c",
+    "titel": "provisieverbod complexe producten en impactvolle verzekeringen",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk8_Afdeling8.2_Paragraaf8.2.2_Artikel86c",
+    "wet": "BGfo",
+    "artikel": "86c",
+    "geldig_op": "2026-08-28",
+    "fragment": "1. Een financiëledienstverlener verschaft of ontvangt, rechtstreeks of middellijk, geen provisie voor het bemiddelen of adviseren van een betalingsbeschermer, complex product, hypothecair krediet, individuele arbeidsongeschiktheidsverzekering, overlijdensrisicoverzekering, premiepensioenvordering, uitvaartverzekering of bij ministeriële regeling aan te wijzen ander financieel product.\n2. Het eerste lid is niet van toepassing op:\n  a. provisies die rechtstreeks worden verschaft door de consument of, voor zover het een verzekering betreft, de cliënt of degene die namens hem optreedt, tenzij de hoogte van deze provisies kennelijk onredelijk is gelet op de aard en reikwijdte van de dienstverlening;\n  b. provisies die rechtstreeks worden verschaft door de bijdragende onderneming voor zover het een premiepensioenvordering betreft, tenzij de hoogte van deze provisies kennelijk onredelijk is gelet op de aard en reikwijdte van de dienstverlening;\n  c. provisies die worden verschaft door de aanbieder of ontvangen door de bemiddelaar of adviseur voor het bemiddelen of adviseren van een consument die inzake een hypothecair krediet betalingsachterstanden of voorzienbare betalingsachterstanden heeft, mits de provisie geen afbreuk doet aan de kwaliteit van de dienstverlening en de verplichting van de bemiddelaar of adviseur om zich in te zetten voor de belangen van de consument;\n  d. provisies die noodzakelijk zijn voor het verlenen van de desbetreffende financiële dienst of de desbetreffende financiële dienst mogelijk maken;\n  e. provisies die worden verschaft door een bemiddelaar of adviseur, niet zijnde een aanbieder of gevolmachtigde agent, aan een andere bemiddelaar of adviseur;\n  f. relatiegeschenken, voor zover de gezamenlijke waarde daarvan op jaarbasis niet meer bedraagt dan € 100.\n3. De bemiddelaar of adviseur doet op begrijpelijke wijze mededeling van het bestaan en het bedrag van de provisie als bedoeld in het tweede lid, onderdeel b, voordat de desbetreffende financiële dienst wordt verleend, tenzij het bedrag van de provisie op dat moment niet bekend is.\n4. Dit artikel is niet van toepassing op overeenkomsten inzake premiepensioenvorderingen die zijn afgesloten vóór 1 januari 2016, met dien verstande dat de niet-toepasselijkheid voor die overeenkomsten op 31 december 2020 eindigt."
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86m",
+    "titel": "terugboeking provisie bij vroegtijdige beeindiging (oude contracten)",
+    "url": "https://wetten.overheid.nl/BWBR0020421/2026-08-28#Hoofdstuk8_Afdeling8.2_Paragraaf8.2.3_Artikel86m",
+    "wet": "BGfo",
+    "artikel": "86m",
+    "geldig_op": "2026-08-28",
+    "fragment": "1. Indien een overeenkomst met een consument inzake een complex product of hypothecair krediet tijdens de eerste vijf jaar na de totstandkoming vroegtijdig wordt beëindigd, anders dan door overlijden van de verzekerde of anders dan door verkoop van de onroerende zaak waarop het complexe product of hypothecair krediet betrekking heeft, wordt de afsluitprovisie of provisie evenredig verminderd.\n2. Het eerste lid is niet van toepassing op overeenkomsten inzake complexe producten, voor zover tussen de desbetreffende aanbieder en de consument door tussenkomst van dezelfde bemiddelaar ten minste drie maanden voorafgaand aan het sluiten daarvan een overeenkomst is gesloten inzake een financieel product dat onderdeel is van het desbetreffende complexe product."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0791",
+    "titel": "auto/motorrijtuig",
+    "uitkomst": "vordering afgewezen",
+    "url": "https://www.kifid.nl/media/wfbbozat/uitspraak-2026-0791.pdf",
+    "verweerder": "ABN AMRO Schadeverzekering N.V.",
+    "datum": "2026-08-12",
+    "bindend": false,
+    "fragment": "De consument heeft een autoverzekering aangevraagd. De verzekeraar heeft deze aanvraag afgewezen omdat de consument de vraag over het strafrechtelijk verleden met ‘ja’ heeft beantwoord en hierover geen verdere informatie wil geven. Volgens de consument was het onvoldoende duidelijk dat het beleid is van de verzekeraar om een aanvraag af te wijzen wanneer sprake is van een strafrechtelijke gedraging in de afgelopen vijf jaar en overviel de beslissing hem. De consument klaagt dat de verzekeraar hiermee in strijd met de wet heeft gehandeld dan wel misbruik heeft gemaakt van zijn beleids- en contractsvrijheid. Hij vordert dat de verzekeraar wordt verplicht een concrete toelichting te geven op de gehanteerde acceptatie­criteria, nader uitleg geeft hoe zijn strafrechtelijk verleden een acceptatierisico vormt voor de autoverzekering en het acceptatieproces aan te passen zodat op voorhand duidelijk is wanneer een aanvraag een reële kans van slagen heeft. De commissie oordeelt dat de verzekeraar niet in strijd met de wet of zijn beleids- of contractsvrijheid heeft gehandeld."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0813",
+    "titel": "auto/motorrijtuig",
+    "uitkomst": "vordering toegewezen",
+    "url": "https://www.kifid.nl/media/ztkpzdbm/uitspraak-2026-0813-bindend.pdf",
+    "verweerder": "De Verrekijker Verzekeringen",
+    "datum": "2026-08-18",
+    "bindend": true,
+    "fragment": "Op 27 januari 2024 is door een aanrijding schade ontstaan aan de auto van de consument. Hij heeft de schade via de tussenpersoon gemeld onder zijn autoverzekering met cascodekking. De klacht gaat over het eigen risico van € 500,- dat bij de consument in rekening is gebracht omdat hij zijn auto niet bij een bij Schadegarant aangesloten reparateur heeft laten repareren. De consument verwijt de tussenpersoon dat deze hem niet voldoende duidelijk heeft geïnformeerd dat een lager eigen risico zou gelden als de auto door een Schadegarant aangesloten reparateur zou worden hersteld. De consument vordert daarom € 500,- van de tussenpersoon. De commissie oordeelt dat de tussenpersoon de stelling van de consument onvoldoende gemotiveerd heeft betwist en wijst de vordering toe."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0811",
+    "titel": "auto/motorrijtuig",
+    "uitkomst": "vordering afgewezen",
+    "url": "https://www.kifid.nl/media/wyvoubro/uitspraak-2026-0811-bindend.pdf",
+    "verweerder": "N.V. Univé Schade",
+    "datum": "2026-08-18",
+    "bindend": true,
+    "fragment": "De consument heeft bij de verzekeraar een autoverzekering met de aanvullende dekking Rechtshulp Verkeer afgesloten. Toen hij na de aankoop van een tweedehandsauto een geschil kreeg met het autobedrijf, verwachtte hij volledige rechtsbijstand van de uitvoerder van de rechtshulp maar kreeg alleen een eenmalig advies. De consument vordert daarom een schadevergoeding van € 4000,- omdat hij nu extern een advocaat in de arm moet nemen. De consument stelt dat de verzekeraar onvoldoende duidelijk heeft gemaakt dat deze dekking voor aankoopgeschillen alleen geldt als de auto is gekocht bij een bedrijf dat is aangesloten bij een branchevereniging met een onafhankelijke geschillencommissie, zoals BOVAG. Volgens hem is die beperking verborgen in de verzekeringsvoorwaarden en daardoor misleidend. De verzekeraar voert aan dat deze voorwaarde vóór het afsluiten van de verzekering beschikbaar was, op de verzekeringskaart staat vermeld, in de verzekeringsvoorwaarden staat en daarmee op meerdere plaatsen aan de consument kenbaar is gemaakt. Ook staat het op het polisblad nog benoemd. Omdat het autobedrijf niet aan deze voorwaarde voldoet, heeft volgens de verzekeraar de uitvoerder terecht alleen eenmalig juridisch advies verleend. De commissie oordeelt dat de verzekeraar de consument voldoende heeft geïnformeerd over de beperking van de dekking en wijst de vordering af."
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0964",
+    "titel": "AVP",
+    "uitkomst": "vordering afgewezen",
+    "url": "https://www.kifid.nl/media/ilnnzy0i/uitspraak-2025-0964.pdf",
+    "verweerder": "Achmea Schadeverzekeringen N.V. h.o.d.n. Interpolis",
+    "datum": "2025-12-04",
+    "bindend": false,
+    "fragment": "Aansprakelijkheidsverzekering. Zuivere vermogensschade. De consument veroorzaakt als bestuurder schade aan het voertuig van een vriend, met als gevolg een terugval in de bonus-malus en een premieverhoging van deze laatste. De consument doet een beroep op zijn aansprakelijkheidsverzekering voor vergoeding van de schade aan zijn vriend door de terugval in de bonus-malus. De commissie oordeelt dat er geen recht op vergoeding onder de aansprakelijkheidsverzekering is, aangezien het hier niet om zaakschade maar om zuivere vermogensschade gaat. De commissie oordeelt dat de verzekeraar de claim op die grond mocht afwijzen. De klacht van de consument is ongegrond en de vordering wordt afgewezen."
+   }
+  ],
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86d",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86i",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:25a",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86f",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86c",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86m",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0791",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0813",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0811",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0964",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Provisietoets",
+   "bedrag": "118.65",
+   "stappen": [
+    {
+     "omschrijving": "Toets: art. 86c lid 1 noemt dit product niet; art. 86d regelt de provisie",
+     "formule": "'het ingevoerde product' is een schadeverzekering",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Provisie over jaarpremie",
+     "formule": "€ 847,50 x 14%",
+     "uitkomst": "118.65",
+     "eenheid": "EUR"
+    }
+   ],
+   "grondslag": [
+    "BGfo:86d:1",
+    "BGfo:86i:3"
+   ],
+   "toelichting": "Voor 'het ingevoerde product' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat afsluit- en doorlopende provisie toe, mits de consument kosteloos en op begrijpelijke wijze is geïnformeerd over het bestaan, de aard en het bedrag van de provisie.",
+   "volgende_stap": "Leg vast dat de consument uiterlijk tegelijk met het advies is geïnformeerd over het bestaan, de aard en het bedrag van de provisie (art. 86i lid 3), en neem de wijze van beloning op in het dienstverleningsdocument.",
+   "waarschuwingen": [
+    "Art. 86d lid 1 staat alleen de daar genoemde provisievormen toe; andere vormen vallen erbuiten.",
+    "Art. 86d geldt voor overeenkomsten aangegaan op of na 1 juli 2024 (lid 4). Voor eerdere overeenkomsten gold de tekst van 30 juni 2024, die niet in het corpus staat."
+   ],
+   "details": {
+    "status": "TOEGESTAAN_MET_TRANSPARANTIE",
+    "wettelijke_term": null,
+    "reden": "Niet genoemd in art. 86c lid 1 BGfo; voor schadeverzekeringen geldt art. 86d."
+   },
+   "uitleg": []
+  },
+  "model": {
+   "model": "qwen3-4b.gguf",
+   "provider": "local",
+   "overgeslagen": null
+  },
+  "controle": {
+   "oordeel": "GEFUNDEERD",
+   "gefundeerd": [
+    {
+     "soort": "wetsartikel",
+     "verwijzing": "86i",
+     "positie": 146,
+     "einde": 155
+    },
+    {
+     "soort": "wetsartikel",
+     "verwijzing": "86d",
+     "positie": 428,
+     "einde": 437
+    },
+    {
+     "soort": "datum",
+     "verwijzing": "1 juli 2024",
+     "positie": 597,
+     "einde": 608
+    }
+   ],
+   "ongefundeerd": [],
+   "bronnen_beschikbaar": {
+    "wetgeving": 6,
+    "kifid": 4,
+    "polisclausules": 0
+   },
+   "duur_sec": 1761.6,
+   "afgekapt": false,
+   "einde_reden": "stop"
+  },
+  "duur_sec": 1761.6,
+  "_sleutel": "2ffa6d7f52bdd626"
+ }
+]

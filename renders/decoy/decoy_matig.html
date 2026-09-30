@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Verzekeringsbeheer - Overzicht</title>
+<!--
+  DECOY "matig": een Bootstrap-achtig beheerdashboard (het oorspronkelijke decoy van de eerste meetronde).
+  Bewust matig ontworpen: zwaar omrande vlakken, geen typografische schaal, onregelmatige witruimte,
+  net-niet-uitgelijnde kolommen. Alles is leesbaar en functioneel. Zie scripts/maak_decoy.py.
+-->
 <style>
   * { box-sizing: border-box; }
   body {
@@ -49,8 +54,8 @@
   .k3 { width: 26%; border-top: 4px solid #f0ad4e; }
   .k4 { width: 22%; border-top: 4px solid #9b59b6; margin-right: 0; }
   .kaart .getal { font-size: 26px; font-weight: bold; color: #000; margin: 6px 0 2px 0; }
-  .kaart .sub { font-size: 11px; color: #999; }
-  .kaart .delta { font-size: 12px; color: #5cb85c; font-weight: bold; }
+  .kaart .sub { font-size: 11px; color: #7d7d7d; }
+  .kaart .delta { font-size: 12px; color: #2f8f3a; font-weight: bold; }
   .kaart .delta.rood { color: #d9534f; }
 
   .paneel {
@@ -69,8 +74,8 @@
     text-decoration: none; cursor: pointer;
   }
   .knop.grijs { background: #fff; color: #333; border-color: #ccc; }
-  .knop.groen { background: #5cb85c; border-color: #4cae4c; }
-  .knop.oranje { background: #f0ad4e; border-color: #eea236; color: #fff; }
+  .knop.groen { background: #3f9a45; border-color: #348a3a; }
+  .knop.oranje { background: #f0ad4e; border-color: #eea236; color: #3b2a00; }
   .knop.klein { font-size: 11px; padding: 3px 8px 3px 8px; }
 
   table { width: 100%; border-collapse: collapse; font-size: 12px; }
@@ -84,9 +89,9 @@
   td.mid { text-align: center; }
   .badge {
     display: inline-block; padding: 2px 7px 2px 7px; border-radius: 10px;
-    font-size: 10px; color: #fff; background: #5cb85c;
+    font-size: 10px; color: #fff; background: #3f9a45;
   }
-  .badge.oranje { background: #f0ad4e; }
+  .badge.oranje { background: #f0ad4e; color: #3b2a00; }
   .badge.rood { background: #d9534f; }
   .badge.blauw { background: #337ab7; }
 
@@ -106,7 +111,7 @@
   .lijst li {
     border-bottom: 1px solid #eee; padding: 9px 4px 8px 6px; font-size: 12px;
   }
-  .lijst li .tijd { float: right; color: #aaa; font-size: 11px; }
+  .lijst li .tijd { float: right; color: #808080; font-size: 11px; }
 
   .melding {
     background: #fcf8e3; border: 1px solid #faebcc; color: #8a6d3b;
@@ -120,25 +125,29 @@
     display: inline-block; width: 6.5%; margin-right: 1%; background: #337ab7;
     vertical-align: bottom; border: 1px solid #2e6da4;
   }
-  .staaflabels { font-size: 10px; color: #999; padding-top: 5px; }
+  .staaflabels { font-size: 10px; color: #7d7d7d; padding-top: 5px; }
   .staaflabels span { display: inline-block; width: 7.5%; text-align: center; }
 
   .footer {
     border-top: 1px solid #ddd; margin-top: 20px; padding: 15px 18px 25px 18px;
-    font-size: 11px; color: #999; background: #fff;
+    font-size: 11px; color: #757575; background: #fff;
   }
-  .footer a { color: #999; margin-right: 12px; }
+  .footer a { color: #757575; margin-right: 12px; }
 
   @media (max-width: 700px) {
     .k1, .k2, .k3, .k4 { width: 48%; margin-right: 2%; }
     .kolom-links, .kolom-rechts { width: 100%; margin-right: 0; }
     .topbar .rechts { float: none; display: block; padding-top: 8px; }
     .nav a { margin-bottom: 4px; }
-    /* Geen horizontale scroll: cellen krimpen en breken af. Krap, maar heel. */
+    /* Geen horizontale scroll: minder kolommen en krappe cellen. Krap, maar heel en zonder woorden midden af te breken. */
     table { font-size: 10px; table-layout: fixed; word-wrap: break-word; }
-    th { padding: 5px 3px 4px 4px; font-size: 9px; }
+    table.t1 th:nth-child(3), table.t1 td:nth-child(3), table.t1 th:nth-child(6), table.t1 td:nth-child(6),
+    table.t2 th:nth-child(3), table.t2 td:nth-child(3), table.t2 th:nth-child(5), table.t2 td:nth-child(5) { display: none; }
+    .badge { white-space: normal; text-align: center; }
+    table.t2 th:nth-child(1) { width: 19%; } table.t2 th:nth-child(2) { width: 39%; } table.t2 th:nth-child(4) { width: 21%; }
+    th { padding: 5px 3px 4px 4px; font-size: 10px; }
     td { padding: 5px 3px 4px 4px; }
-    .badge { font-size: 9px; padding: 2px 4px 2px 4px; }
+    .badge { font-size: 10px; padding: 2px 4px 2px 4px; }
     .knop.klein { padding: 2px 5px 2px 5px; }
     h1 { font-size: 19px; }
     .staafjes { height: 110px; }
@@ -205,7 +214,7 @@
     <div class="paneel">
       <div class="kop">Recente polismutaties <a href="#" class="knop klein grijs">Exporteren</a></div>
       <div class="body">
-        <table>
+        <table class="t1">
           <tr>
             <th>Polisnr.</th><th>Relatie</th><th>Product</th><th>Premie p/j</th><th>Status</th><th>Gewijzigd</th>
           </tr>
@@ -257,7 +266,7 @@
     <h2>Schadedossiers die aandacht vragen</h2>
     <div class="paneel">
       <div class="body" style="padding:10px 10px 12px 10px;">
-        <table>
+        <table class="t2">
           <tr><th>Dossier</th><th>Soort</th><th>Gemeld</th><th>Reserve</th><th>Behandelaar</th><th></th></tr>
           <tr><td>S-8821</td><td>Aanrijding</td><td>02-08-2026</td><td class="bedrag">&euro; 4.100</td><td>K. Smit</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
           <tr><td>S-8809</td><td>Waterschade</td><td>27-07-2026</td><td class="bedrag">&euro; 12.750</td><td>K. Smit</td><td class="mid"><a href="#" class="knop klein">Openen</a></td></tr>
@@ -311,10 +320,10 @@
       <div class="body">
         <div style="font-size:12px;">Gescand en gecontroleerd</div>
         <div class="voortgang"><div style="width:72%"></div></div>
-        <div style="font-size:11px;color:#999;margin-top:5px;">912 van 1.284 dossiers</div>
+        <div style="font-size:11px;color:#7d7d7d;margin-top:5px;">912 van 1.284 dossiers</div>
         <div style="font-size:12px;margin-top:14px;">Machtigingen verwerkt</div>
         <div class="voortgang"><div style="width:41%;background:#f0ad4e;"></div></div>
-        <div style="font-size:11px;color:#999;margin-top:5px;">527 van 1.284 dossiers</div>
+        <div style="font-size:11px;color:#7d7d7d;margin-top:5px;">527 van 1.284 dossiers</div>
       </div>
     </div>
 

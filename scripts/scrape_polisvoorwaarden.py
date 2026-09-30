@@ -7,9 +7,10 @@ Bronnen: publiek gepubliceerde polisvoorwaarden-PDF's op de eigen domeinen van
 Nederlandse verzekeraars. Geen tussenpersoon-kopieen, geen samenvattingen.
 
   Klaverblad Verzekeringen   www.klaverblad.nl/voorwaarden-*.pdf
-  Univé (N.V. Univé Schade)  www.unive.nl/binaries/.../voorwaarden-*.pdf
+  Univé (N.V. Univé Schade)  www.unive.nl/binaries/.../voorwaarden-*.pdf (woon, algemeen, fiets)
   Interpolis (Achmea)        www.interpolis.nl/-/media/files/*.pdf
   a.s.r.                     www.asr.nl/asr/api/asrnl/pod/getpdf?uri=...
+  De Goudse                  www.goudse.nl/-/media/files/goudse/voorwaarden/*.pdf
 
 Elke clausuletekst wordt met een (start, eind) markerpaar uit de gedownloade PDF
 gesneden; markers moeten uniek zijn. Niets wordt met de hand ingetypt of
@@ -94,10 +95,30 @@ DOCS = {
         "product": "autoverzekering (WA/casco)",
     },
     "asr_aov": {
-        "url": "https://www.asr.nl/asr/api/asrnl/pod/getpdf?uri=%2FPOD%2Fr%2FPdf%2F42435.pdf",
+        # Model 221 (42435) is door a.s.r. uit de lijst gehaald (HTTP 404). Model 231 is de
+        # opvolger op https://www.asr.nl/arbeidsongeschiktheidsverzekering/overzicht-voorwaarden-en-vergoedingen
+        "url": "https://www.asr.nl/asr/api/asrnl/pod/getpdf?uri=/POD/r/Pdf/44141_2025.pdf",
         "verzekeraar": "a.s.r. (ASR Schadeverzekering N.V.)",
-        "document": "Voorwaarden arbeidsongeschiktheidsverzekering model 221 (42435_0522)",
+        "document": "Voorwaarden arbeidsongeschiktheidsverzekering model 231 (44141_2025)",
         "product": "arbeidsongeschiktheidsverzekering (AOV)",
+    },
+    # --- toegevoegd om de dekking- en diefstalgaten te dichten (zie CLAUSULES onderaan) ---
+    # `meubilair` = regexen voor paginakop/-voet die alleen in DIT document terugkeren en die
+    # anders midden in een clausule zouden belanden. Ze gelden dus niet voor andere documenten.
+    "unive_fiets": {
+        "url": "https://www.unive.nl/binaries/br/content/assets/particulier-sales/fietsverzekering/voorwaarden-unive-fietsverzekering.pdf",
+        "verzekeraar": "Univé (N.V. Univé Schade)",
+        "document": "Voorwaarden Fietsverzekering versie 5 (2007.10/25)",
+        "product": "fietsverzekering",
+        "meubilair": [r"^\s*Voorwaarden\s*$", r"^\s*Fietsverzekering\s*$"],
+    },
+    "goudse_inb": {
+        "url": "https://www.goudse.nl/-/media/files/goudse/voorwaarden/aanvullende-voorwaarden-inboedel-poi-2601.pdf",
+        "verzekeraar": "De Goudse (Goudse Schadeverzekeringen N.V.)",
+        "document": "Privé Pakket Online, Inboedel, Aanvullende Voorwaarden versie POI-2601",
+        "product": "inboedelverzekering",
+        "meubilair": [r"^\s*Privé Pakket Online pag\d+/\d+\s*$", r"^\s*Inboedel\s*$",
+                      r"^\s*Aanvullende Voorwaarden\s*$"],
     },
 }
 
@@ -275,30 +296,30 @@ CLAUSULES = [
     ("ip_casco", "art. 2.10", "Wanneer betaalt u zelf een deel van de schade (eigen risico)?", "eigen risico",
      "Bij schade betaalt u zelf het eigen risico.", "2.11. Wanneer is schade niet verzekerd?"),
 
-    # --- a.s.r. AOV model 221 ---
-    ("asr_aov", "par. 4.2", "Wat moet u doen als u arbeidsongeschikt bent?", "verplichting verzekerde",
+    # --- a.s.r. AOV model 231 ---
+    ("asr_aov", "art. 4.2", "Wat moet u doen als u arbeidsongeschikt bent?", "verplichting verzekerde",
      "- U moet ons zo snel mogelijk laten weten dat u arbeidsongeschikt bent.",
      "4.3 Wat zijn de gevolgen als u uw verplichtingen niet nakomt?"),
-    ("asr_aov", "par. 4.3", "Wat zijn de gevolgen als u uw verplichtingen niet nakomt? (verjaring)", "verjaring",
-     "Komt u de verplichtingen uit paragraaf 4.2 niet na en worden wij in redelijk belang geschaad?",
-     "4.4 Wat doen wij met de informatie die u aan ons doorgeeft als u arbeidsongeschikt bent?"),
-    ("asr_aov", "par. 5.1", "Wanneer heeft u recht op een uitkering bij arbeidsongeschiktheid?", "dekking",
+    ("asr_aov", "art. 4.3", "Wat zijn de gevolgen als u uw verplichtingen niet nakomt? (met verjaring na drie jaar)", "verjaring",
+     "Komt u de verplichtingen uit artikel 4.2 ‘Wat moet u doen als u arbeidsongeschikt bent?’ niet na en worden wij in redelijk belang geschaad?",
+     "4.4 Hoe wordt uw arbeidsongeschiktheid vastgesteld?"),
+    ("asr_aov", "art. 5.1", "Wanneer heeft u recht op een uitkering bij arbeidsongeschiktheid?", "dekking",
      "U heeft recht op een uitkering als aan de volgende voorwaarden is voldaan:",
-     "In bepaalde gevallen is er wel sprake van arbeidsongeschiktheid of een ongeval, maar is er toch geen dekking. We spreken dan van uitsluitingen. In hoofdstuk 6 leest u hier meer over."),
-    ("asr_aov", "par. 5.2", "Eigen risico bij arbeidsongeschiktheid door orgaandonatie", "eigen risico",
-     "In paragraaf 5.1 leest u hier meer over. Voor het eigen risico bij arbeidsongeschiktheid door orgaandonatie geldt",
-     "5.3 Wanneer heeft u recht op een uitkering bij zwangerschap en bevalling?", "In paragraaf 5.1 leest u hier meer over."),
-    ("asr_aov", "par. 6.1", "Uitsluiting opzet of roekeloosheid", "uitsluiting",
+     "In bepaalde gevallen is er wel sprake van arbeidsongeschiktheid of een ongeval, maar is er toch geen dekking. We spreken dan van uitsluitingen. In hoofdstuk 7 ‘In welke bijzondere situaties heeft u geen recht op een uitkering?’ leest u hier meer over."),
+    ("asr_aov", "art. 5.2", "Orgaandonatie: recht op uitkering en eigen risicotermijn", "eigen risico",
+     "Orgaandonatie beschouwen we als arbeidsongeschiktheid.",
+     "5.3 Wanneer heeft u recht op een uitkering bij zwangerschap en bevalling?"),
+    ("asr_aov", "art. 7.1", "Uitsluiting opzet of roekeloosheid", "uitsluiting",
      "Er is geen dekking als:\n- u uw arbeidsongeschiktheid of ongeval met opzet of roekeloosheid zelf heeft veroorzaakt;",
-     "6.2 Alcohol, geneesmiddelen en drugs"),
-    ("asr_aov", "par. 6.2", "Uitsluiting alcohol, geneesmiddelen en drugs", "uitsluiting",
+     "7.2 Alcohol, geneesmiddelen, drugs, verdovende en opwekkende middelen"),
+    ("asr_aov", "art. 7.2", "Uitsluiting alcohol, geneesmiddelen, drugs, verdovende en opwekkende middelen", "uitsluiting",
      "Er is geen dekking als:\n- het alcoholgehalte in uw bloed op het moment van een ongeval hoger is dan wettelijk mag;",
-     "6.3 Detentie"),
-    ("asr_aov", "par. 6.3", "Uitsluiting detentie", "uitsluiting",
-     "Er is geen dekking als u in Nederland of in het buitenland:", "6.4 Molest"),
-    ("asr_aov", "par. 6.4", "Uitsluiting molest", "uitsluiting",
+     "7.3 Detentie"),
+    ("asr_aov", "art. 7.3", "Uitsluiting detentie", "uitsluiting",
+     "Er is geen dekking als u in Nederland of in het buitenland:", "7.4 Molest"),
+    ("asr_aov", "art. 7.4", "Uitsluiting molest", "uitsluiting",
      "Er is geen dekking als u arbeidsongeschikt bent geworden of een ongeval heeft gehad door molest.",
-     "6.5 Atoomkernreactie"),
+     "7.5 Atoomkernreactie"),
 # --- Univé woonverzekering, aanvullend ---
     ("unive_woon", "art. 3.5 sub f", "Wat is niet verzekerd? - ontbreken vonkenvanger bij rieten dak", "uitsluiting",
      "Heeft uw woning een rieten dak en stookt u met vaste brandstoffen?",
@@ -321,6 +342,191 @@ CLAUSULES = [
     ("ip_av", "art. 7", "Wanneer is schade niet verzekerd?", "uitsluiting",
      "Schade door ernstige conflicten (molest). Bij ernstige conflicten, zoals een oorlog",
      "8. Bent u verzekerd voor schade door terrorisme?"),
+
+    # =====================================================================================
+    # AANVULLING: dekking, diefstal- en voorzorgseisen, maximumbedragen (50 clausules)
+    #
+    # Het corpus had 27 uitsluitingen maar vrijwel geen dekking en niets over diefstal,
+    # inbraak, storm, water, glas, bliksem, fiets of bagage. Onderstaande clausules staan
+    # BEWUST achter de eerdere 69, zodat de volgorde en inhoud daarvan ongewijzigd blijven.
+    # Elke tekst wordt, net als hierboven, letterlijk met een (begin, eind)-markerpaar uit de
+    # PDF gesneden. Het veld `kop` is de eigen kop uit het document of een korte neutrale
+    # omschrijving; bij onderwerpen die in de vaktaal een samenstelling zijn (fietsdiefstal,
+    # stormschade, waterschade, bagagediefstal) staat dat woord in de kop, omdat de BM25-
+    # zoekmachine samenstellingen niet splitst. De clausuletekst zelf is nergens aangepast.
+    # Ids volgen de nummering van het document; bij een sub-uitsplitsing of tabelrij is dat
+    # de eigen letter of rijnaam, en bij een tweede stuk van dezelfde sub 'alinea 2'.
+    # =====================================================================================
+
+    # --- Klaverblad inboedel (BI 24): wat is verzekerd, diefstal, maxima, voorzorg ---
+    ("kb_inboedel", "art. 2.5.1-2", "Wat is verzekerd? - inboedel, waaronder fietsen", "dekking",
+     "1. Verzekerd is uw inboedel. Hiermee bedoelen we alle spullen die horen bij de particuliere huishouding",
+     "3. De volgende spullen rekenen we niet tot de inboedel:"),
+    ("kb_inboedel", "art. 2.8.3 sub e en f", "Welke gebeurtenissen zijn verzekerd? - stormschade en blikseminslag", "dekking",
+     "e. U heeft schade door storm",
+     "g. U heeft schade door neerslag"),
+    ("kb_inboedel", "art. 2.8.3 sub i en j", "Welke gebeurtenissen zijn verzekerd? - waterschade door lekkage uit leidingen en toestellen", "dekking",
+     "i. U heeft schade door water dat uw woonhuis in is gestroomd of is overgelopen uit:",
+     "k. U heeft schade doordat er diefstal is gepleegd."),
+    ("kb_inboedel", "art. 2.8.3 sub k tot en met m", "Welke gebeurtenissen zijn verzekerd? - diefstal, gewelddadige beroving en vandalisme", "dekking",
+     "k. U heeft schade doordat er diefstal is gepleegd.",
+     "n. U heeft schade doordat er een dier is binnengedrongen in uw woonhuis."),
+    ("kb_inboedel", "art. 2.11.5 sub c", "Waar is uw inboedel verzekerd? - diefstal uit een afgesloten auto of vaartuig", "dekking",
+     "c. Uw inboedel is gestolen vanuit een afgesloten auto of vaartuig in Nederland, België, Luxemburg of Duitsland.",
+     "d. Uw inboedel is tijdelijk ergens anders in Nederland."),
+    ("kb_inboedel", "art. 2.14.3 sub h", "Vergoedingen voor spullen die niet tot uw inboedel behoren - hang- en sluitwerk bij verloren of gestolen sleutels", "dekking",
+     "h. Hang- en sluitwerk.",
+     "2.15 Welke extra vergoedingen zijn er?"),
+    ("kb_inboedel", "art. 2.17.13", "Schadevergoeding - schade die op een bijzondere verzekering (kostbaarheden-, fiets- of computerverzekering) is verzekerd", "schaderegeling",
+     "13. Is schade aan delen van uw inboedel op een bijzondere verzekering verzekerd?",
+     "14. Heeft u een eigen risico? Dan trekken wij dit af van het bedrag dat wij vergoeden."),
+    ("kb_inboedel", "art. 2.18 sub a", "Maximale vergoedingen - sieraden en horloges", "dekking",
+     "Voor de volgende spullen en huisdieren geldt een maximale vergoeding per gebeurtenis.",
+     "b. • Bijzondere bezittingen zoals verzamelingen"),
+    ("kb_inboedel", "art. 2.24 sub h", "Module Mobiele Elektronica, wat vergoeden we niet? - diefstal door onvoorzichtigheid, ook uit een auto", "uitsluiting",
+     "h. Wij vergoeden geen schade door (poging tot) diefstal als u niet voorzichtig bent geweest.",
+     "i. Wij vergoeden geen schade aan zakelijke spullen:"),
+
+    # --- De Goudse, Privé Pakket Online Inboedel (POI-2601) ---
+    ("goudse_inb", "art. 1.1 sub a tot en met h", "Wat is verzekerd met de dekking Inboedel Basis? - brand, bliksem, diefstal, gewelddadige beroving en inbraak", "dekking",
+     "Ontstaat er tijdens de looptijd van de verzekering door een plotselinge en onvoorziene gebeurtenis schade aan uw inboedel? Dan vergoeden wij die schade",
+     "i. Inslag van hagelstenen"),
+    ("goudse_inb", "art. 1.1 sub x tot en met z", "Wat is verzekerd met de dekking Inboedel Basis? - stormschade, vandalisme na inbraak en waterschade (water of stoom)", "dekking",
+     "x. Storm",
+     "1.1.1 Eigenaarsbelang/Huurdersbelang"),
+    ("goudse_inb", "art. 1.4.1", "Wat is beperkt verzekerd? - voor welke zaken geldt een maximale vergoeding?", "dekking",
+     "In een aantal gevallen geldt een maximumvergoeding. Deze geldt zowel voor Inboedel Basis als Inboedel Plus",
+     "Let op! Voor eigendommen van anderen en voor medische hulpmiddelen"),
+    ("goudse_inb", "art. 4.4.2", "Mobiele telefoons/apparaten - welke schade vergoeden wij niet? (aangifte en onvoldoende zorg bij diefstal)", "uitsluiting",
+     "De uitsluitingen die worden genoemd in artikel 1.5 gelden ook voor deze dekking. Aanvullend gelden nog de volgende uitsluitingen:",
+     "Geen nieuwwaarde"),
+
+    # --- Univé woonverzekering: dekking, preventie-eisen en inbraakvoorwaarden ---
+    ("unive_woon", "art. 3.1", "Welke schade is verzekerd?", "dekking",
+     "Uw woning en uw inboedel in uw woning zijn verzekerd voor materiële schade door",
+     "3.1.1 Beperkte dekking"),
+    ("unive_woon", "art. 3.2.1", "Aanvullende dekking Buitenshuis", "dekking",
+     "Met de Buitenshuis dekking is uw inboedel, met uitzondering van uw mobiele",
+     "3.2.2 Mobiele Elektronica"),
+    ("unive_woon", "art. 3.5 sub e", "Wat is niet verzekerd? - niet voldoen aan preventie-eisen", "uitsluiting",
+     "e. Niet voldoen aan preventie-eisen",
+     "f. Het ontbreken van een vonkenvanger bij"),
+    ("unive_woon", "art. 3.5 sub g", "Wat is niet verzekerd? - waterschade", "uitsluiting",
+     "g. Waterschade zoals hiernaast beschreven",
+     "h. Overstroming zoals hiernaast beschreven"),
+    ("unive_woon", "art. 3.5 sub l", "Wat is niet verzekerd? - inbraak, diefstal en vandalisme", "uitsluiting",
+     "l. Schade door inbraak/diefstal/ vandalisme zoals hiernaast beschreven",
+     "• Inbraak of diefstal uit een losse berging of kelderbox bij uw appartement is alleen verzekerd als:"),
+    ("unive_woon", "art. 3.5 sub l, berging of kelderbox", "Wat is niet verzekerd? - inbraak of diefstal uit een losse berging of kelderbox", "uitsluiting",
+     "• Inbraak of diefstal uit een losse berging of kelderbox bij uw appartement is alleen verzekerd als:",
+     "m. Schade door oplichting, fraude en"),
+    ("unive_woon", "art. 3.7 Uw inboedel in een auto in Nederland", "Uw inboedel op een ander adres - diefstal uit een auto", "dekking",
+     "Uw inboedel in een auto in Nederland",
+     "Uw inboedel tijdelijk buiten Nederland"),
+    ("unive_woon", "art. 8 Inbraak", "Wat bedoelen wij met …? - inbraak", "dekking",
+     "Inbraak Een ruimte binnenkomen zonder toestemming van de bewoner.",
+     "Niet-primaire waterkering(en)"),
+
+    # --- Klaverblad woonhuis / opstal (BW 22): gebeurtenissen en glas ---
+    ("kb_woonhuis", "Woonhuis art. 4.3 sub a en b", "Welke gebeurtenissen zijn verzekerd? - brand en ontploffing", "dekking",
+     "a. U heeft schade door brand",
+     "c. U heeft schade doordat er plotseling en onverwacht walm, rook of roet uit uw kachel,"),
+    ("kb_woonhuis", "Woonhuis art. 4.3 sub e en f", "Welke gebeurtenissen zijn verzekerd? - stormschade en blikseminslag", "dekking",
+     "e. U heeft schade door storm",
+     "g. U heeft schade door neerslag."),
+    ("kb_woonhuis", "Woonhuis art. 4.3 sub g", "Welke gebeurtenissen zijn verzekerd? - neerslag (regen, sneeuw, hagel) via het dak", "dekking",
+     "g. U heeft schade door neerslag.",
+     "h. U heeft schade door water dat uw woonhuis in is gestroomd of is overgelopen uit:"),
+    ("kb_woonhuis", "Woonhuis art. 4.3 sub h", "Welke gebeurtenissen zijn verzekerd? - waterschade door lekkage uit leidingen en toestellen", "dekking",
+     "h. U heeft schade door water dat uw woonhuis in is gestroomd of is overgelopen uit:",
+     "i. U heeft schade door water dat uit een waterbed of aquarium is gestroomd"),
+    ("kb_woonhuis", "Woonhuis art. 4.3 sub j en k", "Welke gebeurtenissen zijn verzekerd? - inbraak en diefstal", "dekking",
+     "j. U heeft schade doordat er een (poging tot) inbraak in uw woonhuis is geweest.",
+     "l. U heeft schade door vandalisme of rellen."),
+    ("kb_woonhuis", "Module Glas art. 1", "Module Glasverzekering - wat is verzekerd? (glasschade, ruitbreuk)", "dekking",
+     "Wij verzekeren de ruiten van uw woonhuis tijdens de looptijd van deze verzekering tegen",
+     "Artikel 2 Welke kosten vergoeden wij?"),
+
+    # --- Klaverblad autoverzekering (AU24): WA, casco, diefstal, ruiten ---
+    ("kb_auto", "art. 2.7", "Wat is verzekerd op de module WA?", "dekking",
+     "1. We verzekeren u als iemand anders u aansprakelijk stelt voor schade die met of door uw",
+     "2.8 Verzekerd bedrag en verzekerde kosten"),
+    ("kb_auto", "art. 2.15.1 sub a tot en met e", "Beperkt casco: wat is verzekerd? - brand, bliksem, storm, natuurramp en dieren", "dekking",
+     "1. Als op uw polisblad staat dat u een beperkte cascoverzekering heeft, dan verzekeren wij",
+     "f. Uw auto wordt gestolen, verduisterd of gebruikt voor joyriding."),
+    ("kb_auto", "art. 2.15.1 sub f", "Beperkt casco: wat is verzekerd? - autodiefstal, verduistering, joyriding en inbraak in de auto", "dekking",
+     "f. Uw auto wordt gestolen, verduisterd of gebruikt voor joyriding.",
+     "Wij vergoeden de schade niet bij een (poging tot) diefstal, inbraak of joyriding als:"),
+    ("kb_auto", "art. 2.15.1 sub f, alinea 2", "Beperkt casco: wat is verzekerd? - wanneer geen vergoeding bij diefstal, inbraak of joyriding (beveiliging, afsluiten, sleutels)", "uitsluiting",
+     "Wij vergoeden de schade niet bij een (poging tot) diefstal, inbraak of joyriding als:",
+     "g. Schade aan de ruiten van uw auto"),
+    ("kb_auto", "art. 2.15.1 sub g en h", "Beperkt casco: wat is verzekerd? - ruitschade", "dekking",
+     "g. Schade aan de ruiten van uw auto",
+     "2. Bij een verzekerde schade vergoeden wij boven het verzekerde bedrag ook de volgende"),
+    ("kb_auto", "art. 2.16", "Volledig casco: wat is verzekerd?", "dekking",
+     "Als op het polisblad staat dat u een volledige cascoverzekering heeft, dan verzekeren wij schade aan",
+     "2.17 Accessoires"),
+    ("kb_auto", "art. 2.17", "Accessoires (laptops en telefoons vallen er niet onder)", "dekking",
+     "1. Met accessoires bedoelen wij:",
+     "2.18 Eigen risico"),
+    ("kb_auto", "art. 2.21.3", "Schadevergoeding - als uw auto weg is door diefstal, joyriding of verduistering", "schaderegeling",
+     "3. Als uw auto weg is door diefstal, joyriding of verduistering, dan geldt het volgende:",
+     "4. Wij verhalen een schadevergoeding niet op de bestuurder of de passagiers die de auto van u"),
+
+    # --- Interpolis autoverzekering (PAV-RV-58-252): diefstal met beveiligingseisen ---
+    # De gebeurtenissentabel staat in dit document twee keer (art. 2.8 en art. 2.26); de
+    # eindmarker loopt daarom door tot de rij die in art. 2.8 anders is dan in art. 2.26.
+    ("ip_casco", "art. 2.8 Diefstal van de auto", "Welke gebeurtenissen zijn verzekerd? - autodiefstal, diefstal van onderdelen en sleutels, inbraak en joyriding", "dekking",
+     "Diefstal van de auto Als de auto langer dan 20 dagen weg is",
+     "Schade aan de voor-, zij- of achterruit(en) van de auto Een breuk, barst en/of sterretje. Schade door scherven"),
+
+    # --- Univé fietsverzekering (versie 5): fietsdiefstal en slotvoorwaarden ---
+    ("unive_fiets", "art. 2.2", "Fietsdiefstal en beschadiging - wat is verzekerd?", "dekking",
+     "2.2 Wat is verzekerd?",
+     "2.2.1 Gebruik een ART slot met minimaal 2 sterren", "2.2"),
+    ("unive_fiets", "art. 2.2.1", "Fietsdiefstal - gebruik een ART slot met minimaal 2 sterren", "verplichting verzekerde",
+     "Diefstal van uw fiets is alleen verzekerd als aan de volgende voorwaarde voldaan is:",
+     "2.2.2 Gebruik een tweede ART slot met minimaal 2 sterren"),
+    ("unive_fiets", "art. 2.2.2", "Fietsdiefstal - gebruik een tweede ART slot met minimaal 2 sterren", "verplichting verzekerde",
+     "Voor diefstaldekking bent u in een aantal situaties verplicht om een los tweede ART",
+     "2.2.3 Heeft u een KIWA-SCM goedgekeurd track & trace systeem op uw fiets?"),
+    ("unive_fiets", "art. 2.3.2", "Fietsdiefstal - diefstal is niet verzekerd als", "uitsluiting",
+     "2.3.2 Diefstal is niet verzekerd als:",
+     "2.3.3 Beschadiging van uw fiets is niet verzekerd als:", "2.3.2"),
+    ("unive_fiets", "art. 1.4", "Fietsdiefstal - wat moet u doen als uw fiets gestolen is?", "verplichting verzekerde",
+     "1.4 Wat moet u doen als uw fiets gestolen is?",
+     "2. Diefstal en beschadiging", "1.4"),
+
+    # --- Klaverblad reisverzekering (DR 22): bagage en medische kosten ---
+    ("kb_reis", "art. 28", "Wat is verzekerd op de module Bagage? (bagagediefstal, bagageverlies en bagagebeschadiging)", "dekking",
+     "1. U bent verzekerd voor beschadiging, diefstal of verlies van de bagage",
+     "Artikel 29 Vergoedingen"),
+    ("kb_reis", "art. 29.3", "Vergoedingen - maximale vergoeding per gebeurtenis voor bagage", "dekking",
+     "3. Voor de volgende bagage geldt een maximale vergoeding per gebeurtenis.",
+     "4. Als kostbare spullen zoals geld, elektronische apparatuur, horloges of sieraden gestolen of"),
+    ("kb_reis", "art. 29.4", "Vergoedingen - bagagediefstal van kostbare spullen: wanneer heeft u recht op vergoeding?", "verplichting verzekerde",
+     "4. Als kostbare spullen zoals geld, elektronische apparatuur, horloges of sieraden gestolen of",
+     "5. Als uw bagage te laat aankomt op uw vakantieadres"),
+    ("kb_reis", "art. 31.1 sub c", "Verplichtingen bij schade - bagagediefstal of verlies van spullen", "verplichting verzekerde",
+     "c. Als uw spullen gestolen of kwijt zijn, dan gelden de volgende verplichtingen:",
+     "Module Personenschade"),
+    ("kb_reis", "art. 36.3 en 36.4", "Wat is verzekerd op de module Medische kosten? - voorwaarden voor vergoeding", "dekking",
+     "3. Wij vergoeden uw medische kosten alleen als er voldaan is aan de volgende zes",
+     "Artikel 37 Vergoeding van kosten voor medische behandeling"),
+    ("kb_reis", "art. 37.1 tot en met 37.3", "Vergoeding van kosten voor medische behandeling", "dekking",
+     "1. Wij vergoeden uw medische kosten op basis van de werkelijk gemaakte kosten.",
+     "4. Maakt u onverwachts tandheelkundige kosten tijdens uw vakantiereis in het buitenland of"),
+
+    # --- Klaverblad AVP (AP 18) en rechtsbijstand (RB 18): wat is verzekerd ---
+    ("kb_avp", "art. 2.1 tot en met 2.3", "Wat is verzekerd? - aansprakelijkheid voor zaakschade en personenschade", "dekking",
+     "1. U bent verzekerd voor het geval iemand anders u aansprakelijk stelt voor schade",
+     "4. U bent verzekerd als particulier."),
+    ("kb_rb", "art. 2.1 en 2.2", "Wat is verzekerd? - rechtshulp bij juridische problemen", "dekking",
+     "1. Wij verzekeren u voor rechtshulp bij juridische problemen.",
+     "3. De rechtshulp kan bestaan uit het volgende."),
+    ("kb_rb", "art. 4.2 en 4.3", "Verzekerde kosten - verzekerd bedrag voor externe rechtshulp", "dekking",
+     "2. De Stichting vergoedt externe rechtshulp",
+     "4. De Stichting vergoedt voor externe rechtshulp alleen de kosten die redelijk en nodig zijn."),
 ]
 
 
@@ -337,7 +543,7 @@ def main():
 
     for key, meta in DOCS.items():
         path, status = fetch_pdf(meta["url"], use_cache=not args.geen_cache)
-        teksten[key] = strip_toc(pdf_text(path))
+        teksten[key] = strip_toc(pdf_text(path, meta.get("meubilair")))
         digests[key] = sha256(path)
         if args.geen_verificatie:
             http_status[key] = None

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assurantieportaal</title>
+  <meta name="description" content="AI-portaal voor Nederlandse assurantieprofessionals: elk antwoord met bron, elk bedrag uit code.">
+  <link rel="preload" href="/static/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/static/app.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232447c8'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='700' text-anchor='middle' fill='white'%3E%C2%A7%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <a class="skip" href="#inhoud">Naar de inhoud</a>
+  <div class="app">
+    <aside class="zij" id="zij" aria-label="Navigatie"></aside>
+    <div class="hoofd">
+      <header class="topbalk">
+        <span class="merk-teken" aria-hidden="true">§</span>
+        <b>Assurantieportaal</b>
+        <button class="menuknop" id="menuknop" type="button" aria-label="Menu openen" aria-controls="zij" aria-expanded="false"></button>
+      </header>
+      <main id="inhoud" class="pagina" tabindex="-1"></main>
+    </div>
+  </div>
+  <noscript><p style="padding:24px">Het Assurantieportaal heeft JavaScript nodig.</p></noscript>
+  <script type="module" src="/static/main.js"></script>
+</body>
+</html>

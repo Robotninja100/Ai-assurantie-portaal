@@ -1,0 +1,939 @@
+[
+ {
+  "id": "klachtroute-01",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Termijnen bij een klacht (art. 43 BGfo)",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Klacht ingediend",
+     "formule": "21 september 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Uiterlijk bevestiging van ontvangst en bericht over de afhandelingstermijn (lid 2: twee weken)",
+     "formule": "21 september 2026 + 14 dagen = 5 oktober 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Naar de geschilleninstantie kan vanaf acht weken na het indienen (lid 3)",
+     "formule": "21 september 2026 + 56 dagen = 16 november 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Zes weken na de ontvangstbevestiging (lid 3)",
+     "formule": "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BGfo:43:2",
+    "BGfo:43:3"
+   ],
+   "toelichting": "Op peildatum 30 september 2026 kan de klager de klacht nog niet voorleggen; acht weken na het indienen is 16 november 2026. De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. Wacht met de geschilleninstantie tot de vroegste datum (16 november 2026) is bereikt en vraag intussen om een schriftelijke afhandelingstermijn.",
+   "waarschuwingen": [
+    "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
+    "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording, of met de termijn waarbinnen de informatie wordt ontvangen (lid 4). Dat is hier niet meegerekend: vul het verzoek in als dat speelt.",
+    "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
+   ],
+   "details": {
+    "peildatum": "2026-09-30",
+    "klacht": "2026-09-21",
+    "bevestiging_uiterlijk": "2026-10-05",
+    "acht_weken_na_indienen": "2026-11-16",
+    "zes_weken_na_bevestiging": null,
+    "verzoek": null,
+    "ontvangen": null,
+    "verlenging_dagen": [],
+    "verlengde_data": [],
+    "vroegste_datum_geschilleninstantie": "2026-11-16",
+    "laatste_datum_geschilleninstantie": "2026-11-16",
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": false,
+    "afgehandeld": false
+   },
+   "uitleg": []
+  },
+  "duur_sec": 0.004
+ },
+ {
+  "id": "klachtroute-02",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Termijnen bij een klacht (art. 43 BGfo)",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Klacht ingediend",
+     "formule": "15 juni 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Uiterlijk bevestiging van ontvangst en bericht over de afhandelingstermijn (lid 2: twee weken)",
+     "formule": "15 juni 2026 + 14 dagen = 29 juni 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Naar de geschilleninstantie kan vanaf acht weken na het indienen (lid 3)",
+     "formule": "15 juni 2026 + 56 dagen = 10 augustus 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Zes weken na de ontvangstbevestiging (lid 3)",
+     "formule": "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BGfo:43:2",
+    "BGfo:43:3",
+    "BGfo:42"
+   ],
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (10 augustus 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in. De onderneming heeft de klacht volgens de invoer afgehandeld. Bij een gehele of gedeeltelijke afwijzing moet zij de klager over de geschilleninstantie informeren (art. 42). Of de klager dan eerder kan indienen dan de data van lid 3, staat niet in de bronnen.",
+   "volgende_stap": "Controleer of de onderneming de ontvangst heeft bevestigd en op welke datum: is er geen bevestiging gekomen, dan is de acht-wekendatum de enige datum uit lid 3 en die is verstreken; is er wel een, vul dan die datum in. Vraag intussen het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "waarschuwingen": [
+    "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
+    "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording, of met de termijn waarbinnen de informatie wordt ontvangen (lid 4). Dat is hier niet meegerekend: vul het verzoek in als dat speelt.",
+    "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
+   ],
+   "details": {
+    "peildatum": "2026-09-30",
+    "klacht": "2026-06-15",
+    "bevestiging_uiterlijk": "2026-06-29",
+    "acht_weken_na_indienen": "2026-08-10",
+    "zes_weken_na_bevestiging": null,
+    "verzoek": null,
+    "ontvangen": null,
+    "verlenging_dagen": [],
+    "verlengde_data": [],
+    "vroegste_datum_geschilleninstantie": "2026-08-10",
+    "laatste_datum_geschilleninstantie": "2026-08-10",
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true,
+    "afgehandeld": true
+   },
+   "uitleg": []
+  },
+  "duur_sec": 0.002
+ },
+ {
+  "id": "klachtroute-03",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "klachtroute-04",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Termijnen bij een klacht (art. 43 BGfo)",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Klacht ingediend",
+     "formule": "1 juni 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Uiterlijk bevestiging van ontvangst en bericht over de afhandelingstermijn (lid 2: twee weken)",
+     "formule": "1 juni 2026 + 14 dagen = 15 juni 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Naar de geschilleninstantie kan vanaf acht weken na het indienen (lid 3)",
+     "formule": "1 juni 2026 + 56 dagen = 27 juli 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Zes weken na de ontvangstbevestiging (lid 3)",
+     "formule": "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BGfo:43:2",
+    "BGfo:43:3"
+   ],
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (27 juli 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Controleer of de onderneming de ontvangst heeft bevestigd en op welke datum: is er geen bevestiging gekomen, dan is de acht-wekendatum de enige datum uit lid 3 en die is verstreken; is er wel een, vul dan die datum in. Vraag intussen het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "waarschuwingen": [
+    "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
+    "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording, of met de termijn waarbinnen de informatie wordt ontvangen (lid 4). Dat is hier niet meegerekend: vul het verzoek in als dat speelt.",
+    "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
+   ],
+   "details": {
+    "peildatum": "2026-09-30",
+    "klacht": "2026-06-01",
+    "bevestiging_uiterlijk": "2026-06-15",
+    "acht_weken_na_indienen": "2026-07-27",
+    "zes_weken_na_bevestiging": null,
+    "verzoek": null,
+    "ontvangen": null,
+    "verlenging_dagen": [],
+    "verlengde_data": [],
+    "vroegste_datum_geschilleninstantie": "2026-07-27",
+    "laatste_datum_geschilleninstantie": "2026-07-27",
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true,
+    "afgehandeld": false
+   },
+   "uitleg": []
+  },
+  "duur_sec": 0.001
+ },
+ {
+  "id": "klachtroute-05",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Termijnen bij een klacht (art. 43 BGfo)",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Klacht ingediend",
+     "formule": "2 maart 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Uiterlijk bevestiging van ontvangst en bericht over de afhandelingstermijn (lid 2: twee weken)",
+     "formule": "2 maart 2026 + 14 dagen = 16 maart 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Naar de geschilleninstantie kan vanaf acht weken na het indienen (lid 3)",
+     "formule": "2 maart 2026 + 56 dagen = 27 april 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Zes weken na de ontvangstbevestiging (lid 3)",
+     "formule": "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BGfo:43:2",
+    "BGfo:43:3"
+   ],
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (27 april 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Controleer of de onderneming de ontvangst heeft bevestigd en op welke datum: is er geen bevestiging gekomen, dan is de acht-wekendatum de enige datum uit lid 3 en die is verstreken; is er wel een, vul dan die datum in. Vraag intussen het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "waarschuwingen": [
+    "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
+    "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording, of met de termijn waarbinnen de informatie wordt ontvangen (lid 4). Dat is hier niet meegerekend: vul het verzoek in als dat speelt.",
+    "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
+   ],
+   "details": {
+    "peildatum": "2026-09-30",
+    "klacht": "2026-03-02",
+    "bevestiging_uiterlijk": "2026-03-16",
+    "acht_weken_na_indienen": "2026-04-27",
+    "zes_weken_na_bevestiging": null,
+    "verzoek": null,
+    "ontvangen": null,
+    "verlenging_dagen": [],
+    "verlengde_data": [],
+    "vroegste_datum_geschilleninstantie": "2026-04-27",
+    "laatste_datum_geschilleninstantie": "2026-04-27",
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true,
+    "afgehandeld": false
+   },
+   "uitleg": []
+  },
+  "duur_sec": 0.0
+ },
+ {
+  "id": "klachtroute-06",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Termijnen bij een klacht (art. 43 BGfo)",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Klacht ingediend",
+     "formule": "14 juli 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Uiterlijk bevestiging van ontvangst en bericht over de afhandelingstermijn (lid 2: twee weken)",
+     "formule": "14 juli 2026 + 14 dagen = 28 juli 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Naar de geschilleninstantie kan vanaf acht weken na het indienen (lid 3)",
+     "formule": "14 juli 2026 + 56 dagen = 8 september 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Zes weken na de ontvangstbevestiging (lid 3)",
+     "formule": "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BGfo:43:2",
+    "BGfo:43:3",
+    "BGfo:42"
+   ],
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (8 september 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in. De onderneming heeft de klacht volgens de invoer afgehandeld. Bij een gehele of gedeeltelijke afwijzing moet zij de klager over de geschilleninstantie informeren (art. 42). Of de klager dan eerder kan indienen dan de data van lid 3, staat niet in de bronnen.",
+   "volgende_stap": "Controleer of de onderneming de ontvangst heeft bevestigd en op welke datum: is er geen bevestiging gekomen, dan is de acht-wekendatum de enige datum uit lid 3 en die is verstreken; is er wel een, vul dan die datum in. Vraag intussen het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "waarschuwingen": [
+    "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
+    "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording, of met de termijn waarbinnen de informatie wordt ontvangen (lid 4). Dat is hier niet meegerekend: vul het verzoek in als dat speelt.",
+    "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
+   ],
+   "details": {
+    "peildatum": "2026-09-30",
+    "klacht": "2026-07-14",
+    "bevestiging_uiterlijk": "2026-07-28",
+    "acht_weken_na_indienen": "2026-09-08",
+    "zes_weken_na_bevestiging": null,
+    "verzoek": null,
+    "ontvangen": null,
+    "verlenging_dagen": [],
+    "verlengde_data": [],
+    "vroegste_datum_geschilleninstantie": "2026-09-08",
+    "laatste_datum_geschilleninstantie": "2026-09-08",
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true,
+    "afgehandeld": true
+   },
+   "uitleg": []
+  },
+  "duur_sec": 0.004
+ },
+ {
+  "id": "klachtroute-07",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.002
+ },
+ {
+  "id": "klachtroute-08",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": null,
+  "duur_sec": 0.001
+ },
+ {
+  "id": "klachtroute-09",
+  "functie": "klachtroute",
+  "http_status": 200,
+  "bronnen": [
+   {
+    "soort": "wetgeving",
+    "label": "Wft art. 4:17",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 39",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 40",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 41",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 42",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 43",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 44",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   }
+  ],
+  "berekening": {
+   "onderwerp": "Termijnen bij een klacht (art. 43 BGfo)",
+   "bedrag": null,
+   "stappen": [
+    {
+     "omschrijving": "Klacht ingediend",
+     "formule": "3 juli 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Uiterlijk bevestiging van ontvangst en bericht over de afhandelingstermijn (lid 2: twee weken)",
+     "formule": "3 juli 2026 + 14 dagen = 17 juli 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Naar de geschilleninstantie kan vanaf acht weken na het indienen (lid 3)",
+     "formule": "3 juli 2026 + 56 dagen = 28 augustus 2026",
+     "uitkomst": null,
+     "eenheid": ""
+    },
+    {
+     "omschrijving": "Zes weken na de ontvangstbevestiging (lid 3)",
+     "formule": "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen",
+     "uitkomst": null,
+     "eenheid": ""
+    }
+   ],
+   "grondslag": [
+    "BGfo:43:2",
+    "BGfo:43:3"
+   ],
+   "toelichting": "Op peildatum 30 september 2026 is acht weken na het indienen verstreken (28 augustus 2026). De datum van de ontvangstbevestiging ontbreekt, dus de datum zes weken daarna is niet te berekenen. Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.",
+   "volgende_stap": "Controleer of de onderneming de ontvangst heeft bevestigd en op welke datum: is er geen bevestiging gekomen, dan is de acht-wekendatum de enige datum uit lid 3 en die is verstreken; is er wel een, vul dan die datum in. Vraag intussen het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.",
+   "waarschuwingen": [
+    "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.",
+    "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de termijn voor beantwoording, of met de termijn waarbinnen de informatie wordt ontvangen (lid 4). Dat is hier niet meegerekend: vul het verzoek in als dat speelt.",
+    "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet in het corpus staat."
+   ],
+   "details": {
+    "peildatum": "2026-09-30",
+    "klacht": "2026-07-03",
+    "bevestiging_uiterlijk": "2026-07-17",
+    "acht_weken_na_indienen": "2026-08-28",
+    "zes_weken_na_bevestiging": null,
+    "verzoek": null,
+    "ontvangen": null,
+    "verlenging_dagen": [],
+    "verlengde_data": [],
+    "vroegste_datum_geschilleninstantie": "2026-08-28",
+    "laatste_datum_geschilleninstantie": "2026-08-28",
+    "kan_naar_geschilleninstantie": false,
+    "afhankelijk_van_de_lezing": true,
+    "afgehandeld": false
+   },
+   "uitleg": []
+  },
+  "duur_sec": 0.006
+ },
+ {
+  "id": "klachtroute-10",
+  "functie": "klachtroute",
+  "http_status": 400,
+  "fout": "ValueError: datum_klacht: 31-09-2026 bestaat niet als datum. Controleer de dag en de maand.",
+  "bronnen": [],
+  "berekening": null
+ }
+]

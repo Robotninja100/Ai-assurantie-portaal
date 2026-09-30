@@ -1,0 +1,48 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - run: pip install -r requirements-dev.txt
+      - run: playwright install --with-deps chromium
+      - name: Unit- en browsertests (de OCR-tests van de meetlat lopen in de aparte job hieronder)
+        run: python -m pytest tests -q
+        env:
+          MEETLAT_OCR_TESTS: overslaan
+      - name: Elke wetsverwijzing van de rekenkern staat in het corpus
+        run: python scripts/valideer_grondslagen.py
+      - name: Harde checks op de 120 casussen (zonder taalmodel)
+        run: python scripts/criticus_ronde.py deterministisch
+
+  meetlat-ocr:
+    # De OCR-lekcontrole van de blinde meetlat draait echte engines (RapidOCR uit pip, tesseract uit apt als tweede mening).
+    # Dat duurt minuten, dus apart en parallel aan de rest.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            requirements.txt
+            requirements-dev.txt
+      - run: sudo apt-get update && sudo apt-get install -y tesseract-ocr tesseract-ocr-nld tesseract-ocr-eng
+      - run: pip install -r requirements-dev.txt
+      - name: OCR-lekcontrole van de meetlat
+        run: python -m pytest tests/test_meetlat_ocr.py -q
