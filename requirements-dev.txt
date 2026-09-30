@@ -5,3 +5,11 @@ httpx
 numpy
 pillow
 playwright
+# OCR-lekcontrole van de meetlat (scripts/blind_ab.py weigert een ronde zonder OCR-engine).
+# Eerste keuze, pip-only en zonder GPU: RapidOCR (modellen zitten in het pakket). Gemeten 99% op
+# het interne testpaneel; getest met onnxruntime 1.30.0 en opencv-python 5.0.0.93 (komen mee).
+# Ontbreekt libGL (kale server): `pip uninstall opencv-python && pip install opencv-python-headless`.
+rapidocr-onnxruntime==1.4.4
+# Tweede mening, optioneel maar aanbevolen (systeempakket, staat dus niet in pip):
+#   apt-get install -y tesseract-ocr tesseract-ocr-nld tesseract-ocr-eng     (getest: tesseract 5.3.4)
+#   brew install tesseract tesseract-lang                                    (macOS)

@@ -44,6 +44,28 @@ uvicorn api:app --app-dir backend --port 8000
 Zonder sleutel valt het portaal terug op een lokaal model (`ASSURANTIE_LLM_PROVIDER=local`),
 dat draait zonder netwerk maar met RAG-context ongeveer honderd keer trager is.
 
+## Meetlat (blinde A/B)
+
+`scripts/blind_ab.py` bouwt een geblindeerde ronde (eigen schermen, comps, decoys en een anker) en
+`scripts/blind_ab_rapport.py` leest de ingevulde beoordelingen. Het harnas weigert liever dan dat het
+schijnbaar meet: exitcode 2 zonder eigen schermen (tenzij bewust `--zonder-eigen-schermen`; die ronde is
+dan NIET-BRUIKBAAR-VOOR-OORDEEL), 3 als een merknaam na automatisch maskeren nog in de pixels leesbaar
+is (OCR), 4 zonder werkende OCR-engine, 5 als de beeldhoogte of de lege ruimte onderaan de bron
+verraadt; `--secties auto` (standaard) kiest daarom het aantal uitsneden (1-3) dat elk beeld helemaal
+vult. Het rapport noemt een ronde ONGELDIG, en meldt dan geen winst, als het anker niet bovenaan of de
+zwakste decoy niet onderaan staat, de decoys in de verkeerde kwaliteitsvolgorde staan, alle scores
+(bijna) gelijk zijn of er cellen ontbreken. OCR is niet volledig (logo's zonder tekst leest hij niet):
+bekijk de eindbeelden voordat ze naar de beoordelaar gaan. Het manifestcontract staat in de docstring
+van `blind_ab.py`.
+
+```bash
+pip install -r requirements-dev.txt        # o.a. rapidocr-onnxruntime (OCR, geen GPU)
+sudo apt-get install -y tesseract-ocr tesseract-ocr-nld tesseract-ocr-eng   # tweede mening, aanbevolen
+python3 scripts/blind_ab.py --domein nl_financieel --ronde nl1 --seed 7 --eigen-namen "<productnaam>"
+python3 scripts/blind_ab_rapport.py --ronde nl1
+python3 scripts/blind_ab.py --zelftest && python3 -m pytest tests/test_meetlat_*.py
+```
+
 ## Wat er nog niet is
 
 `frontend/` is leeg — `api.py` serveert een `index.html` die nog niet bestaat. De blinde
