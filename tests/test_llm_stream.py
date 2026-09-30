@@ -272,11 +272,11 @@ def test_api_meldt_dat_een_te_lange_invoer_is_afgekapt(monkeypatch):
     from fastapi.testclient import TestClient
     monkeypatch.setattr(llm, "PROVIDER", "local")
     monkeypatch.setattr(llm, "MODEL_PATH", "/bestaat/niet.gguf")
-    lang = "Het dossier bevat een klantprofiel. " * 200          # ruim boven de 4.000 tekens
+    lang = "Het dossier bevat een klantprofiel. " * 200          # ruim boven de 6.000 tekens
     r = TestClient(api.app).post("/api/vraag", json={"functie": "dossiercheck", "invoer": {"dossiertekst": lang}})
     events = [json.loads(l[6:]) for l in r.text.splitlines() if l.startswith("data: ") and l != "data: [DONE]"]
     opm = next(e for e in events if e["type"] == "opmerkingen")["opmerkingen"]
-    assert "alleen de eerste 4.000" in opm[0]
+    assert "alleen de eerste 6.000" in opm[0]
 
 
 # ------------------------------------------------------------ onvolledige en afwijkende stromen

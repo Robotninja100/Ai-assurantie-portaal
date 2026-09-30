@@ -4,7 +4,7 @@
 // Veldtypen: lang (tekstvak), tekst, bedrag, getal, datum, keuze (lijst uit het corpus), invoerkeuze
 // (tekst met suggesties), schakelaar.
 
-const MAX_TEKENS = 4000;          // zo veel van een dossier of brief leest de backend; dat zeggen we erbij
+const MAX_TEKENS = 6000;          // zo veel van een dossier of brief leest de backend; dat zeggen we erbij
 
 export const PRODUCT_SUGGESTIES = [
   "betalingsbeschermer", "complex product", "hypothecair krediet",

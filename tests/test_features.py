@@ -476,3 +476,30 @@ def test_de_polisvergelijker_toont_uitsluitingen_eerst_en_laat_bij_een_krap_budg
     assert len({b["verzekeraar"] for b in a}) == 2                                # Klaverblad én Interpolis, ondanks het budget
     assert any("staan hier (uitsluitingen en eigen risico eerst). Wat hier niet staat, is niet vergeleken" in o for o in r["opmerkingen"])
     assert "in de getoonde clausules" in r["gebruiker"] and "nooit dat een product of verzekeraar" in r["gebruiker"]
+
+
+def test_de_zoekvraag_van_een_lange_brief_bevat_het_begin_het_slot_en_de_beslissende_zinnen():
+    brief = ("Geachte heer Jansen, hartelijk dank voor uw melding. " + "Wij hebben uw dossier zorgvuldig bekeken. " * 60
+             + "Op grond van artikel 3.6.2 van de voorwaarden wijzen wij uw claim af omdat de woning leeg stond. "
+             + "Wij hebben er alle vertrouwen in dat u hiermee voldoende bent geïnformeerd. " * 20 + "Met vriendelijke groet, de schadeafdeling")
+    q = features._kernvraag(brief)
+    assert q.startswith("Geachte heer Jansen") and q.endswith("de schadeafdeling")
+    assert "artikel 3.6.2" in q and "wijzen wij uw claim af" in q
+    assert len(q) < 1300
+    assert features._kernvraag("Korte tekst.") == "Korte tekst."
+
+
+def test_de_precedentzoeker_toont_geen_willekeurige_uitspraken_en_zegt_dat_weinig_uitspraken_weinig_zeggen():
+    assert features.precedentzoeker("cyberverzekering")["bronnen"] == []
+    r = features.precedentzoeker("AOV percentage arbeidsongeschikt")
+    assert {b["label"] for b in r["bronnen"]} >= {"Kifid 2026-0633", "Kifid 2026-0881", "Kifid 2026-0174"}
+    r = features.precedentzoeker("waterschade dakgoot")
+    if 0 < len(r["bronnen"]) < 3:
+        assert any("verdeling zegt dan weinig" in o for o in r["opmerkingen"])
+
+
+def test_de_leesgrens_die_de_pagina_noemt_is_die_van_de_backend():
+    import os
+    import re
+    js = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "registry.js"), encoding="utf-8").read()
+    assert int(re.search(r"const MAX_TEKENS = (\d+);", js).group(1)) == features.MAX_INVOER

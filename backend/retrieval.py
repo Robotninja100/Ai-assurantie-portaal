@@ -52,6 +52,8 @@ _GROEPEN = {
     "afwijzing": "afgewezen afwijzen afwijzingen geweigerd weigert",
     "klacht": "klachten klagen geklaagd",
     "auto": "wagen personenauto",
+    "arbeidsongeschiktheid": "aov arbeidsongeschikt arbeidsongeschikte wia",
+    "aansprakelijkheid": "avp",
 }
 _SYNONIEM = {vorm: kern for kern, vormen in _GROEPEN.items() for vorm in vormen.split()}
 
@@ -60,7 +62,7 @@ _SYNONIEM = {vorm: kern for kern, vormen in _GROEPEN.items() for vorm in vormen.
 _DELEN = set("""fiets auto diefstal inbraak storm brand water lekkage glas ruit hagel bliksem vandalisme bagage
 inboedel opstal woon woning huis reis rechtsbijstand aansprakelijkheid overstroming aanrijding schade verzekering
 polis dekking claim uitkering ongeval brommer scooter motor telefoon laptop sieraden juwelen verbouwing bouw
-onderhoud riool leiding dak vocht schimmel aardbeving eigen risico""".split())
+onderhoud riool leiding dak vocht schimmel aardbeving eigen risico arbeidsongeschiktheid uitvaart""".split())
 _SPLITS = {"eigenrisico": ["eigen", "risico"]}
 
 
@@ -206,7 +208,8 @@ class Corpus:
     """Laadt de corpusbestanden. Ontbreekt er een, dan is dat zichtbaar - niet stilzwijgend leeg."""
 
     BESTANDEN = {
-        "kifid":            ("kifid.json",            ["uitspraaknummer", "titel", "kern_klacht", "samenvatting", "kernoverweging", "categorie"]),
+        "kifid":            ("kifid.json",            ["uitspraaknummer", "titel", "kern_klacht", "samenvatting", "kernoverweging", "categorie",
+                                                          "thema", "kifid_onderwerp_tags"]),
         "wetgeving":        ("wetgeving.json",        ["wet", "artikel", "titel", "tekst", "onderwerp"]),
         "polisvoorwaarden": ("polisvoorwaarden.json", ["product", "clausule_id", "kop", "tekst", "type", "verzekeraar_of_bron"]),
     }

@@ -23,7 +23,7 @@ import grounding
 
 
 CORPUS = Corpus()
-MAX_INVOER = 4000        # zoveel tekens van een dossier of brief gaan naar het model
+MAX_INVOER = 6000        # zoveel tekens van een dossier of brief gaan naar het model
 
 
 # --------------------------------------------------------------- hulpfuncties
@@ -480,13 +480,17 @@ def precedentzoeker(geschil: str) -> Dict:
     De statistiek komt uit het corpus, niet uit het model - dat is het hele punt.
     """
     rows = CORPUS.zoek("kifid", geschil, 8)
+    if rows:                                          # een uitspraak die veel minder past dan de beste is ruis, geen precedent
+        rows = [(sc, d) for sc, d in rows if sc >= 0.4 * rows[0][0]]
     docs = [d for _, d in rows]
     telling = {}
     for d in docs:
         o = _uitkomst(d)
         telling[o] = telling.get(o, 0) + 1
     ctx = {"opgehaald": {"kifid": docs}, "blok": _blok("kifid", rows) or "(geen uitspraken gevonden)",
-           "correcties": CORPUS.correcties(geschil)}
+           "correcties": CORPUS.correcties(geschil),
+           "meldingen": ([f"Er {'is' if len(docs) == 1 else 'zijn'} maar {len(docs)} passende {'uitspraak' if len(docs) == 1 else 'uitspraken'} "
+                          "gevonden; een verdeling zegt dan weinig."] if 0 < len(docs) < 3 else [])}
 
     samenvatting = ", ".join(f"{v}x {k}" for k, v in sorted(telling.items(), key=lambda x: -x[1]))
     gebruiker = (
@@ -668,6 +672,28 @@ def _nl_getal(n: int) -> str:
     return f"{n:,}".replace(",", ".")
 
 
+_BESLISSING = re.compile(r"wij wijzen|wijzen (?:uw|de) (?:claim|schade|aanvraag)|afgewezen|afwijz|uitgesloten|uitsluit|geen dekking|"
+                         r"niet verzekerd|weiger|vergoeden (?:wij )?niet|op grond van|artikel\s+\d|art\.\s*\d|voorwaarden", re.I)
+
+
+def _kernvraag(tekst: str, kop: int = 400, staart: int = 300, zinnen: int = 3) -> str:
+    """
+    De zoekvraag uit een lange brief of dossier: het begin, het slot en de eerste zinnen waar een beslissing of een
+    clausule in staat. Alleen de eerste 600 tekens zoeken (zoals eerst) mist de beslissende passage midden of achterin.
+    """
+    t = " ".join((tekst or "").split())
+    if len(t) <= kop + staart + 100:
+        return t
+    midden = t[kop:len(t) - staart]
+    gekozen = []
+    for zin in re.split(r"(?<=[.!?])\s+", midden):
+        if _BESLISSING.search(zin):
+            gekozen.append(zin[:240])
+            if len(gekozen) >= zinnen:
+                break
+    return " ".join([t[:kop], *gekozen, t[-staart:]])
+
+
 def _afkap(tekst: str, wat: str):
     """De eerste MAX_INVOER tekens gaan naar het model; wat er daarna komt wordt niet gelezen. Zeg dat."""
     tekst = tekst or ""
@@ -711,7 +737,7 @@ def dossiercheck(dossiertekst: str) -> Dict:
     provisie = bool(RE_PROVISIE.search(tekst))
     grondslag = DOSSIER_ARTIKELEN + (PROVISIE_ARTIKELEN if provisie else [])
     ctx = _context("passend advies klantprofiel zorgplicht informatieverstrekking "
-                   "kennis ervaring doelstelling risicobereidheid financiele positie " + tekst[:800],
+                   "kennis ervaring doelstelling risicobereidheid financiele positie " + _kernvraag(tekst, 600, 400, 0),
                    ["wetgeving", "kifid"], per_bron=3, min_rel=0.4, eigen=tekst[:800], grondslag=grondslag,
                    waar={"wetgeving": _wet_alleen(*(grondslag + DOSSIER_EXTRA + ["Wft:4:24"])),
                          "kifid": _kifid_zorgplicht})
@@ -918,7 +944,7 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
 def afwijzingsanalyse(brieftekst: str) -> Dict:
     tekst, opmerkingen, afgekapt = _afkap(brieftekst, "De brief")
     polisfilter, meldingen, kort = _polisfilter(tekst)
-    ctx = _context(tekst[:600] + " afwijzing dekking uitsluiting mededelingsplicht "
+    ctx = _context(_kernvraag(tekst) + " afwijzing dekking uitsluiting mededelingsplicht "
                    "opzet eigen gebrek", ["polisvoorwaarden", "kifid", "wetgeving"], per_bron=4, min_rel=0.4,
                    polis_alle=POLIS_BUDGET, polis_extra=_genoemde_clausules(tekst, polisfilter),
                    waar={"wetgeving": VERZEKERINGSRECHT, "polisvoorwaarden": polisfilter}, eigen=tekst[:600])
