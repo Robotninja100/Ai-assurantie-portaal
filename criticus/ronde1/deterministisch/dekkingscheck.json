@@ -76,7 +76,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.048
+  "duur_sec": 0.015
  },
  {
   "id": "dekkingscheck-02",
@@ -155,7 +155,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.044
+  "duur_sec": 0.011
  },
  {
   "id": "dekkingscheck-03",
@@ -178,13 +178,6 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
     "label": "inboedelverzekering art. 2.8.3 sub i en j",
     "type": "dekking",
     "kant": null,
@@ -194,6 +187,13 @@
     "soort": "polis",
     "label": "inboedelverzekering art. 1.1 sub x tot en met z",
     "type": "dekking",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
+    "type": "uitsluiting",
     "kant": null,
     "uitkomst": null
    },
@@ -234,7 +234,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.099
+  "duur_sec": 0.013
  },
  {
   "id": "dekkingscheck-04",
@@ -313,7 +313,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.009
+  "duur_sec": 0.006
  },
  {
   "id": "dekkingscheck-05",
@@ -392,7 +392,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.073
+  "duur_sec": 0.014
  },
  {
   "id": "dekkingscheck-06",
@@ -450,7 +450,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.014
+  "duur_sec": 0.008
  },
  {
   "id": "dekkingscheck-07",
@@ -529,7 +529,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.074
+  "duur_sec": 0.011
  },
  {
   "id": "dekkingscheck-08",
@@ -573,7 +573,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.2
+  "duur_sec": 0.012
  },
  {
   "id": "dekkingscheck-09",
@@ -645,14 +645,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:930",
+    "label": "BW art. 7:925",
     "type": null,
     "kant": null,
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.623
+  "duur_sec": 0.031
  },
  {
   "id": "dekkingscheck-10",
@@ -661,15 +661,15 @@
   "bronnen": [
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.18",
-    "type": "eigen risico",
+    "label": "autoverzekering (WA/casco) art. 2.15.1 sub g en h",
+    "type": "dekking",
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.15.1 sub g en h",
-    "type": "dekking",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
     "kant": null,
     "uitkomst": null
    },
@@ -731,6 +731,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.084
+  "duur_sec": 0.019
  }
 ]

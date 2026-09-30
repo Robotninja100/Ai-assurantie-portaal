@@ -362,9 +362,14 @@ def test_zelf_te_dragen_klopt_voor_willekeurige_invoer_binnen_een_cent():
         assert abs(delen - zelf) <= Decimal("0.01"), (vs, ww, sch, er, bk)
 
 
-def test_eigen_risico_volgorde_is_een_polisafspraak_en_wordt_zo_genoemd():
+def test_eigen_risico_volgorde_is_een_keuze_van_het_portaal_en_wordt_zo_genoemd():
+    # De wet regelt de volgorde niet en het corpus zegt er niets over; het portaal beweert dus niet dat de polis het zegt.
     u = rk.evenredigheidsbeginsel(100000, 200000, 40000, 500, 0)
-    assert any("volgt uit de polisvoorwaarden, niet uit de wet" in w for w in u.waarschuwingen)
+    assert any("De wet regelt niet in welke volgorde" in w and "Dit portaal past eerst de breuk toe" in w for w in u.waarschuwingen)
+    assert not any("volgt uit de polisvoorwaarden" in w for w in u.waarschuwingen)
+    assert not any("bereddingskosten" in w and "alleen van het schadedeel" in w for w in u.waarschuwingen)
+    u = rk.evenredigheidsbeginsel(100000, 200000, 40000, 500, 1000)
+    assert any("alleen van het schadedeel afgetrokken" in w for w in u.waarschuwingen)
 
 
 def test_getallen_in_formules_hebben_een_decimale_komma():
@@ -401,7 +406,7 @@ def test_uitleg_bij_onderverzekering_noemt_breuk_grondslag_en_wat_de_klant_zelf_
     tekst = " ".join(u.uitleg)
     assert "75,00% van de werkelijke waarde" in tekst and "art. 7:958 lid 5 BW" in tekst
     assert "Bij een schade van € 40.000,00 is dat € 30.000,00." in tekst
-    assert "eigen risico van € 500,00" in tekst and "die volgorde volgt uit de polisvoorwaarden" in tekst
+    assert "eigen risico van € 500,00" in tekst and "de polis kan een andere volgorde hebben" in tekst
     assert "De uitkering is € 29.500,00. Van de totale schade van € 40.000,00 draagt de verzekerde zelf € 10.500,00 " \
            "(€ 10.000,00 door onderverzekering en € 500,00 eigen risico)." in tekst
     assert "toestand" not in tekst and "goede" not in tekst          # geen verzonnen redenen: dat deed het lokale model
@@ -482,3 +487,176 @@ def test_een_peildatum_in_het_verleden_zegt_dat_de_uitkomst_daarvoor_geldt_en_vr
     u = rk.verjaring_schadeclaim(date(2020, 1, 10), peildatum=date(2023, 1, 10))    # de peildatum is de laatste dag
     assert "de peildatum is de laatste dag" in u.toelichting and "vandaag is de laatste dag" not in u.toelichting
     assert not any(w.startswith("Vandaag (") for w in u.waarschuwingen)
+
+
+# ---- de waardetoets rekent alleen voorwaarde c van Klaverblad art. 2.17.3 en zegt dat, en hoe gevoelig de uitkomst is
+
+def test_de_waardetoets_noemt_de_drie_voorwaarden_van_de_clausule_en_zegt_dat_alleen_c_is_getoetst():
+    import json
+    import os
+    corpus = json.load(open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "corpus", "polisvoorwaarden.json"), encoding="utf-8"))
+    clausule = next(d for d in corpus if d["clausule_id"] == "art. 2.17.3" and d["product"] == "inboedelverzekering"
+                    and d["verzekeraar_of_bron"].startswith("Klaverblad"))
+    for stuk in ("voorwaarden", "nieuw toen u ze kocht", "met een nota aantonen", "aannemelijk maken", "meer dan 40% van de nieuwwaarde"):
+        assert stuk in clausule["tekst"], stuk           # de parafrase in de uitleg staat in de clausule
+    u = rk.nieuwwaarde_of_dagwaarde(2000, 4, 10, 40)
+    tekst = " ".join(u.uitleg)
+    assert "(a) de spullen waren nieuw" in tekst and "(b)" in tekst and "(c) de dagwaarde is meer dan 40%" in tekst
+    assert "Dit portaal toetst alleen voorwaarde c" in tekst
+    assert any("Alleen voorwaarde c" in w for w in u.waarschuwingen)
+    assert u.details["voorwaarde_c_vervuld"] is True and "mits ook voorwaarde a en b" in u.toelichting
+
+
+def test_een_afwijkende_drempel_laat_zien_wat_de_uitkomst_met_de_drempel_van_klaverblad_zou_zijn():
+    # nieuwwaarde 2.400, dagwaarde 840 (35%): bij 30% is voorwaarde c vervuld, bij 40% niet
+    u = rk.nieuwwaarde_of_dagwaarde(2400, 6.5, 10, 30)
+    assert u.details["dagwaarde"] == "840.00" and u.details["toegepast"] == "nieuwwaarde"
+    assert u.details["uitkomst_bij_klaverblad_drempel"] == "dagwaarde"
+    assert any("Met 40% zou de uitkomst anders zijn: dagwaarde (€ 840,00)" in w for w in u.waarschuwingen)
+    assert any("Met de drempel van Klaverblad (40%) zou de uitkomst anders zijn" in x for x in u.uitleg)
+    assert u.volgende_stap.startswith("Controleer eerst welke drempel de polis van de klant noemt")
+    assert "voorwaarde a en b" in u.volgende_stap
+    # dezelfde invoer met de drempel van Klaverblad: geen gevoeligheidsregel
+    u = rk.nieuwwaarde_of_dagwaarde(2400, 6.5, 10, 40)
+    assert not any("zou de uitkomst anders zijn" in x for x in u.uitleg + u.waarschuwingen)
+
+
+def test_de_dagwaarde_is_een_rekenafspraak_en_geen_polisregel():
+    u = rk.nieuwwaarde_of_dagwaarde(1200, 4, 10, 40)
+    assert any("rekenafspraak van dit portaal" in x for x in u.uitleg)
+    assert not any("volgen uit de polisvoorwaarden" in w and "levensduur" in w for w in u.waarschuwingen)
+    assert any("De levensduur is invoer en de lineaire afschrijving een rekenafspraak" in w for w in u.waarschuwingen)
+    # 'dus dan geldt dagwaarde' staat niet in de clausule: het portaal zegt dat de polisregel daarvoor niet in het corpus staat
+    u = rk.nieuwwaarde_of_dagwaarde(1200, 9, 10, 40)
+    assert "Welke regel de polis daarvoor geeft, staat niet in het corpus" in " ".join(u.uitleg)
+
+
+def test_ouder_dan_de_levensduur_is_een_dagwaarde_van_nul_met_een_stap_die_de_aanname_noemt():
+    u = rk.nieuwwaarde_of_dagwaarde(1200, 12, 10, 30)
+    assert u.details["dagwaarde"] == "0.00"
+    assert "de aanname dat het object volledig is afgeschreven" in u.volgende_stap
+
+
+# ---- de beoordelaars van ronde 1: de reikwijdte van 7:958 lid 5, het deel boven de waarde, geen eigen risico ingevoerd
+
+def test_lid_5_verwijst_naar_de_leden_2_en_4_en_het_portaal_zegt_dat():
+    u = rk.evenredigheidsbeginsel(100000, 200000, 50000)
+    assert any("verwijst naar de vergoeding volgens de leden 2 en 4" in w and "totaal verlies" in w and "nieuwwaarde" in w
+               for w in u.waarschuwingen)
+    assert not any("leden 2 en 4" in w for w in rk.evenredigheidsbeginsel(200000, 200000, 50000).waarschuwingen)
+
+
+def test_het_deel_van_de_schade_boven_de_waarde_wordt_genoemd_als_niet_meegenomen():
+    u = rk.evenredigheidsbeginsel(100000, 200000, 300000)
+    assert "Het deel van de schade boven de werkelijke waarde (€ 100.000,00) is niet in de berekening meegenomen" in " ".join(u.uitleg)
+
+
+def test_zonder_ingevoerd_eigen_risico_zegt_de_uitleg_niet_dat_de_klant_niets_draagt_zonder_voorbehoud():
+    u = rk.evenredigheidsbeginsel(250000, 200000, 80000)
+    assert "Er is geen eigen risico ingevoerd; heeft de polis er een, dan komt dat bedrag voor rekening van de klant" in " ".join(u.uitleg)
+    assert "Er is geen eigen risico ingevoerd" not in " ".join(rk.evenredigheidsbeginsel(250000, 200000, 80000, 500).uitleg)
+
+
+# ---- verjaring: het alternatief toetst de juiste datum, de premisse staat erbij, een strijdige reactie maakt de uitkomst voorlopig
+
+def test_het_voorwaardelijk_alternatief_vraagt_om_een_aanspraak_vóór_de_reactie():
+    u = rk.verjaring_schadeclaim(date(2023, 5, 8), datum_reactie=date(2024, 1, 18), peildatum=date(2026, 9, 29))
+    assert u.details["status"] == "ONZEKER"
+    assert "vóór 18 januari 2024 is gedaan" in u.details["voorwaardelijk_alternatief"]["voorwaarde"]
+    assert "vóór 8 mei 2026" not in u.details["voorwaardelijk_alternatief"]["voorwaarde"]
+    assert "111 dagen" in u.toelichting and "bepaal of die vóór 18 januari 2024 is gedaan" in u.volgende_stap
+    assert "Overweeg intussen schriftelijk aanspraak te maken" in u.volgende_stap
+    # een reactie ná het einde van de hoofdtermijn: dan geldt de uiterste dag van de hoofdtermijn
+    u = rk.verjaring_schadeclaim(date(2020, 1, 10), datum_reactie=date(2024, 6, 1), peildatum=date(2026, 9, 29))
+    assert "uiterlijk op 10 januari 2023 (de laatste dag van de hoofdtermijn)" in u.details["voorwaardelijk_alternatief"]["voorwaarde"]
+
+
+def test_gestuit_zonder_reactie_zegt_dat_dit_uitgaat_van_geen_reactie_en_laat_dat_eerst_nagaan():
+    u = rk.verjaring_schadeclaim(date(2021, 4, 12), date(2021, 5, 3), peildatum=date(2026, 9, 29))
+    assert u.details["status"] == "GESTUIT"
+    assert "Dit gaat ervan uit dat de verzekeraar nog niet heeft gereageerd" in u.toelichting
+    assert u.volgende_stap.startswith("Ga na of de verzekeraar al heeft erkend of ondubbelzinnig afgewezen")
+    a = rk.verjaring_schadeclaim(date(2021, 4, 12), date(2021, 5, 3), aansprakelijkheid=True, peildatum=date(2026, 9, 29))
+    assert "onderhandelingen al zijn afgebroken" in a.volgende_stap and "(lid 3)" in a.volgende_stap
+
+
+def test_een_reactie_vóór_de_aanspraak_maakt_de_uitkomst_voorlopig():
+    u = rk.verjaring_schadeclaim(date(2025, 1, 13), date(2025, 6, 2), date(2025, 3, 3), peildatum=date(2026, 9, 29))
+    assert u.details["status"] == "GESTUIT"
+    assert "is niet meegeteld omdat zij vóór de schriftelijke aanspraak ligt" in u.toelichting and "kan deze uitkomst anders zijn" in u.toelichting
+    assert u.volgende_stap.startswith("Controleer eerst de data van de schriftelijke aanspraak en van de reactie.")
+
+
+def test_bij_weinig_dagen_zegt_de_vervolgstap_nu_en_noemt_de_waarschuwing_verzending_en_ontvangst():
+    nu = rk.vandaag_nl()
+    over_zes_dagen = nu + timedelta(days=6)
+    bekend = over_zes_dagen.replace(year=over_zes_dagen.year - 3) if not (over_zes_dagen.month == 2 and over_zes_dagen.day == 29) \
+        else date(over_zes_dagen.year - 3, 2, 28)
+    u = rk.verjaring_schadeclaim(bekend, peildatum=nu)
+    assert rk.laatste_dag_termijn(bekend) == over_zes_dagen or over_zes_dagen.month == 2
+    assert f"nu, uiterlijk {rk._nl(rk.laatste_dag_termijn(bekend))}" in u.volgende_stap and "ruim vóór" not in u.volgende_stap
+    assert any("verzending of de ontvangst" in w and "staat niet in de bronnen" in w for w in u.waarschuwingen)
+    u = rk.verjaring_schadeclaim(nu - timedelta(days=200), peildatum=nu)
+    assert "ruim vóór" in u.volgende_stap and not any("verzending of de ontvangst" in w for w in u.waarschuwingen)
+
+
+# ---- klachttermijnen: lid 4 (verzoek om nadere informatie) in twee lezingen, en een vervolgstap die bij de uitkomst past
+
+def test_lid_4_verlengt_beide_data_van_lid_3_met_de_termijn_voor_beantwoording_en_met_de_ontvangsttermijn():
+    u = rk.klachttermijnen(date(2026, 6, 25), date(2026, 7, 9), date(2026, 9, 29), date(2026, 7, 20), 21, date(2026, 8, 15))
+    d = u.details
+    assert d["acht_weken_na_indienen"] == "2026-08-20" and d["zes_weken_na_bevestiging"] == "2026-08-20"
+    assert d["verlenging_dagen"] == [21, 26]                              # 21 dagen gegeven; 20 juli tot 15 augustus is 26 dagen
+    assert [e["datum"] for e in d["verlengde_data"]] == ["2026-09-10", "2026-09-10", "2026-09-15", "2026-09-15"]
+    assert d["vroegste_datum_geschilleninstantie"] == "2026-09-10" and d["laatste_datum_geschilleninstantie"] == "2026-09-15"
+    assert d["kan_naar_geschilleninstantie"] is True and "art. 43 lid 3 en lid 4" in u.toelichting
+    assert "BGfo:43:4" in u.grondslag
+    # midden tussen de twee lezingen: het hangt af van de lezing van het 'of' in lid 4
+    u = rk.klachttermijnen(date(2026, 6, 25), date(2026, 7, 9), date(2026, 9, 12), date(2026, 7, 20), 21, date(2026, 8, 15))
+    assert u.details["afhankelijk_van_de_lezing"] is True and u.details["kan_naar_geschilleninstantie"] is False
+    assert "lezing van art. 43 lid 3 en lid 4" in u.toelichting
+
+
+def test_een_verzoek_zonder_termijn_of_ontvangstdatum_wordt_niet_doorgerekend_en_dat_wordt_gezegd():
+    u = rk.klachttermijnen(date(2026, 6, 25), date(2026, 7, 9), date(2027, 1, 1), date(2026, 7, 20))
+    assert u.details["verlenging_dagen"] == [] and u.details["kan_naar_geschilleninstantie"] is False
+    assert any("de verlenging van lid 4 is niet doorgerekend" in w for w in u.waarschuwingen)
+
+
+def test_is_de_informatie_nog_niet_ontvangen_dan_is_het_nooit_zeker():
+    u = rk.klachttermijnen(date(2026, 6, 25), date(2026, 7, 9), date(2027, 1, 1), date(2026, 7, 20), 21)
+    assert u.details["verlenging_dagen"] == [21] and u.details["kan_naar_geschilleninstantie"] is False
+    assert any("nog niet ontvangen" in w for w in u.waarschuwingen)
+    assert "Leg vast wanneer de gevraagde informatie is ontvangen" in u.volgende_stap
+
+
+@pytest.mark.parametrize("args,melding", [
+    ((date(2026, 6, 25), None, None, None, 21), "datum van het verzoek"),
+    ((date(2026, 6, 25), None, None, None, None, date(2026, 8, 1)), "datum van het verzoek"),
+    ((date(2026, 6, 25), None, None, date(2026, 6, 1)), "vóór de klacht"),
+    ((date(2026, 6, 25), None, None, date(2026, 7, 20), None, date(2026, 7, 1)), "vóór het verzoek"),
+    ((date(2026, 6, 25), None, None, date(2026, 7, 20), 0), "tussen 1 en 365"),
+])
+def test_lid_4_weigert_onmogelijke_invoer(args, melding):
+    with pytest.raises(ValueError, match=melding):
+        rk.klachttermijnen(*args)
+
+
+def test_de_vervolgstap_past_bij_de_uitkomst_en_spreekt_de_toelichting_niet_tegen():
+    # acht weken zijn verstreken en er is geen bevestiging ingevuld: niet 'wacht tot de vroegste datum is bereikt'
+    u = rk.klachttermijnen(date(2026, 6, 25), None, date(2026, 9, 29))
+    assert "verstreken" in u.toelichting and "Wacht met de geschilleninstantie" not in u.volgende_stap
+    assert u.volgende_stap.startswith("Controleer of de onderneming de ontvangst heeft bevestigd")
+    # tussen de twee lezingen
+    u = rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 10), date(2026, 10, 24))
+    assert u.volgende_stap.startswith("De vroegste datum is bereikt; wacht tot 27 oktober 2026")
+    # nog niets verstreken
+    u = rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 10), date(2026, 9, 30))
+    assert "Wacht met de geschilleninstantie tot de vroegste datum (22 oktober 2026)" in u.volgende_stap
+
+
+def test_een_afgehandelde_klacht_verwijst_naar_art_42_zonder_te_beweren_dat_de_wachttermijn_vervalt():
+    u = rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 10), date(2026, 9, 30), afgehandeld=True)
+    assert "art. 42" in u.toelichting and "staat niet in de bronnen" in u.toelichting
+    assert "BGfo:42" in u.grondslag and u.details["afgehandeld"] is True
+    assert "art. 42" not in rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 10), date(2026, 9, 30)).toelichting

@@ -118,7 +118,7 @@ function waardetoets(b, opKlik) {
 // ---------------------------------------------------------------- provisietoets
 
 const PROVISIE = {
-  VERBODEN: { toon: "fout", icoon: "kruis", titel: "Provisieverbod van toepassing", bedrag: "Toegestane beloning, rechtstreeks door de klant betaald" },
+  VERBODEN: { toon: "fout", icoon: "kruis", titel: "Provisieverbod van toepassing", bedrag: "Opgegeven directe beloning, rechtstreeks door de klant betaald" },
   TOEGESTAAN_MET_TRANSPARANTIE: { toon: "ok", icoon: "vink", titel: "Provisie toegestaan, mits gemeld", bedrag: "Provisie over de jaarpremie" },
   ONBEPAALD: { toon: "let", icoon: "waarschuwing", titel: "Niet vast te stellen", bedrag: null },
 };
@@ -146,7 +146,8 @@ const VERJARING = {
 
 const KORT = { bekendheid: "Bekend", stuiting: "Aanspraak", reactie: "Reactie", einde_hoofdtermijn: "Einde hoofdtermijn",
   einde_nieuwe_termijn: "Einde nieuwe termijn", nu: "Peildatum", klacht: "Klacht", bevestiging: "Bevestiging uiterlijk",
-  zes_weken: "6 wkn na bevestiging", acht_weken: "8 wkn na indienen" };
+  zes_weken: "6 wkn na bevestiging", acht_weken: "8 wkn na indienen", verzoek: "Verzoek om info", ontvangen: "Info ontvangen",
+  verlengd: "Na verlenging" };
 const KADER_BREEDTE = 620;           // aanname voor de botsingsberekening; labels hebben een vaste pixelbreedte
 
 /**
@@ -230,6 +231,9 @@ function klacht(b, opKlik) {
     { datum: d.bevestiging_uiterlijk, soort: "bevestiging", label: "Uiterlijk bevestigen en termijn melden (lid 2)" },
     ...(d.zes_weken_na_bevestiging ? [{ datum: d.zes_weken_na_bevestiging, soort: "zes_weken", label: "Zes weken na de ontvangstbevestiging (lid 3)" }] : []),
     { datum: d.acht_weken_na_indienen, soort: "acht_weken", label: "Acht weken na het indienen van de klacht (lid 3)" },
+    ...(d.verzoek ? [{ datum: d.verzoek, soort: "verzoek", label: "De verzekeraar vraagt de klager om nadere informatie (lid 4)" }] : []),
+    ...(d.ontvangen ? [{ datum: d.ontvangen, soort: "ontvangen", label: "De gevraagde informatie is ontvangen" }] : []),
+    ...(d.verlengde_data || []).map((e) => ({ ...e, soort: "verlengd" })),
   ];
   return h("div", null,
     h("div", { class: `oordeel ${toon}` },

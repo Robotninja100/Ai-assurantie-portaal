@@ -477,7 +477,13 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
 
 # =============================================================== 4. verjaringstoets
 
-def _getal(waarde, naam: str, minimum=0, maximum=10**12):
+def _echo(waarde, n: int = 40) -> str:
+    """Wat de adviseur invulde, ingekort voor in een foutmelding: een geplakt verhaal hoeft niet terug te komen."""
+    t = " ".join(str(waarde).split())
+    return t if len(t) <= n else t[:n].rstrip() + "…"
+
+
+def _getal(waarde, naam: str, minimum=0, maximum=10**12, eenheid: str = ""):
     """
     Een bedrag of percentage dat de rekenkern in mag. Onzin (tekst, negatief, een percentage boven
     de 100) wordt geweigerd met een duidelijke melding in plaats van doorgerekend: een rekenkern die
@@ -487,13 +493,16 @@ def _getal(waarde, naam: str, minimum=0, maximum=10**12):
     try:
         d = Decimal(str(waarde))
     except InvalidOperation:
-        raise ValueError(f"{naam}: '{waarde}' is geen getal")
+        t = str(waarde).strip()
+        tip = (" Gebruik een punt als decimaalteken (1250.50), zonder duizendtallen." if re.fullmatch(r"[\d.]*\d,\d+", t)
+               else " Vul alleen een getal in, zonder tekst of eenheid.")
+        raise ValueError(f"{naam}: '{_echo(waarde)}' is geen getal.{tip}")
     if not d.is_finite():
-        raise ValueError(f"{naam}: '{waarde}' is geen geldig getal")
+        raise ValueError(f"{naam}: '{_echo(waarde)}' is geen geldig getal.")
     if minimum is not None and d < minimum:
-        raise ValueError(f"{naam} mag niet lager zijn dan {minimum} (ingevuld: {waarde})")
+        raise ValueError(f"{naam} mag niet lager zijn dan {minimum}{eenheid} (ingevuld: {_echo(waarde)}{eenheid}).")
     if maximum is not None and d > maximum:
-        raise ValueError(f"{naam} mag niet hoger zijn dan {maximum} (ingevuld: {waarde})")
+        raise ValueError(f"{naam} mag niet hoger zijn dan {maximum}{eenheid} (ingevuld: {_echo(waarde)}{eenheid}).")
     return waarde
 
 
@@ -512,13 +521,21 @@ def _bool(waarde, naam: str) -> bool:
 
 
 def _datum(waarde: str, veld: str) -> Optional[date]:
-    """Leest een ISO-datum (JJJJ-MM-DD). Een onleesbare datum is een invoerfout, geen crash."""
+    """
+    Leest een datum: JJJJ-MM-DD (wat het formulier stuurt) of DD-MM-JJJJ (hoe een Nederlander schrijft). Een onleesbare
+    of niet bestaande datum is een invoerfout met een duidelijke melding, geen crash.
+    """
     if not waarde:
         return None
-    try:
-        return datetime.strptime(waarde.strip(), "%Y-%m-%d").date()
-    except ValueError:
-        raise ValueError(f"{veld}: '{waarde}' is geen datum in de vorm JJJJ-MM-DD")
+    t = str(waarde).strip()
+    for vorm in ("%Y-%m-%d", "%d-%m-%Y"):
+        try:
+            return datetime.strptime(t, vorm).date()
+        except ValueError:
+            continue
+    if re.fullmatch(r"\d{1,2}-\d{1,2}-\d{4}|\d{4}-\d{1,2}-\d{1,2}", t):
+        raise ValueError(f"{veld}: {_echo(t)} bestaat niet als datum. Controleer de dag en de maand.")
+    raise ValueError(f"{veld}: '{_echo(t)}' is geen datum. Gebruik JJJJ-MM-DD (bijvoorbeeld 2023-11-14) of DD-MM-JJJJ.")
 
 
 def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: str = "",
@@ -554,7 +571,7 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
 def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: float = 0,
                   directe_beloning: float = 0) -> Dict:
     _getal(jaarpremie, "jaarpremie")
-    _getal(provisiepercentage, "provisiepercentage", 0, 100)
+    _getal(provisiepercentage, "provisiepercentage", 0, 100, "%")
     _getal(directe_beloning, "directe beloning")
     u = rk.provisie_toets(producttype, jaarpremie, provisiepercentage, directe_beloning)
     # Alleen de wet, om dezelfde reden als bij de verjaringstoets: geen Kifid-uitspraak in het corpus gaat over
@@ -739,14 +756,20 @@ KLACHT_ARTIKELEN = ["Wft:4:17", "BGfo:39", "BGfo:40", "BGfo:41", "BGfo:42", "BGf
 
 
 def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool = False,
-                datum_bevestiging: str = "", peildatum: str = "") -> Dict:
+                datum_bevestiging: str = "", peildatum: str = "", datum_verzoek: str = "",
+                termijn_dagen: int = 0, datum_ontvangen: str = "") -> Dict:
     intern = _bool(intern_afgehandeld, "intern_afgehandeld")
     d_klacht, d_bev = _datum(datum_klacht, "datum_klacht"), _datum(datum_bevestiging, "datum_bevestiging")
-    if d_bev and not d_klacht:
-        raise ValueError("datum_bevestiging: vul ook de datum van de klacht in")
+    d_verzoek, d_ontv = _datum(datum_verzoek, "datum_verzoek"), _datum(datum_ontvangen, "datum_ontvangen")
+    dagen = int(float(_getal(termijn_dagen, "termijn_dagen", 0, 365, " dagen"))) if str(termijn_dagen or "").strip() else 0
+    if (d_bev or d_verzoek or d_ontv or dagen) and not d_klacht:
+        raise ValueError("Vul ook de datum van de klacht in: de andere data zijn termijnen bij die klacht.")
     u = None
     if d_klacht:
-        u = rk.klachttermijnen(d_klacht, d_bev, _datum(peildatum, "peildatum"))
+        try:
+            u = rk.klachttermijnen(d_klacht, d_bev, _datum(peildatum, "peildatum"), d_verzoek, dagen or None, d_ontv, intern)
+        except ValueError as e:
+            raise ValueError(str(e))
     # De kernartikelen over klachtafhandeling horen bij elke klachtroute; de situatie bepaalt welke
     # uitspraken erbij passen. Met een vaste zoekvraag kreeg elke casus dezelfde bronnen.
     ctx = _context(f"{(situatie or '')[:600]} klachtprocedure Kifid ontvankelijkheid termijn bindend advies "
@@ -825,7 +848,7 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
     _getal(nieuwwaarde, "nieuwwaarde")
     _getal(ouderdom_jaren, "ouderdom", 0, 1000)
     _getal(levensduur_jaren, "levensduur", 0, 1000)
-    _getal(drempel_pct, "drempel", 0, 100)
+    _getal(drempel_pct, "drempel_pct", 0, 100, "%")
     u = rk.nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren, drempel_pct)
     ctx = _context("nieuwwaarde dagwaarde afschrijving vervangingswaarde inboedel",
                    ["polisvoorwaarden", "wetgeving"], per_bron=3, eigen="")

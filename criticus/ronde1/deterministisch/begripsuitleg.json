@@ -136,7 +136,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.025
+  "duur_sec": 0.004
  },
  {
   "id": "begripsuitleg-04",
@@ -208,7 +208,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.038
+  "duur_sec": 0.005
  },
  {
   "id": "begripsuitleg-05",
@@ -280,7 +280,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.127
+  "duur_sec": 0.016
  },
  {
   "id": "begripsuitleg-06",
@@ -352,7 +352,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.02
+  "duur_sec": 0.003
  },
  {
   "id": "begripsuitleg-07",
@@ -360,7 +360,7 @@
   "http_status": 200,
   "bronnen": [],
   "berekening": null,
-  "duur_sec": 0.031
+  "duur_sec": 0.005
  },
  {
   "id": "begripsuitleg-08",
@@ -432,7 +432,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.034
+  "duur_sec": 0.003
  },
  {
   "id": "begripsuitleg-09",
@@ -534,6 +534,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.018
+  "duur_sec": 0.002
  }
 ]

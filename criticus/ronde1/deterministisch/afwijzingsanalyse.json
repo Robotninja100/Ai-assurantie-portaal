@@ -90,7 +90,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.207
+  "duur_sec": 0.031
  },
  {
   "id": "afwijzingsanalyse-02",
@@ -183,7 +183,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.269
+  "duur_sec": 0.04
  },
  {
   "id": "afwijzingsanalyse-03",
@@ -276,7 +276,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.097
+  "duur_sec": 0.017
  },
  {
   "id": "afwijzingsanalyse-04",
@@ -369,7 +369,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.125
+  "duur_sec": 0.024
  },
  {
   "id": "afwijzingsanalyse-05",
@@ -462,7 +462,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.218
+  "duur_sec": 0.035
  },
  {
   "id": "afwijzingsanalyse-06",
@@ -555,7 +555,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.129
+  "duur_sec": 0.027
  },
  {
   "id": "afwijzingsanalyse-07",
@@ -648,7 +648,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.166
+  "duur_sec": 0.02
  },
  {
   "id": "afwijzingsanalyse-08",
@@ -802,7 +802,7 @@
     "label": "Kifid 2026-0473",
     "type": null,
     "kant": null,
-    "uitkomst": "uitkomst niet vastgesteld"
+    "uitkomst": "vordering afgewezen"
    },
    {
     "soort": "wetgeving",
@@ -834,7 +834,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.278
+  "duur_sec": 0.027
  },
  {
   "id": "afwijzingsanalyse-10",
@@ -927,6 +927,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.196
+  "duur_sec": 0.022
  }
 ]

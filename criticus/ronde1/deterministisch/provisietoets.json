@@ -68,8 +68,8 @@
     "BGfo:86d:1",
     "BGfo:86i:3"
    ],
-   "toelichting": "Voor 'het ingevoerde product' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat afsluit- en doorlopende provisie toe, mits de consument kosteloos en op begrijpelijke wijze is geïnformeerd over het bestaan, de aard en het bedrag van de provisie.",
-   "volgende_stap": "Leg vast dat de consument uiterlijk tegelijk met het advies is geïnformeerd over het bestaan, de aard en het bedrag van de provisie (art. 86i lid 3), en neem de wijze van beloning op in het dienstverleningsdocument.",
+   "toelichting": "Voor 'het ingevoerde product' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat afsluit- en doorlopende provisie toe, mits een consument kosteloos en op begrijpelijke wijze wordt geïnformeerd over het bestaan, de aard en het bedrag van de provisie (onder b, 1°); een cliënt die geen consument is krijgt die mededeling kosteloos op verzoek (onder b, 2°).",
+   "volgende_stap": "Leg vast dat een consument uiterlijk tegelijk met het advies is geïnformeerd over het bestaan, de aard en het bedrag van de provisie (art. 86i lid 3); is de klant een cliënt die geen consument is, dan volstaat mededeling op verzoek (art. 86d lid 1 onder b, 2°). Neem de wijze van beloning op in het dienstverleningsdocument.",
    "waarschuwingen": [
     "Art. 86d lid 1 staat alleen de daar genoemde provisievormen toe; andere vormen vallen erbuiten.",
     "Art. 86d geldt voor overeenkomsten aangegaan op of na 1 juli 2024 (lid 4). Voor eerdere overeenkomsten gold de tekst van 30 juni 2024, die niet in het corpus staat."
@@ -81,7 +81,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.02
+  "duur_sec": 0.007
  },
  {
   "id": "provisietoets-02",
@@ -128,7 +128,7 @@
      "eenheid": ""
     },
     {
-     "omschrijving": "Toegestane beloning: rechtstreeks door de klant verschaft (lid 2 onder a)",
+     "omschrijving": "Opgegeven directe beloning door de klant (art. 86c lid 2 onder a; redelijkheid niet getoetst)",
      "formule": "directe beloning door de klant",
      "uitkomst": "2750.00",
      "eenheid": "EUR"
@@ -138,7 +138,7 @@
     "BGfo:86c:1",
     "BGfo:86c:2"
    ],
-   "toelichting": "Voor 'hypothecair krediet' geldt het provisieverbod van art. 86c lid 1 BGfo. Beloning loopt via een rechtstreeks met de klant overeengekomen bedrag, niet via de aanbieder.",
+   "toelichting": "Voor 'hypothecair krediet' geldt het provisieverbod van art. 86c lid 1 BGfo. Een beloning die de klant zelf rechtstreeks verschaft is toegestaan zolang de hoogte niet kennelijk onredelijk is (lid 2 onder a).",
    "volgende_stap": "Leg de directe beloning vast in het dienstverleningsdocument en laat de klant daar vooraf mee instemmen. Controleer of het bedrag aantoonbaar in verhouding staat tot de verrichte werkzaamheden: provisie die de klant zelf betaalt is alleen toegestaan zolang de hoogte niet kennelijk onredelijk is (lid 2 onder a).",
    "waarschuwingen": [
     "De overige uitzonderingen van lid 2 (o.a. relatiegeschenken tot € 100 per jaar) zijn hier niet doorgerekend."
@@ -150,7 +150,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.027
+  "duur_sec": 0.002
  },
  {
   "id": "provisietoets-03",
@@ -203,7 +203,7 @@
      "eenheid": "EUR"
     },
     {
-     "omschrijving": "Toegestane beloning: rechtstreeks door de klant verschaft (lid 2 onder a)",
+     "omschrijving": "Opgegeven directe beloning door de klant (art. 86c lid 2 onder a; redelijkheid niet getoetst)",
      "formule": "directe beloning door de klant",
      "uitkomst": "0.00",
      "eenheid": "EUR"
@@ -213,10 +213,10 @@
     "BGfo:86c:1",
     "BGfo:86c:2"
    ],
-   "toelichting": "Voor 'overlijdensrisicoverzekering' geldt het provisieverbod van art. 86c lid 1 BGfo. Beloning loopt via een rechtstreeks met de klant overeengekomen bedrag, niet via de aanbieder.",
+   "toelichting": "Voor 'overlijdensrisicoverzekering' geldt het provisieverbod van art. 86c lid 1 BGfo. Er is geen directe beloning ingevoerd. Een beloning die de klant zelf rechtstreeks verschaft is toegestaan (lid 2 onder a); via de aanbieder mag geen provisie lopen.",
    "volgende_stap": "Leg de directe beloning vast in het dienstverleningsdocument en laat de klant daar vooraf mee instemmen. Controleer of het bedrag aantoonbaar in verhouding staat tot de verrichte werkzaamheden: provisie die de klant zelf betaalt is alleen toegestaan zolang de hoogte niet kennelijk onredelijk is (lid 2 onder a).",
    "waarschuwingen": [
-    "Er is een provisiepercentage ingevuld voor een product onder het provisieverbod. Dit is een compliance-signaal, geen rekenfout.",
+    "Er is een provisiepercentage ingevuld voor een product onder het provisieverbod. Die provisie is niet toegestaan (art. 86c lid 1); alleen een provisie die de klant zelf rechtstreeks verschaft is toegestaan (lid 2 onder a). Dit is een compliance-signaal, geen rekenfout.",
     "De overige uitzonderingen van lid 2 (o.a. relatiegeschenken tot € 100 per jaar) zijn hier niet doorgerekend."
    ],
    "details": {
@@ -226,7 +226,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.017
+  "duur_sec": 0.002
  },
  {
   "id": "provisietoets-04",
@@ -302,7 +302,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.03
+  "duur_sec": 0.005
  },
  {
   "id": "provisietoets-05",
@@ -378,7 +378,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.033
+  "duur_sec": 0.003
  },
  {
   "id": "provisietoets-06",
@@ -454,7 +454,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.068
+  "duur_sec": 0.007
  },
  {
   "id": "provisietoets-07",
@@ -518,9 +518,10 @@
     "BGfo:86d:1",
     "BGfo:86i:3"
    ],
-   "toelichting": "Voor 'het ingevoerde product' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat afsluit- en doorlopende provisie toe, mits de consument kosteloos en op begrijpelijke wijze is geïnformeerd over het bestaan, de aard en het bedrag van de provisie.",
-   "volgende_stap": "Leg vast dat de consument uiterlijk tegelijk met het advies is geïnformeerd over het bestaan, de aard en het bedrag van de provisie (art. 86i lid 3), en neem de wijze van beloning op in het dienstverleningsdocument.",
+   "toelichting": "Voor 'het ingevoerde product' geldt het verbod van art. 86c lid 1 BGfo niet. Art. 86d lid 1 staat afsluit- en doorlopende provisie toe, mits een consument kosteloos en op begrijpelijke wijze wordt geïnformeerd over het bestaan, de aard en het bedrag van de provisie (onder b, 1°); een cliënt die geen consument is krijgt die mededeling kosteloos op verzoek (onder b, 2°).",
+   "volgende_stap": "Leg vast dat een consument uiterlijk tegelijk met het advies is geïnformeerd over het bestaan, de aard en het bedrag van de provisie (art. 86i lid 3); is de klant een cliënt die geen consument is, dan volstaat mededeling op verzoek (art. 86d lid 1 onder b, 2°). Neem de wijze van beloning op in het dienstverleningsdocument.",
    "waarschuwingen": [
+    "De provisie is afgerond op hele centen (van 185,225 naar € 185,23; half omhoog). Die afronding is een gangbare rekenafspraak, geen wetsartikel.",
     "Art. 86d lid 1 staat alleen de daar genoemde provisievormen toe; andere vormen vallen erbuiten.",
     "Art. 86d geldt voor overeenkomsten aangegaan op of na 1 juli 2024 (lid 4). Voor eerdere overeenkomsten gold de tekst van 30 juni 2024, die niet in het corpus staat."
    ],
@@ -531,7 +532,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.29
+  "duur_sec": 0.011
  },
  {
   "id": "provisietoets-08",
@@ -601,13 +602,13 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.024
+  "duur_sec": 0.002
  },
  {
   "id": "provisietoets-09",
   "functie": "provisietoets",
   "http_status": 400,
-  "fout": "ValueError: jaarpremie mag niet lager zijn dan 0 (ingevuld: -312)",
+  "fout": "ValueError: jaarpremie mag niet lager zijn dan 0 (ingevuld: -312).",
   "bronnen": [],
   "berekening": null
  },
@@ -615,7 +616,7 @@
   "id": "provisietoets-10",
   "functie": "provisietoets",
   "http_status": 400,
-  "fout": "ValueError: provisiepercentage mag niet hoger zijn dan 100 (ingevuld: 140)",
+  "fout": "ValueError: provisiepercentage mag niet hoger zijn dan 100% (ingevuld: 140%).",
   "bronnen": [],
   "berekening": null
  }

@@ -163,6 +163,10 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
             f"Onderverzekering van {_procent((1 - breuk) * 100)}. "
             "Controleer of een garantie tegen onderverzekering van toepassing is; "
             "die zet de evenredigheidsregel opzij.")
+        u.waarschuwingen.append(
+            "Art. 7:958 lid 5 verwijst naar de vergoeding volgens de leden 2 en 4: bij totaal verlies en bij verzekering "
+            "tegen vervangings-, herbouw- of nieuwwaarde. Berekent de polis de schade op een andere grondslag, dan "
+            "regelt de polis de onderverzekering: controleer de polisvoorwaarden.")
 
     na_er = basis - er
     if er > 0:
@@ -200,9 +204,13 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
     zelf_boven = zelf - er_toegepast
     if er > 0 and vs < ww:
         u.waarschuwingen.append(
-            "De volgorde (eerst de evenredigheidsbreuk, daarna het eigen risico) volgt uit de "
-            "polisvoorwaarden, niet uit de wet. Controleer haar in de voorwaarden van deze verzekeraar: "
-            "wordt het eigen risico eerst afgetrokken, dan valt de uitkomst anders uit.")
+            "De wet regelt niet in welke volgorde het eigen risico en de evenredigheidsbreuk worden toegepast. Dit portaal "
+            "past eerst de breuk toe en trekt daarna het eigen risico af. Lees in de polis van de klant hoe het eigen "
+            "risico wordt verrekend: wordt het eigen risico eerst afgetrokken, dan valt de uitkomst anders uit.")
+    if er > 0 and bk > 0:
+        u.waarschuwingen.append(
+            "Het eigen risico is hier alleen van het schadedeel afgetrokken; of de polis het ook op de bereddingskosten "
+            "toepast, staat in de polisvoorwaarden.")
     if bk > 0 and _eur(na_er) + _eur(totaal - na_er) != _eur(totaal):
         u.waarschuwingen.append(
             "Bedragen zijn afgerond op hele centen; de getoonde tussenbedragen kunnen daardoor 1 cent "
@@ -217,12 +225,13 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
     if sch > ww:
         u.uitleg.append(
             f"De ingevoerde schade ({_bedrag(sch)}) is hoger dan de werkelijke waarde ({_bedrag(ww)}); de berekening "
-            f"gaat uit van de waarde als hoogste schade ({_bedrag(sch_eff)}).")
+            f"gaat uit van de waarde als hoogste schade ({_bedrag(sch_eff)}). Het deel van de schade boven de werkelijke "
+            f"waarde ({_bedrag(sch - ww)}) is niet in de berekening meegenomen.")
     if vs < ww:
         u.uitleg.append(
             f"De verzekerde som ({_bedrag(vs)}) is {_procent(breuk * 100)} van de werkelijke waarde ({_bedrag(ww)}). "
-            f"Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de schade dan naar evenredigheid "
-            f"vergoed, hier {_procent(breuk * 100)} van de schade.")
+            f"Er is dus sprake van onderverzekering: volgens art. 7:958 lid 5 BW wordt de vergoeding dan naar evenredigheid "
+            f"verminderd, hier tot {_procent(breuk * 100)} van de schade.")
         u.uitleg.append(f"Bij een schade van {_bedrag(sch_eff)} is dat {_bedrag(basis)}.")
     else:
         u.uitleg.append(
@@ -234,8 +243,9 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
                 f"verzekerde som (art. 7:955 lid 1 BW): {_bedrag(basis)}.")
     if er_toegepast > 0:
         u.uitleg.append(
-            f"Daarna is het eigen risico van {_bedrag(er_toegepast)} in mindering gebracht; die volgorde volgt uit de "
-            f"polisvoorwaarden. Dat geeft {_bedrag(basis - er_toegepast)}.")
+            f"Daarna is het eigen risico van {_bedrag(er_toegepast)} in mindering gebracht"
+            + (" (dit portaal past eerst de breuk toe; de polis kan een andere volgorde hebben)" if vs < ww else "")
+            + f". Dat geeft {_bedrag(basis - er_toegepast)}.")
     if bk > 0:
         if vs < ww:
             u.uitleg.append(
@@ -253,7 +263,9 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
         delen_zelf.append(f"{_bedrag(er_toegepast)} eigen risico")
     u.uitleg.append(
         f"De uitkering is {_bedrag(totaal)}. Van de totale schade van {_bedrag(totale_schade)} draagt de verzekerde "
-        f"zelf {_bedrag(zelf)}" + (f" ({' en '.join(delen_zelf)})" if delen_zelf else "") + ".")
+        f"zelf {_bedrag(zelf)}" + (f" ({' en '.join(delen_zelf)})" if delen_zelf else "") + "."
+        + (" Er is geen eigen risico ingevoerd; heeft de polis er een, dan komt dat bedrag voor rekening van de klant."
+           if er == 0 and sch > 0 else ""))
     u.bedrag = totaal
     u.toelichting = (
         "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. "
@@ -265,8 +277,8 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
         u.volgende_stap = "Vul het schadebedrag in (uit taxatie, offerte of schadenota) en bereken opnieuw."
     elif vs < ww:
         u.volgende_stap = (
-            "Leg de herbouwwaarde vast met een recente taxatie of herbouwwaardemeter en "
-            "stel de verzekerde som bij. Controleer of de polis een indexclausule kent."
+            "Leg de werkelijke waarde vast met een recente taxatie (bij een woning: de herbouwwaarde) en "
+            "stel de verzekerde som bij. Controleer of de polis een clausule over indexering kent."
         )
     else:
         u.volgende_stap = (
@@ -405,11 +417,13 @@ def verjaring_schadeclaim(datum_bekend: date,
     status_gestuit = False
     alternatief = None              # (laatste dag, voorwaarde) als de aanspraak ontbreekt
 
+    reactie_genegeerd = None
     if datum_reactie and datum_reactie < (datum_stuiting or datum_bekend):
         u.waarschuwingen.append(
             f"De {reactie_woord} ({_nl(datum_reactie)}) ligt vóór de "
             f"{aanspraak_woord if datum_stuiting else 'bekendheid'}. Controleer de invoer; "
             "de reactie is niet meegeteld.")
+        reactie_genegeerd = (datum_reactie, aanspraak_woord if datum_stuiting else "bekendheid")
         datum_reactie = None
 
     if datum_reactie:
@@ -427,9 +441,13 @@ def verjaring_schadeclaim(datum_bekend: date,
                                    "label": "Einde nieuwe termijn"})
         elif not datum_stuiting:
             alt = laatste_dag_termijn(datum_reactie)
-            voorwaarde = (f"als de schademelding een {aanspraak_woord} was en binnen de "
-                          f"hoofdtermijn is gedaan, loopt er een nieuwe termijn tot {_nl(alt)}")
-            alternatief = (alt, voorwaarde)
+            # De nieuwe termijn begint pas na een reactie op een stuitende mededeling: die mededeling moet dus vóór de
+            # reactie zijn gedaan, en (om te stuiten) uiterlijk op de laatste dag van de hoofdtermijn.
+            tijdig = (f"vóór {_nl(datum_reactie)}" if datum_reactie <= eind0
+                      else f"uiterlijk op {_nl(eind0)} (de laatste dag van de hoofdtermijn)")
+            voorwaarde = (f"als de schademelding een {aanspraak_woord} was en {tijdig} is gedaan, "
+                          f"loopt er een nieuwe termijn tot {_nl(alt)}")
+            alternatief = (alt, voorwaarde, tijdig)
             u.waarschuwingen.append(
                 f"Er is een {reactie_woord} ingevuld maar geen datum van de {aanspraak_woord}. "
                 "Volgens lid 2 begint de nieuwe termijn pas na een stuitende mededeling; deze "
@@ -451,11 +469,19 @@ def verjaring_schadeclaim(datum_bekend: date,
         u.toelichting = (
             f"Op peildatum {_nl(peil)} is de verjaring gestuit door de {aanspraak_woord} van "
             f"{_nl(datum_stuiting)}. Er loopt nu geen termijn: een nieuwe termijn van drie jaar "
-            f"begint pas op de dag na {reactie_woord} door de verzekeraar.")
-        u.volgende_stap = (
-            "Vraag de verzekeraar schriftelijk om een reactie en leg vast op welke datum de "
-            "aanspraak wordt erkend of ondubbelzinnig afgewezen: dan begint de nieuwe termijn. "
-            "Bewaar het verzendbewijs van de stuitende mededeling.")
+            f"begint pas op de dag na {reactie_woord} door de verzekeraar. Dit gaat ervan uit dat de verzekeraar "
+            f"nog niet heeft gereageerd ({reactie_woord}).")
+        if aansprakelijkheid:
+            u.volgende_stap = (
+                "Ga na of de onderhandelingen al zijn afgebroken of de verzekeraar de aanspraak al heeft erkend: "
+                "vul die datum in, want dan begint de nieuwe termijn (lid 3). Leg vast wanneer er is onderhandeld "
+                "en bewaar de correspondentie.")
+        else:
+            u.volgende_stap = (
+                "Ga na of de verzekeraar al heeft erkend of ondubbelzinnig afgewezen: vul die datum in, want dan "
+                "loopt er een nieuwe termijn van drie jaar. Is er nog geen reactie, vraag de verzekeraar dan schriftelijk "
+                "om een reactie en leg vast op welke datum de aanspraak wordt erkend of ondubbelzinnig afgewezen. "
+                "Bewaar het verzendbewijs van de stuitende mededeling.")
     else:
         dagen = (eind - peil).days
         if dagen < 0:
@@ -480,10 +506,11 @@ def verjaring_schadeclaim(datum_bekend: date,
                     f"Houd de einddatum ({_nl(eind)}) in het dossier bij en stuit tijdig opnieuw, met "
                     "verzendbewijs, als de verzekeraar niet reageert of de zaak nog loopt.")
             else:
+                wanneer = ("vandaag nog" if eind == nu else
+                           f"nu, uiterlijk {_nl(eind)}" if (eind - nu).days <= 14 else f"ruim vóór {_nl(eind)}")
                 u.volgende_stap = (
                     "Stuit de verjaring per aangetekende brief met een ondubbelzinnige aanspraak op uitkering, "
-                    + ("vandaag nog" if eind == nu else f"ruim vóór {_nl(eind)}")
-                    + ", en bewaar het verzendbewijs.")
+                    f"{wanneer}, en bewaar het verzendbewijs.")
             if dagen < 90:
                 u.waarschuwingen.append(
                     f"Nog maar {_dagen(dagen)} tot de laatste dag ({_nl(eind)}): handel met spoed."
@@ -491,14 +518,20 @@ def verjaring_schadeclaim(datum_bekend: date,
                     (f"Vandaag ({_nl(eind)}) is de laatste dag om te stuiten: verstuur de aanspraak "
                      "vandaag nog aantoonbaar." if peil == nu else
                      f"De peildatum ({_nl(eind)}) is de laatste dag om te stuiten."))
+                u.waarschuwingen.append(
+                    "Art. 7:942 lid 2 spreekt van een schriftelijke mededeling. Of de verzending of de ontvangst door de "
+                    "verzekeraar op de laatste dag telt, staat niet in de bronnen: laat de mededeling de verzekeraar "
+                    "daarom bij voorkeur ruim vóór de laatste dag bereiken.")
         elif status == "ONZEKER":
+            dagen_alt = (alternatief[0] - peil).days
             u.toelichting = (
                 f"Op peildatum {_nl(peil)} is de hoofdtermijn verstreken op {_nl(eind)}. Of de "
                 f"vordering verjaard is, hangt af van één feit dat hier ontbreekt: "
-                f"{alternatief[1]}.")
+                f"{alternatief[1]}. Klopt dat, dan loopt die termijn nog {_dagen(dagen_alt)}.")
             u.volgende_stap = (
                 f"Zoek de datum van de eerste schriftelijke aanspraak op (schademelding, brief of "
-                f"e-mail) en bepaal of die vóór {_nl(eind)} is gedaan; vul die datum in en toets opnieuw.")
+                f"e-mail) en bepaal of die {alternatief[2]} is gedaan; vul die datum in en toets opnieuw. Overweeg "
+                "intussen schriftelijk aanspraak te maken op uitkering en bewaar het verzendbewijs.")
         else:
             u.toelichting = (
                 f"Op peildatum {_nl(peil)} is de vordering VERJAARD: de laatste dag om te stuiten "
@@ -507,6 +540,12 @@ def verjaring_schadeclaim(datum_bekend: date,
                 "Ga na of er eerder rechtsgeldig is gestuit; zonder stuiting is de vordering niet "
                 "meer afdwingbaar. Onderzoek subsidiair of de adviseur zelf aansprakelijk is voor "
                 "het laten verlopen van de termijn.")
+
+    if reactie_genegeerd:
+        d_reactie, waarvoor = reactie_genegeerd
+        u.toelichting += (f" De ingevulde {reactie_woord} van {_nl(d_reactie)} is niet meegeteld omdat zij vóór de {waarvoor} "
+                          "ligt; klopt een van beide data niet, dan kan deze uitkomst anders zijn.")
+        u.volgende_stap = f"Controleer eerst de data van de {waarvoor} en van de reactie. " + u.volgende_stap
 
     if latere_aanspraak:
         gebeurtenissen.append({"datum": latere_aanspraak.isoformat(), "soort": "stuiting",
@@ -520,7 +559,7 @@ def verjaring_schadeclaim(datum_bekend: date,
     if not aansprakelijkheid:
         u.waarschuwingen.append(
             "Bij een aansprakelijkheidsverzekering geldt een afwijkende stuitingsregel: iedere "
-            "onderhandeling stuit de termijn (art. 7:942 lid 3). Zet de aansprakelijkheidsschakelaar "
+            "onderhandeling stuit de termijn (art. 7:942 lid 3). Vink 'Aansprakelijkheidsverzekering' "
             "aan als dat hier speelt.")
     u.waarschuwingen.append(
         "Van art. 7:942 kan niet ten nadele van de verzekeringnemer of de tot uitkering gerechtigde "
@@ -581,49 +620,86 @@ def nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren,
     u.stappen.append(Stap(f"Drempel ({_g(dagwaarde_drempel_pct)}% van nieuwwaarde)",
                           f"{_bedrag(nw)} x {_g(dagwaarde_drempel_pct)}%", drempel))
 
+    # Klaverblad (inboedel, art. 2.17.3) is de enige drempelclausule in het corpus: nieuwwaarde als aan drie voorwaarden
+    # is voldaan, waarvan c: 'de dagwaarde is meer dan 40% van de nieuwwaarde'. Deze toets rekent alleen c.
+    kb_pct = Decimal("40")
+    drempel_pct = Decimal(str(dagwaarde_drempel_pct))
+    c_vervuld = dagwaarde > drempel                       # 'meer dan': precies op de drempel is niet meer dan
+    c_vervuld_kb = dagwaarde > nw * kb_pct / Decimal("100")
+    afwijkend = drempel_pct != kb_pct
     u.details = {
         "nieuwwaarde": str(_eur(nw)), "dagwaarde": str(_eur(dagwaarde)), "drempel": str(_eur(drempel)),
-        "dagwaarde_pct": str(_eur(factor * 100)), "drempel_pct": str(_eur(Decimal(str(dagwaarde_drempel_pct)))),
-        "toegepast": "dagwaarde" if dagwaarde <= drempel else "nieuwwaarde"}
-    if Decimal(str(dagwaarde_drempel_pct)) != 40:
+        "dagwaarde_pct": str(_eur(factor * 100)), "drempel_pct": str(_eur(drempel_pct)),
+        "toegepast": "nieuwwaarde" if c_vervuld else "dagwaarde",
+        "voorwaarde_c_vervuld": c_vervuld, "uitkomst_bij_klaverblad_drempel": "nieuwwaarde" if c_vervuld_kb else "dagwaarde"}
+    uitkomst_kb = f"{'nieuwwaarde' if c_vervuld_kb else 'dagwaarde'} ({_bedrag(nw if c_vervuld_kb else dagwaarde)})"
+    if afwijkend:
         u.waarschuwingen.append(
             f"Je hebt een drempel van {_g(dagwaarde_drempel_pct)}% ingevoerd. De enige drempelclausule in het corpus "
             "(Klaverblad, inboedel, art. 2.17.3 sub c) noemt 'meer dan 40%'. Controleer welk percentage de polis van "
-            "de klant hanteert.")
+            "de klant hanteert."
+            + (f" Met 40% zou de uitkomst anders zijn: {uitkomst_kb}." if c_vervuld_kb != c_vervuld else ""))
     if dagwaarde == drempel:
         u.waarschuwingen.append(
             "De dagwaarde ligt precies op de drempel. Klaverblad (inboedel, art. 2.17.3 sub c) vraagt 'meer dan "
-            "40%' voor nieuwwaarde, dus dan geldt dagwaarde. Formuleert de polis van de klant het anders (bijvoorbeeld "
-            "'ten minste'), dan valt de uitkomst anders uit: lees de clausule.")
+            "40%' voor nieuwwaarde, dus dan is voorwaarde c niet vervuld. Formuleert de polis van de klant het "
+            "anders (bijvoorbeeld 'ten minste'), dan valt de uitkomst anders uit: lees de clausule.")
+    u.waarschuwingen.append(
+        "Alleen voorwaarde c van art. 2.17.3 is getoetst. Voorwaarde a (de spullen waren nieuw toen de klant ze kocht) "
+        "en b (aantonen met een nota, of anders aannemelijk maken) niet.")
+    u.waarschuwingen.append(
+        "De drempel volgt uit de polisvoorwaarden, niet uit de wet. De levensduur is invoer en de lineaire afschrijving "
+        "een rekenafspraak van dit portaal. Controleer beide in de voorwaarden van de verzekeraar van de klant.")
+
     # --- dezelfde berekening in gewone zinnen, voor wie de uitkomst aan een klant moet uitleggen
     if ouder_dan_levensduur:
         u.uitleg.append(
             f"De ouderdom ({_g(ouderdom_jaren)} jaar) is hoger dan de levensduur ({_g(levensduur_jaren)} jaar); de "
             "restlevensduur is dan 0 jaar en de dagwaarde nul.")
     u.uitleg.append(
-        f"De dagwaarde is de nieuwwaarde ({_bedrag(nw)}) maal de restlevensduur ({_g(rest)} jaar) gedeeld door de "
-        f"levensduur ({_g(levensduur_jaren)} jaar): {_bedrag(dagwaarde)}, dat is {_procent(factor * 100)} van de nieuwwaarde.")
+        f"De dagwaarde is berekend met lineaire afschrijving: de nieuwwaarde ({_bedrag(nw)}) maal de restlevensduur "
+        f"({_g(rest)} jaar) gedeeld door de levensduur ({_g(levensduur_jaren)} jaar), dus {_bedrag(dagwaarde)}. Dat is "
+        f"{_procent(factor * 100)} van de nieuwwaarde. Dit is een rekenafspraak van dit portaal; de polis kan de dagwaarde "
+        "anders vaststellen.")
+    u.uitleg.append(
+        "Klaverblad (inboedel, art. 2.17.3) vergoedt de nieuwwaarde als aan drie voorwaarden is voldaan: (a) de spullen "
+        "waren nieuw toen de klant ze kocht, (b) de klant kan met een nota aantonen hoe oud de spullen waren en wat de "
+        "koopprijs was, of kan dit op een andere manier aannemelijk maken, en (c) de dagwaarde is meer dan 40% van de "
+        "nieuwwaarde. Dit portaal toetst alleen voorwaarde c.")
     u.uitleg.append(
         f"De drempel is {_g(dagwaarde_drempel_pct)}% van de nieuwwaarde: {_bedrag(drempel)}. Dat percentage is als invoer "
         "opgegeven; het volgt uit de polisvoorwaarden, niet uit de wet.")
-    if dagwaarde <= drempel:
+    if c_vervuld:
         u.uitleg.append(
-            f"De dagwaarde ({_bedrag(dagwaarde)}) ligt {'precies op' if dagwaarde == drempel else 'onder'} de drempel "
-            f"({_bedrag(drempel)}); er wordt dan op dagwaarde afgewikkeld: {_bedrag(dagwaarde)}.")
-        u.bedrag = dagwaarde
-        u.toelichting = "Dagwaarde ligt op of onder de polisdrempel; er wordt op dagwaarde afgewikkeld."
-        u.volgende_stap = ("Controleer de exacte drempelclausule in de polisvoorwaarden van de verzekeraar van "
-                           "de klant.")
+            f"De dagwaarde ({_bedrag(dagwaarde)}) is meer dan de drempel ({_bedrag(drempel)}): voorwaarde c is vervuld. "
+            f"Als ook voorwaarde a en b kloppen, wordt op nieuwwaarde afgewikkeld: {_bedrag(nw)}.")
+        u.bedrag = nw
+        u.toelichting = ("Voorwaarde c is vervuld (de dagwaarde is meer dan de drempel): de nieuwwaarde wordt vergoed, "
+                         "mits ook voorwaarde a en b kloppen.")
     else:
         u.uitleg.append(
-            f"De dagwaarde ({_bedrag(dagwaarde)}) ligt boven de drempel ({_bedrag(drempel)}); er wordt dan op "
-            f"nieuwwaarde afgewikkeld: {_bedrag(nw)}.")
-        u.bedrag = nw
-        u.toelichting = "Dagwaarde ligt boven de polisdrempel; er wordt op nieuwwaarde afgewikkeld."
-        u.volgende_stap = "Vraag een aankoopbewijs of vervangingsofferte op ter onderbouwing."
-    u.waarschuwingen.append(
-        "De drempel en de gehanteerde levensduur volgen uit de polisvoorwaarden, niet uit de wet. "
-        "Verifieer beide in het clausulecorpus voordat je dit aan de klant meldt.")
+            f"De dagwaarde ({_bedrag(dagwaarde)}) is niet meer dan de drempel ({_bedrag(drempel)}): voorwaarde c is niet "
+            f"vervuld. De nieuwwaarde wordt dan niet vergoed; het portaal rekent met de dagwaarde: {_bedrag(dagwaarde)}. "
+            "Welke regel de polis daarvoor geeft, staat niet in het corpus.")
+        u.bedrag = dagwaarde
+        u.toelichting = ("Voorwaarde c is niet vervuld (de dagwaarde is niet meer dan de drempel): de nieuwwaarde wordt "
+                         "niet vergoed en het portaal rekent met de dagwaarde.")
+    if afwijkend and c_vervuld_kb != c_vervuld:
+        u.uitleg.append(f"Met de drempel van Klaverblad (40%) zou de uitkomst anders zijn: {uitkomst_kb}.")
+
+    if ouder_dan_levensduur:
+        u.volgende_stap = ("Controleer de opgegeven levensduur en hoe de polis van de klant de dagwaarde vaststelt; een "
+                           "dagwaarde van nul volgt hier uit de aanname dat het object volledig is afgeschreven.")
+    elif afwijkend:
+        u.volgende_stap = ("Controleer eerst welke drempel de polis van de klant noemt; het corpus kent alleen die van "
+                           "Klaverblad (meer dan 40%)."
+                           + (" Stel daarna vast of voorwaarde a en b van art. 2.17.3 zijn vervuld." if c_vervuld else ""))
+    elif c_vervuld:
+        u.volgende_stap = ("Stel vast of de spullen nieuw zijn gekocht (voorwaarde a) en of de klant met een nota of op "
+                           "andere wijze aannemelijk kan maken hoe oud ze zijn en wat ze kostten (voorwaarde b); vraag "
+                           "daarvoor een aankoopbewijs of vervangingsofferte op.")
+    else:
+        u.volgende_stap = ("Controleer de exacte drempelclausule in de polisvoorwaarden van de verzekeraar van de klant.")
     return u
 
 
@@ -771,14 +847,19 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
             u.stappen.append(Stap("Ingevulde provisie (NIET toegestaan voor dit product)",
                                   f"{_bedrag(jp)} x {pct}%", prov))
             u.waarschuwingen.append(
-                "Er is een provisiepercentage ingevuld voor een product onder het provisieverbod. "
-                "Dit is een compliance-signaal, geen rekenfout.")
-        u.bedrag = _eur(directe_beloning or 0)
-        u.stappen.append(Stap("Toegestane beloning: rechtstreeks door de klant verschaft (lid 2 onder a)",
-                              "directe beloning door de klant", Decimal(str(directe_beloning or 0))))
+                "Er is een provisiepercentage ingevuld voor een product onder het provisieverbod. Die provisie is niet "
+                "toegestaan (art. 86c lid 1); alleen een provisie die de klant zelf rechtstreeks verschaft is toegestaan "
+                "(lid 2 onder a). Dit is een compliance-signaal, geen rekenfout.")
+        directe = Decimal(str(directe_beloning or 0))
+        u.bedrag = _eur(directe)
+        u.stappen.append(Stap("Opgegeven directe beloning door de klant (art. 86c lid 2 onder a; redelijkheid niet getoetst)",
+                              "directe beloning door de klant", directe))
         u.toelichting = (
-            f"Voor '{naam}' geldt het provisieverbod van art. 86c lid 1 BGfo. Beloning loopt "
-            "via een rechtstreeks met de klant overeengekomen bedrag, niet via de aanbieder.")
+            f"Voor '{naam}' geldt het provisieverbod van art. 86c lid 1 BGfo. "
+            + ("Een beloning die de klant zelf rechtstreeks verschaft is toegestaan zolang de hoogte niet kennelijk "
+               "onredelijk is (lid 2 onder a)." if directe > 0 else
+               "Er is geen directe beloning ingevoerd. Een beloning die de klant zelf rechtstreeks verschaft is toegestaan "
+               "(lid 2 onder a); via de aanbieder mag geen provisie lopen."))
         u.volgende_stap = (
             "Leg de directe beloning vast in het dienstverleningsdocument en laat de klant daar "
             "vooraf mee instemmen. Controleer of het bedrag aantoonbaar in verhouding staat tot "
@@ -795,6 +876,10 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
         if jp > 0 and pct > 0:
             u.stappen.append(Stap("Provisie over jaarpremie", f"{_bedrag(jp)} x {pct}%", prov))
             u.bedrag = prov
+            if _eur(prov) != prov:
+                u.waarschuwingen.append(
+                    f"De provisie is afgerond op hele centen (van {prov.normalize():f}".replace(".", ",") +
+                    f" naar {_bedrag(prov)}; half omhoog). Die afronding is een gangbare rekenafspraak, geen wetsartikel.")
         else:
             # Een lege premie of een leeg percentage is geen nul: dat zou schijnzekerheid geven.
             u.stappen.append(Stap("Geen jaarpremie of provisiepercentage ingevuld: geen bedrag berekend",
@@ -841,7 +926,9 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
 # ---------------------------------------------------------------- klachttermijnen
 
 def klachttermijnen(datum_klacht: date, datum_bevestiging: Optional[date] = None,
-                    peildatum: Optional[date] = None) -> Uitkomst:
+                    peildatum: Optional[date] = None, datum_verzoek: Optional[date] = None,
+                    termijn_dagen: Optional[int] = None, datum_ontvangen: Optional[date] = None,
+                    afgehandeld: bool = False) -> Uitkomst:
     """
     De termijnen uit art. 43 BGfo, letterlijk toegepast op de datum van de klacht.
 
@@ -851,14 +938,24 @@ def klachttermijnen(datum_klacht: date, datum_bevestiging: Optional[date] = None
            na ontvangst van de ontvangstbevestiging of acht weken na het indienen van de klacht".
            Dat 'of' laat twee lezingen toe; beide data worden getoond en geen van beide wordt
            weggekozen.
-    Lid 4: vraagt de onderneming nadere informatie, dan worden de termijnen van lid 3 verlengd met de
-           termijn voor beantwoording. Dat is een feit dat hier niet bekend is en dus niet doorgerekend.
+    Lid 4: vraagt de onderneming de klager om nadere informatie, dan worden de termijnen van lid 3 verlengd "met de
+           termijn voor beantwoording, of met de termijn waarbinnen de verzochte informatie wordt ontvangen". Ook dat
+           'of' laat twee lezingen toe. Zijn het verzoek en de termijn (en/of de ontvangst) bekend, dan rekent de kern
+           beide door; zonder die feiten is de verlenging niet doorgerekend en zegt de kern dat.
     """
     peil = peildatum or vandaag_nl()
     if datum_bevestiging and datum_bevestiging < datum_klacht:
         raise ValueError(f"De ontvangstbevestiging ({_nl(datum_bevestiging)}) ligt vóór de klacht ({_nl(datum_klacht)}).")
+    if datum_verzoek and datum_verzoek < datum_klacht:
+        raise ValueError(f"Het verzoek om nadere informatie ({_nl(datum_verzoek)}) ligt vóór de klacht ({_nl(datum_klacht)}).")
+    if (datum_ontvangen or termijn_dagen) and not datum_verzoek:
+        raise ValueError("Vul ook de datum van het verzoek om nadere informatie in.")
+    if datum_ontvangen and datum_ontvangen < datum_verzoek:
+        raise ValueError(f"De informatie is ontvangen ({_nl(datum_ontvangen)}) vóór het verzoek ({_nl(datum_verzoek)}).")
+    if termijn_dagen is not None and not (1 <= int(termijn_dagen) <= 365):
+        raise ValueError("De termijn om te antwoorden is een aantal dagen tussen 1 en 365.")
     u = Uitkomst(onderwerp="Termijnen bij een klacht (art. 43 BGfo)", bedrag=None)
-    u.grondslag = ["BGfo:43:2", "BGfo:43:3"]
+    u.grondslag = ["BGfo:43:2", "BGfo:43:3"] + (["BGfo:43:4"] if datum_verzoek else []) + (["BGfo:42"] if afgehandeld else [])
     dag = lambda d, n: date.fromordinal(d.toordinal() + n)
     bevestiging_uiterlijk = dag(datum_klacht, 14)
     acht_weken = dag(datum_klacht, 56)
@@ -879,21 +976,59 @@ def klachttermijnen(datum_klacht: date, datum_bevestiging: Optional[date] = None
     else:
         u.stappen.append(Stap("Zes weken na de ontvangstbevestiging (lid 3)",
                               "datum van de ontvangstbevestiging niet ingevuld: niet te berekenen", None, ""))
-    lezingen = [d for d in (acht_weken, zes_weken) if d]
+
+    # --- lid 4: de verlenging, in twee lezingen ('met de termijn voor beantwoording, of met de termijn waarbinnen de
+    # verzochte informatie wordt ontvangen')
+    verlengingen = {}                                            # dagen -> hoe die verlenging wordt gelezen
+    verlengde_data = []
+    if datum_verzoek:
+        u.stappen.append(Stap("De onderneming vraagt de klager om nadere informatie (lid 4)", _nl(datum_verzoek), None, ""))
+        if termijn_dagen:
+            verlengingen.setdefault(int(termijn_dagen), "de termijn die de onderneming voor de beantwoording gaf")
+        if datum_ontvangen:
+            ontvangst_dagen = (datum_ontvangen - datum_verzoek).days
+            verlengingen.setdefault(ontvangst_dagen, "de termijn waarbinnen de informatie is ontvangen")
+            u.stappen.append(Stap("De gevraagde informatie is ontvangen door de onderneming",
+                                  f"{_nl(datum_verzoek)} tot {_nl(datum_ontvangen)} = {ontvangst_dagen} dagen", None, ""))
+        for dagen, hoe in sorted(verlengingen.items()):
+            for naam, basis in (("acht weken na het indienen", acht_weken), ("zes weken na de ontvangstbevestiging", zes_weken)):
+                if basis is None:
+                    continue
+                nieuw = dag(basis, dagen)
+                verlengde_data.append({"datum": nieuw.isoformat(), "label": f"{naam.capitalize()}, verlengd met {dagen} dagen (lid 4)"})
+                u.stappen.append(Stap(f"Verlengd met {hoe} ({dagen} dagen): {naam} (lid 4)",
+                                      f"{_nl(basis)} + {dagen} dagen = {_nl(nieuw)}", None, ""))
+        if not verlengingen:
+            u.waarschuwingen.append(
+                "Er is een verzoek om nadere informatie ingevuld, maar geen termijn om te antwoorden en geen ontvangstdatum: "
+                "de verlenging van lid 4 is niet doorgerekend. Vul de termijn of de ontvangstdatum in.")
+        elif not datum_ontvangen:
+            u.waarschuwingen.append(
+                "Is de gevraagde informatie nog niet ontvangen, dan loopt de verlenging volgens de tweede lezing van lid 4 "
+                "door tot de ontvangst. Vul de ontvangstdatum in zodra die er is.")
+    lezingen = ([dag(b, d) for b in (acht_weken, zes_weken) if b for d in verlengingen] if verlengingen
+                else [d for d in (acht_weken, zes_weken) if d])
     vroegste, laatste = min(lezingen), max(lezingen)
+    verlenging_onzeker = bool(datum_verzoek) and not datum_ontvangen
     # Zonder datum van de ontvangstbevestiging bestaat maar één van de twee data. Dan kan de tweede
-    # lezing niet worden uitgesloten: hooguit hangt het van die lezing af, zeker is het nooit.
-    zeker = peil >= laatste and zes_weken is not None
+    # lezing niet worden uitgesloten: hooguit hangt het van die lezing af, zeker is het nooit. Hetzelfde geldt voor een
+    # verlenging waarvan de ontvangst nog niet bekend is.
+    zeker = peil >= laatste and zes_weken is not None and not verlenging_onzeker and not (datum_verzoek and not verlengingen)
     mogelijk = peil >= vroegste
     u.details = {"peildatum": peil.isoformat(), "klacht": datum_klacht.isoformat(),
                  "bevestiging_uiterlijk": bevestiging_uiterlijk.isoformat(), "acht_weken_na_indienen": acht_weken.isoformat(),
                  "zes_weken_na_bevestiging": zes_weken.isoformat() if zes_weken else None,
+                 "verzoek": datum_verzoek.isoformat() if datum_verzoek else None,
+                 "ontvangen": datum_ontvangen.isoformat() if datum_ontvangen else None,
+                 "verlenging_dagen": sorted(verlengingen), "verlengde_data": verlengde_data,
                  "vroegste_datum_geschilleninstantie": vroegste.isoformat(),
                  "laatste_datum_geschilleninstantie": laatste.isoformat(),
-                 "kan_naar_geschilleninstantie": zeker, "afhankelijk_van_de_lezing": mogelijk and not zeker}
+                 "kan_naar_geschilleninstantie": zeker, "afhankelijk_van_de_lezing": mogelijk and not zeker,
+                 "afgehandeld": bool(afgehandeld)}
+    lid = "art. 43 lid 3" + (" en lid 4" if verlengingen else "")
     if zeker:
         u.toelichting = (f"Op peildatum {_nl(peil)} kan de klager de klacht rechtstreeks aan de geschilleninstantie "
-                         f"voorleggen: beide data uit art. 43 lid 3 zijn verstreken (uiterlijk {_nl(laatste)}).")
+                         f"voorleggen: alle data uit {lid} zijn verstreken (uiterlijk {_nl(laatste)}).")
     elif zes_weken is None:
         u.toelichting = (
             (f"Op peildatum {_nl(peil)} is acht weken na het indienen verstreken ({_nl(acht_weken)}). "
@@ -904,29 +1039,52 @@ def klachttermijnen(datum_klacht: date, datum_bevestiging: Optional[date] = None
               "Is er geen ontvangstbevestiging gekomen, dan bestaat die datum niet en is dit de enige datum uit "
               "art. 43 lid 3 die te berekenen is; vul anders de datum van de bevestiging in.")
     elif mogelijk:
-        u.toelichting = (f"Op peildatum {_nl(peil)} hangt het af van de lezing van art. 43 lid 3: volgens de ene lezing kan de "
+        u.toelichting = (f"Op peildatum {_nl(peil)} hangt het af van de lezing van {lid}: volgens de ene lezing kan de "
                          f"klacht al aan de geschilleninstantie worden voorgelegd (vanaf {_nl(vroegste)}), volgens de andere pas "
                          f"vanaf {_nl(laatste)}. Wacht tot {_nl(laatste)} als je zeker wilt zijn.")
     else:
         u.toelichting = (f"Op peildatum {_nl(peil)} kan de klager de klacht nog niet aan de geschilleninstantie voorleggen; "
-                         f"de vroegste datum volgens art. 43 lid 3 is {_nl(vroegste)}.")
+                         f"de vroegste datum volgens {lid} is {_nl(vroegste)}.")
+    if zes_weken is None and verlengingen:
+        u.toelichting += (f" De acht-wekendatum is met de verlenging van lid 4 verschoven naar {_nl(vroegste)}"
+                          + (f" of {_nl(laatste)}" if laatste != vroegste else "") + ".")
+    if afgehandeld:
+        u.toelichting += (" De onderneming heeft de klacht volgens de invoer afgehandeld. Bij een gehele of gedeeltelijke "
+                          "afwijzing moet zij de klager over de geschilleninstantie informeren (art. 42). Of de klager dan "
+                          "eerder kan indienen dan de data van lid 3, staat niet in de bronnen.")
     u.waarschuwingen.append(
         "Art. 43 lid 3 zegt 'vanaf zes weken na ontvangst van de ontvangstbevestiging of acht weken na het "
         "indienen van de klacht'. Beide data staan hierboven; het portaal kiest niet tussen de twee lezingen.")
-    u.waarschuwingen.append(
-        "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de "
-        "termijn voor beantwoording (lid 4). Dat is hier niet meegerekend.")
+    if not datum_verzoek:
+        u.waarschuwingen.append(
+            "Vraagt de onderneming de klager om nadere informatie, dan worden de termijnen verlengd met de "
+            "termijn voor beantwoording, of met de termijn waarbinnen de informatie wordt ontvangen (lid 4). Dat is hier "
+            "niet meegerekend: vul het verzoek in als dat speelt.")
+    else:
+        u.waarschuwingen.append(
+            "Lid 4 zegt 'met de termijn voor beantwoording, of met de termijn waarbinnen de verzochte informatie wordt "
+            "ontvangen'. Zijn beide bekend, dan staan beide lezingen hierboven; het portaal kiest niet.")
     u.waarschuwingen.append(
         "Of de geschilleninstantie de klacht in behandeling neemt hangt af van haar eigen reglement, dat niet "
         "in het corpus staat.")
-    u.volgende_stap = (
-        "Leg de datum van de klacht en van de ontvangstbevestiging vast. Is de vroegste datum bereikt en is de "
-        "klacht niet naar tevredenheid afgehandeld, vraag dan het reglement van de geschilleninstantie op voor de "
-        "indieningsvoorwaarden."
-        if zeker else
-        "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. "
-        "Wacht met de geschilleninstantie tot de vroegste datum is bereikt en vraag intussen om een schriftelijke "
-        "afhandelingstermijn.")
+    if zeker:
+        u.volgende_stap = (
+            "Leg de datum van de klacht en van de ontvangstbevestiging vast. Is de klacht niet naar tevredenheid "
+            "afgehandeld, vraag dan het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.")
+    elif mogelijk:
+        u.volgende_stap = (
+            ("Controleer of de onderneming de ontvangst heeft bevestigd en op welke datum: is er geen bevestiging gekomen, "
+             "dan is de acht-wekendatum de enige datum uit lid 3 en die is verstreken; is er wel een, vul dan die datum in. "
+             if zes_weken is None else
+             f"De vroegste datum is bereikt; wacht tot {_nl(laatste)} als je zeker wilt zijn dat alle lezingen zijn verstreken. ")
+            + ("Leg vast wanneer de gevraagde informatie is ontvangen: dat bepaalt de verlenging van lid 4. "
+               if verlenging_onzeker and verlengingen else "")
+            + "Vraag intussen het reglement van de geschilleninstantie op voor de indieningsvoorwaarden.")
+    else:
+        u.volgende_stap = (
+            "Leg de datum van de klacht vast en controleer of de onderneming binnen twee weken heeft bevestigd. "
+            f"Wacht met de geschilleninstantie tot de vroegste datum ({_nl(vroegste)}) is bereikt en vraag intussen om een "
+            "schriftelijke afhandelingstermijn.")
     return u
 
 

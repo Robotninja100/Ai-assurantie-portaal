@@ -1,4 +1,5 @@
 """Tests voor de functies zelf: productbewuste retrieval, de vergelijker en de bronvelden voor de UI."""
+import pytest
 import features
 import rekenkern as rk
 
@@ -360,3 +361,34 @@ def test_adviesnotitie_belooft_geen_vastleggingsvereisten_die_het_corpus_niet_ke
     g = features.adviesnotitie("Alleenstaande, 34 jaar, huurwoning.", "Inboedelverzekering, eigen risico 250.")["gebruiker"]
     assert "voldoet aan de vastleggingsvereisten" not in g
     assert "geen vastleggings- of bewaarplicht" in g
+
+
+def test_klachtroute_geeft_het_verzoek_om_informatie_door_aan_de_rekenkern():
+    r = features.klachtroute("Klager wacht op reactie.", "2026-06-25", False, "2026-07-09", "2026-09-29",
+                             "2026-07-20", 21, "2026-08-15")
+    assert r["berekening"]["details"]["verlenging_dagen"] == [21, 26]
+    assert "BGfo art. 43" in [b["label"] for b in r["bronnen"]]
+    assert "Verlengd met de termijn die de onderneming voor de beantwoording gaf (21 dagen)" in r["gebruiker"]
+    with pytest.raises(ValueError, match="datum van de klacht"):
+        features.klachtroute("x", "", False, "", "", "2026-07-20")
+    with pytest.raises(ValueError, match="tussen 1 en 365|niet hoger zijn dan 365"):
+        features.klachtroute("x", "2026-06-25", False, "", "", "2026-07-20", 4000)
+
+
+def test_datums_mogen_ook_als_dag_maand_jaar_en_de_melding_zegt_wat_er_mis_is():
+    assert features._datum("14-11-2023", "d") == features._datum("2023-11-14", "d")
+    with pytest.raises(ValueError, match=r"31-09-2026 bestaat niet als datum"):
+        features._datum("31-09-2026", "datum_klacht")
+    with pytest.raises(ValueError, match=r"geen datum\. Gebruik JJJJ-MM-DD \(bijvoorbeeld 2023-11-14\) of DD-MM-JJJJ"):
+        features._datum("14 nov 2023", "datum_bekend")
+
+
+def test_getalmeldingen_noemen_het_decimaalteken_de_eenheid_en_echoen_geen_verhaal():
+    with pytest.raises(ValueError, match=r"Gebruik een punt als decimaalteken"):
+        features._getal("1250,50", "nieuwwaarde")
+    lang = "900 euro (aankoop bij de Bijenkorf in 2019, de klant zegt dat de nota nog ergens ligt) " * 5
+    with pytest.raises(ValueError) as e:
+        features._getal(lang, "nieuwwaarde")
+    assert len(str(e.value)) < 160 and "…" in str(e.value)
+    with pytest.raises(ValueError, match=r"drempel_pct mag niet hoger zijn dan 100% \(ingevuld: 400%\)"):
+        features.waardetoets(1000, 2, 10, 400)

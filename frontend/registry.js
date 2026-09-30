@@ -116,6 +116,12 @@ export const REGISTER = {
       { id: "datum_klacht", label: "Datum van de klacht", type: "datum", optioneel: true,
         hint: "Met een datum berekent het portaal de termijnen uit art. 43 BGfo." },
       { id: "datum_bevestiging", label: "Datum van de ontvangstbevestiging", type: "datum", optioneel: true },
+      { id: "datum_verzoek", label: "Verzoek om nadere informatie (datum)", type: "datum", optioneel: true,
+        hint: "Vroeg de verzekeraar de klager om meer informatie? Dan worden de termijnen verlengd (art. 43 lid 4)." },
+      { rij: [
+        { id: "termijn_dagen", label: "Termijn om te antwoorden", type: "getal", eenheid: "dagen", achter: true, optioneel: true },
+        { id: "datum_ontvangen", label: "Informatie ontvangen op", type: "datum", optioneel: true },
+      ] },
       { id: "intern_afgehandeld", label: "Interne klachtprocedure doorlopen", type: "schakelaar",
         hint: "Zet dit aan als de verzekeraar de klacht intern al heeft afgehandeld." },
     ],

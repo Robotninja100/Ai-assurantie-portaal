@@ -58,20 +58,19 @@
     "label": "Kifid 2026-0473",
     "type": null,
     "kant": null,
-    "uitkomst": "uitkomst niet vastgesteld"
+    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
    "onderwerp": "Verdeling gepubliceerde uitkomsten",
    "telling": {
-    "vordering afgewezen": 6,
-    "vordering toegewezen": 1,
-    "uitkomst niet vastgesteld": 1
+    "vordering afgewezen": 7,
+    "vordering toegewezen": 1
    },
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.019
+  "duur_sec": 0.001
  },
  {
   "id": "precedentzoeker-02",
@@ -144,7 +143,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.045
+  "duur_sec": 0.005
  },
  {
   "id": "precedentzoeker-03",
@@ -217,7 +216,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.019
+  "duur_sec": 0.002
  },
  {
   "id": "precedentzoeker-04",
@@ -261,13 +260,6 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0813",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering toegewezen"
-   },
-   {
-    "soort": "kifid",
     "label": "Kifid 2026-0875",
     "type": null,
     "kant": null,
@@ -275,7 +267,14 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2025-1045",
+    "label": "Kifid 2025-0146",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering (gedeeltelijk) toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2025-0874",
     "type": null,
     "kant": null,
     "uitkomst": "vordering afgewezen"
@@ -285,14 +284,14 @@
    "onderwerp": "Verdeling gepubliceerde uitkomsten",
    "telling": {
     "vordering afgewezen": 3,
-    "vordering toegewezen": 2,
-    "vordering (gedeeltelijk) toegewezen": 2,
+    "vordering toegewezen": 1,
+    "vordering (gedeeltelijk) toegewezen": 3,
     "vordering gedeeltelijk toegewezen": 1
    },
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.029
+  "duur_sec": 0.001
  },
  {
   "id": "precedentzoeker-05",
@@ -367,7 +366,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.013
+  "duur_sec": 0.001
  },
  {
   "id": "precedentzoeker-06",
@@ -454,7 +453,7 @@
    "aantal_uitspraken": 0,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.013
+  "duur_sec": 0.0
  },
  {
   "id": "precedentzoeker-08",
@@ -527,7 +526,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.51
+  "duur_sec": 0.022
  },
  {
   "id": "precedentzoeker-09",
@@ -543,17 +542,17 @@
    },
    {
     "soort": "kifid",
-    "label": "Kifid 2026-0756",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
     "label": "Kifid 2024-1054",
     "type": null,
     "kant": null,
     "uitkomst": "vordering (gedeeltelijk) toegewezen"
+   },
+   {
+    "soort": "kifid",
+    "label": "Kifid 2026-0756",
+    "type": null,
+    "kant": null,
+    "uitkomst": "vordering afgewezen"
    },
    {
     "soort": "kifid",
@@ -601,7 +600,7 @@
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.05
+  "duur_sec": 0.001
  },
  {
   "id": "precedentzoeker-10",
@@ -613,7 +612,7 @@
     "label": "Kifid 2026-0473",
     "type": null,
     "kant": null,
-    "uitkomst": "uitkomst niet vastgesteld"
+    "uitkomst": "vordering afgewezen"
    },
    {
     "soort": "kifid",
@@ -668,13 +667,12 @@
   "berekening": {
    "onderwerp": "Verdeling gepubliceerde uitkomsten",
    "telling": {
-    "uitkomst niet vastgesteld": 1,
-    "vordering afgewezen": 6,
+    "vordering afgewezen": 7,
     "vordering (gedeeltelijk) toegewezen": 1
    },
    "aantal_uitspraken": 8,
    "let_op": "Dit is de verdeling binnen de gevonden uitspraken, geen representatieve steekproef van alle Kifid-zaken."
   },
-  "duur_sec": 0.13
+  "duur_sec": 0.006
  }
 ]

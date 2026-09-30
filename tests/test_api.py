@@ -44,7 +44,7 @@ def test_onbekende_functie_geeft_404(client):
 
 
 def test_onleesbare_datum_geeft_een_duidelijke_400(client):
-    r = client.post("/api/vraag", json={"functie": "verjaringstoets", "invoer": {"datum_bekend": "10-03-2024"}})
+    r = client.post("/api/vraag", json={"functie": "verjaringstoets", "invoer": {"datum_bekend": "10 maart 2024"}})
     assert r.status_code == 400
     assert "JJJJ-MM-DD" in r.json()["detail"]
 
@@ -130,3 +130,8 @@ def test_model_altijd_dwingt_het_lokale_model_af(monkeypatch, tmp_path):
         "verzekerde_som": 100000, "werkelijke_waarde": 200000, "schade": 40000}}))
     soorten = [e["type"] for e in events]
     assert "tekst" in soorten and "model_overgeslagen" not in soorten
+
+
+def test_een_datum_als_dag_maand_jaar_wordt_gelezen(client):
+    r = client.post("/api/vraag", json={"functie": "verjaringstoets", "invoer": {"datum_bekend": "10-03-2024", "peildatum": "29-09-2026"}})
+    assert r.status_code == 200

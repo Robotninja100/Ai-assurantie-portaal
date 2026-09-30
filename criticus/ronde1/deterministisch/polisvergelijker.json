@@ -146,7 +146,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.003
  },
  {
   "id": "polisvergelijker-02",
@@ -253,7 +253,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.003
  },
  {
   "id": "polisvergelijker-03",
@@ -332,7 +332,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.003
  },
  {
   "id": "polisvergelijker-04",
@@ -411,7 +411,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.001
+  "duur_sec": 0.003
  },
  {
   "id": "polisvergelijker-05",
@@ -560,7 +560,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.003
  },
  {
   "id": "polisvergelijker-06",
@@ -709,7 +709,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.003
  },
  {
   "id": "polisvergelijker-07",
@@ -858,7 +858,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.003
  },
  {
   "id": "polisvergelijker-08",
@@ -937,7 +937,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.003
  },
  {
   "id": "polisvergelijker-09",
@@ -1016,7 +1016,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.004
  },
  {
   "id": "polisvergelijker-10",
@@ -1095,6 +1095,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.002
+  "duur_sec": 0.003
  }
 ]
