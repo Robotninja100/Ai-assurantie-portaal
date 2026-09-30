@@ -292,7 +292,7 @@ def test_polisvergelijker_zegt_wat_er_te_doen_valt_als_er_niets_te_vergelijken_i
     gelijk = features.polisvergelijker("inboedelverzekering Klaverblad", "inboedelverzekering Klaverblad")["gebruiker"]
     assert "Er valt niets te vergelijken" in gelijk and "verzin geen verschillen" in gelijk
     een_kant = features.polisvergelijker("inboedelverzekering Klaverblad", "")["gebruiker"]
-    assert "Alleen variant B heeft clausules" in een_kant and "Vergelijken kan dus niet" in een_kant
+    assert "Alleen variant A heeft clausules" in een_kant and "Vergelijken kan dus niet" in een_kant
     assert "Waar verschillen de UITSLUITINGEN" not in gelijk + een_kant
     normaal = features.polisvergelijker("autoverzekering Klaverblad", "autoverzekering Interpolis")["gebruiker"]
     assert "Waar verschillen de UITSLUITINGEN" in normaal and "sluitende vergelijking" in normaal
@@ -408,7 +408,8 @@ def test_schadeberekening_en_waardetoets_en_provisietoets_tonen_alleen_hun_grond
     hypotheek = {b["label"] for b in features.provisietoets("hypotheek", 1000, 10)["bronnen"]}
     schade = {b["label"] for b in features.provisietoets("opstalverzekering", 1000, 10)["bronnen"]}
     assert hypotheek == {"BGfo art. 86c", "BGfo art. 86f", "Wft art. 4:25a", "Wft art. 4:25b"}
-    assert schade == {"BGfo art. 86d", "BGfo art. 86i", "Wft art. 4:25a", "Wft art. 4:25b"}     # 86f alleen bij een verboden product
+    # 86c ook hier: 'het verbod geldt niet' volgt uit de lijst in lid 1. 86f alleen bij een verboden product.
+    assert schade == {"BGfo art. 86c", "BGfo art. 86d", "BGfo art. 86i", "Wft art. 4:25a", "Wft art. 4:25b"}
     assert not any(l.startswith("BGfo art. 86k") or l.endswith("86l") or l.endswith("86m") for l in hypotheek | schade)
 
 
@@ -503,3 +504,53 @@ def test_de_leesgrens_die_de_pagina_noemt_is_die_van_de_backend():
     import re
     js = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "registry.js"), encoding="utf-8").read()
     assert int(re.search(r"const MAX_TEKENS = (\d+);", js).group(1)) == features.MAX_INVOER
+
+
+# ------------------------------------------------------------ de opdracht is consistent met haar eigen bronnen
+
+def test_de_opdracht_verwijst_alleen_naar_wat_in_haar_bronnen_staat():
+    """
+    Elke tekst die de code zelf aan het model meegeeft (toelichting, stappen, waarschuwingen, vervolgstap) mag alleen naar
+    artikelen, uitspraken en clausules verwijzen die ook in de bronnen van die opdracht staan. Anders moet het model een
+    verwijzing overnemen die de bewaker daarna 'alleen genoemd' noemt. Een stand-in-schrijver zag dit bij de
+    provisietoets: de code zei dat art. 86c lid 1 BGfo niet gold, maar 86c stond niet in de bronnen.
+    """
+    import json as _json
+    import os as _os
+    import sys as _sys
+    _sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.dirname(_os.path.abspath(__file__))), "scripts"))
+    import criticus_ronde as cr
+    import grounding as g
+    casussen, _ = cr.laad_casussen()
+    gaten = []
+    for c in casussen:
+        try:
+            opdracht = features.FUNCTIES[c["functie"]]["fn"](**c["invoer"])
+        except (TypeError, ValueError, ArithmeticError):
+            continue
+        if not opdracht["bronnen"]:
+            continue
+        invoer = _json.dumps(c["invoer"], ensure_ascii=False)
+        for x in g.controleer(opdracht["gebruiker"], opdracht["opgehaald"])["ongefundeerd"]:
+            if x["soort"] in ("wetsartikel", "kifid", "polisclausule", "ecli") and x["verwijzing"] not in invoer:
+                gaten.append(f"{c['id']}: {x['verwijzing']}")
+    assert not gaten, "de opdracht noemt verwijzingen die niet in haar bronnen staan: " + "; ".join(gaten[:10])
+
+
+def test_polisvergelijker_noemt_de_variant_met_clausules_en_de_lege_variant_niet_omgekeerd():
+    """Een stand-in-schrijver zag het: de opdracht zei 'alleen variant B heeft clausules' terwijl het bronnenblok zei van niet."""
+    gevallen = (("inboedelverzekering Klaverblad", "", "A"),
+                ("", "inboedelverzekering Klaverblad", "B"),
+                ("klaverblad inboedl", "unive woonverz", "B"),                          # typefout: A wordt niet herkend
+                ("opstalverzekering Klaverblad", "opstalverzekering Centraal Beheer", "A"))    # B: verzekeraar buiten het corpus
+    for a, b, met in gevallen:
+        r = features.polisvergelijker(a, b)
+        leeg = "B" if met == "A" else "A"
+        assert f"Alleen variant {met} heeft clausules; variant {leeg} heeft er geen" in r["gebruiker"], (a, b)
+        assert f"kies voor variant {leeg} een product" in r["gebruiker"], (a, b)
+        blok = r["systeem"].split("BRONNEN:\n", 1)[1]
+        delen = {k: blok.split(f"=== VARIANT {k}:", 1)[1].split("=== VARIANT", 1)[0] for k in "AB"}
+        assert "(geen clausules in het corpus)" in delen[leeg] and "(geen clausules in het corpus)" not in delen[met], (a, b)
+    # een herkende verzekeraar zonder voorwaarden in het corpus staat ook in de kop, niet als 'onbekend product'
+    kop = features.polisvergelijker("opstalverzekering Klaverblad", "opstalverzekering Centraal Beheer")["systeem"]
+    assert "=== VARIANT B: opstalverzekering van Centraal Beheer (geen polisvoorwaarden in het corpus) ===" in kop

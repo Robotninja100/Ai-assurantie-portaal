@@ -36,8 +36,8 @@ def _uitkomstregel(label: str, u) -> str:
     d = u.to_dict()
     if d["bedrag"] is None:
         reden = " ".join(u.waarschuwingen) or u.toelichting or "de invoer volstaat niet"
-        return (f"{label}: NIET TE BEREKENEN. Reden: {reden} Noem geen bedrag; leg uit wat er ontbreekt "
-                "en wat de volgende stap is.")
+        return (f"{label}: NIET TE BEREKENEN. Reden: {reden} "
+                "[Aanwijzing aan jou, niet overnemen: noem geen bedrag; leg uit wat er ontbreekt en wat de volgende stap is.]")
     return f"{label}: {rk._bedrag(d['bedrag'])}"
 
 
@@ -789,7 +789,8 @@ def _kant(tekst: str, plaats: str = "Variant", budget: int = None) -> Dict:
     budget = POLIS_BUDGET if budget is None else budget
     h = _herken(tekst)
     rijen = CORPUS.data.get("polisvoorwaarden", [])
-    kant = {"product": h["product"], "verzekeraar": h["verzekeraar"], "rijen": [], "opmerking": ""}
+    kant = {"product": h["product"], "verzekeraar": h["verzekeraar"], "rijen": [], "opmerking": "",
+            "buiten_corpus": h["buiten_corpus"]}
     if h["buiten_corpus"]:
         kant["opmerking"] = (f"{plaats}: van {h['buiten_corpus'].title()} staan geen polisvoorwaarden in het corpus, "
                              "dus daar is niets van te vergelijken.")
@@ -841,6 +842,9 @@ def _kant(tekst: str, plaats: str = "Variant", budget: int = None) -> Dict:
 
 
 def _kantnaam(k: Dict) -> str:
+    if k.get("buiten_corpus"):        # een herkende verzekeraar uit een vaste lijst, geen vrije tekst van de gebruiker
+        product = f"{k['product']} van " if k["product"] else ""
+        return f"{product}{k['buiten_corpus'].title()} (geen polisvoorwaarden in het corpus)"
     if k["product"]:
         return f"{k['product']} ({_kort(k['verzekeraar'])})" if k["verzekeraar"] else k["product"]
     return "een product dat het portaal niet herkent"
@@ -866,7 +870,7 @@ def polisvergelijker(product_a: str, product_b: str) -> Dict:
             "verzin geen verschillen en beschrijf hooguit kort wat deze clausules regelen. Sluit af met de "
             "vervolgstap: kies voor variant B een ander product of een andere verzekeraar.\n")
     elif not ra or not rb:
-        kant, leeg = ("B", "A") if ra else ("A", "B")
+        kant, leeg = ("A", "B") if ra else ("B", "A")          # kant = de variant MET clausules
         vragen = (
             f"Alleen variant {kant} heeft clausules; variant {leeg} heeft er geen in het corpus. Vergelijken kan dus niet. "
             f"Zeg dat, beschrijf uitsluitend wat de clausules van variant {kant} regelen (met clausulenummers) en "

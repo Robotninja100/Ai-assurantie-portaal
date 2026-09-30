@@ -163,7 +163,8 @@ def test_schadeverzekering_valt_onder_86d_en_niet_onder_het_verbod():
     u = rk.provisie_toets("opstalverzekering", 600, 15)
     assert u.details["status"] == "TOEGESTAAN_MET_TRANSPARANTIE"
     assert eur(u.bedrag) == Decimal("90.00")
-    assert "BGfo:86d:1" in u.grondslag and "BGfo:86c:1" not in u.grondslag
+    # 86c lid 1 is ook hier de grondslag: 'het verbod geldt niet' volgt uit de limitatieve lijst van dat lid
+    assert "BGfo:86d:1" in u.grondslag and "BGfo:86c:1" in u.grondslag
 
 
 def test_niet_herkend_product_wordt_niet_stilzwijgend_toegestaan():
@@ -660,3 +661,15 @@ def test_een_afgehandelde_klacht_verwijst_naar_art_42_zonder_te_beweren_dat_de_w
     assert "art. 42" in u.toelichting and "staat niet in de bronnen" in u.toelichting
     assert "BGfo:42" in u.grondslag and u.details["afgehandeld"] is True
     assert "art. 42" not in rk.klachttermijnen(date(2026, 9, 1), date(2026, 9, 10), date(2026, 9, 30)).toelichting
+
+
+def test_alleen_bereddingskosten_zegt_nooit_dat_er_niets_te_vergoeden_valt():
+    # Een stand-in-schrijver zag de tegenspraak: uitkering 640 euro, en in de uitleg 'er valt niets te vergoeden'.
+    u = rk.evenredigheidsbeginsel(100000, 125000, 0, 0, 800)
+    assert eur(u.bedrag) == Decimal("640.00")
+    alles = " ".join(u.uitleg + u.waarschuwingen + [u.volgende_stap])
+    assert "niets te vergoeden" not in alles
+    assert "alleen de bereddingskosten" in alles
+    # zonder bereddingskosten blijft de oude melding staan
+    u0 = rk.evenredigheidsbeginsel(100000, 125000, 0, 0, 0)
+    assert eur(u0.bedrag) == Decimal("0.00") and "niets te vergoeden" in " ".join(u0.uitleg)

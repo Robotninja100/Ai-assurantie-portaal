@@ -271,7 +271,14 @@ def evenredigheidsbeginsel(verzekerde_som, werkelijke_waarde, schade,
         "Bij onderverzekering draagt de verzekerde het niet-verzekerde deel zelf. "
         "De breuk wordt toegepast op de schade, niet op de verzekerde som."
     )
-    if sch <= 0:
+    if sch <= 0 and bk > 0:
+        # Alleen bereddingskosten: de uitkering is dan niet nul. 'Er valt niets te vergoeden' zou de eigen cijfers tegenspreken.
+        u.waarschuwingen.append("Er is geen schade aan het verzekerde belang ingevoerd (€ 0,00): alleen de bereddingskosten worden "
+                                "vergoed. Controleer of er ook schade aan de zaak zelf is.")
+        u.uitleg.append("Er is geen schade aan het verzekerde belang ingevoerd; de uitkering bestaat alleen uit de bereddingskosten.")
+        u.volgende_stap = ("Controleer of er naast de bereddingskosten ook schade aan de zaak zelf is; vul dan het schadebedrag in "
+                           "(uit taxatie, offerte of schadenota) en bereken opnieuw. Is er geen andere schade, dan is dit de uitkomst.")
+    elif sch <= 0:
         u.waarschuwingen.append("Er is geen schade ingevoerd (€ 0,00): er valt niets te vergoeden. Controleer de invoer.")
         u.uitleg.append("Er is geen schade ingevoerd, dus er valt niets te vergoeden.")
         u.volgende_stap = "Vul het schadebedrag in (uit taxatie, offerte of schadenota) en bereken opnieuw."
@@ -870,7 +877,8 @@ def provisie_toets(producttype: str, jaarpremie=0, provisiepercentage=0,
             "hier niet doorgerekend.")
         u.details = {"status": "VERBODEN", "wettelijke_term": term}
     elif status == "SCHADE":
-        u.grondslag = ["BGfo:86d:1", "BGfo:86i:3"]
+        # 86c lid 1 hoort erbij: de toelichting zegt dat het verbod niet geldt, en dat volgt uit de limitatieve lijst daar.
+        u.grondslag = ["BGfo:86c:1", "BGfo:86d:1", "BGfo:86i:3"]
         u.stappen.append(Stap("Toets: art. 86c lid 1 noemt dit product niet; art. 86d regelt de provisie",
                               f"'{naam}' is een schadeverzekering", None, ""))
         if jp > 0 and pct > 0:
