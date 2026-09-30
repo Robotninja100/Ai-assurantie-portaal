@@ -127,8 +127,9 @@ function metVerwijzingen(s, ctx) {
       laatste = m.index + m[0].length;
       continue;
     }
+    const genoemd = !gefundeerd && /^genoemd in/.test(info.markering || "");     // in een bron of de invoer genoemd, zelf niet opgehaald
     uit.push(h("button", {
-      class: `verw ${gefundeerd ? "ok" : "slecht"}`, type: "button",
+      class: `verw ${gefundeerd ? "ok" : genoemd ? "genoemd" : "slecht"}`, type: "button",
       title: gefundeerd ? "Staat in de opgehaalde bronnen. Klik om de bron te tonen."
         : (info.reden ? `${info.reden}. ` : "") + "Staat NIET in de opgehaalde bronnen. Controleer deze verwijzing zelf voordat je haar gebruikt.",
       onClick: () => ctx.opKlik && ctx.opKlik(info),

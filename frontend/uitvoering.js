@@ -287,10 +287,12 @@ export class Uitvoering {
       ...c.gefundeerd.filter((v) => !GETALSOORT.has(v.soort)).map((v) => ({ ...v, ok: true }))];
     const b = c.bronnen_beschikbaar || {};
     const lijst = rijen.length ? h("ul", { class: "verwijzingslijst" }, ...rijen.map((v) =>
-      h("li", null, h("span", { class: `tag ${v.ok ? "ok" : "fout"}` },
+      h("li", null, h("span", { class: `tag ${v.ok ? "ok" : /^genoemd in/.test(v.markering || "") ? "let" : "fout"}` },
         v.soort === "citaat" ? (v.ok ? "Woordelijk" : "Niet woordelijk")
-          : v.ok ? "In de bronnen" : GETALSOORT.has(v.soort) ? "Niet in de berekening" : "Niet in de bronnen"),
-        h("b", null, kort(v)), h("span", { class: "soort" }, SOORT_NAAM[v.soort] || v.soort)))) : null;
+          : v.ok ? "In de bronnen" : GETALSOORT.has(v.soort) ? "Niet in de berekening"
+          : v.markering && /^genoemd in/.test(v.markering) ? "Alleen genoemd" : "Niet in de bronnen"),
+        h("b", null, kort(v)), h("span", { class: "soort" }, SOORT_NAAM[v.soort] || v.soort),
+        !v.ok && v.reden ? h("span", { class: "reden" }, v.reden) : null))) : null;
     const body = h("div", { class: "sectie-body" },
       h("div", { class: "controle-kop" },
         h("div", { class: `oordeel-icoon oordeel ${uitleg.toon}`, stijl: "width:40px;height:40px;padding:0;display:grid;place-items:center;border-radius:10px" }, icoon(uitleg.icoon, 22)),

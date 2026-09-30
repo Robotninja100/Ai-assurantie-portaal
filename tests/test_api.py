@@ -135,3 +135,15 @@ def test_model_altijd_dwingt_het_lokale_model_af(monkeypatch, tmp_path):
 def test_een_datum_als_dag_maand_jaar_wordt_gelezen(client):
     r = client.post("/api/vraag", json={"functie": "verjaringstoets", "invoer": {"datum_bekend": "10-03-2024", "peildatum": "29-09-2026"}})
     assert r.status_code == 200
+
+
+def test_elke_weigering_noemt_een_vervolgstap_die_bij_de_functie_past(client):
+    import features
+    weigering = next(e for e in sse(client.post("/api/vraag", json={
+        "functie": "begripsuitleg", "invoer": {"begrip": "Solvency II kapitaalvereisten voor verzekeraars"}})) if e["type"] == "weigering")
+    assert "Vervolgstap: Zoek met een term uit de wet of de polis" in weigering["tekst"]
+    for functie in features.FUNCTIES:
+        tekst = features.weigertekst(functie)
+        assert "Er zijn geen bronnen gevonden" in tekst and "\n\nVervolgstap: " in tekst
+    assert "Kifid" in features.weigertekst("precedentzoeker")
+    assert features.weigertekst("onbekend").endswith(features.WEIGER_STANDAARD)

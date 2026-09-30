@@ -303,8 +303,37 @@ def _genoemde_wet(antwoord: str, begin: int, einde: int) -> Tuple[Optional[str],
     return None, einde
 
 
+def _kern(verwijzing: str) -> str:
+    """'Art. 10 sub h' -> '10 sub h'; '7:942 lid 2' -> '7:942'."""
+    v = re.sub(r"(?i)^art(?:ikel)?\.?\s*", "", verwijzing.strip())
+    return re.sub(r"(?i)\s+lid\s+\d+.*$", "", v)
+
+
+def _staat_als_artikel(kern: str, tekst: Optional[str]) -> bool:
+    """Noemt deze tekst 'artikel <kern>' (bij een wetsartikel ook zonder boek: 'artikel 957' voor 7:957)?"""
+    if not tekst:
+        return False
+    opties = {kern} | ({kern.split(":", 1)[1]} if ":" in kern else set())
+    return any(re.search(rf"(?i)\bart(?:ikelen|ikel)?\.?\s*{re.escape(o)}(?![\w:])(?!\.\d)", tekst) for o in opties)
+
+
+def _waar_genoemd(soort: str, verwijzing: str, bronnen_tekst: Optional[str], invoer_tekst: Optional[str]) -> Optional[str]:
+    """Een verwijzing die niet is opgehaald kan toch in een bron (kruisverwijzing) of in de invoer voorkomen."""
+    kern = _kern(verwijzing)
+    if soort == "kifid":
+        gevonden = lambda t: bool(t) and re.search(rf"(?<![\d-]){re.escape(kern)}(?![\d-])", t) is not None
+    else:
+        gevonden = lambda t: _staat_als_artikel(kern, t)
+    if gevonden(bronnen_tekst):
+        return "bron"
+    if gevonden(invoer_tekst):
+        return "invoer"
+    return None
+
+
 def controleer(antwoord: str, opgehaald: Dict[str, List[Dict]], toegestaan: Optional[str] = None,
-               berekening: Optional[str] = None) -> Dict:
+               berekening: Optional[str] = None, bronnen_tekst: Optional[str] = None,
+               invoer_tekst: Optional[str] = None) -> Dict:
     """
     antwoord    : de door het model gegenereerde tekst
     opgehaald   : {'wetgeving': [...], 'kifid': [...], 'polisvoorwaarden': [...]}
@@ -312,6 +341,10 @@ def controleer(antwoord: str, opgehaald: Dict[str, List[Dict]], toegestaan: Opti
     toegestaan  : de tekst waaruit getallen en citaten mogen komen: de invoer en de bronnen. Is die
                   gegeven, dan worden ook bedragen, percentages, datums, citaten en ECLI's gecontroleerd.
     berekening  : de berekening als tekst (JSON); daar mag elk getal uit komen.
+    bronnen_tekst, invoer_tekst : het bronnenblok zoals het model het zag en de rest van de opdracht. Alleen om bij een
+                  verwijzing die niet is opgehaald te kunnen zeggen WAAR ze wel staat (een kruisverwijzing in een bron,
+                  de invoer), en om te toetsen dat een aangehaald lid in de aangeleverde tekst stond. Ze veranderen niets
+                  aan wat als ongefundeerd geldt.
 
     Geeft terug: gefundeerde en ongefundeerde verwijzingen, plus een oordeel. Elke ongefundeerde
     verwijzing draagt de plekken ('spans') waar ze in het antwoord staat, zodat maskeer() ze allemaal markeert.
@@ -347,18 +380,40 @@ def controleer(antwoord: str, opgehaald: Dict[str, List[Dict]], toegestaan: Opti
                     return int(lid) >= 2
         return False
 
+    def _lid_niet_getoond(art: str, lid: Optional[str]) -> bool:
+        """Noemt het antwoord een lid dat wel bestaat maar niet in het stuk stond dat het model kreeg? Alleen te toetsen als
+        het bronnenblok bekend is en het artikel daarin voorkomt."""
+        if not lid or not bronnen_tekst:
+            return False
+        for d in wet_docs:
+            if str(d.get("artikel") or "").lower() != art:
+                continue
+            kop = f"[{d.get('wet')} art. {d.get('artikel')}]"
+            i = bronnen_tekst.find(kop)
+            if i < 0:
+                return False
+            eind = bronnen_tekst.find("\n\n[", i)
+            blok = bronnen_tekst[i:eind if eind >= 0 else len(bronnen_tekst)]
+            return re.search(rf"(?m)^\s*{re.escape(lid)}\.\s", blok) is None and (d.get("leden") or len(blok) < len(d.get("tekst") or ""))
+        return False
+
     def _wetsverwijzing(art: str, lid: Optional[str], begin: int, einde: int):
         genoemd, einde_wet = _genoemde_wet(antwoord, begin, einde)
         if art in wet and genoemd and wet_van.get(art) and genoemd not in wet_van[art]:
             echt = " en ".join(sorted(wet_van[art]))
             noteer(ongefundeerd, "wetsartikel", antwoord[begin:einde_wet].strip(), begin, einde_wet,
-                   reden=f"art. {art} staat in de {echt}, niet in de {genoemd}")
+                   reden=f"art. {art} staat in de {echt}, niet in de {genoemd}",
+                   markering=f"staat in de {echt}, niet in de {genoemd}")
             return
         if art in wet:
             noteer(gefundeerd, "wetsartikel", art, begin, einde)
             if _lid_ontbreekt(art, lid):
                 noteer(ongefundeerd, "wetsartikel", antwoord[begin:einde].strip(), begin, einde,
-                       reden=f"art. {art} heeft geen lid {lid}")
+                       reden=f"art. {art} heeft geen lid {lid}", markering=f"art. {art} heeft geen lid {lid}")
+            elif _lid_niet_getoond(art, lid):
+                noteer(ongefundeerd, "wetsartikel", antwoord[begin:einde].strip(), begin, einde,
+                       reden=f"lid {lid} van art. {art} stond niet in de tekst die het model kreeg (afgekapt)",
+                       markering=f"lid {lid} stond niet in de aangeleverde tekst")
         else:
             noteer(ongefundeerd, "wetsartikel", art, begin, einde_wet)
 
@@ -412,6 +467,16 @@ def controleer(antwoord: str, opgehaald: Dict[str, List[Dict]], toegestaan: Opti
     gefundeerd, ongefundeerd = _uniek(gefundeerd), _uniek(ongefundeerd)
     for r in gefundeerd:
         r.pop("spans", None)
+    if bronnen_tekst is not None or invoer_tekst is not None:
+        for r in ongefundeerd:
+            if r["soort"] in ("wetsartikel", "polisclausule", "kifid") and not r.get("reden"):
+                waar = _waar_genoemd(r["soort"], r["verwijzing"], bronnen_tekst, invoer_tekst)
+                if waar == "bron":
+                    r["reden"] = "wordt in een bron genoemd, maar de tekst ervan is niet opgehaald"
+                    r["markering"] = "genoemd in een bron, tekst niet opgehaald"
+                elif waar == "invoer":
+                    r["reden"] = "staat in de invoer of de berekening, niet in de bronnen"
+                    r["markering"] = "genoemd in de invoer, niet in de bronnen"
 
     # Het oordeel gaat over verwijzingen: een antwoord met alleen kloppende bedragen maar zonder één
     # wetsartikel, uitspraak of clausule is niet 'gefundeerd', het is niet te controleren. Getallen en
@@ -448,7 +513,7 @@ def maskeer(antwoord: str, controle: Dict) -> str:
         elif r["soort"] in GETALSOORTEN:
             tekst = "niet uit de berekening, de invoer of de bronnen"
         else:
-            tekst = "niet in de opgehaalde bronnen"
+            tekst = r.get("markering") or "niet in de opgehaalde bronnen"
         plekken = r.get("spans") or ([[r["positie"], r["einde"]]] if "einde" in r else [])
         if not plekken:
             zonder_plek.append((r["verwijzing"], tekst, r.get("positie", 0)))

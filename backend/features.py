@@ -1036,6 +1036,33 @@ def begripsuitleg(begrip: str) -> Dict:
             "bronnen": _bronlijst(ctx["opgehaald"]), "berekening": None, "max_tokens": 700}
 
 
+# Wat het portaal zegt als er geen enkele bron bij de vraag past: dat er geen inhoudelijk antwoord komt, en wat de adviseur
+# dan kan doen. Een weigering zonder volgende stap is geen uitkomst maar een dood punt.
+WEIGER_VERVOLG = {
+    "begripsuitleg": "Zoek met een term uit de wet of de polis (bijvoorbeeld 'onderverzekering' of 'mededelingsplicht'), of "
+                     "raadpleeg de polisvoorwaarden van de klant en de wettekst zelf: het corpus bevat de gevraagde term niet.",
+    "precedentzoeker": "Omschrijf het geschil met de feiten (product, oorzaak van de schade, grond van de weigering), of zoek in het "
+                       "uitsprakenregister van Kifid zelf: het corpus bevat geen passende uitspraak.",
+    "dekkingscheck": "Kies een product en verzekeraar, of vraag de polisvoorwaarden van de klant op: het corpus bevat geen "
+                     "clausule die bij deze situatie past.",
+    "afwijzingsanalyse": "Vraag de volledige polisvoorwaarden van de klant op en toets de grond van de afwijzing daarin: het corpus "
+                         "bevat geen clausule of wetsartikel dat bij deze brief past.",
+    "polisvergelijker": "Kies twee producten van een verzekeraar die in het corpus staan (zie de keuzelijst), of vergelijk de "
+                        "volledige polisvoorwaarden zelf.",
+    "dossiercheck": "Toets het dossier aan de wettekst zelf (Wft art. 4:22a, 4:23, 4:24a en 4:25b) of vul het corpus aan.",
+    "adviesnotitie": "Stel de notitie op uit de wettekst zelf (Wft art. 4:22a, 4:23, 4:24a en 4:25b) of vul het corpus aan.",
+}
+WEIGER_STANDAARD = ("Verfijn de omschrijving, of vul het corpus aan met de polisvoorwaarden of uitspraken die op deze casus van "
+                    "toepassing zijn.")
+
+
+def weigertekst(functie: str = "") -> str:
+    """De volledige tekst die de adviseur ziet als er geen bron bij de vraag past (API, UI-tests en criticusronde delen haar)."""
+    return ("Er zijn geen bronnen gevonden die deze vraag kunnen onderbouwen. "
+            "Het portaal geeft daarom geen inhoudelijk antwoord.\n\n"
+            f"Vervolgstap: {WEIGER_VERVOLG.get(functie, WEIGER_STANDAARD)}")
+
+
 FUNCTIES = {
     "dekkingscheck":     {"fn": dekkingscheck,     "naam": "Dekkingscheck",        "groep": "Schade",
                           "omschrijving": "Toets een schadesituatie tegen de polisclausules."},

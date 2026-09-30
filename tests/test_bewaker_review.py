@@ -159,3 +159,47 @@ def test_een_tweede_lid_van_een_artikel_van_een_alinea_wordt_gemarkeerd():
     for lid, verwacht in (("1", "GEFUNDEERD"), ("2", "ONGEFUNDEERD"), ("99", "ONGEFUNDEERD")):
         c = grounding.controleer(f"Zie art. 7:944 lid {lid} BW.", opgehaald, "", "{}")
         assert c["oordeel"] == verwacht, (lid, c)
+
+
+# ---- de beoordelaars van ronde 1: waar staat een niet opgehaalde verwijzing wél, en zag het model het lid dat het noemt
+
+POLIS = {"product": "opstal-/inboedelverzekering (woonverzekering)", "clausule_id": "art. 3.6.2",
+         "verzekeraar_of_bron": "Univé (N.V. Univé Schade)", "kop": "Uw woning is onbewoond", "type": "dekking",
+         "tekst": "Dan geldt na deze drie maanden de beperkte dekking, zoals omschreven in artikel 3.1.1."}
+BLOK = ("[Univé (N.V. Univé Schade) | opstal-/inboedelverzekering (woonverzekering) art. 3.6.2 - dekking] Uw woning is onbewoond\n"
+        "Dan geldt na deze drie maanden de beperkte dekking, zoals omschreven in artikel 3.1.1.\nBron: https://x")
+
+
+def test_een_verwijzing_die_een_bron_noemt_maar_niet_is_opgehaald_krijgt_een_eigen_reden_en_markering():
+    antwoord = "De beperkte dekking staat in artikel 3.1.1. Zie ook art. 9.99.9 en art. 5.3."
+    c = grounding.controleer(antwoord, {"polisvoorwaarden": [POLIS]}, "", "{}", bronnen_tekst=BLOK, invoer_tekst="De brief noemt artikel 5.3.")
+    per = {x["verwijzing"]: x for x in c["ongefundeerd"]}
+    assert per["3.1.1"]["reden"] == "wordt in een bron genoemd, maar de tekst ervan is niet opgehaald"
+    assert per["5.3"]["reden"] == "staat in de invoer of de berekening, niet in de bronnen"
+    assert "reden" not in per["9.99.9"]                       # verzonnen: geen zachtere markering
+    tekst = grounding.maskeer(antwoord, c)
+    assert "3.1.1 ⚠️[genoemd in een bron, tekst niet opgehaald]" in tekst
+    assert "5.3 ⚠️[genoemd in de invoer, niet in de bronnen]" in tekst
+    assert "9.99.9 ⚠️[niet in de opgehaalde bronnen]" in tekst
+    assert c["oordeel"] == "ONGEFUNDEERD"                      # aan wat als ongefundeerd geldt verandert er niets
+
+
+def test_zonder_de_bronnentekst_blijft_alles_zoals_het_was():
+    c = grounding.controleer("Zie artikel 3.1.1.", {"polisvoorwaarden": [POLIS]}, "", "{}")
+    assert c["ongefundeerd"] and "reden" not in c["ongefundeerd"][0]
+
+
+def test_een_lid_dat_bestaat_maar_niet_in_de_aangeleverde_tekst_stond_wordt_gemarkeerd():
+    wet = {"wet": "Wft", "artikel": "4:23", "titel": "passend advies", "leden": [f"{n}. lid {n} van het artikel." for n in range(1, 10)],
+           "tekst": "\n".join(f"{n}. lid {n} van het artikel." for n in range(1, 10))}
+    afgekapt = "[Wft art. 4:23] passend advies\n1. lid 1 van het artikel.\n2. lid 2 van het artikel.\n3. lid 3 van het artikel. […]\n\n[BW art. 7:942] x"
+    volledig = "[Wft art. 4:23] passend advies\n" + wet["tekst"] + "\n\n[BW art. 7:942] x"
+    ok = grounding.controleer("Volgens art. 4:23 lid 2 Wft.", {"wetgeving": [wet]}, "", "{}", bronnen_tekst=afgekapt)
+    assert ok["oordeel"] == "GEFUNDEERD"
+    slecht = grounding.controleer("Volgens art. 4:23 lid 7 Wft.", {"wetgeving": [wet]}, "", "{}", bronnen_tekst=afgekapt)
+    assert slecht["oordeel"] == "ONGEFUNDEERD" and "stond niet in de tekst die het model kreeg" in slecht["ongefundeerd"][0]["reden"]
+    assert "lid 7 stond niet in de aangeleverde tekst" in grounding.maskeer("Volgens art. 4:23 lid 7 Wft.", slecht)
+    # dezelfde verwijzing met de volledige tekst voor het model is wel gefundeerd
+    assert grounding.controleer("Volgens art. 4:23 lid 7 Wft.", {"wetgeving": [wet]}, "", "{}", bronnen_tekst=volledig)["oordeel"] == "GEFUNDEERD"
+    # en zonder bronnentekst (oude aanroep) wordt het lid niet getoetst
+    assert grounding.controleer("Volgens art. 4:23 lid 7 Wft.", {"wetgeving": [wet]}, "", "{}")["oordeel"] == "GEFUNDEERD"

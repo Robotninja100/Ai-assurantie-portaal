@@ -142,7 +142,7 @@ def draai_deterministisch(casus):
     try:
         opdracht = spec["fn"](**casus["invoer"])
     except (TypeError, ValueError, ArithmeticError) as e:
-        res.update(http_status=400, fout=f"{type(e).__name__}: {e}", bronnen=[], berekening=None)
+        res.update(http_status=400, fout=str(e), bronnen=[], berekening=None)
         return res
     res.update(bronnen=bronnen_kort(opdracht["bronnen"]), berekening=opdracht.get("berekening"),
                duur_sec=round(time.time() - t0, 3))
@@ -243,13 +243,12 @@ def draai_standin(casus, antwoorden):
         try:
             opdracht = features.FUNCTIES[casus["functie"]]["fn"](**casus["invoer"])
         except (TypeError, ValueError, ArithmeticError) as e:
-            res.update(http_status=400, fout=f"{type(e).__name__}: {e}", bronnen=[], berekening=None)
+            res.update(http_status=400, fout=str(e), bronnen=[], berekening=None)
             return res
     res.update(bronnen_volledig=opdracht["bronnen"], bronnen=bronnen_kort(opdracht["bronnen"]),
                berekening=opdracht.get("berekening"), opmerkingen=opdracht.get("opmerkingen"))
     if not opdracht["bronnen"]:
-        res.update(weigering="Er zijn geen bronnen gevonden die deze vraag kunnen onderbouwen. Het portaal geeft daarom geen "
-                             "inhoudelijk antwoord.",
+        res.update(weigering=features.weigertekst(casus["functie"]),
                    controle={"oordeel": "GEWEIGERD_GEEN_BRONNEN", "gefundeerd": [], "ongefundeerd": []})
         return res
     pad = os.path.join(antwoorden, casus["id"] + ".txt")

@@ -94,7 +94,8 @@ def beoordeel_antwoord(opdracht, antwoord, einde=None, fout=None, duur_sec=None)
     # De nummers van opsommingen ('1.' t/m '9.' in de regels en de vraagstelling) tellen niet als getal.
     toegestaan = grounding.zonder_opsomming("\n".join([opdracht["systeem"], opdracht["gebruiker"]]))
     controle = grounding.controleer(antwoord, opdracht["opgehaald"], toegestaan,
-                                    json.dumps(opdracht.get("berekening") or {}, ensure_ascii=False))
+                                    json.dumps(opdracht.get("berekening") or {}, ensure_ascii=False),
+                                    bronnen_tekst=opdracht["systeem"], invoer_tekst=opdracht["gebruiker"])
     controle["duur_sec"] = duur_sec
     # Een antwoord dat tegen de maximale lengte aanliep eindigt midden in een zin en mist de
     # vervolgstap. Dat mag nooit voor een volledig antwoord doorgaan.
@@ -218,11 +219,7 @@ def vraag(a: Aanvraag):
         # Geen bronnen = geen inhoudelijk antwoord. Dit is de kern van citeer-of-weiger:
         # het portaal zwijgt liever dan dat het ongefundeerd praat.
         if not opdracht["bronnen"]:
-            boodschap = ("Er zijn geen bronnen gevonden die deze vraag kunnen onderbouwen. "
-                         "Het portaal geeft daarom geen inhoudelijk antwoord.\n\n"
-                         "Vervolgstap: verfijn de omschrijving, of vul het corpus aan met de "
-                         "polisvoorwaarden of uitspraken die op deze casus van toepassing zijn.")
-            yield _sse({"type": "weigering", "tekst": boodschap})
+            yield _sse({"type": "weigering", "tekst": features.weigertekst(opdracht.get("functie", ""))})
             yield _sse({"type": "controle", "controle": {
                 "oordeel": "GEWEIGERD_GEEN_BRONNEN", "gefundeerd": [], "ongefundeerd": []}})
             yield "data: [DONE]\n\n"
