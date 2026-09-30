@@ -282,12 +282,29 @@ def test_top5_bevat_een_clausule_van_het_juiste_product_en_type(
 
 
 def test_de_testhelper_bouwt_dezelfde_zoekvraag_als_de_dekkingscheck(corpus):
+    """De dekkingscheck toont bij een gekozen product ALLE clausules ervan (tot het budget), de meest relevante eerst; zonder
+    gekozen product de top 5. De top 5 van de testhelper is dus altijd de kop van wat de dekkingscheck toont."""
     for product, situatie in (("inboedelverzekering", "Fietsdiefstal"),
                               ("opstalverzekering", "Stormschade aan dak"),
                               ("", "Lekkage wasmachine")):
         echt = [b["label"] for b in features.dekkingscheck(situatie, product)["bronnen"] if b["soort"] == "polis"]
         eigen = [f"{d['product']} {d['clausule_id']}" for d in _top(corpus, product, situatie)]
-        assert echt == eigen, (product, situatie)
+        assert set(eigen) <= set(echt), (product, situatie)
+        if not product:
+            assert echt == eigen
+
+
+def test_bij_een_gekozen_product_krijgt_het_model_alle_clausules_ervan_zolang_ze_passen():
+    r = features.dekkingscheck("Storm heeft de dakgoot losgerukt", "opstalverzekering", "Klaverblad")
+    polis = [b for b in r["bronnen"] if b["soort"] == "polis"]
+    assert len(polis) == 17 and {b["verzekeraar"] for b in polis} == {"Klaverblad Verzekeringen"}
+    assert not any("Het corpus heeft" in m for m in r["opmerkingen"])
+    # een groter product past niet helemaal: het portaal zegt hoeveel er ontbreken
+    r = features.dekkingscheck("Storm heeft de dakgoot losgerukt", "opstalverzekering", "Klaverblad")
+    r = features.dekkingscheck("Schade aan de voorruit", "autoverzekering", "Klaverblad")
+    polis = [b for b in r["bronnen"] if b["soort"] == "polis"]
+    assert 8 <= len(polis) <= 16
+    assert sum(len(b["fragment"]) for b in polis) > 5000
 
 
 def test_dekkingscheck_toont_bij_de_inbraakcasus_polisbronnen_met_type_en_https_url():

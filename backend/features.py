@@ -10,13 +10,14 @@ Vast patroon per functie:
   invoer -> corpus ophalen -> (eventueel) deterministisch rekenen ->
   contextblok -> model formuleert -> citeerbewaker controleert -> uitvoer met bronnen
 """
+import os
 import re
 import unicodedata
 from decimal import Decimal
 from typing import Dict, List, Optional
 from datetime import date, datetime
 
-from retrieval import Corpus
+from retrieval import Corpus, tokenize
 import rekenkern as rk
 import grounding
 
@@ -241,9 +242,14 @@ def _herken(tekst: str) -> Dict:
         return uit
     gelijk = [k for k in producten if _sleutel(k) == p]
     bevat = sorted((k for k in producten if _sleutel(k) in p), key=lambda k: (-len(k), k))
+    # 'opstalverzekering en inboedelverzekering' noemt twee producten: dan kiest het portaal er niet stilzwijgend één
+    maximaal = [k for k in bevat if not any(k != m and _sleutel(k) in _sleutel(m) for m in bevat)]
     past_in = [k for k in producten if p in _sleutel(k)]
     if gelijk:
         uit["product"] = gelijk[0]
+    elif len(maximaal) > 1:
+        uit["eenduidig"] = False
+        uit["meerdere_producten"] = maximaal
     elif bevat:
         uit["product"] = bevat[0]
     elif len(past_in) == 1:
@@ -331,21 +337,78 @@ def _gelezen_als(correcties) -> Optional[str]:
 
 def _meld(ctx: Dict, opmerkingen=None) -> List[str]:
     """De meldingen bij een aanvraag: wat er met de invoer is gedaan (afgekapt) en hoe de spelling is gelezen."""
-    return list(opmerkingen or []) + ([m] if (m := _gelezen_als(ctx.get("correcties"))) else [])
+    return (list(opmerkingen or []) + list(ctx.get("meldingen") or [])
+            + ([m] if (m := _gelezen_als(ctx.get("correcties"))) else []))
 
 
-def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=(), waar=None, eigen=None) -> Dict:
+# Hoeveel tekens polisclausules het model in één opdracht krijgt. Het corpus heeft hooguit 21 clausules per product; zolang
+# ze passen krijgt het model ze allemaal (op relevantie geordend), zodat 'er staat niets over X' echt over het product
+# gaat en niet over wat de zoekmachine toevallig bovenaan zette. Een sterk model kan meer aan: ASSURANTIE_POLIS_BUDGET.
+POLIS_BUDGET = int(os.environ.get("ASSURANTIE_POLIS_BUDGET", "16000"))
+
+
+def _polis_alle(vraag: str, filter_, budget: int):
+    """Alle clausules die het filter toelaat, de meest relevante eerst, tot het budget op is. Geeft (rijen, totaal)."""
+    alle = [d for d in CORPUS.data.get("polisvoorwaarden", []) if filter_(d)]
+    scores = {id(d): sc for sc, d in CORPUS.zoek("polisvoorwaarden", vraag, max(len(alle), 1), filter_)}
+    volgorde = sorted(alle, key=lambda d: (-scores.get(id(d), 0.0), d.get("verzekeraar_of_bron") or "", d.get("clausule_id") or ""))
+    rijen, gebruikt = [], 0
+    for d in volgorde:
+        n = min(len(d.get("tekst") or ""), LIMIET_POLIS) + 120
+        if rijen and gebruikt + n > budget:
+            break
+        rijen.append((scores.get(id(d), 0.0), d))
+        gebruikt += n
+    return rijen, len(alle)
+
+
+def _genoemde_clausules(tekst: str, filter_) -> List[Dict]:
+    """De clausules van het gekozen product waar een brief zich op beroept ('artikel 4.2'): die horen er altijd bij."""
+    if filter_ is None:
+        return []
+    nummers = set(re.findall(r"(?i)\bart(?:ikel|\.)?\s*(\d+(?:\.\d+)*)", tekst or ""))
+    uit = []
+    for d in CORPUS.data.get("polisvoorwaarden", []):
+        m = re.match(r"art\.\s*(\d+(?:\.\d+)*)", (d.get("clausule_id") or "").lower())
+        if m and m.group(1) in nummers and filter_(d):
+            uit.append(d)
+    return uit
+
+
+def _wet_alleen(*artikelen):
+    """Filter op wetsartikelen uit een lijst 'Wft:4:20', 'BGfo:86c'."""
+    toegestaan = {tuple(a.split(":", 1)) for a in artikelen}
+    return lambda d: (d.get("wet"), str(d.get("artikel"))) in toegestaan
+
+
+def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=(), waar=None, eigen=None, min_rel=None,
+             polis_alle=None, polis_extra=(), dekking=0.0) -> Dict:
     """
     `eigen` is het deel van de zoekvraag dat de adviseur zelf typte. Alleen daarvan meldt het portaal een herstelde
     spelling ('Zoekopdracht gelezen als'); de vaste woorden die de code aan de vraag toevoegt gaan de adviseur niet aan.
+    `min_rel`: laat resultaten weg die minder dan dit deel van de beste score van hun bron halen (ruis als 'cv-ketel' bij
+    een vraag over zorgplicht). `dekking`: alleen resultaten die dit deel van de zoektermen bevatten (zie Index.zoek). `polis_alle`: heeft de adviseur een product (of verzekeraar) gekozen, dan krijgt het model
+    alle clausules daarvan tot dit aantal tekens. `polis_extra`: clausules die altijd horen (de brief noemt ze).
     """
-    opgehaald, blokken = {}, []
+    opgehaald, blokken, meldingen = {}, [], []
     waar = waar or {}
     verplicht = _grondslag_docs(grondslag)
     if verplicht and "wetgeving" not in bronnen:
         bronnen = ["wetgeving"] + list(bronnen)
     for b in bronnen:
-        rows = CORPUS.zoek(b, vraag, per_bron, waar.get(b))
+        if b == "polisvoorwaarden" and polis_alle and waar.get(b) is not None:
+            rows, totaal = _polis_alle(vraag, waar[b], polis_alle)
+            if len(rows) < totaal:
+                meldingen.append(f"Het corpus heeft {totaal} clausules bij dit product; de {len(rows)} die het best bij de vraag "
+                                 "passen zijn aan het model getoond. Een clausule die hier niet staat, is niet bekeken.")
+        else:
+            n = per_bron.get(b, 0) if isinstance(per_bron, dict) else per_bron
+            rows = CORPUS.zoek(b, vraag, n, waar.get(b), dekking) if n else []
+            if min_rel and rows:
+                rows = [(sc, d) for sc, d in rows if sc >= min_rel * rows[0][0]]
+        if b == "polisvoorwaarden" and polis_extra:
+            al = {id(d) for _, d in rows}
+            rows = [(0.0, d) for d in polis_extra if id(d) not in al] + rows
         if b == "wetgeving" and verplicht:
             ids = {(d.get("wet"), d.get("artikel")) for d in verplicht}
             rows = ([(VERPLICHT, d) for d in verplicht] +
@@ -357,7 +420,7 @@ def _context(vraag: str, bronnen: List[str], per_bron=4, grondslag=(), waar=None
                      "polisvoorwaarden": "POLISVOORWAARDEN"}[b]
             blokken.append(f"=== {titel} ===\n{blk}")
     return {"opgehaald": opgehaald, "blok": "\n\n".join(blokken) or "(geen bronnen gevonden)",
-            "correcties": CORPUS.correcties(vraag if eigen is None else eigen)}
+            "correcties": CORPUS.correcties(vraag if eigen is None else eigen), "meldingen": meldingen}
 
 
 def _bronlijst(opgehaald: Dict) -> List[Dict]:
@@ -393,7 +456,7 @@ def dekkingscheck(situatie: str, product: str = "", verzekeraar: str = "") -> Di
     gekozen = _herken(product)["product"]         # de herkende productnaam, niet de ruwe invoer
     polisfilter, meldingen, kort = _polisfilter(situatie, product=product, verzekeraar=verzekeraar)
     vraag = f"{gekozen or ''} {situatie}".strip()
-    ctx = _context(vraag, ["polisvoorwaarden", "wetgeving"], per_bron=5,
+    ctx = _context(vraag, ["polisvoorwaarden", "wetgeving"], per_bron=5, min_rel=0.4, polis_alle=POLIS_BUDGET,
                    waar={"polisvoorwaarden": polisfilter, "wetgeving": VERZEKERINGSRECHT})
     van_wie = _van_wie(kort, ctx["opgehaald"].get("polisvoorwaarden", []))
     gebruiker = (
@@ -459,7 +522,7 @@ def schadeberekening(verzekerde_som: float, werkelijke_waarde: float, schade: fl
     # geen grondslag en het lokale model haalde er bij een echte proef een 'extra eigen risico bij storm tijdens
     # een verbouwing' uit dat niet bij de vraag hoorde. Dat het eigen risico polisafhankelijk is, staat in de waarschuwingen.
     ctx = _context("onderverzekering evenredigheid verzekerde som herbouwwaarde eigen risico",
-                   ["wetgeving"], per_bron=3, grondslag=u.grondslag,
+                   ["wetgeving"], per_bron=0, grondslag=u.grondslag,
                    waar={"wetgeving": VERZEKERINGSRECHT}, eigen="")
     stappen = _stappen_tekst(u)
     gebruiker = (
@@ -550,9 +613,13 @@ def verjaringstoets(datum_bekend: str, datum_stuiting: str = "", datum_reactie: 
     # Alleen de wet: geen enkele Kifid-uitspraak in het corpus gaat over verjaring, en de zoekmachine geeft toch
     # de best scorende drie terug (op 'verzekeraar' en 'afwijzing'). Een irrelevante uitspraak in de bronnen
     # nodigt uit tot een citaat dat niets bewijst.
-    ctx = _context("verjaring rechtsvordering verzekeraar stuiting termijn afwijzing",
-                   ["wetgeving"], per_bron=3, grondslag=u.grondslag,
-                   waar={"wetgeving": VERZEKERINGSRECHT}, eigen="")
+    # De polissen kennen een eigen termijn om op een beslissing te reageren (Klaverblad 1.7.3, Univé 9.3): die staan er als
+    # voorbeeld bij, van verschillende verzekeraars, zodat de adviseur weet waar hij in de polis van de klant moet zoeken.
+    ctx = _context("verjaring rechtsvordering verzekeraar stuiting termijn afwijzing reageren beslissing",
+                   ["wetgeving", "polisvoorwaarden"], per_bron={"wetgeving": 0, "polisvoorwaarden": 3}, grondslag=u.grondslag,
+                   waar={"wetgeving": VERZEKERINGSRECHT,
+                         "polisvoorwaarden": lambda d: d.get("type") == "verjaring" and "reageren" in (d.get("kop") or "").lower()},
+                   eigen="")
     gebruiker = (
         f"De termijnberekening is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{u.toelichting}\n"
@@ -577,8 +644,9 @@ def provisietoets(producttype: str, jaarpremie: float = 0, provisiepercentage: f
     # Alleen de wet, om dezelfde reden als bij de verjaringstoets: geen Kifid-uitspraak in het corpus gaat over
     # provisie of beloning; de autoverzekering-uitspraken die 'producttype' opleverde zeggen hier niets over.
     ctx = _context(f"provisieverbod beloning {producttype} dienstverleningsdocument "
-                   f"transparantie complex product", ["wetgeving"], per_bron=4,
-                   grondslag=u.grondslag, waar={"wetgeving": GEDRAGSREGELS}, eigen=producttype)
+                   f"transparantie complex product", ["wetgeving"], per_bron=0,
+                   grondslag=u.grondslag + ["Wft:4:25a", "Wft:4:25b"] + (["BGfo:86f"] if (u.details or {}).get("status") == "VERBODEN" else []),
+                   waar={"wetgeving": GEDRAGSREGELS}, eigen=producttype)
     bedrag = u.to_dict()["bedrag"]
     gebruiker = (
         f"PRODUCT: {_regel(producttype)}\n"
@@ -622,6 +690,14 @@ DOSSIER_ARTIKELEN = ["Wft:4:22a", "Wft:4:23", "Wft:4:24a", "Wft:4:25b"]
 # Zonder die artikelen kan het model de vraag 'mag dit?' niet uit de bronnen beantwoorden, ook al staat het antwoord
 # in het corpus.
 PROVISIE_ARTIKELEN = ["BGfo:86c", "BGfo:86d", "BGfo:86i"]
+# De informatieplichten die bij advies horen en die de zoekmachine erbij mag halen. Vakbekwaamheid (Wft 4:9, BGfo 6),
+# klachten (BGfo 40, 41, 43) en de vergelijkingskaart van producten onder het provisieverbod (BGfo 86f) horen er niet bij.
+DOSSIER_EXTRA = ["Wft:4:19", "Wft:4:20", "Wft:4:21"]
+
+
+def _kifid_zorgplicht(d: Dict) -> bool:
+    """Uitspraken over de zorgplicht: dat is waar een adviesdossier op wordt getoetst. Andere uitspraken zijn ruis."""
+    return any("zorgplicht" in str(t).lower() for t in d.get("kifid_onderwerp_tags") or [])
 RE_PROVISIE = re.compile(
     r"provisie|beloning|commissie|kickback|tegemoetkoming|\bvergoeding\b[^.\n]{0,40}\b(?:bank|verzekeraar|aanbieder|maatschappij)"
     r"|hypothe\w*|arbeidsongeschikt\w*|\baov\b|overlijdensrisico\w*|uitvaart\w*|betalingsbeschermer|premiepensioen\w*"
@@ -633,10 +709,12 @@ def dossiercheck(dossiertekst: str) -> Dict:
     # De zoekvraag bestaat niet alleen uit de vaste zorgplichttermen: het dossier zelf bepaalt welke
     # productregels erbij horen (provisie, hypotheek, beleggingsverzekering).
     provisie = bool(RE_PROVISIE.search(tekst))
+    grondslag = DOSSIER_ARTIKELEN + (PROVISIE_ARTIKELEN if provisie else [])
     ctx = _context("passend advies klantprofiel zorgplicht informatieverstrekking "
                    "kennis ervaring doelstelling risicobereidheid financiele positie " + tekst[:800],
-                   ["wetgeving", "kifid"], per_bron=3 if provisie else 5, waar={"wetgeving": GEDRAGSREGELS},
-                   grondslag=DOSSIER_ARTIKELEN + (PROVISIE_ARTIKELEN if provisie else []), eigen=tekst[:800])
+                   ["wetgeving", "kifid"], per_bron=3, min_rel=0.4, eigen=tekst[:800], grondslag=grondslag,
+                   waar={"wetgeving": _wet_alleen(*(grondslag + DOSSIER_EXTRA + ["Wft:4:24"])),
+                         "kifid": _kifid_zorgplicht})
     gebruiker = (
         f"ADVIESDOSSIER:\n---\n{tekst}\n---\n{afgekapt}\n"
         "Toets dit dossier tegen de zorgplicht- en adviesvereisten uit de bronnen.\n"
@@ -651,17 +729,38 @@ def dossiercheck(dossiertekst: str) -> Dict:
 
 # =============================================================== 7. polisvergelijker
 
-TYPE_VOLGORDE = ["dekking", "uitsluiting", "eigen risico", "verplichting verzekerde",
+# Waar een vergelijking om draait: wat niet is verzekerd en wat het eigen risico is, dan wat wel. Bij een variant met meer
+# clausules dan het budget toelaat vallen de laatste weg, niet de uitsluitingen.
+TYPE_VOLGORDE = ["uitsluiting", "eigen risico", "dekking", "verplichting verzekerde",
                  "schaderegeling", "verjaring"]
 
 
-def _kant(tekst: str, plaats: str = "Variant", max_n: int = 10) -> Dict:
+def _suggestie(tekst: str) -> str:
+    """
+    Bij een product dat het portaal niet herkent: het product uit het corpus dat er het meest op lijkt, of ''. Vergeleken
+    wordt de stam vóór 'verzekering' ('inboedl' met 'inboedel'): het woord 'verzekering' zelf lijkt op alles.
+    """
+    import difflib
+    stam = lambda w: re.sub(r"verz\w*$", "", w)
+    stammen = {stam(_sleutel(p).split()[0]): p
+               for p in {r.get("product") for r in CORPUS.data.get("polisvoorwaarden", []) if r.get("product")}}
+    for w in _sleutel(tekst).split():
+        t = stam(w)
+        if len(t) >= 4:
+            gevonden = difflib.get_close_matches(t, [k for k in stammen if k], n=1, cutoff=0.8)
+            if gevonden:
+                return stammen[gevonden[0]]
+    return ""
+
+
+def _kant(tekst: str, plaats: str = "Variant", budget: int = None) -> Dict:
     """
     Eén kant van de vergelijking: precies de clausules van het gekozen product, van de gekozen
     verzekeraar als er een genoemd is. Een vergelijking moet controleerbaar zijn: geen zoekscore die
     bepaalt wat er wel en niet naast elkaar komt te staan, en geen verzekeraar die stilzwijgend
     wordt vervangen door een andere.
     """
+    budget = POLIS_BUDGET if budget is None else budget
     h = _herken(tekst)
     rijen = CORPUS.data.get("polisvoorwaarden", [])
     kant = {"product": h["product"], "verzekeraar": h["verzekeraar"], "rijen": [], "opmerking": ""}
@@ -673,11 +772,16 @@ def _kant(tekst: str, plaats: str = "Variant", max_n: int = 10) -> Dict:
         kant["opmerking"] = f"{plaats}: dit veld noemt meer dan één verzekeraar; kies per variant één product van één verzekeraar."
         return kant
     if not h["eenduidig"]:
-        kant["opmerking"] = f"{plaats}: dit past op meerdere producten; kies er één uit de lijst."
+        genoemd = h.get("meerdere_producten")
+        kant["opmerking"] = (f"{plaats}: dit veld noemt meer dan één product ({' en '.join(genoemd)}); kies er één per variant."
+                             if genoemd else f"{plaats}: dit past op meerdere producten; kies er één uit de lijst.")
         return kant
     if not h["product"]:
-        kant["opmerking"] = (f"{plaats}: dit product staat niet in het corpus." if (tekst or "").strip()
-                             else f"{plaats}: dit veld is leeg; kies een product en verzekeraar.")
+        if not (tekst or "").strip():
+            kant["opmerking"] = f"{plaats}: dit veld is leeg; kies een product en verzekeraar."
+        else:
+            zo = _suggestie(tekst)
+            kant["opmerking"] = (f"{plaats}: dit product staat niet in het corpus." + (f" Bedoelde je {zo}?" if zo else ""))
         return kant
     mijn = [r for r in rijen if r.get("product") == h["product"]
             and (not h["verzekeraar"] or r.get("verzekeraar_of_bron") == h["verzekeraar"])]
@@ -691,13 +795,22 @@ def _kant(tekst: str, plaats: str = "Variant", max_n: int = 10) -> Dict:
                              "staan door elkaar. Kies een variant met verzekeraar voor een zuivere vergelijking.")
     else:
         kant["verzekeraar"] = aanbieders[0]
-    mijn.sort(key=lambda r: (r.get("verzekeraar_of_bron") or "",
-                             TYPE_VOLGORDE.index(r["type"]) if r.get("type") in TYPE_VOLGORDE else 99,
-                             r.get("clausule_id") or ""))
-    if len(mijn) > max_n:
+    # Eerst het soort clausule (uitsluitingen vooraan), dan de verzekeraar: een variant met twee verzekeraars laat er dan
+    # geen helemaal wegvallen als het budget op is.
+    mijn.sort(key=lambda r: (TYPE_VOLGORDE.index(r["type"]) if r.get("type") in TYPE_VOLGORDE else 99,
+                             r.get("verzekeraar_of_bron") or "", r.get("clausule_id") or ""))
+    getoond, gebruikt = [], 0
+    for r in mijn:
+        n = min(len(r.get("tekst") or ""), LIMIET_POLIS) + 120
+        if getoond and gebruikt + n > budget:
+            break
+        getoond.append(r)
+        gebruikt += n
+    if len(getoond) < len(mijn):
         kant["opmerking"] = (kant["opmerking"] + " " if kant["opmerking"] else "") + \
-            f"{plaats}: {len(mijn)} clausules in het corpus; de eerste {max_n} staan hier (dekking en uitsluitingen eerst)."
-    kant["rijen"] = mijn[:max_n]
+            (f"{plaats}: {len(mijn)} clausules in het corpus; {len(getoond)} staan hier (uitsluitingen en eigen risico eerst). "
+             "Wat hier niet staat, is niet vergeleken.")
+    kant["rijen"] = getoond
     return kant
 
 
@@ -709,7 +822,8 @@ def _kantnaam(k: Dict) -> str:
 
 def polisvergelijker(product_a: str, product_b: str) -> Dict:
     """Verschilanalyse over echte clausules; het model beschrijft, het corpus levert."""
-    ka, kb = _kant(product_a, "Variant A"), _kant(product_b, "Variant B")
+    # Twee kanten delen het budget van één opdracht: samen ongeveer anderhalf keer dat van een dekkingscheck.
+    ka, kb = _kant(product_a, "Variant A", POLIS_BUDGET * 3 // 4), _kant(product_b, "Variant B", POLIS_BUDGET * 3 // 4)
     ra, rb = ka["rijen"], kb["rijen"]
     opmerkingen = [k["opmerking"] for k in (ka, kb) if k["opmerking"]]
     if ka["product"] and (ka["product"], ka["verzekeraar"]) == (kb["product"], kb["verzekeraar"]) and ra:
@@ -740,7 +854,9 @@ def polisvergelijker(product_a: str, product_b: str) -> Dict:
             "3. Welke vergelijking kun je NIET maken omdat de clausule aan een kant ontbreekt? "
             "Benoem dat expliciet in plaats van het gat te vullen.\n"
             "Uitsluitingen staan ook in dekkingsclausules. Zeg erbij dat dit een vergelijking is van de clausules "
-            "hierboven en dat een sluitende vergelijking de volledige voorwaarden vraagt.\n")
+            "hierboven en dat een sluitende vergelijking de volledige voorwaarden vraagt. Zeg over een ontbrekende clausule "
+            "alleen dat die 'in de getoonde clausules' ontbreekt, nooit dat een product of verzekeraar 'geen clausule heeft'. "
+            "Noem een bedrag of grens bij de clausule waar het staat.\n")
     gebruiker = vragen + "".join(f"Let op: {o}\n" for o in opmerkingen)
     bronnen = _bronlijst({"polisvoorwaarden": docs})
     for i, b in enumerate(bronnen):
@@ -752,7 +868,7 @@ def polisvergelijker(product_a: str, product_b: str) -> Dict:
 
 # =============================================================== 8. klachtroute
 
-KLACHT_ARTIKELEN = ["Wft:4:17", "BGfo:39", "BGfo:40", "BGfo:41", "BGfo:42", "BGfo:43", "BGfo:44"]
+KLACHT_ARTIKELEN = ["Wft:4:17", "BGfo:39", "BGfo:40", "BGfo:41", "BGfo:42", "BGfo:43", "BGfo:44", "BGfo:57"]
 
 
 def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool = False,
@@ -772,9 +888,10 @@ def klachtroute(situatie: str, datum_klacht: str = "", intern_afgehandeld: bool 
             raise ValueError(str(e))
     # De kernartikelen over klachtafhandeling horen bij elke klachtroute; de situatie bepaalt welke
     # uitspraken erbij passen. Met een vaste zoekvraag kreeg elke casus dezelfde bronnen.
-    ctx = _context(f"{(situatie or '')[:600]} klachtprocedure Kifid ontvankelijkheid termijn bindend advies "
-                   "geschilleninstantie interne klachtafhandeling", ["wetgeving", "kifid"], per_bron=4,
-                   grondslag=KLACHT_ARTIKELEN + (u.grondslag if u else []), eigen=(situatie or "")[:600])
+    # Alleen de wet. Geen enkele Kifid-uitspraak in het corpus gaat over ontvankelijkheid of procedure; de best scorende
+    # (op 'afwijzing', 'termijn') zijn uitspraken over de inhoud van een geschil en horen bij de precedentzoeker.
+    ctx = _context(f"{(situatie or '')[:600]} klachtenprocedure geschilleninstantie interne klachtafhandeling", ["wetgeving"],
+                   per_bron=0, grondslag=KLACHT_ARTIKELEN + (u.grondslag if u else []), eigen=(situatie or "")[:600])
     termijnen = ""
     if u:
         termijnen = ("De termijnen zijn AL BEREKEND. Neem deze data letterlijk over en reken niets na:\n"
@@ -802,7 +919,8 @@ def afwijzingsanalyse(brieftekst: str) -> Dict:
     tekst, opmerkingen, afgekapt = _afkap(brieftekst, "De brief")
     polisfilter, meldingen, kort = _polisfilter(tekst)
     ctx = _context(tekst[:600] + " afwijzing dekking uitsluiting mededelingsplicht "
-                   "opzet eigen gebrek", ["polisvoorwaarden", "kifid", "wetgeving"], per_bron=4,
+                   "opzet eigen gebrek", ["polisvoorwaarden", "kifid", "wetgeving"], per_bron=4, min_rel=0.4,
+                   polis_alle=POLIS_BUDGET, polis_extra=_genoemde_clausules(tekst, polisfilter),
                    waar={"wetgeving": VERZEKERINGSRECHT, "polisvoorwaarden": polisfilter}, eigen=tekst[:600])
     opmerkingen = opmerkingen + meldingen
     gebruiker = (
@@ -823,9 +941,11 @@ def afwijzingsanalyse(brieftekst: str) -> Dict:
 # =============================================================== 10. adviesnotitie
 
 def adviesnotitie(klantsituatie: str, advies: str) -> Dict:
+    provisie = bool(RE_PROVISIE.search(f"{klantsituatie} {advies}"))
+    grondslag = DOSSIER_ARTIKELEN + (PROVISIE_ARTIKELEN if provisie else [])
     ctx = _context("passend advies vastlegging dossier informatieverstrekking klantprofiel "
-                   "motivering", ["wetgeving"], per_bron=5, waar={"wetgeving": GEDRAGSREGELS},
-                   grondslag=DOSSIER_ARTIKELEN, eigen="")
+                   "motivering", ["wetgeving"], per_bron=2, min_rel=0.4, grondslag=grondslag, eigen="",
+                   waar={"wetgeving": _wet_alleen(*(grondslag + DOSSIER_EXTRA))})
     gebruiker = (
         f"KLANTSITUATIE:\n{klantsituatie}\n\nGEGEVEN ADVIES:\n{advies}\n\n"
         "Stel een dossiernotitie op met de onderdelen die de bronnen als vaststelling of informatie aan de klant noemen. "
@@ -850,8 +970,9 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
     _getal(levensduur_jaren, "levensduur", 0, 1000)
     _getal(drempel_pct, "drempel_pct", 0, 100, "%")
     u = rk.nieuwwaarde_of_dagwaarde(nieuwwaarde, ouderdom_jaren, levensduur_jaren, drempel_pct)
-    ctx = _context("nieuwwaarde dagwaarde afschrijving vervangingswaarde inboedel",
-                   ["polisvoorwaarden", "wetgeving"], per_bron=3, eigen="")
+    ctx = _context("nieuwwaarde dagwaarde afschrijving vervangingswaarde inboedel", ["polisvoorwaarden"], per_bron=3,
+                   waar={"polisvoorwaarden": lambda d: d.get("type") == "schaderegeling"
+                         and re.search(r"nieuwwaarde|dagwaarde", d.get("tekst") or "", re.I) is not None}, eigen="")
     gebruiker = (
         f"De waardebepaling is AL UITGEVOERD. Neem letterlijk over:\n"
         f"{_uitkomstregel('Uitkomst', u)} - {u.toelichting}\n"
@@ -868,7 +989,12 @@ def waardetoets(nieuwwaarde: float, ouderdom_jaren: float, levensduur_jaren: flo
 # =============================================================== 12. begripsuitleg
 
 def begripsuitleg(begrip: str) -> Dict:
-    ctx = _context(begrip, ["wetgeving", "polisvoorwaarden", "kifid"], per_bron=3)
+    # Een begrip van een paar woorden moet in elke bron die het toont ook echt voorkomen (dekking): zonder die eis vindt
+    # 'Solvency II kapitaalvereisten voor verzekeraars' negen bronnen op het ene woord 'verzekeraar'. Een uitgeschreven vraag of
+    # casus (meer dan zes woorden) heeft nooit alle woorden in één bron; die krijgt een strengere relatieve grens en minder bronnen.
+    kort = len(set(tokenize(begrip))) <= 6
+    ctx = _context(begrip, ["wetgeving", "polisvoorwaarden", "kifid"], per_bron=6 if kort else 4,
+                   min_rel=0.35 if kort else 0.6, dekking=0.5 if kort else 0.0)
     gebruiker = (
         f"BEGRIP: {begrip}\n\n"
         "Leg dit begrip uit op basis van UITSLUITEND de bronnen. Polisclausules verschillen per verzekeraar: noem bij elke "

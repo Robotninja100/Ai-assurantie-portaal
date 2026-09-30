@@ -90,7 +90,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.031
+  "duur_sec": 0.038
  },
  {
   "id": "afwijzingsanalyse-02",
@@ -140,20 +140,6 @@
     "uitkomst": "vordering afgewezen"
    },
    {
-    "soort": "kifid",
-    "label": "Kifid 2026-0813",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0830",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
     "soort": "wetgeving",
     "label": "BW art. 7:928",
     "type": null,
@@ -183,7 +169,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.04
+  "duur_sec": 0.049
  },
  {
   "id": "afwijzingsanalyse-03",
@@ -276,7 +262,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.017
+  "duur_sec": 0.025
  },
  {
   "id": "afwijzingsanalyse-04",
@@ -333,13 +319,6 @@
     "uitkomst": "vordering toegewezen"
    },
    {
-    "soort": "kifid",
-    "label": "Kifid 2026-0755",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
     "soort": "wetgeving",
     "label": "BW art. 7:929",
     "type": null,
@@ -369,7 +348,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.024
+  "duur_sec": 0.031
  },
  {
   "id": "afwijzingsanalyse-05",
@@ -412,27 +391,6 @@
     "uitkomst": "vordering afgewezen"
    },
    {
-    "soort": "kifid",
-    "label": "Kifid 2025-0874",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0964",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0633",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
     "soort": "wetgeving",
     "label": "BW art. 7:925",
     "type": null,
@@ -462,7 +420,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.035
+  "duur_sec": 0.041
  },
  {
   "id": "afwijzingsanalyse-06",
@@ -555,7 +513,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.027
+  "duur_sec": 0.033
  },
  {
   "id": "afwijzingsanalyse-07",
@@ -648,7 +606,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.02
+  "duur_sec": 0.025
  },
  {
   "id": "afwijzingsanalyse-08",
@@ -741,7 +699,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.007
+  "duur_sec": 0.009
  },
  {
   "id": "afwijzingsanalyse-09",
@@ -834,7 +792,7 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.027
+  "duur_sec": 0.033
  },
  {
   "id": "afwijzingsanalyse-10",
@@ -877,27 +835,6 @@
     "uitkomst": "vordering afgewezen"
    },
    {
-    "soort": "kifid",
-    "label": "Kifid 2026-0805",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0854",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0868",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
     "soort": "wetgeving",
     "label": "BW art. 7:928",
     "type": null,
@@ -927,6 +864,6 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.022
+  "duur_sec": 0.028
  }
 ]

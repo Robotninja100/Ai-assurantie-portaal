@@ -6,6 +6,41 @@
   "bronnen": [
    {
     "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub b",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub f",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub h",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub j",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.9",
+    "type": "eigen risico",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
     "label": "opstalverzekering Module Glas art. 1",
     "type": "dekking",
     "kant": "A",
@@ -48,30 +83,93 @@
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub b",
-    "type": "uitsluiting",
+    "label": "opstalverzekering Algemeen art. 4.1",
+    "type": "verplichting verzekerde",
     "kant": "A",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub f",
-    "type": "uitsluiting",
+    "label": "opstalverzekering Algemeen art. 4.2",
+    "type": "verplichting verzekerde",
     "kant": "A",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub h",
-    "type": "uitsluiting",
+    "label": "opstalverzekering Woonhuis art. 11.1",
+    "type": "schaderegeling",
     "kant": "A",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub j",
-    "type": "uitsluiting",
+    "label": "opstalverzekering Woonhuis art. 11.6",
+    "type": "schaderegeling",
     "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.7",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 2.2",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l, berging of kelderbox",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": "B",
     "uitkomst": null
    },
    {
@@ -118,41 +216,62 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.4.2",
+    "type": "verplichting verzekerde",
     "kant": "B",
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  },
  {
   "id": "polisvergelijker-02",
   "functie": "polisvergelijker",
   "http_status": 200,
   "bronnen": [
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.11.1",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.15.1 sub f, alinea 2",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.19.1",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.2.2",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.2.3",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.18",
+    "type": "eigen risico",
+    "kant": "A",
+    "uitkomst": null
+   },
    {
     "soort": "polis",
     "label": "autoverzekering (WA/casco) art. 2.15.1 sub a tot en met e",
@@ -197,43 +316,29 @@
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.11.1",
-    "type": "uitsluiting",
+    "label": "autoverzekering (WA/casco) art. 1.7.2",
+    "type": "verplichting verzekerde",
     "kant": "A",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.15.1 sub f, alinea 2",
-    "type": "uitsluiting",
+    "label": "autoverzekering (WA/casco) art. 2.13.1",
+    "type": "schaderegeling",
     "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.19.1",
-    "type": "uitsluiting",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.2.2",
-    "type": "uitsluiting",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.8 Diefstal van de auto",
-    "type": "dekking",
-    "kant": "B",
     "uitkomst": null
    },
    {
     "soort": "polis",
     "label": "autoverzekering (WA/casco) art. 2.10",
     "type": "eigen risico",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 2.8 Diefstal van de auto",
+    "type": "dekking",
     "kant": "B",
     "uitkomst": null
    },
@@ -253,13 +358,62 @@
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  },
  {
   "id": "polisvergelijker-03",
   "functie": "polisvergelijker",
   "http_status": 200,
   "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l, berging of kelderbox",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": "B",
+    "uitkomst": null
+   },
    {
     "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.1",
@@ -304,41 +458,48 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.4.2",
+    "type": "verplichting verzekerde",
     "kant": "B",
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.005
  },
  {
   "id": "polisvergelijker-04",
   "functie": "polisvergelijker",
   "http_status": 200,
   "bronnen": [
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.16 sub f",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.16 sub n",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.24 sub h",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
+    "type": "eigen risico",
+    "kant": "A",
+    "uitkomst": null
+   },
    {
     "soort": "polis",
     "label": "inboedelverzekering art. 2.11.5 sub c",
@@ -390,22 +551,43 @@
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.16 sub f",
-    "type": "uitsluiting",
+    "label": "inboedelverzekering art. 1.7.2",
+    "type": "verplichting verzekerde",
     "kant": "A",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.16 sub n",
-    "type": "uitsluiting",
+    "label": "inboedelverzekering art. 2.17.10",
+    "type": "schaderegeling",
     "kant": "A",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.24 sub h",
-    "type": "uitsluiting",
+    "label": "inboedelverzekering art. 2.17.13",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.3",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.6.3",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": "A",
     "uitkomst": null
    }
@@ -420,6 +602,34 @@
   "bronnen": [
    {
     "soort": "polis",
+    "label": "inboedelverzekering art. 2.16 sub f",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.16 sub n",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.24 sub h",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
+    "type": "eigen risico",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
     "label": "inboedelverzekering art. 2.11.5 sub c",
     "type": "dekking",
     "kant": "A",
@@ -469,23 +679,72 @@
    },
    {
     "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.2",
+    "type": "verplichting verzekerde",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.10",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.13",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.3",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.6.3",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
     "label": "inboedelverzekering art. 2.16 sub f",
     "type": "uitsluiting",
-    "kant": "A",
+    "kant": "B",
     "uitkomst": null
    },
    {
     "soort": "polis",
     "label": "inboedelverzekering art. 2.16 sub n",
     "type": "uitsluiting",
-    "kant": "A",
+    "kant": "B",
     "uitkomst": null
    },
    {
     "soort": "polis",
     "label": "inboedelverzekering art. 2.24 sub h",
     "type": "uitsluiting",
-    "kant": "A",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
+    "type": "eigen risico",
+    "kant": "B",
     "uitkomst": null
    },
    {
@@ -539,22 +798,43 @@
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.16 sub f",
-    "type": "uitsluiting",
+    "label": "inboedelverzekering art. 1.7.2",
+    "type": "verplichting verzekerde",
     "kant": "B",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.16 sub n",
-    "type": "uitsluiting",
+    "label": "inboedelverzekering art. 2.17.10",
+    "type": "schaderegeling",
     "kant": "B",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.24 sub h",
-    "type": "uitsluiting",
+    "label": "inboedelverzekering art. 2.17.13",
+    "type": "schaderegeling",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.3",
+    "type": "schaderegeling",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.6.3",
+    "type": "schaderegeling",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": "B",
     "uitkomst": null
    }
@@ -569,72 +849,51 @@
   "bronnen": [
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.11.5 sub c",
-    "type": "dekking",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.14.3 sub h",
-    "type": "dekking",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.18 sub a",
-    "type": "dekking",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.5.1-2",
-    "type": "dekking",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.8.3 sub e en f",
-    "type": "dekking",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.8.3 sub i en j",
-    "type": "dekking",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.8.3 sub k tot en met m",
-    "type": "dekking",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "inboedelverzekering art. 2.16 sub f",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
     "type": "uitsluiting",
-    "kant": "A",
+    "kant": "B",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.16 sub n",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
     "type": "uitsluiting",
-    "kant": "A",
+    "kant": "B",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 2.24 sub h",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
     "type": "uitsluiting",
-    "kant": "A",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l, berging of kelderbox",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": "B",
     "uitkomst": null
    },
    {
@@ -681,29 +940,8 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.4.2",
+    "type": "verplichting verzekerde",
     "kant": "B",
     "uitkomst": null
    }
@@ -716,6 +954,41 @@
   "functie": "polisvergelijker",
   "http_status": 200,
   "bronnen": [
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 4.4.2",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.16 sub f",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.16 sub n",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.24 sub h",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.14",
+    "type": "eigen risico",
+    "kant": "A",
+    "uitkomst": null
+   },
    {
     "soort": "polis",
     "label": "inboedelverzekering art. 1.1 sub a tot en met h",
@@ -739,13 +1012,6 @@
    },
    {
     "soort": "polis",
-    "label": "inboedelverzekering art. 4.4.2",
-    "type": "uitsluiting",
-    "kant": "A",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
     "label": "inboedelverzekering art. 2.11.5 sub c",
     "type": "dekking",
     "kant": "A",
@@ -784,6 +1050,76 @@
     "label": "inboedelverzekering art. 2.8.3 sub i en j",
     "type": "dekking",
     "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.8.3 sub k tot en met m",
+    "type": "dekking",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.2",
+    "type": "verplichting verzekerde",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "inboedelverzekering art. 2.17.10",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l, berging of kelderbox",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": "B",
     "uitkomst": null
    },
    {
@@ -830,41 +1166,55 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.4.2",
+    "type": "verplichting verzekerde",
     "kant": "B",
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  },
  {
   "id": "polisvergelijker-08",
   "functie": "polisvergelijker",
   "http_status": 200,
   "bronnen": [
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub b",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub f",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub h",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 10 sub j",
+    "type": "uitsluiting",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.9",
+    "type": "eigen risico",
+    "kant": "A",
+    "uitkomst": null
+   },
    {
     "soort": "polis",
     "label": "opstalverzekering Module Glas art. 1",
@@ -909,29 +1259,43 @@
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub b",
-    "type": "uitsluiting",
+    "label": "opstalverzekering Algemeen art. 4.1",
+    "type": "verplichting verzekerde",
     "kant": "A",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub f",
-    "type": "uitsluiting",
+    "label": "opstalverzekering Algemeen art. 4.2",
+    "type": "verplichting verzekerde",
     "kant": "A",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub h",
-    "type": "uitsluiting",
+    "label": "opstalverzekering Woonhuis art. 11.1",
+    "type": "schaderegeling",
     "kant": "A",
     "uitkomst": null
    },
    {
     "soort": "polis",
-    "label": "opstalverzekering Woonhuis art. 10 sub j",
-    "type": "uitsluiting",
+    "label": "opstalverzekering Woonhuis art. 11.6",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 11.7",
+    "type": "schaderegeling",
+    "kant": "A",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstalverzekering Woonhuis art. 2.2",
+    "type": "schaderegeling",
     "kant": "A",
     "uitkomst": null
    }
@@ -946,6 +1310,55 @@
   "bronnen": [
    {
     "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l, berging of kelderbox",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.1",
     "type": "dekking",
     "kant": "B",
@@ -988,29 +1401,8 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.4.2",
+    "type": "verplichting verzekerde",
     "kant": "B",
     "uitkomst": null
    }
@@ -1025,6 +1417,55 @@
   "bronnen": [
    {
     "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l, berging of kelderbox",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.6.4",
+    "type": "uitsluiting",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.6.6",
+    "type": "eigen risico",
+    "kant": "B",
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
     "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.1",
     "type": "dekking",
     "kant": "B",
@@ -1067,34 +1508,13 @@
    },
    {
     "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub e",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub f",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub g",
-    "type": "uitsluiting",
-    "kant": "B",
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "opstal-/inboedelverzekering (woonverzekering) art. 3.5 sub l",
-    "type": "uitsluiting",
+    "label": "opstal-/inboedelverzekering (woonverzekering) art. 4.4.2",
+    "type": "verplichting verzekerde",
     "kant": "B",
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  }
 ]

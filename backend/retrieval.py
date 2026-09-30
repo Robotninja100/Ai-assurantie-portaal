@@ -165,17 +165,28 @@ class Index:
         vormen = self._vorm.get(stam)
         return vormen.most_common(1)[0][0] if vormen else stam
 
-    def zoek(self, vraag: str, top=6, waar=None, extra=()) -> List[Tuple[float, Dict]]:
+    def zoek(self, vraag: str, top=6, waar=None, extra=(), dekking=0.0) -> List[Tuple[float, Dict]]:
         """
         `waar` is een optioneel filter op het document; de BM25-statistiek blijft die van het hele corpus.
-        `extra` zijn herstelde termen (zie Corpus.herstel): ze tellen mee met minder gewicht dan wat de adviseur typte.
+        `extra` zijn herstelde termen [(stam van het onbekende woord, corpusterm)] (zie Corpus.herstel): ze tellen mee met
+        minder gewicht dan wat de adviseur typte.
+        `dekking` (0 tot 1): alleen documenten die minstens dit deel van de zoektermen (naar gewicht) bevatten. Een term die
+        het corpus niet kent telt mee als niet gedekt: 'Solvency II kapitaalvereisten voor verzekeraars' vindt dan geen negen
+        documenten op het ene woord 'verzekeraar'. Bedoeld voor korte vragen (een begrip), niet voor een uitgeschreven casus.
         """
-        q = [(t, 1.0) for t in tokenize(vraag)] + [(c, 0.6) for c in extra]
+        vervangen = {onbekend for onbekend, _ in extra}
+        termen = [t for t in dict.fromkeys(tokenize(vraag)) if t not in vervangen] + [c for _, c in extra]
+        q = [(t, 1.0) for t in tokenize(vraag)] + [(c, 0.6) for _, c in extra]
         if not q or not self.docs:
             return []
+        hoogste = max(self.idf.values(), default=1.0)
+        gewicht_t = {t: self.idf.get(t, hoogste) for t in termen}
+        totaal = sum(gewicht_t.values()) or 1.0
         scores = []
         for i, tf in enumerate(self.tf):
             if waar is not None and not waar(self.docs[i]):
+                continue
+            if dekking and sum(w for t, w in gewicht_t.items() if t in tf) / totaal < dekking:
                 continue
             s = 0.0
             dl = self.len[i] or 1
@@ -270,10 +281,11 @@ class Corpus:
         """De melding bij een herstelde spelling: [('onderverzekring', 'onderverzekering')]. Het portaal herstelt niet stilzwijgend."""
         return [(a, c) for a, _, c in self.herstel(vraag)][:max_n]
 
-    def zoek(self, bron: str, vraag: str, top=6, waar=None):
+    def zoek(self, bron: str, vraag: str, top=6, waar=None, dekking=0.0):
         if bron not in self.index:
             return []
-        return self.index[bron].zoek(vraag, top, waar, extra=[t for _, t, _ in self.herstel(vraag)])
+        return self.index[bron].zoek(vraag, top, waar, extra=[(_stam(_vouw(a)), t) for a, t, _ in self.herstel(vraag)],
+                                     dekking=dekking)
 
     def zoek_breed(self, vraag: str, per_bron=4):
         return {b: self.zoek(b, vraag, per_bron) for b in self.index}

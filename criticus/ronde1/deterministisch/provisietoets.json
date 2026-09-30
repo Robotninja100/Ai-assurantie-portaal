@@ -27,21 +27,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86f",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86c",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86m",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -81,7 +67,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.007
+  "duur_sec": 0.005
  },
  {
   "id": "provisietoets-02",
@@ -104,14 +90,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86f",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86m",
+    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -150,7 +136,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.002
+  "duur_sec": 0.0
  },
  {
   "id": "provisietoets-03",
@@ -173,14 +159,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86f",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86m",
+    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -226,7 +212,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.002
+  "duur_sec": 0.0
  },
  {
   "id": "provisietoets-04",
@@ -256,14 +242,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86f",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86m",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -302,7 +281,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.005
+  "duur_sec": 0.003
  },
  {
   "id": "provisietoets-05",
@@ -332,14 +311,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86f",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86m",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -378,7 +350,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.003
+  "duur_sec": 0.002
  },
  {
   "id": "provisietoets-06",
@@ -408,14 +380,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86m",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86l",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -454,7 +419,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.007
+  "duur_sec": 0.003
  },
  {
   "id": "provisietoets-07",
@@ -484,14 +449,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86c",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86m",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -532,7 +490,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.011
+  "duur_sec": 0.006
  },
  {
   "id": "provisietoets-08",
@@ -562,14 +520,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BGfo art. 86f",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86m",
+    "label": "Wft art. 4:25b",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -602,7 +553,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.002
+  "duur_sec": 0.0
  },
  {
   "id": "provisietoets-09",

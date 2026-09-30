@@ -34,35 +34,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
     "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  },
  {
   "id": "adviesnotitie-02",
@@ -99,35 +78,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
     "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  },
  {
   "id": "adviesnotitie-03",
@@ -164,28 +122,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
     "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -229,14 +166,21 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
+    "label": "BGfo art. 86c",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:22",
+    "label": "BGfo art. 86d",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86i",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -247,17 +191,10 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  },
  {
   "id": "adviesnotitie-05",
@@ -294,35 +231,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
     "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  },
  {
   "id": "adviesnotitie-06",
@@ -359,28 +275,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
     "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -424,14 +319,21 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
+    "label": "BGfo art. 86c",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:22",
+    "label": "BGfo art. 86d",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86i",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -442,17 +344,10 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  },
  {
   "id": "adviesnotitie-08",
@@ -489,35 +384,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
     "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.003
+  "duur_sec": 0.004
  },
  {
   "id": "adviesnotitie-09",
@@ -554,28 +428,7 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "Wft art. 4:22",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
     "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -619,14 +472,21 @@
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:24",
+    "label": "BGfo art. 86c",
     "type": null,
     "kant": null,
     "uitkomst": null
    },
    {
     "soort": "wetgeving",
-    "label": "Wft art. 4:22",
+    "label": "BGfo art. 86d",
+    "type": null,
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "wetgeving",
+    "label": "BGfo art. 86i",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -634,13 +494,6 @@
    {
     "soort": "wetgeving",
     "label": "Wft art. 4:21",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BGfo art. 86f",
     "type": null,
     "kant": null,
     "uitkomst": null

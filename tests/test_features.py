@@ -89,14 +89,15 @@ def test_nee_is_nee_ook_als_een_api_client_het_als_tekst_stuurt():
         features.verjaringstoets("2024-03-10", "", "", "misschien")
 
 
-def test_klachtroute_neemt_de_kernartikelen_altijd_mee_en_de_uitspraken_volgen_de_situatie():
+def test_klachtroute_toont_de_klachtartikelen_en_geen_uitspraken_over_de_inhoud_van_het_geschil():
     a = features.klachtroute("Klant is het niet eens met de afwijzing van een inboedelclaim door de verzekeraar.")
     b = features.klachtroute("Uitvaartverzekering waarvan de premie ten onrechte is verhoogd.")
     for o in (a, b):
         labels = {x["label"] for x in o["bronnen"]}
         assert {"Wft art. 4:17", "BGfo art. 39", "BGfo art. 40", "BGfo art. 41", "BGfo art. 42",
-                "BGfo art. 43", "BGfo art. 44"} <= labels
-    assert [x["label"] for x in a["bronnen"] if x["soort"] == "kifid"] != [x["label"] for x in b["bronnen"] if x["soort"] == "kifid"]
+                "BGfo art. 43", "BGfo art. 44", "BGfo art. 57"} <= labels
+        # Geen enkele uitspraak in het corpus gaat over ontvankelijkheid; de best scorende zijn uitspraken over de inhoud.
+        assert {x["soort"] for x in o["bronnen"]} == {"wetgeving"} and "KIFID" not in o["systeem"]
 
 
 def test_klachtroute_rekent_de_termijnen_uit_als_er_een_klachtdatum_is():
@@ -262,10 +263,13 @@ def test_de_slotzin_over_wat_de_klant_draagt_staat_er_alleen_als_er_iets_is_bere
 def test_verjaringstoets_en_provisietoets_rusten_op_de_wet_en_tonen_geen_ruis_uit_kifid():
     # Geen enkele uitspraak in het corpus gaat over verjaring of provisie; de best scorende (op 'verzekeraar',
     # 'autoverzekering') zou anders als bron in beeld komen en uitnodigen tot een citaat dat niets bewijst.
-    for r in (features.verjaringstoets("2024-03-10", "", "", False, "2026-09-29"),
-              features.provisietoets("autoverzekering", 1000, 10)):
-        assert r["bronnen"] and all(b["soort"] == "wetgeving" for b in r["bronnen"])
-        assert "KIFID" not in r["systeem"]
+    r = features.provisietoets("autoverzekering", 1000, 10)
+    assert r["bronnen"] and all(b["soort"] == "wetgeving" for b in r["bronnen"]) and "KIFID" not in r["systeem"]
+    # de verjaringstoets toont naast BW 7:942/7:943 alleen de polisclausules over een reactietermijn (als voorbeeld)
+    r = features.verjaringstoets("2024-03-10", "", "", False, "2026-09-29")
+    assert {b["soort"] for b in r["bronnen"]} == {"wetgeving", "polis"} and "KIFID" not in r["systeem"]
+    assert {b["label"] for b in r["bronnen"] if b["soort"] == "wetgeving"} == {"BW art. 7:942", "BW art. 7:943"}
+    assert all(b["type"] == "verjaring" and "reageren" in (b["titel"] or "").lower() for b in r["bronnen"] if b["soort"] == "polis")
 
 
 def test_verjaringstoets_laat_het_model_stuiting_alleen_noemen_zoals_de_code_haar_beschrijft():
@@ -392,3 +396,83 @@ def test_getalmeldingen_noemen_het_decimaalteken_de_eenheid_en_echoen_geen_verha
     assert len(str(e.value)) < 160 and "…" in str(e.value)
     with pytest.raises(ValueError, match=r"drempel_pct mag niet hoger zijn dan 100% \(ingevuld: 400%\)"):
         features.waardetoets(1000, 2, 10, 400)
+
+
+# ---- bronselectie na de onafhankelijke beoordeling: alleen wat de vraag draagt
+
+def test_schadeberekening_en_waardetoets_en_provisietoets_tonen_alleen_hun_grondslag():
+    assert [b["label"] for b in features.schadeberekening(100000, 200000, 50000)["bronnen"]] == ["BW art. 7:958"]
+    r = features.schadeberekening(100000, 200000, 50000, 0, 1000)
+    assert {b["label"] for b in r["bronnen"]} == {"BW art. 7:958", "BW art. 7:957", "BW art. 7:959"}
+    assert [b["label"] for b in features.waardetoets(2000, 4, 10)["bronnen"]] == ["inboedelverzekering art. 2.17.3"]
+    hypotheek = {b["label"] for b in features.provisietoets("hypotheek", 1000, 10)["bronnen"]}
+    schade = {b["label"] for b in features.provisietoets("opstalverzekering", 1000, 10)["bronnen"]}
+    assert hypotheek == {"BGfo art. 86c", "BGfo art. 86f", "Wft art. 4:25a", "Wft art. 4:25b"}
+    assert schade == {"BGfo art. 86d", "BGfo art. 86i", "Wft art. 4:25a", "Wft art. 4:25b"}     # 86f alleen bij een verboden product
+    assert not any(l.startswith("BGfo art. 86k") or l.endswith("86l") or l.endswith("86m") for l in hypotheek | schade)
+
+
+def test_dossiercheck_en_adviesnotitie_halen_geen_vakbekwaamheid_klachten_of_beleggingsartikelen_erbij():
+    for r in (features.dossiercheck("Klant wil de fiets verzekeren; wensen vastgelegd; risicobereidheid laag; geen alternatieven."),
+              features.adviesnotitie("Alleenstaande, huurwoning.", "Inboedelverzekering met eigen risico 250.")):
+        labels = {b["label"] for b in r["bronnen"] if b["soort"] == "wetgeving"}
+        assert {"Wft art. 4:22a", "Wft art. 4:23", "Wft art. 4:24a", "Wft art. 4:25b"} <= labels
+        assert not labels & {"Wft art. 4:9", "Wft art. 4:10", "Wft art. 4:15", "BGfo art. 6", "BGfo art. 40", "BGfo art. 41",
+                             "BGfo art. 43", "BGfo art. 86f", "BGfo art. 7"}, labels
+    # de uitspraken bij een dossiercheck gaan over de zorgplicht
+    k = features.dossiercheck("Klant kreeg een uitvaartverzekering geadviseerd zonder inventarisatie van wensen en risicobereidheid.")
+    assert all(b["soort"] != "kifid" or b["label"].split()[-1] in {d["uitspraaknummer"] for d in features.CORPUS.data["kifid"]
+                                                                   if features._kifid_zorgplicht(d)} for b in k["bronnen"])
+
+
+def test_een_afwijzingsbrief_haalt_de_clausules_op_waarop_zij_zich_beroept():
+    brief = ("Geachte heer, wij wijzen uw schade af op grond van artikel 3.6.2 van de voorwaarden van Univé, "
+             "omdat uw woning langer dan drie maanden leeg stond.")
+    r = features.afwijzingsanalyse(brief)
+    assert any(b["soort"] == "polis" and b["titel"] and b["verzekeraar"].startswith("Univé") and "art. 3.6.2" in b["label"]
+               for b in r["bronnen"])
+    # zonder bekende verzekeraar wordt een nummer niet aan een willekeurige verzekeraar toegeschreven
+    r = features.afwijzingsanalyse("Wij wijzen af op grond van artikel 3.6.2.")
+    assert not any("3.6.2" in b["label"] for b in r["bronnen"] if b["soort"] == "polis")
+
+
+def test_een_begrip_van_een_paar_woorden_moet_in_de_bron_voorkomen_en_anders_is_er_geen_bron():
+    assert features.begripsuitleg("Solvency II kapitaalvereisten voor verzekeraars")["bronnen"] == []
+    r = features.begripsuitleg("onderverzekering")
+    labels = {b["label"] for b in r["bronnen"]}
+    assert {"BW art. 7:958", "opstalverzekering Woonhuis art. 11.6", "opstalverzekering Woonhuis art. 11.7",
+            "opstal-/inboedelverzekering (woonverzekering) art. 7.7", "inboedelverzekering art. 2.6.3",
+            "inboedelverzekering art. 2.17.10"} <= labels
+    # een uitgeschreven vraag krijgt een strengere grens en minder bronnen dan een begrip van één woord
+    lang = features.begripsuitleg("wat is dat eigenlijk, dat eigen risico bij mijn opstal? bij mij staat er 500 op het polisblad "
+                                  "maar mn buurman heeft 250, is dat wettelijk vastgelegd?")
+    assert len(lang["bronnen"]) <= 13
+
+
+def test_de_verzekeraar_zegt_hoeveel_clausules_er_niet_zijn_getoond():
+    r = features.dekkingscheck("Ruitschade door steenslag", "autoverzekering", "Klaverblad")
+    polis = [b for b in r["bronnen"] if b["soort"] == "polis"]
+    if len(polis) < 16:
+        assert any("Een clausule die hier niet staat, is niet bekeken" in m for m in r["opmerkingen"])
+
+
+def test_de_polisvergelijker_herkent_twee_producten_in_een_veld_en_geeft_een_suggestie_bij_een_verkeerde_spelling():
+    r = features.polisvergelijker("opstalverzekering en inboedelverzekering Klaverblad", "inboedelverzekering Klaverblad")
+    assert any("meer dan één product (inboedelverzekering en opstalverzekering)" in o for o in r["opmerkingen"])
+    assert not [b for b in r["bronnen"] if b["kant"] == "A"]                     # de variant blijft leeg in plaats van geraden
+    r = features.polisvergelijker("inboedl Klaverblad", "inboedelverzekering Klaverblad")
+    assert any("Bedoelde je inboedelverzekering?" in o for o in r["opmerkingen"])
+    assert "Bedoelde je" not in " ".join(features.polisvergelijker("kapitaalverzekering", "inboedelverzekering")["opmerkingen"])
+
+
+def test_de_polisvergelijker_toont_uitsluitingen_eerst_en_laat_bij_een_krap_budget_geen_verzekeraar_wegvallen(monkeypatch):
+    r = features.polisvergelijker("autoverzekering", "inboedelverzekering Klaverblad")
+    volgorde = [b["type"] for b in r["bronnen"] if b["kant"] == "A"]
+    assert volgorde == sorted(volgorde, key=["uitsluiting", "eigen risico", "dekking", "verplichting verzekerde",
+                                             "schaderegeling", "verjaring"].index)
+    monkeypatch.setattr(features, "POLIS_BUDGET", 6000)
+    r = features.polisvergelijker("autoverzekering", "inboedelverzekering Klaverblad")
+    a = [b for b in r["bronnen"] if b["kant"] == "A"]
+    assert len({b["verzekeraar"] for b in a}) == 2                                # Klaverblad én Interpolis, ondanks het budget
+    assert any("staan hier (uitsluitingen en eigen risico eerst). Wat hier niet staat, is niet vergeleken" in o for o in r["opmerkingen"])
+    assert "in de getoonde clausules" in r["gebruiker"] and "nooit dat een product of verzekeraar" in r["gebruiker"]

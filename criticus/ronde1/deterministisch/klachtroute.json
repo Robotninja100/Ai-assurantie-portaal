@@ -55,38 +55,10 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:940",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0566",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0781",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0874",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0465",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -147,7 +119,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.012
+  "duur_sec": 0.004
  },
  {
   "id": "klachtroute-02",
@@ -205,38 +177,10 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:940",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0868",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0805",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0781",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0770",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -298,7 +242,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.007
+  "duur_sec": 0.002
  },
  {
   "id": "klachtroute-03",
@@ -355,36 +299,15 @@
     "uitkomst": null
    },
    {
-    "soort": "kifid",
-    "label": "Kifid 2025-0901",
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2024-1054",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0964",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
+    "uitkomst": null
    }
   ],
   "berekening": null,
-  "duur_sec": 0.006
+  "duur_sec": 0.001
  },
  {
   "id": "klachtroute-04",
@@ -442,38 +365,10 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:940",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2024-1054",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0901",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-1045",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0811",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": {
@@ -534,7 +429,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.005
+  "duur_sec": 0.001
  },
  {
   "id": "klachtroute-05",
@@ -592,45 +487,10 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:940",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:942",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2024-1054",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0881",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0901",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0146",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
    }
   ],
   "berekening": {
@@ -691,7 +551,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.004
+  "duur_sec": 0.0
  },
  {
   "id": "klachtroute-06",
@@ -748,32 +608,11 @@
     "uitkomst": null
    },
    {
-    "soort": "kifid",
-    "label": "Kifid 2026-0881",
+    "soort": "wetgeving",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0799",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2024-1054",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0874",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
+    "uitkomst": null
    }
   ],
   "berekening": {
@@ -835,7 +674,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.011
+  "duur_sec": 0.004
  },
  {
   "id": "klachtroute-07",
@@ -893,42 +732,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:940",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0811",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0964",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0874",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-1045",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.008
+  "duur_sec": 0.002
  },
  {
   "id": "klachtroute-08",
@@ -986,42 +797,14 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:940",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0770",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2024-1054",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0964",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
    }
   ],
   "berekening": null,
-  "duur_sec": 0.006
+  "duur_sec": 0.001
  },
  {
   "id": "klachtroute-09",
@@ -1079,38 +862,10 @@
    },
    {
     "soort": "wetgeving",
-    "label": "BW art. 7:940",
+    "label": "BGfo art. 57",
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0633",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0776",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering afgewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2026-0590",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering toegewezen"
-   },
-   {
-    "soort": "kifid",
-    "label": "Kifid 2025-0146",
-    "type": null,
-    "kant": null,
-    "uitkomst": "vordering (gedeeltelijk) toegewezen"
    }
   ],
   "berekening": {
@@ -1171,7 +926,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.019
+  "duur_sec": 0.006
  },
  {
   "id": "klachtroute-10",

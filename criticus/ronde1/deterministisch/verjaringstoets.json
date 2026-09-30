@@ -19,16 +19,23 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
-    "type": null,
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    }
@@ -107,16 +114,23 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
-    "type": null,
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    }
@@ -201,7 +215,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "verjaringstoets-03",
@@ -223,16 +237,23 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
-    "type": null,
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    }
@@ -313,16 +334,23 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
-    "type": null,
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    }
@@ -386,7 +414,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "verjaringstoets-05",
@@ -408,16 +436,23 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
-    "type": null,
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    }
@@ -492,7 +527,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "verjaringstoets-06",
@@ -514,16 +549,23 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
-    "type": null,
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    }
@@ -599,7 +641,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "verjaringstoets-07",
@@ -621,16 +663,23 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
-    "type": null,
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    }
@@ -696,7 +745,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "verjaringstoets-08",
@@ -718,16 +767,23 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
-    "type": null,
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    }
@@ -811,7 +867,7 @@
    },
    "uitleg": []
   },
-  "duur_sec": 0.0
+  "duur_sec": 0.001
  },
  {
   "id": "verjaringstoets-09",
@@ -833,16 +889,23 @@
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:940",
-    "type": null,
+    "soort": "polis",
+    "label": "inboedelverzekering art. 1.7.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    },
    {
-    "soort": "wetgeving",
-    "label": "BW art. 7:941",
-    "type": null,
+    "soort": "polis",
+    "label": "autoverzekering (WA/casco) art. 1.7.3",
+    "type": "verjaring",
+    "kant": null,
+    "uitkomst": null
+   },
+   {
+    "soort": "polis",
+    "label": "algemene voorwaarden schadeverzekering art. 9.3",
+    "type": "verjaring",
     "kant": null,
     "uitkomst": null
    }

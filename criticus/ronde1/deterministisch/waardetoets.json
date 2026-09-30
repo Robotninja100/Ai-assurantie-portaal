@@ -10,27 +10,6 @@
     "type": "schaderegeling",
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.17",
-    "type": "dekking",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "rechtsbijstandverzekering art. 6.3",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:958",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": {
@@ -93,27 +72,6 @@
     "type": "schaderegeling",
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.17",
-    "type": "dekking",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "rechtsbijstandverzekering art. 6.3",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:958",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": {
@@ -163,7 +121,7 @@
     "De dagwaarde (€ 166,67) is niet meer dan de drempel (€ 200,00): voorwaarde c is niet vervuld. De nieuwwaarde wordt dan niet vergoed; het portaal rekent met de dagwaarde: € 166,67. Welke regel de polis daarvoor geeft, staat niet in het corpus."
    ]
   },
-  "duur_sec": 0.003
+  "duur_sec": 0.002
  },
  {
   "id": "waardetoets-03",
@@ -182,27 +140,6 @@
     "soort": "polis",
     "label": "inboedelverzekering art. 2.17.3",
     "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.17",
-    "type": "dekking",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "rechtsbijstandverzekering art. 6.3",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:958",
-    "type": null,
     "kant": null,
     "uitkomst": null
    }
@@ -231,27 +168,6 @@
     "soort": "polis",
     "label": "inboedelverzekering art. 2.17.3",
     "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.17",
-    "type": "dekking",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "rechtsbijstandverzekering art. 6.3",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:958",
-    "type": null,
     "kant": null,
     "uitkomst": null
    }
@@ -304,7 +220,7 @@
     "De dagwaarde (€ 0,00) is niet meer dan de drempel (€ 600,00): voorwaarde c is niet vervuld. De nieuwwaarde wordt dan niet vergoed; het portaal rekent met de dagwaarde: € 0,00. Welke regel de polis daarvoor geeft, staat niet in het corpus."
    ]
   },
-  "duur_sec": 0.003
+  "duur_sec": 0.002
  },
  {
   "id": "waardetoets-06",
@@ -315,27 +231,6 @@
     "soort": "polis",
     "label": "inboedelverzekering art. 2.17.3",
     "type": "schaderegeling",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.17",
-    "type": "dekking",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "rechtsbijstandverzekering art. 6.3",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:958",
-    "type": null,
     "kant": null,
     "uitkomst": null
    }
@@ -401,27 +296,6 @@
     "type": "schaderegeling",
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "autoverzekering (WA/casco) art. 2.17",
-    "type": "dekking",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "polis",
-    "label": "rechtsbijstandverzekering art. 6.3",
-    "type": "uitsluiting",
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:958",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": {
@@ -473,7 +347,7 @@
     "Met de drempel van Klaverblad (40%) zou de uitkomst anders zijn: dagwaarde (€ 840,00)."
    ]
   },
-  "duur_sec": 0.003
+  "duur_sec": 0.002
  },
  {
   "id": "waardetoets-08",

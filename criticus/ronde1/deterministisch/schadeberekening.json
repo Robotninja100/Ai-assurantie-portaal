@@ -10,20 +10,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:954",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:930",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": {
@@ -94,20 +80,6 @@
     "type": null,
     "kant": null,
     "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:954",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:930",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
    }
   ],
   "berekening": {
@@ -165,7 +137,7 @@
     "De uitkering is € 3.083,33. Van de totale schade van € 10.000,00 draagt de verzekerde zelf € 6.916,67 (€ 6.666,67 door onderverzekering en € 250,00 eigen risico)."
    ]
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.0
  },
  {
   "id": "schadeberekening-03",
@@ -179,29 +151,7 @@
   "id": "schadeberekening-04",
   "functie": "schadeberekening",
   "http_status": 200,
-  "bronnen": [
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:958",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:954",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:930",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   }
-  ],
+  "bronnen": [],
   "berekening": {
    "onderwerp": "Onderverzekering (evenredigheidsbeginsel)",
    "bedrag": null,
@@ -232,20 +182,6 @@
    {
     "soort": "wetgeving",
     "label": "BW art. 7:955",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:954",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:930",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -307,7 +243,7 @@
     "De uitkering is € 100.000,00. Van de totale schade van € 200.000,00 draagt de verzekerde zelf € 100.000,00 (€ 100.000,00 door onderverzekering). Er is geen eigen risico ingevoerd; heeft de polis er een, dan komt dat bedrag voor rekening van de klant."
    ]
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.0
  },
  {
   "id": "schadeberekening-06",
@@ -331,20 +267,6 @@
    {
     "soort": "wetgeving",
     "label": "BW art. 7:959",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:954",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:930",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -422,7 +344,7 @@
     "De uitkering is € 18.200,00. Van de totale schade van € 32.000,00 draagt de verzekerde zelf € 13.800,00 (€ 12.800,00 door onderverzekering en € 1.000,00 eigen risico)."
    ]
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.0
  },
  {
   "id": "schadeberekening-07",
@@ -446,27 +368,6 @@
    {
     "soort": "wetgeving",
     "label": "BW art. 7:959",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:958",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:954",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:930",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -524,7 +425,7 @@
     "De uitkering is € 103.000,00. Van de totale schade van € 103.000,00 draagt de verzekerde zelf € 0,00. Er is geen eigen risico ingevoerd; heeft de polis er een, dan komt dat bedrag voor rekening van de klant."
    ]
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.0
  },
  {
   "id": "schadeberekening-08",
@@ -556,20 +457,6 @@
    {
     "soort": "wetgeving",
     "label": "BW art. 7:959",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:954",
-    "type": null,
-    "kant": null,
-    "uitkomst": null
-   },
-   {
-    "soort": "wetgeving",
-    "label": "BW art. 7:930",
     "type": null,
     "kant": null,
     "uitkomst": null
@@ -640,7 +527,7 @@
     "Er is geen schade ingevoerd, dus er valt niets te vergoeden."
    ]
   },
-  "duur_sec": 0.001
+  "duur_sec": 0.0
  },
  {
   "id": "schadeberekening-10",
