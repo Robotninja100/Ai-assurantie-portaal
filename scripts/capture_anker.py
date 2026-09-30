@@ -180,6 +180,8 @@ def main() -> int:
         "onderbouwing_noot": ONDERBOUWING_NOOT,
         "gegenereerd_op": cc.nu_iso(),
         "generator": "scripts/capture_anker.py + scripts/capture_controle.py",
+        "leesvoorbeeld": cc.leesvoorbeeld("manifest['bestanden'] (een lijst opnamerecords: elk anker x 2 viewports); "
+                                          "manifest['ankers'] noemt de bronnen"),
         "ankers": [{"id": a["id"], "bron_naam": a["bron_naam"], "url": a["url"]} for a in ANKERS],
         "bestanden": records,
     }

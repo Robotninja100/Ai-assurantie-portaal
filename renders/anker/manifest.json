@@ -23,8 +23,14 @@
     }
   ],
   "onderbouwing_noot": "Bronnen gevonden via een zoekopdracht op 2026-09-29; het zijn meningen van derden (deels commercieel: Mintlify en Apidog verkopen documentatietools), niet een onafhankelijke meting. Ze zijn hier alleen aangehaald om te laten zien dat 'breed aangehaald als referentie' geen eigen smaakoordeel van de opnemer is.",
-  "gegenereerd_op": "2026-09-29T21:54:32+00:00",
+  "gegenereerd_op": "2026-09-29T23:56:04+00:00",
   "generator": "scripts/capture_anker.py + scripts/capture_controle.py",
+  "leesvoorbeeld": {
+    "records_staan_in": "manifest['bestanden'] (een lijst opnamerecords: elk anker x 2 viewports); manifest['ankers'] noemt de bronnen",
+    "plat_lezen_in_python": "import sys; sys.path.insert(0, 'scripts'); from capture_controle import lees_opnames; records = [r for r in lees_opnames('renders/<map>/manifest.json') if r['geladen_ok'] and r['bestand']]",
+    "velden_per_record": "bestand, bron_naam, viewport_naam (desktop|mobile), klasse, soort_scherm, domein, taal, geladen_ok, afkeurredenen, controle, wat_het_toont (bij decoys ook kwaliteit en bewuste_zwaktes)",
+    "pad_van_de_png": "<map van het manifest>/<bestand>; afgekeurde PNG's (geladen_ok=false) staan in <map>/_afgekeurd/ en blijven met reden in het manifest"
+  },
   "ankers": [
     {
       "id": "stripe_docs_api_reference",
@@ -84,7 +90,8 @@
               1.0
             ],
             "blok_gevuld": 0.898,
-            "blok_contrast": 0.0
+            "blok_contrast": 0.0,
+            "ring_mediaan": 255.0
           }
         },
         "dom": {
@@ -94,6 +101,9 @@
           "h1": "API Reference",
           "tekst_tekens": 24314,
           "tekst_begin": "Find anything / Ask AI Introduction Authentication Errors Expanding Responses Idempotent requests Include-dependent response values (API v2) Metadata Pagination Request IDs Connected Accounts Versioning Enums Core Resources Accountsv2 Accou",
+          "bediening_zichtbaar": null,
+          "content_type": null,
+          "aantal_elementen": null,
           "taal_gemeten": "en",
           "fout_patroon": null,
           "captcha_element": false,
@@ -190,7 +200,8 @@
               1.0
             ],
             "blok_gevuld": 0.903,
-            "blok_contrast": 0.0
+            "blok_contrast": 0.0,
+            "ring_mediaan": 255.0
           }
         },
         "dom": {
@@ -200,6 +211,9 @@
           "h1": "API Reference",
           "tekst_tekens": 22961,
           "tekst_begin": "INTRODUCTION Introduction Authentication Errors Expanding Responses Idempotent requests Include-dependent response values (API v2) Metadata Pagination Request IDs Connected Accounts Versioning Enums Accounts Account Links Account Tokens Bal",
+          "bediening_zichtbaar": null,
+          "content_type": null,
+          "aantal_elementen": null,
           "taal_gemeten": "en",
           "fout_patroon": null,
           "captcha_element": false,
@@ -296,7 +310,8 @@
               1.0
             ],
             "blok_gevuld": 0.956,
-            "blok_contrast": 0.0
+            "blok_contrast": 0.0,
+            "ring_mediaan": 255.0
           }
         },
         "dom": {
@@ -306,6 +321,9 @@
           "h1": "Supported payment methods",
           "tekst_tekens": 6663,
           "tekst_begin": "Skip to content Search / Ask AI Create account Sign in Get started Payments Revenue Data Platforms and marketplaces Money management Developer resources APIs & SDKs Help Overview Accept a payment ONLINE PAYMENTS Overview Find your use case ",
+          "bediening_zichtbaar": null,
+          "content_type": null,
+          "aantal_elementen": null,
           "taal_gemeten": "en",
           "fout_patroon": null,
           "captcha_element": false,
@@ -403,6 +421,7 @@
             ],
             "blok_gevuld": 0.921,
             "blok_contrast": 0.0,
+            "ring_mediaan": 255.0,
             "vouwstap": 25.8,
             "vouw_scherpte": 0.0,
             "helderste_boven_zonder_blok": 255.0,
@@ -416,6 +435,9 @@
           "h1": "Supported payment methods",
           "tekst_tekens": 5163,
           "tekst_begin": "Skip to content Overview Create account or Sign in Home / Payments Supported payment methods Learn about the types of payment methods that your Stripe integration can support. Copy for LLM View as Markdown Install tools Stripe supports the ",
+          "bediening_zichtbaar": null,
+          "content_type": null,
+          "aantal_elementen": null,
           "taal_gemeten": "en",
           "fout_patroon": null,
           "captcha_element": false,

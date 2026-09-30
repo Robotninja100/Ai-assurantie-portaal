@@ -1,0 +1,4944 @@
+[
+  {
+    "id": "linear_docs",
+    "bron_naam": "Linear",
+    "url": "https://linear.app/docs",
+    "bestand": "linear_docs_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          2618
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 1309,
+        "dominante_kleur": "#08090a",
+        "dominante_aandeel": 0.5596,
+        "inkt_aandeel": 0.0335,
+        "structuur_aandeel": 0.0177,
+        "effen_wit_aandeel": 0.0,
+        "effen_blokken_aandeel": 0.3511,
+        "lege_rijen_aandeel": 0.5875,
+        "langste_lege_band_css_px": 129,
+        "langste_lege_band_aandeel": 0.0985,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 70,
+        "lege_staart_aandeel": 0.0539,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.933,
+            0.018,
+            0.983,
+            0.053
+          ],
+          "blok_gevuld": 0.701,
+          "blok_contrast": 220.2,
+          "ring_mediaan": 8.9,
+          "vouwstap": -11.1,
+          "vouw_scherpte": 0.7,
+          "helderste_boven_zonder_blok": 90.8,
+          "helderste_onder": 134.8
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://linear.app/docs",
+        "titel": "Linear Docs",
+        "h1": "Linear Docs",
+        "tekst_tekens": 1241,
+        "tekst_begin": "Skip to content → Docs Getting started Account Administration AI Code Your sidebar Teams Issues Issue properties Projects Initiatives Cycles Views Find and filter Linear Asks Integrations Analytics Importers Docs Developers Learn Contact su",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1706,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Linear Docs (linear.app/docs), donker thema: documentatieportaal met boomnavigatie links, kop 'Linear Docs' en twee kaartenrasters ('Popular', 'Linear basics') met icoon, titel en een regel uitleg. Documentatie-interface; geen productscherm.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:07:42+00:00",
+    "http_status": 200,
+    "eind_url": "https://linear.app/docs",
+    "titel": "Linear Docs",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 319890,
+    "pagina_hoogte_css_px": 1309
+  },
+  {
+    "id": "linear_docs",
+    "bron_naam": "Linear",
+    "url": "https://linear.app/docs",
+    "bestand": "linear_docs_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          8122
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 4061,
+        "dominante_kleur": "#141516",
+        "dominante_aandeel": 0.6935,
+        "inkt_aandeel": 0.0231,
+        "structuur_aandeel": 0.0176,
+        "effen_wit_aandeel": 0.0,
+        "effen_blokken_aandeel": 0.3902,
+        "lege_rijen_aandeel": 0.7984,
+        "langste_lege_band_css_px": 153,
+        "langste_lege_band_aandeel": 0.0377,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 70,
+        "lege_staart_aandeel": 0.0174,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.66,
+            0.019,
+            0.835,
+            0.057
+          ],
+          "blok_gevuld": 0.713,
+          "blok_contrast": 220.2,
+          "ring_mediaan": 8.9,
+          "vouwstap": 0.9,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 133.9,
+          "helderste_onder": 137.9
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://linear.app/docs",
+        "titel": "Linear Docs",
+        "h1": "Linear Docs",
+        "tekst_tekens": 1013,
+        "tekst_begin": "Skip to content → Docs Sign up Linear Docs Get an overview of Linear's features, integrations, and how to use them. Popular Start Guide Learn how to use the app and follow best practices for software building Import Issues Quickly move issu",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1691,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Linear Docs (linear.app/docs), donker thema: documentatieportaal met boomnavigatie links, kop 'Linear Docs' en twee kaartenrasters ('Popular', 'Linear basics') met icoon, titel en een regel uitleg. Documentatie-interface; geen productscherm.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:07:55+00:00",
+    "http_status": 200,
+    "eind_url": "https://linear.app/docs",
+    "titel": "Linear Docs",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 311983,
+    "pagina_hoogte_css_px": 4061
+  },
+  {
+    "id": "linear_product",
+    "bron_naam": "Linear",
+    "url": "https://linear.app/",
+    "bestand": "linear_product_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          19920
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 9960,
+        "dominante_kleur": "#08090a",
+        "dominante_aandeel": 0.6981,
+        "inkt_aandeel": 0.0453,
+        "structuur_aandeel": 0.0131,
+        "effen_wit_aandeel": 0.0003,
+        "effen_blokken_aandeel": 0.6547,
+        "lege_rijen_aandeel": 0.6828,
+        "langste_lege_band_css_px": 1900,
+        "langste_lege_band_aandeel": 0.1908,
+        "grote_lege_banden_aandeel": 0.3821,
+        "lege_staart_css_px": 1900,
+        "lege_staart_aandeel": 0.1908,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.894,
+            0.022,
+            0.944,
+            0.058
+          ],
+          "blok_gevuld": 0.688,
+          "blok_contrast": 220.3,
+          "ring_mediaan": 8.7,
+          "vouwstap": 2.8,
+          "vouw_scherpte": 11.0,
+          "helderste_boven_zonder_blok": 216.5,
+          "helderste_onder": 142.6
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://linear.app/",
+        "titel": "Linear – The system for product development",
+        "h1": "The product development system for teams and agents The product development system for teams and agents",
+        "tekst_tekens": 9404,
+        "tekst_begin": "Skip to content → Product Resources Customers Pricing Now Contact Log in Sign up The product development system for teams and agents The product development system for teams and agents Purpose-built for planning and building products. Desig",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 5144,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Linear-homepage (linear.app): donkere marketingpagina met de kop 'The product development system for teams and agents', navigatie, knoppen en een ingesloten mockup van de app in de hero. De mockup is een illustratie, geen bruikbare interface.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:08:09+00:00",
+    "http_status": 200,
+    "eind_url": "https://linear.app/",
+    "titel": "Linear – The system for product development",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 8241523,
+    "pagina_hoogte_css_px": 9960
+  },
+  {
+    "id": "linear_product",
+    "bron_naam": "Linear",
+    "url": "https://linear.app/",
+    "bestand": "linear_product_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          11752
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 5876,
+        "dominante_kleur": "#08090a",
+        "dominante_aandeel": 0.5627,
+        "inkt_aandeel": 0.121,
+        "structuur_aandeel": 0.034,
+        "effen_wit_aandeel": 0.0007,
+        "effen_blokken_aandeel": 0.311,
+        "lege_rijen_aandeel": 0.6005,
+        "langste_lege_band_css_px": 210,
+        "langste_lege_band_aandeel": 0.0357,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 34,
+        "lege_staart_aandeel": 0.0057,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.67,
+            0.019,
+            0.845,
+            0.057
+          ],
+          "blok_gevuld": 0.728,
+          "blok_contrast": 220.3,
+          "ring_mediaan": 8.8,
+          "vouwstap": -4.7,
+          "vouw_scherpte": 0.1,
+          "helderste_boven_zonder_blok": 201.4,
+          "helderste_onder": 230.8
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://linear.app/",
+        "titel": "Linear – The system for product development",
+        "h1": "The product development system for teams and agents The product development system for teams and agents",
+        "tekst_tekens": 3864,
+        "tekst_begin": "Skip to content → Log in Sign up The product development system for teams and agents The product development system for teams and agents Purpose-built for planning and building products. Designed for the AI era. New Loops → Linear Pulse Inb",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 5032,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Linear-homepage (linear.app): donkere marketingpagina met de kop 'The product development system for teams and agents', navigatie, knoppen en een ingesloten mockup van de app in de hero. De mockup is een illustratie, geen bruikbare interface.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:08:51+00:00",
+    "http_status": 200,
+    "eind_url": "https://linear.app/",
+    "titel": "Linear – The system for product development",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1617576,
+    "pagina_hoogte_css_px": 5876
+  },
+  {
+    "id": "vercel_geist",
+    "bron_naam": "Vercel (Geist)",
+    "url": "https://vercel.com/geist/introduction",
+    "bestand": "vercel_geist_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          2150
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 1075,
+        "dominante_kleur": "#fafafa",
+        "dominante_aandeel": 0.8845,
+        "inkt_aandeel": 0.0275,
+        "structuur_aandeel": 0.0174,
+        "effen_wit_aandeel": 0.9523,
+        "effen_blokken_aandeel": 0.4229,
+        "lege_rijen_aandeel": 0.5056,
+        "langste_lege_band_css_px": 81,
+        "langste_lege_band_aandeel": 0.0753,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 36,
+        "lege_staart_aandeel": 0.033,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.971,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 250.0,
+          "vouwstap": -14.7,
+          "vouw_scherpte": 2.8,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://vercel.com/geist/introduction",
+        "titel": "Geist",
+        "h1": "Geist Design System",
+        "tekst_tekens": 1371,
+        "tekst_begin": "Geist Design System Search Geist Ctrl K Select a display theme: system light dark Geist Design System Vercel design system for building consistent web experiences. Brand Assets Learn how to work with our brand assets. Icons Icon set tailore",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 774,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Vercel Geist Design System (vercel.com/geist/introduction): documentatie van het designsysteem met zijbalknavigatie (Foundations, Components, ...), introductietekst en voorbeeldtegels (Brand Assets, Icons, Components, Colors, Grid, Typeface). Documentatie-interface, geen app.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:09:12+00:00",
+    "http_status": 200,
+    "eind_url": "https://vercel.com/geist/introduction",
+    "titel": "Geist",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 275618,
+    "pagina_hoogte_css_px": 1075
+  },
+  {
+    "id": "vercel_geist",
+    "bron_naam": "Vercel (Geist)",
+    "url": "https://vercel.com/geist/introduction",
+    "bestand": "vercel_geist_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          3796
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 1898,
+        "dominante_kleur": "#fafafa",
+        "dominante_aandeel": 0.8688,
+        "inkt_aandeel": 0.0422,
+        "structuur_aandeel": 0.0264,
+        "effen_wit_aandeel": 0.9375,
+        "effen_blokken_aandeel": 0.3277,
+        "lege_rijen_aandeel": 0.7268,
+        "langste_lege_band_css_px": 114,
+        "langste_lege_band_aandeel": 0.0601,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 56,
+        "lege_staart_aandeel": 0.0298,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.945,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 250.0,
+          "vouwstap": 4.3,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://vercel.com/geist/introduction",
+        "titel": "Geist",
+        "h1": "Geist Design System",
+        "tekst_tekens": 513,
+        "tekst_begin": "Geist Design System Geist Design System Vercel design system for building consistent web experiences. Brand Assets Learn how to work with our brand assets. Icons Icon set tailored for developer tools. npx create-next-app Collaborate Label C",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 772,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Vercel Geist Design System (vercel.com/geist/introduction): documentatie van het designsysteem met zijbalknavigatie (Foundations, Components, ...), introductietekst en voorbeeldtegels (Brand Assets, Icons, Components, Colors, Grid, Typeface). Documentatie-interface, geen app.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:09:38+00:00",
+    "http_status": 200,
+    "eind_url": "https://vercel.com/geist/introduction",
+    "titel": "Geist",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 194254,
+    "pagina_hoogte_css_px": 1898
+  },
+  {
+    "id": "vercel_templates",
+    "bron_naam": "Vercel",
+    "url": "https://vercel.com/templates",
+    "bestand": "_afgekeurd/vercel_templates_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "catalogus",
+    "geladen_ok": false,
+    "afkeurredenen": [
+      "grote_lege_band"
+    ],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          19460
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 9730,
+        "dominante_kleur": "#fafafa",
+        "dominante_aandeel": 0.5708,
+        "inkt_aandeel": 0.0302,
+        "structuur_aandeel": 0.0071,
+        "effen_wit_aandeel": 0.9421,
+        "effen_blokken_aandeel": 0.6922,
+        "lege_rijen_aandeel": 0.8517,
+        "langste_lege_band_css_px": 6534,
+        "langste_lege_band_aandeel": 0.6715,
+        "grote_lege_banden_aandeel": 0.7679,
+        "lege_staart_css_px": 938,
+        "lege_staart_aandeel": 0.0965,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.885,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 250.0,
+          "vouwstap": -15.9,
+          "vouw_scherpte": 3.1,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://vercel.com/templates",
+        "titel": "Templates - Vercel",
+        "h1": "Find your Template",
+        "tekst_tekens": 3304,
+        "tekst_begin": "Skip to content Products Resources Enterprise Pricing Contact Log In Sign Up Find your Template Jumpstart your app development process with pre-built solutions from Vercel and our community. Filter Templates Use Case AI Authentication Backe",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2917,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Vercel Templates ('Find your Template'): zoekveld, facetfilters links en een kaartenraster met sjablonen. Alleen de eerste rijen kaarten zijn gerenderd; daaronder blijven grote vlakken leeg (lazy-loading kwam niet op gang), daarom afgekeurd.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:10:04+00:00",
+    "http_status": 200,
+    "eind_url": "https://vercel.com/templates",
+    "titel": "Templates - Vercel",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1390041,
+    "pagina_hoogte_css_px": 9730,
+    "afkeurreden": "grote_lege_band"
+  },
+  {
+    "id": "vercel_templates",
+    "bron_naam": "Vercel",
+    "url": "https://vercel.com/templates",
+    "bestand": "_afgekeurd/vercel_templates_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "catalogus",
+    "geladen_ok": false,
+    "afkeurredenen": [
+      "grote_lege_band",
+      "lege_staart"
+    ],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.6299,
+        "inkt_aandeel": 0.0697,
+        "structuur_aandeel": 0.0095,
+        "effen_wit_aandeel": 0.9277,
+        "effen_blokken_aandeel": 0.524,
+        "lege_rijen_aandeel": 0.8828,
+        "langste_lege_band_css_px": 7704,
+        "langste_lege_band_aandeel": 0.7704,
+        "grote_lege_banden_aandeel": 0.7704,
+        "lege_staart_css_px": 7704,
+        "lege_staart_aandeel": 0.7704,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.82,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 250.0,
+          "vouwstap": 35.1,
+          "vouw_scherpte": 3.5,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://vercel.com/templates",
+        "titel": "Templates - Vercel",
+        "h1": "Find your Template",
+        "tekst_tekens": 1280,
+        "tekst_begin": "Skip to content Find your Template Jumpstart your app development process with pre-built solutions from Vercel and our community. eve Incident Response Agent sre investigates production issues using a hypothesis-driven approach and outputs ",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2707,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Vercel Templates ('Find your Template'): zoekveld, facetfilters links en een kaartenraster met sjablonen. Alleen de eerste rijen kaarten zijn gerenderd; daaronder blijven grote vlakken leeg (lazy-loading kwam niet op gang), daarom afgekeurd.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:10:43+00:00",
+    "http_status": 200,
+    "eind_url": "https://vercel.com/templates",
+    "titel": "Templates - Vercel",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 489866,
+    "pagina_hoogte_css_px": 22650,
+    "afgekapt_op_px": 10000,
+    "afkeurreden": "grote_lege_band, lege_staart"
+  },
+  {
+    "id": "attio_crm",
+    "bron_naam": "Attio",
+    "url": "https://attio.com/",
+    "bestand": "_afgekeurd/attio_crm_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": false,
+    "afkeurredenen": [
+      "grote_lege_band"
+    ],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          20000
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.6894,
+        "inkt_aandeel": 0.0214,
+        "structuur_aandeel": 0.0067,
+        "effen_wit_aandeel": 0.7769,
+        "effen_blokken_aandeel": 0.6539,
+        "lege_rijen_aandeel": 0.8297,
+        "langste_lege_band_css_px": 2058,
+        "langste_lege_band_aandeel": 0.2059,
+        "grote_lege_banden_aandeel": 0.5678,
+        "lege_staart_css_px": 2058,
+        "lege_staart_aandeel": 0.2059,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.053,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.983,
+          "blok_contrast": 255.0,
+          "ring_mediaan": 0.0,
+          "vouwstap": 9.2,
+          "vouw_scherpte": 5.5,
+          "helderste_boven_zonder_blok": 102.8,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://attio.com/",
+        "titel": "Attio: The CRM for agentic revenue",
+        "h1": "Welcome to agentic revenue.",
+        "tekst_tekens": 12639,
+        "tekst_begin": "Orchestrate revenue agents with Workflows Platform Resources Developers Customers Pricing Sign in Start for free GTM lessons from Elena Verna and more Welcome to agentic revenue. Attio is the CRM that builds pipeline, advances deals, and gr",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 4889,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geklikt",
+        "knop": "Continue",
+        "verborgen_via": null,
+        "blokkerend_voor": 1,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [
+          {
+            "actie": "geklikt",
+            "knop": "Continue",
+            "overlays_daarna": 0
+          }
+        ],
+        "voor": [
+          {
+            "tag": "div",
+            "id": "",
+            "reden": [
+              "cookiebanner"
+            ],
+            "bedekking": 0.167,
+            "tekst": "We use cookies to improve your experience. You can opt out of certain cookies. Find out more in our "
+          }
+        ],
+        "beschrijving": "geklikt op 'Continue' (0 blokkerende overlay(s) daarna). Daarna gemeten: 0 blokkerende overlays (voor: 1)."
+      }
+    },
+    "wat_het_toont": "Attio-homepage (attio.com): marketingpagina 'Welcome to agentic revenue' met een mockup van de app en klantlogo's. Op desktop blijven scrollgeanimeerde secties leeg (afgekeurd); mobiel is de pagina gevuld.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:11:14+00:00",
+    "http_status": 200,
+    "eind_url": "https://attio.com/",
+    "titel": "Attio: The CRM for agentic revenue",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1665507,
+    "pagina_hoogte_css_px": 17599,
+    "afgekapt_op_px": 10000,
+    "afkeurreden": "grote_lege_band"
+  },
+  {
+    "id": "attio_crm",
+    "bron_naam": "Attio",
+    "url": "https://attio.com/",
+    "bestand": "attio_crm_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#fafafb",
+        "dominante_aandeel": 0.4101,
+        "inkt_aandeel": 0.2976,
+        "structuur_aandeel": 0.0327,
+        "effen_wit_aandeel": 0.5958,
+        "effen_blokken_aandeel": 0.2382,
+        "lege_rijen_aandeel": 0.6996,
+        "langste_lege_band_css_px": 1834,
+        "langste_lege_band_aandeel": 0.1834,
+        "grote_lege_banden_aandeel": 0.2142,
+        "lege_staart_css_px": 1834,
+        "lege_staart_aandeel": 0.1834,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.057,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.916,
+          "blok_contrast": 255.0,
+          "ring_mediaan": 0.0,
+          "vouwstap": 10.7,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 138.2,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://attio.com/",
+        "titel": "Attio: The CRM for agentic revenue",
+        "h1": "Welcome to agentic revenue.",
+        "tekst_tekens": 10045,
+        "tekst_begin": "Orchestrate revenue agents with Workflows GTM lessons from Elena Verna and more Welcome to agentic revenue. Attio is the CRM that builds pipeline, advances deals, and grows accounts around the clock. Send me a demo Talk to sales Home Config",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 4227,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geklikt",
+        "knop": "Continue",
+        "verborgen_via": null,
+        "blokkerend_voor": 1,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [
+          {
+            "actie": "geklikt",
+            "knop": "Continue",
+            "overlays_daarna": 0
+          }
+        ],
+        "voor": [
+          {
+            "tag": "div",
+            "id": "",
+            "reden": [
+              "cookiebanner"
+            ],
+            "bedekking": 0.178,
+            "tekst": "We use cookies to improve your experience. You can opt out of certain cookies. Find out more in our "
+          }
+        ],
+        "beschrijving": "geklikt op 'Continue' (0 blokkerende overlay(s) daarna). Daarna gemeten: 0 blokkerende overlays (voor: 1)."
+      }
+    },
+    "wat_het_toont": "Attio-homepage (attio.com): marketingpagina 'Welcome to agentic revenue' met een mockup van de app en klantlogo's. Op desktop blijven scrollgeanimeerde secties leeg (afgekeurd); mobiel is de pagina gevuld.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:12:55+00:00",
+    "http_status": 200,
+    "eind_url": "https://attio.com/",
+    "titel": "Attio: The CRM for agentic revenue",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1607130,
+    "pagina_hoogte_css_px": 16169,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "attio_help",
+    "bron_naam": "Attio",
+    "url": "https://attio.com/help/reference/attio-101",
+    "bestand": "attio_help_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          6760
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 3380,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.7892,
+        "inkt_aandeel": 0.0336,
+        "structuur_aandeel": 0.0113,
+        "effen_wit_aandeel": 0.9448,
+        "effen_blokken_aandeel": 0.6167,
+        "lege_rijen_aandeel": 0.6478,
+        "langste_lege_band_css_px": 260,
+        "langste_lege_band_aandeel": 0.0771,
+        "grote_lege_banden_aandeel": 0.0771,
+        "lege_staart_css_px": 46,
+        "lege_staart_aandeel": 0.0136,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.053,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.98,
+          "blok_contrast": 255.0,
+          "ring_mediaan": 0.0,
+          "vouwstap": -7.5,
+          "vouw_scherpte": 1.2,
+          "helderste_boven_zonder_blok": 102.8,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://attio.com/help/reference/attio-101",
+        "titel": "Attio 101 | Attio Help Center",
+        "h1": "Attio 101",
+        "tekst_tekens": 2225,
+        "tekst_begin": "Orchestrate revenue agents with Workflows Platform Resources Developers Customers Pricing Sign in Start for free Search... ⌘K ACADEMY Introductions Workflows Sequences Reports Attio for product-led growth REFERENCE Attio 101 Introduction In",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1193,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geklikt",
+        "knop": "Continue",
+        "verborgen_via": null,
+        "blokkerend_voor": 1,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [
+          {
+            "actie": "geklikt",
+            "knop": "Continue",
+            "overlays_daarna": 0
+          }
+        ],
+        "voor": [
+          {
+            "tag": "div",
+            "id": "",
+            "reden": [
+              "cookiebanner"
+            ],
+            "bedekking": 0.167,
+            "tekst": "We use cookies to improve your experience. You can opt out of certain cookies. Find out more in our "
+          }
+        ],
+        "beschrijving": "geklikt op 'Continue' (0 blokkerende overlay(s) daarna). Daarna gemeten: 0 blokkerende overlays (voor: 1)."
+      }
+    },
+    "wat_het_toont": "Attio Help Center, artikel 'Attio 101': documentatie-interface met zoekveld en boomnavigatie links, artikelkop en een genummerde lijst onderwerpen met grijze plaatshouders voor afbeeldingen. Geen CRM-scherm.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:13:40+00:00",
+    "http_status": 200,
+    "eind_url": "https://attio.com/help/reference/attio-101",
+    "titel": "Attio 101 | Attio Help Center",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1048487,
+    "pagina_hoogte_css_px": 3380
+  },
+  {
+    "id": "attio_help",
+    "bron_naam": "Attio",
+    "url": "https://attio.com/help/reference/attio-101",
+    "bestand": "attio_help_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          9726
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 4863,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.714,
+        "inkt_aandeel": 0.0437,
+        "structuur_aandeel": 0.0226,
+        "effen_wit_aandeel": 0.9249,
+        "effen_blokken_aandeel": 0.3703,
+        "lege_rijen_aandeel": 0.7307,
+        "langste_lege_band_css_px": 242,
+        "langste_lege_band_aandeel": 0.0498,
+        "grote_lege_banden_aandeel": 0.0498,
+        "lege_staart_css_px": 46,
+        "lege_staart_aandeel": 0.0095,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.057,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.96,
+          "blok_contrast": 255.0,
+          "ring_mediaan": 0.0,
+          "vouwstap": 14.6,
+          "vouw_scherpte": 0.5,
+          "helderste_boven_zonder_blok": 138.2,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://attio.com/help/reference/attio-101",
+        "titel": "Attio 101 | Attio Help Center",
+        "h1": "Attio 101",
+        "tekst_tekens": 1414,
+        "tekst_begin": "Orchestrate revenue agents with Workflows Contents Help / Reference / Attio 101 Attio 101 Begin your journey with the CRM for modern go-to-market teams. 1 Introduction Begin your journey with Attio. Read more 2 Introduction to navigating At",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1194,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geklikt",
+        "knop": "Continue",
+        "verborgen_via": null,
+        "blokkerend_voor": 1,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [
+          {
+            "actie": "geklikt",
+            "knop": "Continue",
+            "overlays_daarna": 0
+          }
+        ],
+        "voor": [
+          {
+            "tag": "div",
+            "id": "",
+            "reden": [
+              "cookiebanner"
+            ],
+            "bedekking": 0.178,
+            "tekst": "We use cookies to improve your experience. You can opt out of certain cookies. Find out more in our "
+          }
+        ],
+        "beschrijving": "geklikt op 'Continue' (0 blokkerende overlay(s) daarna). Daarna gemeten: 0 blokkerende overlays (voor: 1)."
+      }
+    },
+    "wat_het_toont": "Attio Help Center, artikel 'Attio 101': documentatie-interface met zoekveld en boomnavigatie links, artikelkop en een genummerde lijst onderwerpen met grijze plaatshouders voor afbeeldingen. Geen CRM-scherm.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:14:13+00:00",
+    "http_status": 200,
+    "eind_url": "https://attio.com/help/reference/attio-101",
+    "titel": "Attio 101 | Attio Help Center",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 736061,
+    "pagina_hoogte_css_px": 4863
+  },
+  {
+    "id": "mercury_banking",
+    "bron_naam": "Mercury",
+    "url": "https://mercury.com/",
+    "bestand": "mercury_banking_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          20000
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#171721",
+        "dominante_aandeel": 0.6127,
+        "inkt_aandeel": 0.2958,
+        "structuur_aandeel": 0.0154,
+        "effen_wit_aandeel": 0.0164,
+        "effen_blokken_aandeel": 0.4836,
+        "lege_rijen_aandeel": 0.517,
+        "langste_lege_band_css_px": 426,
+        "langste_lege_band_aandeel": 0.0426,
+        "grote_lege_banden_aandeel": 0.0975,
+        "lege_staart_css_px": 42,
+        "lege_staart_aandeel": 0.0043,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            0.053
+          ],
+          "blok_gevuld": 0.939,
+          "blok_contrast": 143.2,
+          "ring_mediaan": 108.7,
+          "vouwstap": -9.4,
+          "vouw_scherpte": 13.9,
+          "helderste_boven_zonder_blok": 187.1,
+          "helderste_onder": 250.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://mercury.com/",
+        "titel": "Online Business Banking For Startups, Small Businesses & Scaling Companies",
+        "h1": "Radically different banking",
+        "tekst_tekens": 10183,
+        "tekst_begin": "Introducing Mercury Books, AI-powered accounting software, built into Mercury Products Solutions Resources About Pricing Log in Open account Radically different banking Apply online in 10 minutes to experience banking unlike anything that’s",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2325,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Mercury-homepage (mercury.com): marketingpagina met fotohero 'Radically different banking', aanmeldveld en een ingesloten mockup van een rekeningoverzicht. De mockup is een illustratie.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:14:43+00:00",
+    "http_status": 200,
+    "eind_url": "https://mercury.com/",
+    "titel": "Online Business Banking For Startups, Small Businesses & Scaling Companies",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 10706128,
+    "pagina_hoogte_css_px": 11661,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "mercury_banking",
+    "bron_naam": "Mercury",
+    "url": "https://mercury.com/",
+    "bestand": "mercury_banking_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#171721",
+        "dominante_aandeel": 0.4771,
+        "inkt_aandeel": 0.4706,
+        "structuur_aandeel": 0.0339,
+        "effen_wit_aandeel": 0.0257,
+        "effen_blokken_aandeel": 0.1904,
+        "lege_rijen_aandeel": 0.6121,
+        "langste_lege_band_css_px": 192,
+        "langste_lege_band_aandeel": 0.0192,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            0.071
+          ],
+          "blok_gevuld": 0.902,
+          "blok_contrast": 93.0,
+          "ring_mediaan": 158.8,
+          "vouwstap": -11.2,
+          "vouw_scherpte": 15.6,
+          "helderste_boven_zonder_blok": 193.5,
+          "helderste_onder": 249.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://mercury.com/",
+        "titel": "Online Business Banking For Startups, Small Businesses & Scaling Companies",
+        "h1": "Radically different banking",
+        "tekst_tekens": 10193,
+        "tekst_begin": "Introducing Mercury Books, AI-powered accounting software, built into Mercury Open Menu Products Solutions Resources About Pricing Log in Open account Radically different banking Apply online in 10 minutes to experience banking unlike anyth",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2382,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Mercury-homepage (mercury.com): marketingpagina met fotohero 'Radically different banking', aanmeldveld en een ingesloten mockup van een rekeningoverzicht. De mockup is een illustratie.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:15:23+00:00",
+    "http_status": 200,
+    "eind_url": "https://mercury.com/",
+    "titel": "Online Business Banking For Startups, Small Businesses & Scaling Companies",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 4727635,
+    "pagina_hoogte_css_px": 14979,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "ramp_finance",
+    "bron_naam": "Ramp",
+    "url": "https://ramp.com/",
+    "bestand": "_afgekeurd/ramp_finance_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": false,
+    "afkeurredenen": [
+      "geen_html_pagina",
+      "platte_tekst_pagina"
+    ],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          8812
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 4406,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.929,
+        "inkt_aandeel": 0.0606,
+        "structuur_aandeel": 0.063,
+        "effen_wit_aandeel": 0.9341,
+        "effen_blokken_aandeel": 0.571,
+        "lege_rijen_aandeel": 0.3715,
+        "langste_lege_band_css_px": 22,
+        "langste_lege_band_aandeel": 0.0051,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 14,
+        "lege_staart_aandeel": 0.0031,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.939,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0,
+          "vouwstap": 4.6,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://ramp.com/",
+        "titel": "",
+        "h1": "",
+        "tekst_tekens": 13957,
+        "tekst_begin": "# Ramp — Machine Version **Quick links:** [Docs](https://docs.ramp.com/) · [Help Center](https://support.ramp.com/) · [Integrations](https://ramp.com/integrations) · [Pricing](https://ramp.com/pricing) · [Trust Center](https://trust.ramp.co",
+        "bediening_zichtbaar": null,
+        "content_type": "text/markdown",
+        "aantal_elementen": 8,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Ramp-homepage (ramp.com): marketingpagina 'Time is money. Save both.' met klantlogo's, productkaarten en productmockups. De site levert per lading wisselend de echte pagina, een Markdown-'Machine Version' als platte tekst of een nieuwsbriefvenster met schermdimming: bij de laatste lading was mobiel de echte pagina en desktop de platte tekst (afgekeurd). Niet omzeild of herhaald.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:49:57+00:00",
+    "http_status": 200,
+    "eind_url": "https://ramp.com/",
+    "titel": null,
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 2228762,
+    "pagina_hoogte_css_px": 4406,
+    "afkeurreden": "geen_html_pagina, platte_tekst_pagina"
+  },
+  {
+    "id": "ramp_finance",
+    "bron_naam": "Ramp",
+    "url": "https://ramp.com/",
+    "bestand": "ramp_finance_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.5975,
+        "inkt_aandeel": 0.2023,
+        "structuur_aandeel": 0.0343,
+        "effen_wit_aandeel": 0.6177,
+        "effen_blokken_aandeel": 0.2842,
+        "lege_rijen_aandeel": 0.5659,
+        "langste_lege_band_css_px": 1002,
+        "langste_lege_band_aandeel": 0.1003,
+        "grote_lege_banden_aandeel": 0.1003,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.085,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.963,
+          "blok_contrast": 171.9,
+          "ring_mediaan": 82.7,
+          "vouwstap": -9.5,
+          "vouw_scherpte": 9.9,
+          "helderste_boven_zonder_blok": 152.3,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://ramp.com/",
+        "titel": "Spend Management, Corporate Cards & Accounts Payable Solutions | Ramp",
+        "h1": "Time is money. Save both.",
+        "tekst_tekens": 8004,
+        "tekst_begin": "___ New: AI Token Spend Management — see, understand, and control your AI bill. Learn more Back US CORPORATE PAYMENTS PROCESSED BY RAMP: Time is money. Save both. Cards, expenses, bill payments, and banking* – in the blink of AI. Email Get ",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 8152,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Ramp-homepage (ramp.com): marketingpagina 'Time is money. Save both.' met klantlogo's, productkaarten en productmockups. De site levert per lading wisselend de echte pagina, een Markdown-'Machine Version' als platte tekst of een nieuwsbriefvenster met schermdimming: bij de laatste lading was mobiel de echte pagina en desktop de platte tekst (afgekeurd). Niet omzeild of herhaald.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:50:14+00:00",
+    "http_status": 200,
+    "eind_url": "https://ramp.com/",
+    "titel": "Spend Management, Corporate Cards & Accounts Payable Solutions | Ramp",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 2784900,
+    "pagina_hoogte_css_px": 14638,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "retool_components",
+    "bron_naam": "Retool",
+    "url": "https://docs.retool.com/apps/reference/components",
+    "bestand": "retool_components_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          20000
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#e9ebdf",
+        "dominante_aandeel": 0.4903,
+        "inkt_aandeel": 0.496,
+        "structuur_aandeel": 0.0255,
+        "effen_wit_aandeel": 0.0,
+        "effen_blokken_aandeel": 0.3311,
+        "lege_rijen_aandeel": 0.2328,
+        "langste_lege_band_css_px": 62,
+        "langste_lege_band_aandeel": 0.0063,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.957,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 233.7,
+          "vouwstap": -1.1,
+          "vouw_scherpte": 1.0,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 247.5
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://docs.retool.com/apps/reference/components",
+        "titel": "Classic apps component reference | Retool Docs",
+        "h1": "Classic apps component reference",
+        "tekst_tekens": 11167,
+        "tekst_begin": "Skip to main content Build Automate Code Manage Host What's new Get started SEARCH / NEWUse external MCPs in app builder Classic apps Convert classic apps How-to Reference Components Legacy Buttons Charts Containers and forms Custom Data Da",
+        "bediening_zichtbaar": 2,
+        "content_type": "text/html",
+        "aantal_elementen": 6140,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Retool Docs, 'Classic apps component reference': documentatie met zijbalkboom, broodkruimel, waarschuwingsbox en een kaartenraster met componenten (Alert, Button Group, ...), plus een vaste onderbalk (Version, Domain, Status, Ask AI). Documentatie-interface.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T23:12:50+00:00",
+    "http_status": 200,
+    "eind_url": "https://docs.retool.com/apps/reference/components",
+    "titel": "Classic apps component reference | Retool Docs",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1840006,
+    "pagina_hoogte_css_px": 15373,
+    "afgekapt_op_px": 10000,
+    "stappen": [
+      "ok: {\"click\": \"button:has-text('Got it')\"}",
+      "ok: {\"wait\": 800}"
+    ]
+  },
+  {
+    "id": "retool_components",
+    "bron_naam": "Retool",
+    "url": "https://docs.retool.com/apps/reference/components",
+    "bestand": "retool_components_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#f7f8f4",
+        "dominante_aandeel": 0.6248,
+        "inkt_aandeel": 0.3554,
+        "structuur_aandeel": 0.0454,
+        "effen_wit_aandeel": 0.0001,
+        "effen_blokken_aandeel": 0.1838,
+        "lege_rijen_aandeel": 0.2356,
+        "langste_lege_band_css_px": 66,
+        "langste_lege_band_aandeel": 0.0066,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.913,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 233.7,
+          "vouwstap": 11.8,
+          "vouw_scherpte": 0.9,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 247.5
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://docs.retool.com/apps/reference/components",
+        "titel": "Classic apps component reference | Retool Docs",
+        "h1": "Classic apps component reference",
+        "tekst_tekens": 10783,
+        "tekst_begin": "Skip to main content SEARCH / NEWSelf-hosted Retool 4.34 and 4.0 stable updates HOMECLASSIC APPSREFERENCECOMPONENTS Classic apps component reference Reference documentation for UI components. CLOUD CLASSIC APPS ALL PLANS Classic apps You're",
+        "bediening_zichtbaar": 2,
+        "content_type": "text/html",
+        "aantal_elementen": 3864,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "verdwenen_tussen_metingen",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 1,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "voor": [
+          {
+            "tag": "div",
+            "id": "",
+            "reden": [
+              "dialoog"
+            ],
+            "bedekking": 0.133,
+            "tekst": "New here? Set your hosting type and Retool domain to personalize code examples, links, and content t"
+          }
+        ],
+        "beschrijving": "Bij een eerdere meting stond 1 blokkerende overlay(s) die de opruiming niet kon weghalen (niets gelukt); bij de laatste meting, na een pauze en/of scriptstappen (zie `stappen` in het record) en het scrollen, waren het er 0 (bijvoorbeeld een laadscherm dat wegfadet)."
+      }
+    },
+    "wat_het_toont": "Retool Docs, 'Classic apps component reference': documentatie met zijbalkboom, broodkruimel, waarschuwingsbox en een kaartenraster met componenten (Alert, Button Group, ...), plus een vaste onderbalk (Version, Domain, Status, Ask AI). Documentatie-interface.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T23:13:20+00:00",
+    "http_status": 200,
+    "eind_url": "https://docs.retool.com/apps/reference/components",
+    "titel": "Classic apps component reference | Retool Docs",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1126788,
+    "pagina_hoogte_css_px": 29609,
+    "afgekapt_op_px": 10000,
+    "stappen": [
+      "ok: {\"click\": \"button:has-text('Got it')\"}",
+      "ok: {\"wait\": 800}"
+    ]
+  },
+  {
+    "id": "metabase_docs",
+    "bron_naam": "Metabase",
+    "url": "https://www.metabase.com/docs/latest/",
+    "bestand": "metabase_docs_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          20000
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#fafbfe",
+        "dominante_aandeel": 0.7369,
+        "inkt_aandeel": 0.0217,
+        "structuur_aandeel": 0.0112,
+        "effen_wit_aandeel": 0.9701,
+        "effen_blokken_aandeel": 0.8066,
+        "lege_rijen_aandeel": 0.6065,
+        "langste_lege_band_css_px": 92,
+        "langste_lege_band_aandeel": 0.0092,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 72,
+        "lege_staart_aandeel": 0.0072,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.964,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 251.0,
+          "vouwstap": 0.8,
+          "vouw_scherpte": 1.5,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://www.metabase.com/docs/latest/",
+        "titel": "Metabase documentation | Metabase Documentation",
+        "h1": "Metabase documentation",
+        "tekst_tekens": 8141,
+        "tekst_begin": "Product Business Intelligence Self-service analytics for your team Embedded Analytics Fast, flexible customer-facing analytics Data sources Security Cloud Features Metabase AI Data Studio New Dashboards and reporting Query builder Data segr",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2630,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "js_verborgen",
+        "knop": null,
+        "verborgen_via": "consent-overlays via JS (2 elementen)",
+        "blokkerend_voor": 1,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [
+          {
+            "actie": "js_verborgen",
+            "elementen": 2,
+            "overlays_daarna": 0
+          }
+        ],
+        "voor": [
+          {
+            "tag": "div",
+            "id": "",
+            "reden": [
+              "cookiebanner"
+            ],
+            "bedekking": 0.013,
+            "tekst": "Like so many others, we use cookies to improve your experience on this website. We assume you're OK "
+          }
+        ],
+        "beschrijving": "consent-overlay met JS verborgen (0 daarna). Daarna gemeten: 0 blokkerende overlays (voor: 1)."
+      }
+    },
+    "wat_het_toont": "Metabase-documentatie (metabase.com/docs/latest): docs-portaal met kopnavigatie, zijbalkboom, titel, een afbeelding van een Metabase-dashboard in de artikeltekst en rechts 'On this page'. Het dashboard is een screenshot in het artikel, niet de app zelf.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:18:52+00:00",
+    "http_status": 200,
+    "eind_url": "https://www.metabase.com/docs/latest/",
+    "titel": "Metabase documentation | Metabase Documentation",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1908393,
+    "pagina_hoogte_css_px": 12354,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "metabase_docs",
+    "bron_naam": "Metabase",
+    "url": "https://www.metabase.com/docs/latest/",
+    "bestand": "metabase_docs_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "docs",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#fafbfe",
+        "dominante_aandeel": 0.9003,
+        "inkt_aandeel": 0.0626,
+        "structuur_aandeel": 0.0353,
+        "effen_wit_aandeel": 0.9226,
+        "effen_blokken_aandeel": 0.4634,
+        "lege_rijen_aandeel": 0.6203,
+        "langste_lege_band_css_px": 94,
+        "langste_lege_band_aandeel": 0.0095,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.93,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 251.0,
+          "vouwstap": 0.0,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 251.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://www.metabase.com/docs/latest/",
+        "titel": "Metabase documentation | Metabase Documentation",
+        "h1": "Metabase documentation",
+        "tekst_tekens": 6327,
+        "tekst_begin": "Get started v0.63 v0.64 v0.62 UNSUPPORTED v0.61 UNSUPPORTED v0.60 UNSUPPORTED v0.59 UNSUPPORTED v0.58 LTS v0.57 UNSUPPORTED v0.56 UNSUPPORTED v0.55 UNSUPPORTED See more Metabase documentation Metabase is an open-source business intelligence",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2630,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          392,
+          849
+        ]
+      },
+      "cookies": {
+        "actie": "js_verborgen",
+        "knop": null,
+        "verborgen_via": "consent-overlays via JS (2 elementen)",
+        "blokkerend_voor": 1,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [
+          {
+            "actie": "js_verborgen",
+            "elementen": 2,
+            "overlays_daarna": 0
+          }
+        ],
+        "voor": [
+          {
+            "tag": "div",
+            "id": "",
+            "reden": [
+              "cookiebanner"
+            ],
+            "bedekking": 0.049,
+            "tekst": "Like so many others, we use cookies to improve your experience on this website. We assume you're OK "
+          }
+        ],
+        "beschrijving": "consent-overlay met JS verborgen (0 daarna). Daarna gemeten: 0 blokkerende overlays (voor: 1)."
+      }
+    },
+    "wat_het_toont": "Metabase-documentatie (metabase.com/docs/latest): docs-portaal met kopnavigatie, zijbalkboom, titel, een afbeelding van een Metabase-dashboard in de artikeltekst en rechts 'On this page'. Het dashboard is een screenshot in het artikel, niet de app zelf.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:19:25+00:00",
+    "http_status": 200,
+    "eind_url": "https://www.metabase.com/docs/latest/",
+    "titel": "Metabase documentation | Metabase Documentation",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1500497,
+    "pagina_hoogte_css_px": 14074,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "grafana_play_dashboard",
+    "bron_naam": "Grafana Play",
+    "url": "https://play.grafana.org/d/lAoEVhD7z/home-kubernetes-integration",
+    "bestand": "grafana_play_dashboard_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "dashboard",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          1800
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 900,
+        "dominante_kleur": "#181b1f",
+        "dominante_aandeel": 0.7709,
+        "inkt_aandeel": 0.1064,
+        "structuur_aandeel": 0.035,
+        "effen_wit_aandeel": 0.0003,
+        "effen_blokken_aandeel": 0.369,
+        "lege_rijen_aandeel": 0.315,
+        "langste_lege_band_css_px": 32,
+        "langste_lege_band_aandeel": 0.035,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.731,
+            0.129,
+            0.736,
+            0.138
+          ],
+          "blok_gevuld": 1.0,
+          "blok_contrast": 214.9,
+          "ring_mediaan": 23.4
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://play.grafana.org/d/lAoEVhD7z/home-kubernetes-integration?from=now-30m&to=now&timezone=browser&var-datasource=grafanacloud-prom&var-cluster=play-db-cluster&var-instance=$__all&var-lokids=$__all&refresh=30s",
+        "titel": "(Home) Kubernetes Integration - Integration - Kubernetes - Dashboards - Grafana",
+        "h1": "",
+        "tekst_tekens": 1956,
+        "tekst_begin": "Skip to main content Grafana Starred Dashboards Explore Drilldown AI Alerts & IRM Machine learning Testing & synthetics Observability Connections More apps Administration Dashboards Integration - Kubernetes (Home) Kubernetes Integration Sea",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 819,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Grafana Play (play.grafana.org), live publieke instantie: Kubernetes-integratiedashboard in donker thema met navigatiezijbalk, variabelenbalk (data source, cluster, instance), tegels (Kubelet, kube-state-metrics, ...), stat-panelen (Running pods 79, Running containers 138), een dashboardlijst en een paneel met 'No data'. Echte app-omgeving zonder inlog.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:19:49+00:00",
+    "http_status": 200,
+    "eind_url": "https://play.grafana.org/d/lAoEVhD7z/home-kubernetes-integration?from=now-30m&to=now&timezone=browser&var-datasource=grafanacloud-prom&var-cluster=play-db-cluster&var-instance=$__all&var-lokids=$__all&refresh=30s",
+    "titel": "(Home) Kubernetes Integration - Integration - Kubernetes - Dashboards - Grafana",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 483527,
+    "pagina_hoogte_css_px": 900
+  },
+  {
+    "id": "grafana_play_dashboard",
+    "bron_naam": "Grafana Play",
+    "url": "https://play.grafana.org/d/lAoEVhD7z/home-kubernetes-integration",
+    "bestand": "grafana_play_dashboard_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "dashboard",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          6078
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 3039,
+        "dominante_kleur": "#181b1f",
+        "dominante_aandeel": 0.7027,
+        "inkt_aandeel": 0.0979,
+        "structuur_aandeel": 0.0443,
+        "effen_wit_aandeel": 0.0003,
+        "effen_blokken_aandeel": 0.2057,
+        "lege_rijen_aandeel": 0.6157,
+        "langste_lege_band_css_px": 308,
+        "langste_lege_band_aandeel": 0.1015,
+        "grote_lege_banden_aandeel": 0.1935,
+        "lege_staart_css_px": 104,
+        "lege_staart_aandeel": 0.0342,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.33,
+            0.336,
+            0.351,
+            0.346
+          ],
+          "blok_gevuld": 1.0,
+          "blok_contrast": 205.0,
+          "ring_mediaan": 28.8,
+          "vouwstap": -5.9,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 186.3,
+          "helderste_onder": 205.2
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://play.grafana.org/d/lAoEVhD7z/home-kubernetes-integration?from=now-30m&to=now&timezone=browser&var-datasource=grafanacloud-prom&var-cluster=play-db-cluster&var-instance=$__all&var-lokids=$__all&refresh=30s",
+        "titel": "(Home) Kubernetes Integration - Integration - Kubernetes - Dashboards - Grafana",
+        "h1": "",
+        "tekst_tekens": 2273,
+        "tekst_begin": "Skip to main content Integration - Kubernetes (Home) Kubernetes Integration Sign in 30s Data Source grafanacloud-play-prom cluster play-db-cluster instance All Events Data Source All K8s events Welcome to Grafana Cloud for Kubernetes Visual",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 789,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Grafana Play (play.grafana.org), live publieke instantie: Kubernetes-integratiedashboard in donker thema met navigatiezijbalk, variabelenbalk (data source, cluster, instance), tegels (Kubelet, kube-state-metrics, ...), stat-panelen (Running pods 79, Running containers 138), een dashboardlijst en een paneel met 'No data'. Echte app-omgeving zonder inlog.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:20:15+00:00",
+    "http_status": 200,
+    "eind_url": "https://play.grafana.org/d/lAoEVhD7z/home-kubernetes-integration?from=now-30m&to=now&timezone=browser&var-datasource=grafanacloud-prom&var-cluster=play-db-cluster&var-instance=$__all&var-lokids=$__all&refresh=30s",
+    "titel": "(Home) Kubernetes Integration - Integration - Kubernetes - Dashboards - Grafana",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 581488,
+    "pagina_hoogte_css_px": 3039
+  },
+  {
+    "id": "cal_com_booking",
+    "bron_naam": "Cal.com",
+    "url": "https://cal.com/rick/get-rick-rolled",
+    "bestand": "cal_com_booking_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "boekingsflow",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          1800
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 900,
+        "dominante_kleur": "#fafafa",
+        "dominante_aandeel": 0.6038,
+        "inkt_aandeel": 0.0481,
+        "structuur_aandeel": 0.0132,
+        "effen_wit_aandeel": 0.9451,
+        "effen_blokken_aandeel": 0.7032,
+        "lege_rijen_aandeel": 0.5717,
+        "langste_lege_band_css_px": 197,
+        "langste_lege_band_aandeel": 0.2189,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 197,
+        "lege_staart_aandeel": 0.2189,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.986,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 250.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://cal.com/rick/get-rick-rolled",
+        "titel": "Get Rickrolled | Rick Astley | Cal.com",
+        "h1": "Get Rickrolled",
+        "tekst_tekens": 864,
+        "tekst_begin": "Overlay my calendar $Switch to monthly view $Switch to weekly view $Switch to column view Rick Astley Get Rickrolled Book me and I will never give you up. Cal.com will never let you down. Open Source will never run around and desert you. 10",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 607,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Cal.com publieke boekingspagina (cal.com/rick/get-rick-rolled): gecentreerde kaart met profiel, maandkalender (september 2026) en lijst met tijdsloten. Echte boekingsflow met veel witruimte rondom; geen account nodig.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:20:34+00:00",
+    "http_status": 200,
+    "eind_url": "https://cal.com/rick/get-rick-rolled",
+    "titel": "Get Rickrolled | Rick Astley | Cal.com",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 181726,
+    "pagina_hoogte_css_px": 900
+  },
+  {
+    "id": "cal_com_booking",
+    "bron_naam": "Cal.com",
+    "url": "https://cal.com/rick/get-rick-rolled",
+    "bestand": "cal_com_booking_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "boekingsflow",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          6310
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 3155,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.868,
+        "inkt_aandeel": 0.0686,
+        "structuur_aandeel": 0.0398,
+        "effen_wit_aandeel": 0.9066,
+        "effen_blokken_aandeel": 0.1378,
+        "lege_rijen_aandeel": 0.4758,
+        "langste_lege_band_css_px": 102,
+        "langste_lege_band_aandeel": 0.0322,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 24,
+        "lege_staart_aandeel": 0.0074,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.965,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0,
+          "vouwstap": -0.1,
+          "vouw_scherpte": 26.4,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://cal.com/rick/get-rick-rolled?layout=mobile",
+        "titel": "Get Rickrolled | Rick Astley | Cal.com",
+        "h1": "Get Rickrolled",
+        "tekst_tekens": 774,
+        "tekst_begin": "Rick Astley Get Rickrolled Book me and I will never give you up. Cal.com will never let you down. Open Source will never run around and desert you. 10m Link meeting Europe/Amsterdam September 2026 SUN MON TUE WED THU FRI SAT 8 9 10 11 12 13",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 575,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Cal.com publieke boekingspagina (cal.com/rick/get-rick-rolled): gecentreerde kaart met profiel, maandkalender (september 2026) en lijst met tijdsloten. Echte boekingsflow met veel witruimte rondom; geen account nodig.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:20:49+00:00",
+    "http_status": 200,
+    "eind_url": "https://cal.com/rick/get-rick-rolled?layout=mobile",
+    "titel": "Get Rickrolled | Rick Astley | Cal.com",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 318551,
+    "pagina_hoogte_css_px": 3155
+  },
+  {
+    "id": "notion_public_page",
+    "bron_naam": "Notion",
+    "url": "https://www.notion.so/notion/Notion-Official-83715d7703ee4b8699b5e659a4712dd8",
+    "bestand": "_afgekeurd/notion_public_page_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "document",
+    "geladen_ok": false,
+    "afkeurredenen": [
+      "te_weinig_tekst"
+    ],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          1800
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 900,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.9767,
+        "inkt_aandeel": 0.02,
+        "structuur_aandeel": 0.0079,
+        "effen_wit_aandeel": 0.9793,
+        "effen_blokken_aandeel": 0.8135,
+        "lege_rijen_aandeel": 0.6711,
+        "langste_lege_band_css_px": 174,
+        "langste_lege_band_aandeel": 0.1939,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 174,
+        "lege_staart_aandeel": 0.1939,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.982,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://notion.notion.site/",
+        "titel": "Notion Official",
+        "h1": "Notion Official",
+        "tekst_tekens": 236,
+        "tekst_begin": "Skip to content Notion Official Get Notion free Notion Official 🌟 What’s New? Careers at Notion Notion Community 📣 Media Kit 🛡 Responsible Disclosure Policy Got more questions? Message us in the app or email us at team@makenotion.com",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 271,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": true,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Notion publieke pagina 'Notion Official': titel met icoon en vijf linkregels (What's New?, Careers at Notion, ...); circa 240 zichtbare tekens. Echte Notion-lezer, maar zo schaars dat er niets te vergelijken valt; afgekeurd (te_weinig_tekst).",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:21:05+00:00",
+    "http_status": 200,
+    "eind_url": "https://notion.notion.site/",
+    "titel": "Notion Official",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 125930,
+    "pagina_hoogte_css_px": 900,
+    "afkeurreden": "te_weinig_tekst"
+  },
+  {
+    "id": "notion_public_page",
+    "bron_naam": "Notion",
+    "url": "https://www.notion.so/notion/Notion-Official-83715d7703ee4b8699b5e659a4712dd8",
+    "bestand": "_afgekeurd/notion_public_page_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "document",
+    "geladen_ok": false,
+    "afkeurredenen": [
+      "te_weinig_tekst"
+    ],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          1688
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 844,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.9333,
+        "inkt_aandeel": 0.0585,
+        "structuur_aandeel": 0.0302,
+        "effen_wit_aandeel": 0.9388,
+        "effen_blokken_aandeel": 0.5128,
+        "lege_rijen_aandeel": 0.6759,
+        "langste_lege_band_css_px": 210,
+        "langste_lege_band_aandeel": 0.2482,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 210,
+        "lege_staart_aandeel": 0.2482,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.946,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://notion.notion.site/",
+        "titel": "Notion Official",
+        "h1": "Notion Official",
+        "tekst_tekens": 236,
+        "tekst_begin": "Skip to content Notion Official Get Notion free Notion Official 🌟 What’s New? Careers at Notion Notion Community 📣 Media Kit 🛡 Responsible Disclosure Policy Got more questions? Message us in the app or email us at team@makenotion.com",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 263,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": true,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Notion publieke pagina 'Notion Official': titel met icoon en vijf linkregels (What's New?, Careers at Notion, ...); circa 240 zichtbare tekens. Echte Notion-lezer, maar zo schaars dat er niets te vergelijken valt; afgekeurd (te_weinig_tekst).",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:21:36+00:00",
+    "http_status": 200,
+    "eind_url": "https://notion.notion.site/",
+    "titel": "Notion Official",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 98544,
+    "pagina_hoogte_css_px": 844,
+    "afkeurreden": "te_weinig_tekst"
+  },
+  {
+    "id": "notion_templates",
+    "bron_naam": "Notion",
+    "url": "https://www.notion.com/templates",
+    "bestand": "notion_templates_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "galerij_landing",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          10796
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 5398,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.5692,
+        "inkt_aandeel": 0.0622,
+        "structuur_aandeel": 0.0258,
+        "effen_wit_aandeel": 0.584,
+        "effen_blokken_aandeel": 0.3456,
+        "lege_rijen_aandeel": 0.4825,
+        "langste_lege_band_css_px": 208,
+        "langste_lege_band_aandeel": 0.0384,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 34,
+        "lege_staart_aandeel": 0.0064,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.946,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 249.4,
+          "vouwstap": -7.1,
+          "vouw_scherpte": 0.6,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://www.notion.com/templates",
+        "titel": "Choose from 30,000+ Notion templates | Notion Marketplace",
+        "h1": "",
+        "tekst_tekens": 5868,
+        "tekst_begin": "Product AI Resources Pricing Request a demo Log in Get Notion free Marketplace Templates Agents Consultants Connections Discover Find all the best templates and set-ups built by Notion’s community Consultants Work smarter with Notion expert",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1670,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Notion Marketplace-startpagina (notion.com/templates): kop 'Discover', zoekveld, promotieblok 'Work smarter with Notion experts', uitgelichte makers, categorietegels en consultants. Promotiegedreven startpagina; het zoekveld is het enige interactieve element.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:22:06+00:00",
+    "http_status": 200,
+    "eind_url": "https://www.notion.com/templates",
+    "titel": "Choose from 30,000+ Notion templates | Notion Marketplace",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 2778717,
+    "pagina_hoogte_css_px": 5398
+  },
+  {
+    "id": "notion_templates",
+    "bron_naam": "Notion",
+    "url": "https://www.notion.com/templates",
+    "bestand": "notion_templates_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "galerij_landing",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.3956,
+        "inkt_aandeel": 0.0823,
+        "structuur_aandeel": 0.0338,
+        "effen_wit_aandeel": 0.4207,
+        "effen_blokken_aandeel": 0.0916,
+        "lege_rijen_aandeel": 0.5964,
+        "langste_lege_band_css_px": 157,
+        "langste_lege_band_aandeel": 0.0157,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.909,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 247.9,
+          "vouwstap": 1.7,
+          "vouw_scherpte": 2.4,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://www.notion.com/templates",
+        "titel": "Choose from 30,000+ Notion templates | Notion Marketplace",
+        "h1": "",
+        "tekst_tekens": 5587,
+        "tekst_begin": "Get Notion free Marketplace Consultants Work smarter with Notion experts Get personalized 1:1 help for your Notion setup from certified Consulting Partners covering integrations, automations, and training. Explore → Prep Get ahead of Q4 Get",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1660,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Notion Marketplace-startpagina (notion.com/templates): kop 'Discover', zoekveld, promotieblok 'Work smarter with Notion experts', uitgelichte makers, categorietegels en consultants. Promotiegedreven startpagina; het zoekveld is het enige interactieve element.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:22:32+00:00",
+    "http_status": 200,
+    "eind_url": "https://www.notion.com/templates",
+    "titel": "Choose from 30,000+ Notion templates | Notion Marketplace",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1956160,
+    "pagina_hoogte_css_px": 12925,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "resend_product",
+    "bron_naam": "Resend",
+    "url": "https://resend.com/",
+    "bestand": "resend_product_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          20000
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#000000",
+        "dominante_aandeel": 0.829,
+        "inkt_aandeel": 0.0535,
+        "structuur_aandeel": 0.0145,
+        "effen_wit_aandeel": 0.0162,
+        "effen_blokken_aandeel": 0.6948,
+        "lege_rijen_aandeel": 0.5829,
+        "langste_lege_band_css_px": 1880,
+        "langste_lege_band_aandeel": 0.188,
+        "grote_lege_banden_aandeel": 0.2245,
+        "lege_staart_css_px": 1880,
+        "lege_staart_aandeel": 0.188,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.122,
+            0.382,
+            0.128,
+            0.453
+          ],
+          "blok_gevuld": 1.0,
+          "blok_contrast": 252.8,
+          "ring_mediaan": 1.7,
+          "vouwstap": 0.0,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 128.8,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://resend.com/",
+        "titel": "Resend · Email for developers",
+        "h1": "Email for developers",
+        "tekst_tekens": 14274,
+        "tekst_begin": "Features Company Enterprise Help Docs AI Pricing Log in Get started Join us at Resend Forward Email for developers The best way to reach humans instead of spam folders. Deliver transactional and marketing emails at scale. Get started Docume",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2498,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Resend-homepage (resend.com): donkere marketingpagina 'Email for developers' met knoppen, klantlogo's en een 3D-illustratie. Geen productscherm.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:23:00+00:00",
+    "http_status": 200,
+    "eind_url": "https://resend.com/",
+    "titel": "Resend · Email for developers",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 4485381,
+    "pagina_hoogte_css_px": 12320,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "resend_product",
+    "bron_naam": "Resend",
+    "url": "https://resend.com/",
+    "bestand": "resend_product_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#000000",
+        "dominante_aandeel": 0.8429,
+        "inkt_aandeel": 0.1011,
+        "structuur_aandeel": 0.0296,
+        "effen_wit_aandeel": 0.0374,
+        "effen_blokken_aandeel": 0.5174,
+        "lege_rijen_aandeel": 0.607,
+        "langste_lege_band_css_px": 1808,
+        "langste_lege_band_aandeel": 0.1808,
+        "grote_lege_banden_aandeel": 0.2207,
+        "lege_staart_css_px": 1808,
+        "lege_staart_aandeel": 0.1808,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.237,
+            0.425,
+            0.247,
+            0.476
+          ],
+          "blok_gevuld": 1.0,
+          "blok_contrast": 255.0,
+          "ring_mediaan": 0.0,
+          "vouwstap": 4.2,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 160.4,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://resend.com/",
+        "titel": "Resend · Email for developers",
+        "h1": "Email for developers",
+        "tekst_tekens": 12428,
+        "tekst_begin": "Open main menu Join us at Resend Forward Email for developers The best way to reach humans instead of spam folders. Deliver transactional and marketing emails at scale. Get started Documentation Companies of all sizes trust Resend to delive",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2546,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          392,
+          849
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Resend-homepage (resend.com): donkere marketingpagina 'Email for developers' met knoppen, klantlogo's en een 3D-illustratie. Geen productscherm.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:26:43+00:00",
+    "http_status": 200,
+    "eind_url": "https://resend.com/",
+    "titel": "Resend · Email for developers",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1722263,
+    "pagina_hoogte_css_px": 14146,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "dub_analytics",
+    "bron_naam": "Dub",
+    "url": "https://dub.co/",
+    "bestand": "dub_analytics_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          20000
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.4644,
+        "inkt_aandeel": 0.0378,
+        "structuur_aandeel": 0.011,
+        "effen_wit_aandeel": 0.9099,
+        "effen_blokken_aandeel": 0.6013,
+        "lege_rijen_aandeel": 0.675,
+        "langste_lege_band_css_px": 1808,
+        "langste_lege_band_aandeel": 0.1808,
+        "grote_lege_banden_aandeel": 0.2064,
+        "lege_staart_css_px": 1808,
+        "lege_staart_aandeel": 0.1808,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.975,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0,
+          "vouwstap": -1.0,
+          "vouw_scherpte": 0.3,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://dub.co/",
+        "titel": "Dub - The Modern Link Attribution Platform",
+        "h1": "Turn clicks into revenue",
+        "tekst_tekens": 12297,
+        "tekst_begin": "Product Solutions Resources Customers Pricing Log in Sign up Introducing our Startup Program Learn more Turn clicks into revenue Dub is the modern link attribution platform for short links, conversion tracking, and affiliate programs. Start",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 5414,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Dub-homepage (dub.co): marketingpagina 'Turn clicks into revenue' met navigatie, knoppen, een productmockup en klantlogo's. De mockup is een illustratie.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:27:06+00:00",
+    "http_status": 200,
+    "eind_url": "https://dub.co/",
+    "titel": "Dub - The Modern Link Attribution Platform",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 2092662,
+    "pagina_hoogte_css_px": 12185,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "dub_analytics",
+    "bron_naam": "Dub",
+    "url": "https://dub.co/",
+    "bestand": "dub_analytics_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "marketing_home",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#fafafa",
+        "dominante_aandeel": 0.4554,
+        "inkt_aandeel": 0.0642,
+        "structuur_aandeel": 0.0275,
+        "effen_wit_aandeel": 0.8935,
+        "effen_blokken_aandeel": 0.3582,
+        "lege_rijen_aandeel": 0.681,
+        "langste_lege_band_css_px": 1851,
+        "langste_lege_band_aandeel": 0.1851,
+        "grote_lege_banden_aandeel": 0.1851,
+        "lege_staart_css_px": 1851,
+        "lege_staart_aandeel": 0.1851,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.908,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0,
+          "vouwstap": -12.4,
+          "vouw_scherpte": 5.5,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://dub.co/",
+        "titel": "Dub - The Modern Link Attribution Platform",
+        "h1": "Turn clicks into revenue",
+        "tekst_tekens": 10634,
+        "tekst_begin": "Log in Sign Up Introducing our Startup Program Turn clicks into revenue Dub is the modern link attribution platform for short links, conversion tracking, and affiliate programs. Start for free Get a demo Affiliate Programs Conversion Analyt",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 5359,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Dub-homepage (dub.co): marketingpagina 'Turn clicks into revenue' met navigatie, knoppen, een productmockup en klantlogo's. De mockup is een illustratie.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:27:38+00:00",
+    "http_status": 200,
+    "eind_url": "https://dub.co/",
+    "titel": "Dub - The Modern Link Attribution Platform",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1105630,
+    "pagina_hoogte_css_px": 14689,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "stripe_checkout",
+    "bron_naam": "Stripe",
+    "url": "https://stripe.com/payments/checkout",
+    "bestand": "stripe_checkout_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "productpagina",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          20000
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#f6f9fc",
+        "dominante_aandeel": 0.525,
+        "inkt_aandeel": 0.159,
+        "structuur_aandeel": 0.0162,
+        "effen_wit_aandeel": 0.2549,
+        "effen_blokken_aandeel": 0.4135,
+        "lege_rijen_aandeel": 0.6224,
+        "langste_lege_band_css_px": 413,
+        "langste_lege_band_aandeel": 0.0413,
+        "grote_lege_banden_aandeel": 0.2298,
+        "lege_staart_css_px": 3,
+        "lege_staart_aandeel": 0.0003,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.831,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 248.6,
+          "vouwstap": 6.1,
+          "vouw_scherpte": 0.5,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://stripe.com/payments/checkout",
+        "titel": "Stripe Checkout | Checkout Pages for Your Website",
+        "h1": "",
+        "tekst_tekens": 23026,
+        "tekst_begin": "Products Solutions Developers Resources Pricing Sign in Contact sales Payments Payments Online payments Managed Payments Merchant of record solution Payment links No-code payments Checkout Prebuilt payment UIs Elements Flexible UI component",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 6703,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Stripe Checkout-productpagina (stripe.com/payments/checkout): marketingpagina 'We built Checkout so you don't have to' met een betaalscherm-mockup en promotiesecties.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:27:59+00:00",
+    "http_status": 200,
+    "eind_url": "https://stripe.com/payments/checkout",
+    "titel": "Stripe Checkout | Checkout Pages for Your Website",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 3580246,
+    "pagina_hoogte_css_px": 13173,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "stripe_checkout",
+    "bron_naam": "Stripe",
+    "url": "https://stripe.com/payments/checkout",
+    "bestand": "stripe_checkout_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "productpagina",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#f6f9fc",
+        "dominante_aandeel": 0.408,
+        "inkt_aandeel": 0.1747,
+        "structuur_aandeel": 0.0372,
+        "effen_wit_aandeel": 0.3134,
+        "effen_blokken_aandeel": 0.1437,
+        "lege_rijen_aandeel": 0.5813,
+        "langste_lege_band_css_px": 191,
+        "langste_lege_band_aandeel": 0.0191,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0001,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.9,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 248.6,
+          "vouwstap": -37.3,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://stripe.com/payments/checkout",
+        "titel": "Stripe Checkout | Checkout Pages for Your Website",
+        "h1": "",
+        "tekst_tekens": 22054,
+        "tekst_begin": "Payments Payments Online payments Managed Payments Merchant of record solution Payment links No-code payments Checkout Prebuilt payment UIs Elements Flexible UI components Payment methods Access to 125+ Terminal In-person payments Authoriza",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 6683,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Stripe Checkout-productpagina (stripe.com/payments/checkout): marketingpagina 'We built Checkout so you don't have to' met een betaalscherm-mockup en promotiesecties.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:28:42+00:00",
+    "http_status": 200,
+    "eind_url": "https://stripe.com/payments/checkout",
+    "titel": "Stripe Checkout | Checkout Pages for Your Website",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 1669972,
+    "pagina_hoogte_css_px": 19366,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "plausible_live_demo",
+    "bron_naam": "Plausible Analytics",
+    "url": "https://plausible.io/plausible.io",
+    "bestand": "plausible_live_demo_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "dashboard",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          5902
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 2951,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.3819,
+        "inkt_aandeel": 0.2278,
+        "structuur_aandeel": 0.016,
+        "effen_wit_aandeel": 0.7277,
+        "effen_blokken_aandeel": 0.4669,
+        "lege_rijen_aandeel": 0.55,
+        "langste_lege_band_css_px": 160,
+        "langste_lege_band_aandeel": 0.0544,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 67,
+        "lege_staart_aandeel": 0.0227,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.98,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 250.3,
+          "vouwstap": 0.3,
+          "vouw_scherpte": 0.1,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://plausible.io/plausible.io",
+        "titel": "Plausible Analytics: Live Demo",
+        "h1": "",
+        "tekst_tekens": 2053,
+        "tekst_begin": "Login Sign up plausible.io 101 current visitors Filter Last 28 days UNIQUE VISITORS 407k 35% TOTAL VISITS 624k 25% TOTAL PAGEVIEWS 2M 14% VIEWS PER VISIT 3.25 9% BOUNCE RATE 51% 7% VISIT DURATION 6m 15s 14% 0 10k 20k 30k 40k 1 Sep 6 Sep 11 ",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1408,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Plausible Analytics, publiek dashboard van plausible.io (laatste 28 dagen): KPI-rij (unique visitors, total visits, pageviews, views per visit, bounce rate, visit duration), lijngrafiek, tabbladen Channels/Sources/Campaigns, Top Pages, landenkaart en browsers. Echte app-omgeving zonder inlog.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:29:07+00:00",
+    "http_status": 200,
+    "eind_url": "https://plausible.io/plausible.io",
+    "titel": "Plausible Analytics: Live Demo",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 782041,
+    "pagina_hoogte_css_px": 2951
+  },
+  {
+    "id": "plausible_live_demo",
+    "bron_naam": "Plausible Analytics",
+    "url": "https://plausible.io/plausible.io",
+    "bestand": "plausible_live_demo_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "dashboard",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          9612
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 4806,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.466,
+        "inkt_aandeel": 0.2983,
+        "structuur_aandeel": 0.0336,
+        "effen_wit_aandeel": 0.6529,
+        "effen_blokken_aandeel": 0.205,
+        "lege_rijen_aandeel": 0.6073,
+        "langste_lege_band_css_px": 218,
+        "langste_lege_band_aandeel": 0.0453,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 51,
+        "lege_staart_aandeel": 0.0106,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.955,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0,
+          "vouwstap": 8.3,
+          "vouw_scherpte": 0.0,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://plausible.io/plausible.io",
+        "titel": "Plausible Analytics: Live Demo",
+        "h1": "",
+        "tekst_tekens": 1978,
+        "tekst_begin": "Login Sign up 99 Filter Last 28 days UNIQUE VISITORS 407k 35% TOTAL VISITS 624k 25% TOTAL PAGEVIEWS 2M 14% VIEWS PER VISIT 3.25 9% BOUNCE RATE 51% 7% VISIT DURATION 6m 15s 14% 0 10k 20k 30k 40k 1 Sep 6 Sep 11 Sep 16 Sep 21 Sep 26 Sep CHANNE",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1408,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Plausible Analytics, publiek dashboard van plausible.io (laatste 28 dagen): KPI-rij (unique visitors, total visits, pageviews, views per visit, bounce rate, visit duration), lijngrafiek, tabbladen Channels/Sources/Campaigns, Top Pages, landenkaart en browsers. Echte app-omgeving zonder inlog.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:29:24+00:00",
+    "http_status": 200,
+    "eind_url": "https://plausible.io/plausible.io",
+    "titel": "Plausible Analytics: Live Demo",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 677527,
+    "pagina_hoogte_css_px": 4806
+  },
+  {
+    "id": "openproject_community",
+    "bron_naam": "OpenProject Community",
+    "url": "https://community.openproject.org/projects/openproject/work_packages",
+    "bestand": "openproject_community_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "app",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          1800
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 900,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.876,
+        "inkt_aandeel": 0.1216,
+        "structuur_aandeel": 0.0573,
+        "effen_wit_aandeel": 0.8613,
+        "effen_blokken_aandeel": 0.1746,
+        "lege_rijen_aandeel": 0.3344,
+        "langste_lege_band_css_px": 24,
+        "langste_lege_band_aandeel": 0.0261,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 18,
+        "lege_staart_aandeel": 0.0206,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.062,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.96,
+          "blok_contrast": 144.2,
+          "ring_mediaan": 110.8
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://community.openproject.org/projects/openproject/work_packages",
+        "titel": "All open | Work Packages | OpenProject | OpenProject Community",
+        "h1": "Global modules",
+        "tekst_tekens": 9504,
+        "tekst_begin": "Open link in a new tab Jump to content Home Search in OpenProject Community Sign in OpenProject Work packages Search Favorite 17.9 Documentation Bug Backlog Docs changes Features with most votes Low hanging fruits - feature requests and bug",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2805,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "OpenProject Community (publiek project): werkpakkettenlijst 'All open' met zijbalk, knoppenbalk (Create, Include projects, Baseline, Filter) en een dichte tabel (ID, onderwerp, type, status, verantwoordelijke) met paginering. Echte app-omgeving zonder inlog.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:29:40+00:00",
+    "http_status": 200,
+    "eind_url": "https://community.openproject.org/projects/openproject/work_packages",
+    "titel": "All open | Work Packages | OpenProject | OpenProject Community",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 514434,
+    "pagina_hoogte_css_px": 900
+  },
+  {
+    "id": "openproject_community",
+    "bron_naam": "OpenProject Community",
+    "url": "https://community.openproject.org/projects/openproject/work_packages",
+    "bestand": "openproject_community_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "app",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          1688
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 844,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.8113,
+        "inkt_aandeel": 0.1421,
+        "structuur_aandeel": 0.0601,
+        "effen_wit_aandeel": 0.8137,
+        "effen_blokken_aandeel": 0.2019,
+        "lege_rijen_aandeel": 0.5741,
+        "langste_lege_band_css_px": 34,
+        "langste_lege_band_aandeel": 0.0403,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 34,
+        "lege_staart_aandeel": 0.0397,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.066,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.951,
+          "blok_contrast": 143.5,
+          "ring_mediaan": 111.5
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://community.openproject.org/projects/openproject/work_packages",
+        "titel": "All open | Work Packages | OpenProject | OpenProject Community",
+        "h1": "Global modules",
+        "tekst_tekens": 4048,
+        "tekst_begin": "Open link in a new tab Jump to content Home Sign in Content Work packages All open Include projects 1 - Stream AI AI-3 FEATUREAdd LLM connection settings to admin AI configuration in review AE - Stream AI AI-6 EPICAI Assistant in OpenProjec",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1851,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "OpenProject Community (publiek project): werkpakkettenlijst 'All open' met zijbalk, knoppenbalk (Create, Include projects, Baseline, Filter) en een dichte tabel (ID, onderwerp, type, status, verantwoordelijke) met paginering. Echte app-omgeving zonder inlog.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:30:00+00:00",
+    "http_status": 200,
+    "eind_url": "https://community.openproject.org/projects/openproject/work_packages",
+    "titel": "All open | Work Packages | OpenProject | OpenProject Community",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 157819,
+    "pagina_hoogte_css_px": 844
+  },
+  {
+    "id": "trello_roadmap_bord",
+    "bron_naam": "Trello",
+    "url": "https://trello.com/b/nC8QJJoZ/trello-development-roadmap",
+    "bestand": "_afgekeurd/trello_roadmap_bord_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "bord",
+    "geladen_ok": false,
+    "afkeurredenen": [
+      "bijna_leeg",
+      "grote_lege_band",
+      "lege_staart"
+    ],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          1800
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 900,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.9658,
+        "inkt_aandeel": 0.0189,
+        "structuur_aandeel": 0.0025,
+        "effen_wit_aandeel": 0.9721,
+        "effen_blokken_aandeel": 0.9056,
+        "lege_rijen_aandeel": 0.9739,
+        "langste_lege_band_css_px": 840,
+        "langste_lege_band_aandeel": 0.9328,
+        "grote_lege_banden_aandeel": 0.9328,
+        "lege_staart_css_px": 840,
+        "lege_staart_aandeel": 0.9328,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.988,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://trello.com/b/nC8QJJoZ/trello-development-roadmap",
+        "titel": "Trello Development Roadmap | Trello",
+        "h1": "Trello Development Roadmap",
+        "tekst_tekens": 6282,
+        "tekst_begin": "Skip to: Board Board switcher Features Solutions Plans Pricing Resources Log in Get Trello for free Trello Development Roadmap +8 New Trello Roadmap 2 *** The Trello roadmap has moved! Click the link below to visit it's new home. *** Cloud ",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 3245,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geklikt",
+        "knop": "Accept all",
+        "verborgen_via": null,
+        "blokkerend_voor": 2,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [
+          {
+            "actie": "geklikt",
+            "knop": "Got it",
+            "overlays_daarna": 1
+          },
+          {
+            "actie": "geklikt",
+            "knop": "Accept all",
+            "overlays_daarna": 0
+          }
+        ],
+        "voor": [
+          {
+            "tag": "div",
+            "id": "",
+            "reden": [
+              "dialoog",
+              "cookiebanner"
+            ],
+            "bedekking": 0.117,
+            "tekst": "Atlassian uses cookies to improve your browsing experience, perform analytics and research, and cond"
+          }
+        ],
+        "beschrijving": "geklikt op 'Got it' (1 blokkerende overlay(s) daarna); geklikt op 'Accept all' (0 blokkerende overlay(s) daarna). Daarna gemeten: 0 blokkerende overlays (voor: 2)."
+      }
+    },
+    "wat_het_toont": "Publiek Trello-ontwikkelbord: alleen de kopbalk (Trello, Log in, Get Trello for free) is gerenderd; het bord zelf bleef ook na 15 s wachten leeg (mobiel: een paars venster 'Trello is better on the mobile app'). Afgekeurd.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:30:20+00:00",
+    "http_status": 200,
+    "eind_url": "https://trello.com/b/nC8QJJoZ/trello-development-roadmap",
+    "titel": "Trello Development Roadmap | Trello",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 43375,
+    "pagina_hoogte_css_px": 900,
+    "afkeurreden": "bijna_leeg, grote_lege_band, lege_staart"
+  },
+  {
+    "id": "trello_roadmap_bord",
+    "bron_naam": "Trello",
+    "url": "https://trello.com/b/nC8QJJoZ/trello-development-roadmap",
+    "bestand": "_afgekeurd/trello_roadmap_bord_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "bord",
+    "geladen_ok": false,
+    "afkeurredenen": [
+      "grote_lege_band"
+    ],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          1688
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 844,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.6655,
+        "inkt_aandeel": 0.3171,
+        "structuur_aandeel": 0.0171,
+        "effen_wit_aandeel": 0.6719,
+        "effen_blokken_aandeel": 0.6154,
+        "lege_rijen_aandeel": 0.8519,
+        "langste_lege_band_css_px": 508,
+        "langste_lege_band_aandeel": 0.6013,
+        "grote_lege_banden_aandeel": 0.6013,
+        "lege_staart_css_px": 34,
+        "lege_staart_aandeel": 0.0409,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            0.682
+          ],
+          "blok_gevuld": 0.993,
+          "blok_contrast": 123.8,
+          "ring_mediaan": 131.2
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://trello.com/b/nC8QJJoZ/trello-development-roadmap",
+        "titel": "Trello Development Roadmap | Trello",
+        "h1": "Trello Development Roadmap",
+        "tekst_tekens": 6366,
+        "tekst_begin": "Skip to: Board Board switcher Back Trello Development Roadmap New Trello Roadmap 2 *** The Trello roadmap has moved! Click the link below to visit it's new home. *** Cloud Roadmap Cloud Roadmap Get an inside view on the latest and upcoming ",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 3080,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geklikt",
+        "knop": "Accept all",
+        "verborgen_via": null,
+        "blokkerend_voor": 2,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [
+          {
+            "actie": "geklikt",
+            "knop": "Got it",
+            "overlays_daarna": 1
+          },
+          {
+            "actie": "geklikt",
+            "knop": "Accept all",
+            "overlays_daarna": 0
+          }
+        ],
+        "voor": [
+          {
+            "tag": "div",
+            "id": "",
+            "reden": [
+              "dialoog",
+              "cookiebanner"
+            ],
+            "bedekking": 0.124,
+            "tekst": "Atlassian uses cookies to improve your browsing experience, perform analytics and research, and cond"
+          }
+        ],
+        "beschrijving": "geklikt op 'Got it' (1 blokkerende overlay(s) daarna); geklikt op 'Accept all' (0 blokkerende overlay(s) daarna). Daarna gemeten: 0 blokkerende overlays (voor: 2)."
+      }
+    },
+    "wat_het_toont": "Publiek Trello-ontwikkelbord: alleen de kopbalk (Trello, Log in, Get Trello for free) is gerenderd; het bord zelf bleef ook na 15 s wachten leeg (mobiel: een paars venster 'Trello is better on the mobile app'). Afgekeurd.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:31:00+00:00",
+    "http_status": 200,
+    "eind_url": "https://trello.com/b/nC8QJJoZ/trello-development-roadmap",
+    "titel": "Trello Development Roadmap | Trello",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 220210,
+    "pagina_hoogte_css_px": 844,
+    "afkeurreden": "grote_lege_band"
+  },
+  {
+    "id": "tableau_public_discover",
+    "bron_naam": "Tableau Public",
+    "url": "https://public.tableau.com/app/discover",
+    "bestand": "tableau_public_discover_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "galerij_landing",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          20000
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.4671,
+        "inkt_aandeel": 0.0803,
+        "structuur_aandeel": 0.0155,
+        "effen_wit_aandeel": 0.4821,
+        "effen_blokken_aandeel": 0.2827,
+        "lege_rijen_aandeel": 0.6785,
+        "langste_lege_band_css_px": 264,
+        "langste_lege_band_aandeel": 0.0264,
+        "grote_lege_banden_aandeel": 0.0528,
+        "lege_staart_css_px": 24,
+        "lege_staart_aandeel": 0.0024,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.909,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0,
+          "vouwstap": -0.0,
+          "vouw_scherpte": 12.9,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://public.tableau.com/app/discover",
+        "titel": "Discover | Tableau Public",
+        "h1": "Discover Tableau Public",
+        "tekst_tekens": 3860,
+        "tekst_begin": "Create Learn Sign Up Sign In Next-gen Tableau is coming: Studio, Data Apps, Knowledge → Watch on Salesforce+ Discover Tableau Public A free platform to explore, create, share data visualizations, and connect with data analysts worldwide.Lea",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 1373,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Tableau Public 'Discover': landingspagina met kop 'Discover Tableau Public', zoekveld, 'Viz of the Day' en een galerij met visualisaties en extensies. Galerij- en landingspagina, geen bewerkbare interface.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:31:38+00:00",
+    "http_status": 200,
+    "eind_url": "https://public.tableau.com/app/discover",
+    "titel": "Discover | Tableau Public",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 4026329,
+    "pagina_hoogte_css_px": 13973,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "tableau_public_discover",
+    "bron_naam": "Tableau Public",
+    "url": "https://public.tableau.com/app/discover",
+    "bestand": "tableau_public_discover_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "marketing",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "galerij_landing",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          20000
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 10000,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.6461,
+        "inkt_aandeel": 0.1799,
+        "structuur_aandeel": 0.0446,
+        "effen_wit_aandeel": 0.6764,
+        "effen_blokken_aandeel": 0.1936,
+        "lege_rijen_aandeel": 0.471,
+        "langste_lege_band_css_px": 342,
+        "langste_lege_band_aandeel": 0.0341,
+        "grote_lege_banden_aandeel": 0.0341,
+        "lege_staart_css_px": 56,
+        "lege_staart_aandeel": 0.0056,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.152,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.897,
+          "blok_contrast": 155.2,
+          "ring_mediaan": 99.8,
+          "vouwstap": 0.5,
+          "vouw_scherpte": 1.0,
+          "helderste_boven_zonder_blok": 255.0,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://public.tableau.com/app/discover",
+        "titel": "Discover | Tableau Public",
+        "h1": "Discover Tableau Public",
+        "tekst_tekens": 5630,
+        "tekst_begin": "Next-gen Tableau is coming: Studio, Data Apps, Knowledge → Watch on Salesforce+ Discover Tableau Public A free platform to explore, create, share data visualizations, and connect with data analysts worldwide.Learn More Viz of the Day See Al",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 2592,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Tableau Public 'Discover': landingspagina met kop 'Discover Tableau Public', zoekveld, 'Viz of the Day' en een galerij met visualisaties en extensies. Galerij- en landingspagina, geen bewerkbare interface.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:32:16+00:00",
+    "http_status": 200,
+    "eind_url": "https://public.tableau.com/app/discover",
+    "titel": "Discover | Tableau Public",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 2449061,
+    "pagina_hoogte_css_px": 16192,
+    "afgekapt_op_px": 10000
+  },
+  {
+    "id": "datasette_demo",
+    "bron_naam": "Datasette",
+    "url": "https://latest.datasette.io/fixtures/facetable",
+    "bestand": "datasette_demo_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "dataviewer",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          2912
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 1456,
+        "dominante_kleur": "#f8fafb",
+        "dominante_aandeel": 0.825,
+        "inkt_aandeel": 0.1011,
+        "structuur_aandeel": 0.0375,
+        "effen_wit_aandeel": 0.0412,
+        "effen_blokken_aandeel": 0.4425,
+        "lege_rijen_aandeel": 0.4821,
+        "langste_lege_band_css_px": 48,
+        "langste_lege_band_aandeel": 0.0326,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 12,
+        "lege_staart_aandeel": 0.0082,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.049,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.956,
+          "blok_contrast": 117.4,
+          "ring_mediaan": 132.2,
+          "vouwstap": 2.9,
+          "vouw_scherpte": 0.1,
+          "helderste_boven_zonder_blok": 171.4,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://latest.datasette.io/fixtures/facetable",
+        "titel": "fixtures: facetable: 15 rows",
+        "h1": "facetable",
+        "tekst_tekens": 2229,
+        "tekst_begin": "home / fixtures / facetable facetable 15 rows - column - pk created planet_int on_earth state _city_id _neighborhood tags complex_array distinct_some_null n = != contains does not contain ends with starts with > ≥ < ≤ like not like glob in ",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 505,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Datasette-demo (latest.datasette.io, tabel 'facetable'): kale data-interface met filterformulier, tabel van 15 rijen, facetsuggesties, exportopties en het SQL-schema. Functioneel maar eenvoudig vormgegeven.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:32:40+00:00",
+    "http_status": 200,
+    "eind_url": "https://latest.datasette.io/fixtures/facetable",
+    "titel": "fixtures: facetable: 15 rows",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 533223,
+    "pagina_hoogte_css_px": 1456
+  },
+  {
+    "id": "datasette_demo",
+    "bron_naam": "Datasette",
+    "url": "https://latest.datasette.io/fixtures/facetable",
+    "bestand": "datasette_demo_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "dataviewer",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          17746
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 8873,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.7453,
+        "inkt_aandeel": 0.0482,
+        "structuur_aandeel": 0.0352,
+        "effen_wit_aandeel": 0.7475,
+        "effen_blokken_aandeel": 0.1492,
+        "lege_rijen_aandeel": 0.0992,
+        "langste_lege_band_css_px": 54,
+        "langste_lege_band_aandeel": 0.0061,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 12,
+        "lege_staart_aandeel": 0.0014,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.052,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.943,
+          "blok_contrast": 117.4,
+          "ring_mediaan": 132.2,
+          "vouwstap": -3.4,
+          "vouw_scherpte": 2.9,
+          "helderste_boven_zonder_blok": 171.4,
+          "helderste_onder": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://latest.datasette.io/fixtures/facetable",
+        "titel": "fixtures: facetable: 15 rows",
+        "h1": "facetable",
+        "tekst_tekens": 2259,
+        "tekst_begin": "home / fixtures / facetable facetable 15 rows - column - pk created planet_int on_earth state _city_id _neighborhood tags complex_array distinct_some_null n = != contains does not contain ends with starts with > ≥ < ≤ like not like glob in ",
+        "bediening_zichtbaar": null,
+        "content_type": "text/html",
+        "aantal_elementen": 505,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Datasette-demo (latest.datasette.io, tabel 'facetable'): kale data-interface met filterformulier, tabel van 15 rijen, facetsuggesties, exportopties en het SQL-schema. Functioneel maar eenvoudig vormgegeven.",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T22:32:52+00:00",
+    "http_status": 200,
+    "eind_url": "https://latest.datasette.io/fixtures/facetable",
+    "titel": "fixtures: facetable: 15 rows",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 909945,
+    "pagina_hoogte_css_px": 8873
+  },
+  {
+    "id": "actual_budget_demo",
+    "bron_naam": "Actual Budget",
+    "url": "https://demo.actualbudget.org/",
+    "bestand": "actual_budget_demo_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "app",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          1800
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 900,
+        "dominante_kleur": "#e8ecf0",
+        "dominante_aandeel": 0.433,
+        "inkt_aandeel": 0.4978,
+        "structuur_aandeel": 0.0223,
+        "effen_wit_aandeel": 0.3177,
+        "effen_blokken_aandeel": 0.3603,
+        "lege_rijen_aandeel": 0.0289,
+        "langste_lege_band_css_px": 11,
+        "langste_lege_band_aandeel": 0.0122,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.167,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.98,
+          "blok_contrast": 197.2,
+          "ring_mediaan": 38.3
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://demo.actualbudget.org/budget",
+        "titel": "Actual",
+        "h1": "",
+        "tekst_tekens": 1307,
+        "tekst_begin": "Test Budget Budget Reports Schedules More All accounts 36,856.75 On budget 11,361.54 Bank of America 5,023.67 Ally Savings 5,648.64 Capital One Checking 768.37 HSBC -79.14 Off budget 25,495.21 Vanguard 401k 4,293.09 Mortgage -334,459.52 Hou",
+        "bediening_zichtbaar": 0,
+        "content_type": "text/html",
+        "aantal_elementen": 1293,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": true,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Actual Budget publieke demo (demo.actualbudget.org, lokale testbegroting): financiele app met donkere zijbalk (rekeningen met saldo's), maandkeuze bovenin, samenvattingsblok 'To Budget' en een begrotingstabel per categorie (Budgeted, Spent, Balance).",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T23:13:46+00:00",
+    "http_status": 200,
+    "eind_url": "https://demo.actualbudget.org/budget",
+    "titel": "Actual",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 312087,
+    "pagina_hoogte_css_px": 900,
+    "stappen": [
+      "ok: {\"click\": \"button:has-text('Try the demo')\"}",
+      "ok: {\"wait\": 8000}",
+      "ok: {\"click\": \"button[aria-label='Close']\"}",
+      "ok: {\"wait\": 800}"
+    ],
+    "toegang": "publieke demo; draait lokaal in de browser; geen account, geen server, geen voorwaarden"
+  },
+  {
+    "id": "actual_budget_demo",
+    "bron_naam": "Actual Budget",
+    "url": "https://demo.actualbudget.org/",
+    "bestand": "actual_budget_demo_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "app",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          1688
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 844,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.5184,
+        "inkt_aandeel": 0.1911,
+        "structuur_aandeel": 0.0411,
+        "effen_wit_aandeel": 0.5162,
+        "effen_blokken_aandeel": 0.0513,
+        "lege_rijen_aandeel": 0.7328,
+        "langste_lege_band_css_px": 62,
+        "langste_lege_band_aandeel": 0.0741,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 22,
+        "lege_staart_aandeel": 0.0255,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.062,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.961,
+          "blok_contrast": 114.8,
+          "ring_mediaan": 136.4
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://demo.actualbudget.org/budget",
+        "titel": "Actual",
+        "h1": "September '26",
+        "tekst_tekens": 723,
+        "tekst_begin": "September '26 You have 4 overspent categories (-782.50) Cover To Budget 0.00 Budgeted 5,048.12 Spent -3,689.80 Balance 6,838.03 Usual Expenses 3,523.12 -2,164.80 6,838.03 Food 400.00 -390.12 138.88 Restaurants 300.00 -361.63 130.71 Entertai",
+        "bediening_zichtbaar": 0,
+        "content_type": "text/html",
+        "aantal_elementen": 582,
+        "taal_gemeten": null,
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": true,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Actual Budget publieke demo (demo.actualbudget.org, lokale testbegroting): financiele app met donkere zijbalk (rekeningen met saldo's), maandkeuze bovenin, samenvattingsblok 'To Budget' en een begrotingstabel per categorie (Budgeted, Spent, Balance).",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T23:14:24+00:00",
+    "http_status": 200,
+    "eind_url": "https://demo.actualbudget.org/budget",
+    "titel": "Actual",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 148596,
+    "pagina_hoogte_css_px": 844,
+    "stappen": [
+      "ok: {\"click\": \"button:has-text('Try the demo')\"}",
+      "ok: {\"wait\": 8000}",
+      "MISLUKT ({\"click\": \"button[aria-label='Close']\"}): TimeoutError",
+      "ok: {\"wait\": 800}"
+    ],
+    "toegang": "publieke demo; draait lokaal in de browser; geen account, geen server, geen voorwaarden"
+  },
+  {
+    "id": "odoo_demo_crm",
+    "bron_naam": "Odoo",
+    "url": "https://demo.odoo.com",
+    "bestand": "odoo_demo_crm_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "app",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          1800
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 900,
+        "dominante_kleur": "#f8f9fa",
+        "dominante_aandeel": 0.6434,
+        "inkt_aandeel": 0.0552,
+        "structuur_aandeel": 0.0238,
+        "effen_wit_aandeel": 0.2968,
+        "effen_blokken_aandeel": 0.4897,
+        "lege_rijen_aandeel": 0.4556,
+        "langste_lege_band_css_px": 216,
+        "langste_lege_band_aandeel": 0.2406,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 216,
+        "lege_staart_aandeel": 0.2406,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.965,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 248.9
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://demo5.odoo.com/odoo/crm",
+        "titel": "Pipeline",
+        "h1": "",
+        "tekst_tekens": 808,
+        "tekst_begin": "CRM Sales Reporting Configuration 6 30 Demo Company New Generate All Teams My Opportunities New $ 80,000 Devis pour 150 tapis $ 40,000.00 OpenWood Product Sales Quote for 12 Tables $ 40,000.00 Will McEncroe Product Sales Qualified $ 51,300 ",
+        "bediening_zichtbaar": 31,
+        "content_type": "text/html",
+        "aantal_elementen": 619,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Odoo CRM in de publieke sandbox-demo: pipeline-kanban met vier fases (New, Qualified, Proposition, Won), bedragen per fase, kaarten met klant, sterren, tags en acties; zoekbalk en weergaveschakelaars. Echte backoffice-ERP-omgeving (Engels, niet assurantie).",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T23:14:56+00:00",
+    "http_status": 200,
+    "eind_url": "https://demo5.odoo.com/odoo/crm",
+    "titel": "Pipeline",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 313850,
+    "pagina_hoogte_css_px": 900,
+    "stappen": [
+      "ok: {\"click\": \"a.o_app:has-text('CRM')\"}",
+      "ok: {\"wait\": 5000}"
+    ],
+    "toegang": "publieke sandbox-demo (demo.odoo.com); sessie door de dienst automatisch aangemaakt; geen account, geen inloggegevens, geen voorwaarden"
+  },
+  {
+    "id": "odoo_demo_crm",
+    "bron_naam": "Odoo",
+    "url": "https://demo.odoo.com",
+    "bestand": "odoo_demo_crm_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "app",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          1688
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 844,
+        "dominante_kleur": "#f8f9fa",
+        "dominante_aandeel": 0.6735,
+        "inkt_aandeel": 0.0565,
+        "structuur_aandeel": 0.0248,
+        "effen_wit_aandeel": 0.2691,
+        "effen_blokken_aandeel": 0.4744,
+        "lege_rijen_aandeel": 0.5705,
+        "langste_lege_band_css_px": 272,
+        "langste_lege_band_aandeel": 0.3223,
+        "grote_lege_banden_aandeel": 0.3223,
+        "lege_staart_css_px": 272,
+        "lege_staart_aandeel": 0.3223,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.961,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 248.9
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://demo5.odoo.com/odoo/crm",
+        "titel": "Pipeline",
+        "h1": "",
+        "tekst_tekens": 745,
+        "tekst_begin": "All Teams 5 30 New New $ 80,000 Devis pour 150 tapis $ 40,000.00 OpenWood Product Sales Quote for 12 Tables $ 40,000.00 Will McEncroe Product Sales Qualified $ 51,300 Global Solutions: Furniture $ 3,800.00 Ready Mat Design Sales Quote for 6",
+        "bediening_zichtbaar": 9,
+        "content_type": "text/html",
+        "aantal_elementen": 575,
+        "taal_gemeten": "en",
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Odoo CRM in de publieke sandbox-demo: pipeline-kanban met vier fases (New, Qualified, Proposition, Won), bedragen per fase, kaarten met klant, sterren, tags en acties; zoekbalk en weergaveschakelaars. Echte backoffice-ERP-omgeving (Engels, niet assurantie).",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T23:15:27+00:00",
+    "http_status": 200,
+    "eind_url": "https://demo5.odoo.com/odoo/crm",
+    "titel": "Pipeline",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 100005,
+    "pagina_hoogte_css_px": 844,
+    "stappen": [
+      "ok: {\"click\": \"a.o_app:has-text('CRM')\"}",
+      "ok: {\"wait\": 5000}"
+    ],
+    "toegang": "publieke sandbox-demo (demo.odoo.com); sessie door de dienst automatisch aangemaakt; geen account, geen inloggegevens, geen voorwaarden"
+  },
+  {
+    "id": "odoo_demo_contacts",
+    "bron_naam": "Odoo",
+    "url": "https://demo.odoo.com",
+    "bestand": "odoo_demo_contacts_1440.png",
+    "viewport_naam": "desktop",
+    "viewport": "1440x900@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "app",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          2880,
+          1800
+        ],
+        "verwachte_breedte_px": 2880,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 900,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.7527,
+        "inkt_aandeel": 0.0656,
+        "structuur_aandeel": 0.0343,
+        "effen_wit_aandeel": 0.7615,
+        "effen_blokken_aandeel": 0.1,
+        "lege_rijen_aandeel": 0.4683,
+        "langste_lege_band_css_px": 28,
+        "langste_lege_band_aandeel": 0.0306,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.958,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://demo6.odoo.com/odoo/contacts",
+        "titel": "Contacts",
+        "h1": "",
+        "tekst_tekens": 4212,
+        "tekst_begin": "Contacts Contacts Configuration 9 48 Demo Company New Contacts 1-80 / 163 Name Email Phone Activities Country Abigail Carter abigail.carter@example.com 8299291 Abigail Peterson abigail.peterson39@example.com (555)-233-3393 Acme Corporation ",
+        "bediening_zichtbaar": 82,
+        "content_type": "text/html",
+        "aantal_elementen": 2240,
+        "taal_gemeten": null,
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          1440,
+          900
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Odoo Contacten in de publieke sandbox-demo: lijstweergave met zoekbalk, weergaveschakelaars, paginering (1-80 van 163) en tabel (naam, e-mail, telefoon, activiteiten, land) met avatars en tellers. Echte backoffice-ERP-omgeving (Engels, niet assurantie).",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T23:15:56+00:00",
+    "http_status": 200,
+    "eind_url": "https://demo6.odoo.com/odoo/contacts",
+    "titel": "Contacts",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 462314,
+    "pagina_hoogte_css_px": 900,
+    "stappen": [
+      "ok: {\"click\": \"a.o_app:has-text('Contacts')\"}",
+      "ok: {\"wait\": 5000}"
+    ],
+    "toegang": "publieke sandbox-demo (demo.odoo.com); sessie door de dienst automatisch aangemaakt; geen account, geen inloggegevens, geen voorwaarden"
+  },
+  {
+    "id": "odoo_demo_contacts",
+    "bron_naam": "Odoo",
+    "url": "https://demo.odoo.com",
+    "bestand": "odoo_demo_contacts_390.png",
+    "viewport_naam": "mobile",
+    "viewport": "390x844@2x",
+    "klasse": "product_ui",
+    "domein": "internationaal",
+    "taal": "en",
+    "soort_scherm": "app",
+    "geladen_ok": true,
+    "afkeurredenen": [],
+    "controle": {
+      "schema": 2,
+      "controle_versie": "1",
+      "beeld": {
+        "formaat_px": [
+          780,
+          1688
+        ],
+        "verwachte_breedte_px": 780,
+        "breder_dan_viewport": false,
+        "pagina_hoogte_css_px": 844,
+        "dominante_kleur": "#ffffff",
+        "dominante_aandeel": 0.7885,
+        "inkt_aandeel": 0.1002,
+        "structuur_aandeel": 0.0561,
+        "effen_wit_aandeel": 0.7918,
+        "effen_blokken_aandeel": 0.2115,
+        "lege_rijen_aandeel": 0.4034,
+        "langste_lege_band_css_px": 28,
+        "langste_lege_band_aandeel": 0.0338,
+        "grote_lege_banden_aandeel": 0.0,
+        "lege_staart_css_px": 0,
+        "lege_staart_aandeel": 0.0,
+        "overlay": {
+          "gecentreerd_blok": false,
+          "dimming_boven_vouw": false,
+          "blok_bbox_rel": [
+            0.0,
+            0.0,
+            1.0,
+            1.0
+          ],
+          "blok_gevuld": 0.928,
+          "blok_contrast": 0.0,
+          "ring_mediaan": 255.0
+        }
+      },
+      "dom": {
+        "http_status": 200,
+        "eind_url": "https://demo5.odoo.com/odoo/contacts?view_type=kanban",
+        "titel": "Contacts",
+        "h1": "",
+        "tekst_tekens": 4439,
+        "tekst_begin": "Contacts 5 30 New Abigail Carter abigail.carter@example.com 8299291 Abigail Peterson abigail.peterson39@example.com (555)-233-3393 Acme Corporation info@agrolait.com +1 603-996-3829 Pleasant Hill, United States Vendor / Desk Manufacturers 6",
+        "bediening_zichtbaar": 0,
+        "content_type": "text/html",
+        "aantal_elementen": 1842,
+        "taal_gemeten": null,
+        "fout_patroon": null,
+        "captcha_element": false,
+        "overlays_na": [],
+        "scroll_vergrendeld": false,
+        "inner_afmeting": [
+          390,
+          844
+        ]
+      },
+      "cookies": {
+        "actie": "geen_banner",
+        "knop": null,
+        "verborgen_via": null,
+        "blokkerend_voor": 0,
+        "blokkerend_na": 0,
+        "schoon_na_meting": true,
+        "stappen": [],
+        "beschrijving": "Geen blokkerende cookiebanner of overlay aangetroffen (DOM gemeten); niets geklikt, gesloten of verborgen."
+      }
+    },
+    "wat_het_toont": "Odoo Contacten in de publieke sandbox-demo: lijstweergave met zoekbalk, weergaveschakelaars, paginering (1-80 van 163) en tabel (naam, e-mail, telefoon, activiteiten, land) met avatars en tellers. Echte backoffice-ERP-omgeving (Engels, niet assurantie).",
+    "geinspecteerd_op": "2026-09-29",
+    "vastgelegd_op": "2026-09-29T23:16:41+00:00",
+    "http_status": 200,
+    "eind_url": "https://demo5.odoo.com/odoo/contacts?view_type=kanban",
+    "titel": "Contacts",
+    "dekking_categorie": "Internationale web-interfaces (documentatie-apps, dashboards, boekingsflow, catalogi). Geen enkele is een ingelogd Nederlands assurantie-backoffice of een Nederlandse financiele interface; deze set is alleen een algemene kwaliteitsmaatstaf, geen vertegenwoordiger van de categorie waarin het product valt.",
+    "bestandsgrootte_bytes": 202339,
+    "pagina_hoogte_css_px": 844,
+    "stappen": [
+      "ok: {\"click\": \"a.o_app:has-text('Contacts')\"}",
+      "ok: {\"wait\": 5000}"
+    ],
+    "toegang": "publieke sandbox-demo (demo.odoo.com); sessie door de dienst automatisch aangemaakt; geen account, geen inloggegevens, geen voorwaarden"
+  }
+]

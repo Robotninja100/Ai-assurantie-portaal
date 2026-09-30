@@ -472,6 +472,8 @@ def main(argv=None) -> int:
         "bewuste_zwaktes": [f"{d['kwaliteit']}: {z}" for d in DECOYS for z in d["bewuste_zwaktes"]],
         "gegenereerd_op": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
         "generator": "scripts/maak_decoy.py + scripts/capture_controle.py",
+        "leesvoorbeeld": cc.leesvoorbeeld("manifest['bestanden'] (een lijst opnamerecords, 8 stuks: 4 decoys x 2 "
+                                          "viewports); manifest['decoys'] beschrijft per decoy de bewuste zwaktes"),
         "decoys": decoys,
         "bestanden": records,
     }

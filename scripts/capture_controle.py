@@ -50,8 +50,9 @@ Afkeuren (`geladen_ok` = false) gebeurt bij (de codes staan in `afkeurredenen`):
   toegang_geweigerd, botmuur_of_captcha, niet_gevonden, server_of_onderhoud, javascript_niet_gerenderd
                                          foutpagina of botmuur in titel/kop/korte tekst, of een ZICHTBARE captcha
   omleiding_naar_consent_of_login        de eind-URL is een login- of consentpagina
-  vrijwel_geen_tekst (< 100 tekens), te_weinig_tekst (< 300)
-                                         pagina niet gerenderd, of een titel met een paar links
+  vrijwel_geen_tekst (< 100 tekens), te_weinig_tekst (< 300, tenzij >= 3 zichtbare invoerelementen)
+                                         pagina niet gerenderd, of een titel met een paar links; een
+                                         formulierstap met weinig tekst maar wel keuzes en knoppen telt mee
   geen_html_pagina, platte_tekst_pagina  de URL levert een afbeelding of platte tekst/markdown ('machineversie')
   blokkerende_overlay_dom                een dialoog, cookiebanner of dim-laag die het beeld bedekt en niet
                                          (gemeten) is verwijderd; login- en betaalmuren worden NOOIT weggehaald
@@ -88,15 +89,19 @@ Drie vormen blijven bestaan (het harnas leest ze al); ze delen hetzelfde OPNAMER
 
 OPNAMERECORD (per PNG; alle velden verplicht tenzij anders vermeld):
   bestand            bestandsnaam ten opzichte van de map van het manifest; goed = "x.png",
-                     afgekeurd = "_afgekeurd/x.png"; null voor een bron zonder PNG (overgeslagen)
+                     afgekeurd = "_afgekeurd/x.png"; null voor een bron zonder PNG (overgeslagen of
+                     mislukt; klasse en taal zijn dan null omdat de opnemer de pagina nooit heeft gezien,
+                     geladen_ok is false en afkeurredenen/afkeurreden geven de reden)
   bron_naam          leesbare naam van de bron (alleen voor de sleutel, nooit voor de beoordelaar)
   viewport_naam      "desktop" (1440 breed) of "mobile" (390 breed)
   klasse             "product_ui" | "marketing" | "decoy" | "anker"
                        product_ui  werkende of demo-interface waarmee je een taak doet of iets
                                    opzoekt (app, register/zoekapplicatie, rekentool, formulier-
                                    flow, documentatie-applicatie); publiek, zonder account
-                       marketing   pagina om iets te verkopen of uit te leggen, ook als er
-                                   mockups of screenshots van een product in staan
+                       marketing   pagina om iets te verkopen, uit te leggen of naar een login te leiden
+                                   (homepage, prijzen, productpagina, vergelijker-landing met een
+                                   invulwidget, inlogpoort), ook als er mockups of screenshots van
+                                   een product of een los zoekveld in staan
                        decoy       zelfgemaakt nepscherm van bewust benoemde kwaliteit
                        anker       positieve controle: echte UI van uitzonderlijke kwaliteit
   domein             "nl_financieel" | "internationaal" | "decoy" | "anker"
@@ -106,8 +111,12 @@ OPNAMERECORD (per PNG; alle velden verplicht tenzij anders vermeld):
   controle           dict met de meetwaarden (zie boven), inclusief "beeld" en "dom"
   wat_het_toont      wat er WERKELIJK is vastgelegd, op basis van inspectie en meting
   kwaliteit          alleen decoys: "zeer_zwak" | "zwak" | "matig" | "redelijk"
-  soort_scherm       vrij label voor fijnere selectie (app, docs, zoekapplicatie, formulierflow,
-                     catalogus, demo, marketing_home, productpagina, prijzenpagina, loginpagina)
+  soort_scherm       label voor fijnere selectie en rapportage per soort. product_ui: app, dashboard,
+                     dataviewer, boekingsflow, zoekresultaten, formulier, document_lezer, catalogus, docs.
+                     marketing: marketing_home, productpagina, prijzenpagina, vergelijker_landing,
+                     informatiepagina, inlogpoort, organisatie_homepage, galerij_landing. Let op: "docs"
+                     (documentatie-interface) is echte UI maar geen werkscherm; een strikte ronde sluit
+                     het uit, en een conclusie hoort alleen over vergelijkbare soorten te gaan.
   dekking_categorie  wat deze set WEL en NIET vertegenwoordigt (ook in de lijstvorm, omdat een
                      lijst geen kopveld heeft)
   plus de bestaande velden (id/slug, url, viewport, vastgelegd_op, bestandsgrootte_bytes, ...)
@@ -116,7 +125,10 @@ Aanvullende (optionele) velden op een opnamerecord:
   afkeurreden        dezelfde redenen als leesbare tekst (alleen bij geladen_ok false)
   geinspecteerd_op   datum waarop de opnemer de opname heeft bekeken en klasse/wat_het_toont vaststelde
   toegang            hoe de pagina publiek toegankelijk is (bijvoorbeeld 'publieke sandbox-demo, geen account')
-  stappen            de klik-/invulstappen die zijn uitgevoerd om de getoonde staat te bereiken
+  stappen            de klik-/zoekstappen die zijn uitgevoerd om de getoonde staat te bereiken, elk met uitkomst
+                     ("ok: ..." of "MISLUKT (...)"); getypt wordt alleen een zoekterm in een publiek zoekveld
+                     (en gezocht); in offerte- of aanvraagformulieren wordt niets ingevuld of verzonden
+  traag_scrollen_herpoging   true als bij grote lege banden eenmalig langzamer is gescrold en opnieuw opgenomen
   taal_opmerking     alleen als de gemeten taal afwijkt van de verwachte
   wat_het_toont_mobiel   alleen als de mobiele opname wezenlijk anders is dan de desktopopname
   kwaliteit, bewuste_zwaktes, indeling, bron_html   alleen decoys (zie scripts/maak_decoy.py)
@@ -124,10 +136,12 @@ Aanvullende (optionele) velden op een opnamerecord:
 
 Structuur van `controle` (alle sleutels optioneel behalve `schema`):
   beeld        metingen aan de PNG (zie boven), of null als er geen PNG is
-  dom          http_status, eind_url, titel, h1, tekst_tekens, content_type, aantal_elementen, taal_gemeten,
-               fout_patroon, captcha_element, overlays_na, scroll_vergrendeld, inner_afmeting
+  dom          http_status, eind_url, titel, h1, tekst_tekens, bediening_zichtbaar (aantal zichtbare
+               invoerelementen), content_type, aantal_elementen, taal_gemeten, fout_patroon,
+               captcha_element, overlays_na, scroll_vergrendeld, inner_afmeting
   cookies      actie (geen_banner | geklikt | css_verborgen | js_verborgen | gesloten | vanzelf_verdwenen |
-               niet_verwijderd), stappen, blokkerend_voor, blokkerend_na, beschrijving. `beschrijving` is de
+               verdwenen_tussen_metingen | niet_verwijderd), stappen, blokkerend_voor, blokkerend_na,
+               beschrijving. `beschrijving` is de
                ENIGE bron voor een uitspraak over cookies: 'geklikt' staat er alleen als de overlay daarna
                aantoonbaar uit de DOM was.
   leesbaarheid alleen decoys: overflow, afgekapte tekst/invoer, bedekte bediening, lettergrootte, contrast
@@ -225,9 +239,11 @@ class Drempels:
     min_vouwstap: float = 35.0               # helderheidssprong op de vouw
     min_vouw_scherpte: float = 20.0          # sprong tussen naburige rijen op de vouw
     # tekst (zichtbare tekens in de DOM). Gekalibreerd op de eigen opnames: de laagste goede opname
-    # (Vercel Geist mobiel) heeft 513 tekens, een schaarse Notion-pagina (titel + vijf links) 236.
+    # (Vercel Geist mobiel) heeft 513 tekens, een schaarse Notion-pagina (titel + vijf links) 236, de eerste
+    # stap van een formulierflow (a.s.r.-premiecalculator: kop, vraag, drie keuzes, twee knoppen) 217.
     min_tekst_tekens_leeg: int = 100         # minder = pagina niet gerenderd
-    min_tekst_tekens: int = 300              # minder = te weinig inhoud om als scherm te dienen
+    min_tekst_tekens: int = 300              # minder = te weinig inhoud om als scherm te dienen ...
+    min_bediening_bij_weinig_tekst: int = 3  # ... tenzij er minstens zoveel zichtbare invoerelementen zijn
     max_tekst_voor_foutpatroon: int = 2500   # foutpatroon in lange pagina's telt alleen in titel/h1
 
 
@@ -519,8 +535,12 @@ DOM_INFO_JS = r"""
   const vw = window.innerWidth, vh = window.innerHeight, va = vw * vh;
   const norm = s => (s || '').replace(/\s+/g, ' ').trim();
   const lichaam = document.body ? norm(document.body.innerText) : '';
-  const COOKIE = /(cookie|consent|toestemming|gdpr|\bavg\b|tracking|trackers|voorkeuren|privacy[- ]?instellingen|personali[sz]|advertentie|partners)/i;
-  const ACTIE = /(accept|accepteer|akkoord|weiger|reject|decline|allow|toestaan|instellen|beheer|manage|customi[sz]e|opslaan|save|alles|alle cookies)/i;
+  // Sterke woorden bewijzen zelf een consent-tekst. Zwakke woorden ('partners', 'privacy') staan ook in de
+  // menubalk van gewone sites en tellen alleen mee in een korte tekst. ACTIE met woordgrenzen: 'Management'
+  // en 'Save both' in een sticky header zijn geen 'beheer'- of 'opslaan'-knop van een cookiebanner.
+  const COOKIE_STERK = /(cookie|consent|toestemming|gdpr|\bavg\b|tracking)/i;
+  const COOKIE_ZWAK = /(privacy|voorkeuren|personali[sz]|advertentie|partners|trackers)/i;
+  const ACTIE = /\b(accept\w*|akkoord|weiger\w*|reject\w*|decline\w*|allow\w*|toestaan|instellen|beheer\w*|manage|customi[sz]e|opslaan|save|alles|alle cookies)\b/i;
   const CMP_NAAM = /(cookie|consent|cmp|gdpr|onetrust|didomi|usercentrics|sp_message|qc-cmp|truste|cookiebot|osano|privacy-gate)/i;
   const alpha = c => { const m = (c || '').match(/rgba?\(([^)]+)\)/); if (!m) return c === 'transparent' ? 0 : 1;
                        const p = m[1].split(',').map(parseFloat); return p.length > 3 ? p[3] : 1; };
@@ -547,15 +567,19 @@ DOM_INFO_JS = r"""
       const bedektMidden = !!(raak && bevat(el, raak));
       const bek = opp / va;
       const naam = (el.id || '') + ' ' + (typeof el.className === 'string' ? el.className : '');
-      const cookie = (COOKIE.test(tekst) && ACTIE.test(tekst) && tekst.length < 1500) || (CMP_NAAM.test(naam) && bek >= 0.02);
+      const cookieTekst = COOKIE_STERK.test(tekst) || (COOKIE_ZWAK.test(tekst) && tekst.length < 500);
+      const cookie = (cookieTekst && ACTIE.test(tekst) && tekst.length < 1500) || (CMP_NAAM.test(naam) && bek >= 0.02);
       const bg = alpha(cs.backgroundColor);
-      const dim = bek >= 0.6 && ((bg >= 0.05 && bg < 0.95) || (cs.backdropFilter && cs.backdropFilter !== 'none'));
+      const dim = bek >= 0.6 && ((bg >= 0.05 && bg < 0.95) || (cs.backdropFilter && cs.backdropFilter !== 'none'))
+                  && cs.pointerEvents !== 'none';
       const opaak = bek >= 0.8 && bg >= 0.95 && tekst.length < 300 && !bevatHoofd(el) && z >= 1;
       const appSchil = bevatHoofd(el) || (lichaam.length > 500 && tekst.length > 0.5 * lichaam.length);
       const reden = [];
       if (dialoog && bek >= 0.05) reden.push('dialoog');
       if (cookie && bek >= 0.01) reden.push('cookiebanner');
-      if (dim && bedektMidden) reden.push('dim_laag');
+      // een dim-laag die het scherm voor >= 90% bedekt is een modal-achtergrond, ook als de dialoog zelf een
+      // sibling is (dan is het element in het midden de dialoog en niet deze laag)
+      if (dim && (bedektMidden || bek >= 0.9)) reden.push('dim_laag');
       if (opaak && bedektMidden) reden.push('vol_scherm_laag');
       if (!reden.length) continue;
       if (appSchil && !cookie) continue;
@@ -566,6 +590,24 @@ DOM_INFO_JS = r"""
     }
   };
   try { bezoek(document); } catch (e) {}
+  // Zichtbare invoerelementen (keuzerondjes, velden, selects; zoekvelden tellen niet mee). Een aangepast
+  // keuzerondje heeft vaak een onzichtbare native input: dan telt zijn label.
+  let bediening = 0;
+  try {
+    const zichtbaar = (e) => {
+      if (!e) return false;
+      const r = e.getBoundingClientRect(), cs = getComputedStyle(e);
+      return r.width >= 8 && r.height >= 8 && cs.visibility !== 'hidden' && cs.display !== 'none'
+             && parseFloat(cs.opacity) > 0.05 && r.bottom > 0 && r.right > 0 && r.left < vw;
+    };
+    const kandidaten = document.querySelectorAll(
+      'input:not([type=hidden]):not([type=search]), select, textarea, [role=radio], [role=checkbox], ' +
+      '[role=textbox], [role=combobox], [role=switch], [role=slider], [role=spinbutton]');
+    for (const el of Array.from(kandidaten).slice(0, 400)) {
+      const lab = el.closest('label') || (el.id ? document.querySelector('label[for="' + el.id.replace(/"/g, '') + '"]') : null);
+      if (zichtbaar(el) || zichtbaar(lab)) bediening++;
+    }
+  } catch (e) {}
   const h1 = document.querySelector('h1');
   const html = document.documentElement, body = document.body;
   const csH = getComputedStyle(html), csB = body ? getComputedStyle(body) : null;
@@ -581,7 +623,7 @@ DOM_INFO_JS = r"""
   return {
     titel: document.title || '', h1: h1 ? norm(h1.innerText).slice(0, 120) : '',
     contentType: document.contentType || '', aantal_elementen: document.getElementsByTagName('*').length,
-    tekst_tekens: lichaam.length, tekst_monster: lichaam.slice(0, 4000),
+    tekst_tekens: lichaam.length, tekst_monster: lichaam.slice(0, 4000), bediening_zichtbaar: bediening,
     innerWidth: vw, innerHeight: vh, scroll_vergrendeld: !!vergrendeld, captcha_element: captchaEl,
     pagina_hoogte: Math.max(body ? body.scrollHeight : 0, html.scrollHeight),
     overlays,
@@ -606,6 +648,7 @@ BEKENDE_ACCEPT_SELECTORS = [
 # Volgorde is belangrijk: specifiek eerst. 'Doorgaan'/'Continue' alleen als laatste redmiddel.
 ACCEPT_TEKSTEN = [
     "Accept all cookies", "Accept all", "Allow all cookies", "Allow all", "Accept cookies",
+    "Accepteer alle cookies", "Accepteer alle",
     "Alles accepteren", "Accepteer alles", "Alle cookies accepteren", "Alle cookies toestaan",
     "Cookies accepteren", "Accepteer cookies", "Alles toestaan", "Ja, ik accepteer",
     "Ik ga akkoord", "Accepteren", "Accepteer", "Akkoord", "Accept", "I agree", "Got it",
@@ -692,13 +735,36 @@ def verrijk_dom(info: dict[str, Any], d: Drempels = DREMPELS) -> dict[str, Any]:
     return info
 
 
+INVOER_ROLLEN = ("radio", "checkbox", "textbox", "combobox", "spinbutton", "slider", "switch")
+
+
+def tel_invoerelementen(page) -> int:
+    """
+    Aantal invoerelementen in de toegankelijkheidsboom (keuzerondjes, velden, selects, schakelaars). Playwright
+    kijkt ook door open shadow-DOM heen; dat is nodig voor webcomponenten (bijvoorbeeld de a.s.r.-calculator),
+    waarvan de keuzerondjes onzichtbare helperelementen zonder afmeting zijn. Zoekvelden (rol searchbox) tellen
+    niet mee.
+    """
+    n = 0
+    for rol in INVOER_ROLLEN:
+        try:
+            n += page.get_by_role(rol).count()
+        except Exception:
+            continue
+    return n
+
+
 def verzamel_dom_info(page) -> dict[str, Any]:
     """DOM-feiten op het moment van opnemen. Nooit een uitzondering: minimaal dict bij falen."""
     try:
-        return page.evaluate(DOM_INFO_JS)
+        info = page.evaluate(DOM_INFO_JS)
     except Exception as exc:  # pagina kan midden in een navigatie zitten
         return {"fout": f"dom-meting mislukt: {str(exc).splitlines()[0][:120]}", "overlays": [],
                 "tekst_tekens": 0, "tekst_monster": "", "titel": "", "h1": ""}
+    # alleen als de tekst schaars is telt het aantal invoerelementen mee (zie Drempels.min_bediening_bij_weinig_tekst)
+    if info.get("tekst_tekens", 10 ** 9) < DREMPELS.min_tekst_tekens:
+        info["bediening_zichtbaar"] = max(info.get("bediening_zichtbaar") or 0, tel_invoerelementen(page))
+    return info
 
 
 def blokkerende_overlays(info: dict[str, Any]) -> list[dict[str, Any]]:
@@ -724,13 +790,16 @@ def _pad_zonder_hash(url: str) -> str:
     return (url or "").split("#")[0].rstrip("/")
 
 
-def _probeer_klik(page, oorspronkelijke_url: str) -> str | None:
+def _probeer_klik(page, oorspronkelijke_url: str | None = None) -> str | None:
     """
     Klik een accepteer-knop. Geeft de knoptekst terug, of None.
     Wordt ALLEEN aangeroepen als de DOM een consent-overlay laat zien. Klikt de pagina
     daardoor naar een andere URL (zoals een footerlink 'Accept'), dan gaan we terug en telt
-    het niet als klik.
+    het niet als klik. 'Terug' is de URL van vlak VOOR de klik, niet de start-URL van de bron:
+    na scriptstappen die zelf naar een andere pagina navigeerden (een formulierflow) zou de
+    start-URL de bereikte staat vernietigen (`oorspronkelijke_url` blijft voor compatibiliteit).
     """
+    voor_url = page.url
     frames = [page] + [f for f in page.frames if f != page.main_frame]
     for frame in frames:
         for sel in BEKENDE_ACCEPT_SELECTORS:
@@ -742,24 +811,38 @@ def _probeer_klik(page, oorspronkelijke_url: str) -> str | None:
                     return f"selector {sel}"
             except Exception:
                 continue
+
+    def klik(loc, tekst: str) -> str | None:
+        """Klikt een kandidaat als hij zichtbaar en klein genoeg is. None = niet geklikt of verkeerde klik."""
+        if not loc.count() or not loc.is_visible(timeout=400):
+            return None
+        doos = loc.bounding_box()
+        if not doos or doos["width"] > 420:              # brede knop = waarschijnlijk geen consent-knop
+            return None
+        loc.click(timeout=2000)
+        page.wait_for_timeout(700)
+        if _pad_zonder_hash(page.url) != _pad_zonder_hash(voor_url):
+            page.goto(voor_url, wait_until="domcontentloaded", timeout=45000)
+            page.wait_for_timeout(1500)
+            return "TERUG"                               # verkeerde klik; terug
+        return tekst
+
     for frame in frames:
         for tekst in ACCEPT_TEKSTEN:
-            try:
-                loc = frame.get_by_role("button", name=re.compile(re.escape(tekst), re.I)).first
-                if not loc.count() or not loc.is_visible(timeout=400):
+            naam = re.compile(re.escape(tekst), re.I)
+            # rol knop, dan rol link, dan elk element waarvan de HELE tekst de knoptekst is (bijvoorbeeld een <a>
+            # zonder href of een <div> met een click-handler: die hebben geen rol en vielen eerst buiten de boot)
+            for zoek in (lambda n=naam: frame.get_by_role("button", name=n),
+                         lambda n=naam: frame.get_by_role("link", name=n),
+                         lambda t=tekst: frame.get_by_text(re.compile(r"^\s*" + re.escape(t) + r"\s*$", re.I))):
+                try:
+                    uitkomst = klik(zoek().first, tekst)
+                except Exception:
                     continue
-                doos = loc.bounding_box()
-                if not doos or doos["width"] > 420:      # brede knop = waarschijnlijk geen consent-knop
-                    continue
-                loc.click(timeout=2000)
-                page.wait_for_timeout(700)
-                if _pad_zonder_hash(page.url) != _pad_zonder_hash(oorspronkelijke_url):
-                    page.goto(oorspronkelijke_url, wait_until="domcontentloaded", timeout=45000)
-                    page.wait_for_timeout(1500)
-                    return None                            # verkeerde klik; terug
-                return tekst
-            except Exception:
-                continue
+                if uitkomst == "TERUG":
+                    return None
+                if uitkomst:
+                    return uitkomst
     return None
 
 
@@ -794,6 +877,52 @@ def _sluit_dialoog(page) -> dict[str, str] | None:
         except Exception:
             continue
     return None
+
+
+# Generieke zoeker voor pop-ups zonder role="dialog" (bijvoorbeeld een nieuwsbriefvenster): zoekt binnen het
+# BUITENSTE vaste element dat het midden van het scherm bedekt naar een kleine knop die zichzelf 'sluiten' noemt.
+ZOEK_SLUITKNOP_JS = r"""
+() => {
+  const vw = innerWidth, vh = innerHeight;
+  const start = document.elementFromPoint(vw / 2, vh / 2);
+  let cont = null;
+  for (let n = start; n && n !== document.body && n !== document.documentElement; n = n.parentElement) {
+    if (getComputedStyle(n).position === 'fixed') cont = n;
+  }
+  if (!cont) return null;
+  const norm = s => (s || '').replace(/\s+/g, ' ').trim();
+  const NAAM = /^(x|\u00d7|\u2715|\u2716|close|sluiten|sluit|dismiss|niet nu|no thanks|nee,? bedankt|not now)$/i;
+  document.querySelectorAll('[data-opname-sluit]').forEach(e => e.removeAttribute('data-opname-sluit'));
+  let gekozen = null;
+  for (const e of cont.querySelectorAll('button, [role=button], a')) {
+    const r = e.getBoundingClientRect(), cs = getComputedStyle(e);
+    if (r.width < 8 || r.height < 8 || r.width > 120 || r.height > 120) continue;
+    if (cs.visibility === 'hidden' || cs.display === 'none') continue;
+    const namen = [e.getAttribute('aria-label'), e.getAttribute('title'), norm(e.innerText)];
+    const cls = typeof e.className === 'string' ? e.className : '';
+    if (namen.some(t => t && NAAM.test(t.trim())) || /(^|[-_ ])(close|dismiss)/i.test(cls)) { gekozen = e; break; }
+  }
+  if (!gekozen) return null;
+  gekozen.setAttribute('data-opname-sluit', '1');
+  return {tekst: norm(cont.innerText).slice(0, 600)};
+}
+"""
+
+
+def _sluit_generiek(page) -> dict[str, str] | None:
+    """Sluit een pop-up zonder dialoogrol via zijn eigen sluitknop, tenzij het een login-/betaalmuur is."""
+    try:
+        res = page.evaluate(ZOEK_SLUITKNOP_JS)
+    except Exception:
+        return None
+    if not res or NIET_SLUITEN_RE.search(res.get("tekst", "")):
+        return None
+    try:
+        page.locator('[data-opname-sluit="1"]').first.click(timeout=2000)
+        page.wait_for_timeout(700)
+    except Exception:
+        return None
+    return {"selector": "sluitknop in het bovenste vaste element", "dialoogtekst": res["tekst"][:100]}
 
 
 def _kort(o: dict[str, Any]) -> dict[str, Any]:
@@ -850,7 +979,7 @@ def ruim_cookiebanner_op(page, oorspronkelijke_url: str) -> dict[str, Any]:
                     res["verborgen_via"] = f"consent-overlays via JS ({n} elementen)"
                 na = n3
         if na:
-            g = _sluit_dialoog(page)
+            g = _sluit_dialoog(page) or _sluit_generiek(page)
             if g:
                 na = blokkerende_overlays(verzamel_dom_info(page))
                 st.append({"actie": "gesloten", **g, "overlays_daarna": len(na)})
@@ -878,10 +1007,22 @@ def ruim_cookiebanner_op(page, oorspronkelijke_url: str) -> dict[str, Any]:
 
 
 def samenvoegen_cookies(c1: dict[str, Any], c2: dict[str, Any]) -> dict[str, Any]:
-    """Twee opruimrondes (na laden en na scrollen) tot een uitspraak."""
+    """
+    Twee opruimrondes (na laden en na scrollen) tot een uitspraak. De TWEEDE meting is de laatste voor de
+    opname en bepaalt dus of het beeld schoon is; de eerste is alleen historie.
+    """
     if c1["actie"] == "geen_banner":
         return c2
     if c2["actie"] == "geen_banner":
+        if c1["actie"] == "niet_verwijderd":
+            # De overlay stond bij de eerste meting nog en de opruiming kon hem niet weghalen, maar bij de
+            # tweede meting is er geen meer: hij is tussen de metingen verdwenen (een scriptstap zoals een
+            # 'Got it'-klik, het scrollen, of de pagina zelf). De eerste versie van deze functie gaf hier
+            # 'niet_verwijderd' terug en keurde daarmee een schone opname af.
+            samen = dict(c1)
+            samen.pop("na", None)
+            samen.update(actie="verdwenen_tussen_metingen", blokkerend_na=0, schoon_na_meting=True)
+            return samen
         return c1
     samen = dict(c2)
     samen["stappen"] = list(c1.get("stappen", [])) + list(c2.get("stappen", []))
@@ -912,6 +1053,11 @@ def cookie_beschrijving(c: dict[str, Any]) -> str:
                 f"(voor: {c.get('blokkerend_voor')}); geprobeerd: {'; '.join(delen) or 'niets'}.")
     if actie == "vanzelf_verdwenen":
         return "Blokkerende overlay was bij de tweede meting vanzelf verdwenen; niets gedaan."
+    if actie == "verdwenen_tussen_metingen":
+        return (f"Bij een eerdere meting stond {c.get('blokkerend_voor')} blokkerende overlay(s) die de opruiming niet "
+                f"kon weghalen ({'; '.join(delen) or 'niets gelukt'}); bij de laatste meting, na een pauze en/of "
+                f"scriptstappen (zie `stappen` in het record) en het scrollen, waren het er 0 (bijvoorbeeld een "
+                f"laadscherm dat wegfadet).")
     return f"{'; '.join(delen)}. Daarna gemeten: 0 blokkerende overlays (voor: {c.get('blokkerend_voor')})."
 
 
@@ -958,7 +1104,14 @@ def autoscroll(page, stap_ms: int = 120) -> None:
 
 
 def _stappen_uitvoeren(page, stappen: list[dict[str, Any]] | None) -> list[str]:
-    """Kleine stappenrunner om een echte formulier-/resultaatstaat te bereiken (zoeken, klikken)."""
+    """
+    Kleine stappenrunner om een echte formulier-/resultaatstaat te bereiken (zoeken, klikken). Stappen:
+      {"fill": css, "value": tekst}    een publiek zoekveld vullen (nooit persoonsgegevens)
+      {"click": css}                   klikken op een element
+      {"klik_tekst": naam}             klikken op een knop of link met deze naam (ook binnen shadow-DOM)
+      {"press": toets}, {"wait": ms}
+    Elke stap komt met uitkomst (ok of MISLUKT) in het record; een mislukte stap breekt niets af.
+    """
     log: list[str] = []
     for st in stappen or []:
         try:
@@ -966,6 +1119,12 @@ def _stappen_uitvoeren(page, stappen: list[dict[str, Any]] | None) -> list[str]:
                 page.locator(st["fill"]).first.fill(st["value"], timeout=8000)
             elif "click" in st:
                 page.locator(st["click"]).first.click(timeout=8000)
+            elif "klik_tekst" in st:
+                naam = re.compile(re.escape(st["klik_tekst"]), re.I)
+                loc = page.get_by_role("button", name=naam).first
+                if not loc.count():
+                    loc = page.get_by_role("link", name=naam).first
+                loc.click(timeout=8000)
             elif "press" in st:
                 page.keyboard.press(st["press"])
             elif "wait" in st:
@@ -1030,6 +1189,11 @@ def leg_vast(browser, kaart: dict[str, Any], viewport_naam: str, map_pad: Path, 
             raw["stappen"] = _stappen_uitvoeren(page, stappen)
         autoscroll(page)
         c2 = ruim_cookiebanner_op(page, url)
+        if c2["actie"] == "niet_verwijderd":
+            # een laadscherm of uitfadende laag (bijvoorbeeld jQuery BlockUI na een klik in een formulierflow)
+            # is een tijdelijke overlay: even wachten en opnieuw meten. Een echte wall blijft staan en keurt af.
+            page.wait_for_timeout(2500)
+            c2 = samenvoegen_cookies(c2, ruim_cookiebanner_op(page, url))
         raw["cookies"] = samenvoegen_cookies(c1, c2)
         page.wait_for_timeout(500)
         pad = map_pad / bestand
@@ -1078,8 +1242,11 @@ def beoordeel(meting: dict[str, Any] | None, dom: dict[str, Any] | None, *,
         tekens = dom.get("tekst_tekens", 10 ** 9)
         if tekens < d.min_tekst_tekens_leeg:
             r.append("vrijwel_geen_tekst")
-        elif tekens < d.min_tekst_tekens:
-            r.append("te_weinig_tekst")        # een titel en enkele links: geen substantieel scherm
+        elif tekens < d.min_tekst_tekens and (dom.get("bediening_zichtbaar") or 0) < d.min_bediening_bij_weinig_tekst:
+            # een titel en enkele links: geen substantieel scherm. Een formulierstap (kop, vraag, keuzes,
+            # knoppen) is van nature schaars in tekst maar wel een volledige interface: die telt via de
+            # zichtbare invoerelementen mee.
+            r.append("te_weinig_tekst")
         ct = dom.get("contentType")
         if ct and ct not in ("text/html", "application/xhtml+xml"):
             r.append("geen_html_pagina")
@@ -1144,6 +1311,7 @@ def controleer_opname(pad: str | Path | None, viewport_naam: str, *, dom: dict[s
             "http_status": http_status, "eind_url": eind_url,
             "titel": dom.get("titel", "")[:120], "h1": dom.get("h1", ""),
             "tekst_tekens": dom.get("tekst_tekens"), "tekst_begin": dom.get("tekst_begin", ""),
+            "bediening_zichtbaar": dom.get("bediening_zichtbaar"),
             "content_type": dom.get("contentType"), "aantal_elementen": dom.get("aantal_elementen"),
             "taal_gemeten": dom["taal_gemeten"] if "taal_gemeten" in dom else raad_taal(dom.get("tekst_monster", "")),
             "fout_patroon": dom["fout_patroon"] if "fout_patroon" in dom else zoek_foutpatroon(
@@ -1194,12 +1362,17 @@ def raw_uit_record(rec: dict[str, Any]) -> dict[str, Any]:
         "cookies": {k: v for k, v in (c.get("cookies") or {}).items() if k != "beschrijving"} or None,
         "pagina_hoogte_css_px": rec.get("pagina_hoogte_css_px"),
         "afgekapt_op_px": rec.get("afgekapt_op_px"),
+        # procesgegevens die een herbouw niet mag laten verdwijnen: welke stappen zijn uitgevoerd (en welke
+        # MISLUKT zijn) en of er een tweede, langzamere scrollronde nodig was
+        "stappen": rec.get("stappen"),
+        "traag_scrollen_herpoging": rec.get("traag_scrollen_herpoging"),
     }
     if dom:
         raw["dom"] = {"titel": dom.get("titel", ""), "h1": dom.get("h1", ""),
                       "contentType": dom.get("content_type"), "aantal_elementen": dom.get("aantal_elementen"),
                       "tekst_tekens": dom.get("tekst_tekens"), "tekst_monster": dom.get("tekst_begin", ""),
                       "tekst_begin": dom.get("tekst_begin", ""), "fout_patroon": dom.get("fout_patroon"),
+                      "bediening_zichtbaar": dom.get("bediening_zichtbaar"),
                       "taal_gemeten": dom.get("taal_gemeten"), "captcha_element": dom.get("captcha_element"),
                       "overlays": dom.get("overlays_na") or [], "scroll_vergrendeld": dom.get("scroll_vergrendeld"),
                       "innerWidth": (dom.get("inner_afmeting") or [None, None])[0],
@@ -1323,6 +1496,25 @@ def lees_opnames(manifest: str | Path | list | dict) -> list[dict[str, Any]]:
         basis = {k: data[k] for k in ("dekking_categorie",) if k in data}
         uit.extend({**basis, **dict(e)} for e in data["bestanden"])
     return uit
+
+
+def leesvoorbeeld(vorm: str) -> dict[str, Any]:
+    """
+    Korte leeswijzer die in elk object-manifest (comps_nl, decoy, anker) staat: waar de opnamerecords zitten en
+    hoe je ze plat leest. `renders/comps/manifest.json` is een lijst en kan geen sleutel dragen; zie de README.
+    """
+    return {
+        "records_staan_in": vorm,
+        "plat_lezen_in_python": ("import sys; sys.path.insert(0, 'scripts'); "
+                                 "from capture_controle import lees_opnames; "
+                                 "records = [r for r in lees_opnames('renders/<map>/manifest.json') "
+                                 "if r['geladen_ok'] and r['bestand']]"),
+        "velden_per_record": ("bestand, bron_naam, viewport_naam (desktop|mobile), klasse, soort_scherm, domein, "
+                              "taal, geladen_ok, afkeurredenen, controle, wat_het_toont (bij decoys ook kwaliteit "
+                              "en bewuste_zwaktes)"),
+        "pad_van_de_png": ("<map van het manifest>/<bestand>; afgekeurde PNG's (geladen_ok=false) staan in "
+                           "<map>/_afgekeurd/ en blijven met reden in het manifest"),
+    }
 
 
 def valideer_records(records: list[dict[str, Any]], *, bron: str = "") -> list[str]:
@@ -1496,6 +1688,74 @@ def _zelftest_tekst() -> list[tuple[str, bool, str]]:
     return uit
 
 
+def _zelftest_herbouw() -> list[tuple[str, bool, str]]:
+    """--alleen-manifest moet een record trouw herbouwen: niets van wat de opname beschrijft mag verdwijnen."""
+    uit: list[tuple[str, bool, str]] = []
+    with tempfile.TemporaryDirectory() as td:
+        map_pad = Path(td)
+        _synth_pagina().save(map_pad / "t.png")
+        kaart = {"id": "t", "bron_naam": "Test", "url": "https://voorbeeld.test/", "klasse": "product_ui",
+                 "domein": "internationaal", "taal": "en", "soort_scherm": "docs", "wat_het_toont": "Testpagina.",
+                 "geinspecteerd_op": "2026-09-29", "dekking_categorie": "test"}
+        dom = verrijk_dom({"titel": "Test", "h1": "Test", "contentType": "text/html", "aantal_elementen": 300,
+                           "tekst_tekens": 900, "tekst_monster": "the page shows some text for the test " * 25,
+                           "overlays": [], "innerWidth": 1440, "innerHeight": 900})
+        raw = {"vastgelegd_op": "2026-09-29T12:00:00+00:00", "http_status": 200, "eind_url": kaart["url"],
+               "fout": None, "pagina_hoogte_css_px": 1500,
+               "stappen": ['MISLUKT ({"click": "button"}): TimeoutError', 'ok: {"wait": 5000}'],
+               "traag_scrollen_herpoging": True, "dom": dom,
+               "cookies": {"actie": "geklikt", "knop": "Accepteren", "verborgen_via": None, "blokkerend_voor": 1,
+                           "blokkerend_na": 0, "schoon_na_meting": True,
+                           "stappen": [{"actie": "geklikt", "knop": "Accepteren", "overlays_daarna": 0}]}}
+        eerste = bouw_record(kaart=kaart, viewport_naam="desktop", bestand="t.png", map_pad=map_pad, raw=raw,
+                             verplaats=False)
+        tweede = bouw_record(kaart=kaart, viewport_naam="desktop", bestand="t.png", map_pad=map_pad,
+                             raw=raw_uit_record(eerste), verplaats=False)
+        for veld in ("geladen_ok", "afkeurredenen", "klasse", "wat_het_toont", "stappen", "traag_scrollen_herpoging",
+                     "pagina_hoogte_css_px", "http_status", "eind_url", "titel", "taal"):
+            uit.append((f"herbouw_behoudt_{veld}", eerste.get(veld) == tweede.get(veld),
+                        f"{eerste.get(veld)!r} -> {tweede.get(veld)!r}"[:90]))
+        uit.append(("herbouw_behoudt_cookiebeschrijving",
+                    eerste["controle"]["cookies"]["beschrijving"] == tweede["controle"]["cookies"]["beschrijving"],
+                    tweede["controle"]["cookies"]["beschrijving"][:70]))
+    return uit
+
+
+def _zelftest_samenvoegen() -> list[tuple[str, bool, str]]:
+    """De twee opruimrondes (na laden, na scrollen) worden tot een uitspraak samengevoegd; de laatste telt."""
+    def rec(actie: str, voor: int = 0, na: int = 0, stappen: list | None = None) -> dict[str, Any]:
+        return {"actie": actie, "knop": None, "verborgen_via": None, "blokkerend_voor": voor,
+                "blokkerend_na": na, "schoon_na_meting": na == 0, "stappen": stappen or [],
+                "na": [{"tag": "div"}] * na}
+
+    uit: list[tuple[str, bool, str]] = []
+    # regressie (Retool mobiel): de tip stond bij de eerste meting nog, een scriptstap klikte 'Got it', bij de
+    # tweede meting was hij weg. Dat is een schone opname, geen 'niet_verwijderd'.
+    r = samenvoegen_cookies(rec("niet_verwijderd", 1, 1), rec("geen_banner"))
+    uit.append(("samenvoegen_overlay_verdwenen_tussen_metingen",
+                r["actie"] == "verdwenen_tussen_metingen" and r["blokkerend_na"] == 0 and r["schoon_na_meting"]
+                and "na" not in r, f"actie={r['actie']}"))
+    uit.append(("samenvoegen_beschrijving_zegt_niet_dat_hij_bleef",
+                "bleven staan" not in cookie_beschrijving(r), cookie_beschrijving(r)[:70]))
+    dom = {"titel": "Pagina", "h1": "Pagina", "tekst_monster": "tekst " * 120, "tekst_tekens": 720, "overlays": [],
+           "contentType": "text/html", "aantal_elementen": 300, "taal_gemeten": "en", "fout_patroon": None}
+    res = controleer_opname(None, "mobile", dom=dom, http_status=200, cookies=r)
+    uit.append(("samenvoegen_keurt_schone_opname_niet_af", "blokkerende_overlay_dom" not in res["afkeurredenen"],
+                f"redenen={res['afkeurredenen']}"))
+    r = samenvoegen_cookies(rec("geklikt", 1, 0, [{"actie": "geklikt", "knop": "Accepteren", "overlays_daarna": 0}]),
+                            rec("geen_banner"))
+    uit.append(("samenvoegen_geklikt_en_daarna_niets", r["actie"] == "geklikt", f"actie={r['actie']}"))
+    r = samenvoegen_cookies(rec("geen_banner"), rec("niet_verwijderd", 1, 1))
+    uit.append(("samenvoegen_overlay_pas_na_scrollen", r["actie"] == "niet_verwijderd" and r["blokkerend_na"] == 1,
+                f"actie={r['actie']}"))
+    r = samenvoegen_cookies(rec("niet_verwijderd", 1, 1), rec("niet_verwijderd", 1, 1))
+    uit.append(("samenvoegen_twee_keer_niet_verwijderd", r["actie"] == "niet_verwijderd" and r["blokkerend_na"] == 1,
+                f"actie={r['actie']}"))
+    r = samenvoegen_cookies(rec("geklikt", 1, 0), rec("niet_verwijderd", 1, 1))
+    uit.append(("samenvoegen_alsnog_overlay_na_klik", r["actie"] == "niet_verwijderd", f"actie={r['actie']}"))
+    return uit
+
+
 # HTML-fixtures voor de browsertest
 _FIX_BASIS = """<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <style>body{margin:0;font:16px Arial;background:#fff;color:#222}header{height:64px;border-bottom:1px solid #ddd;padding:20px 32px;box-sizing:border-box}
@@ -1509,6 +1769,42 @@ section{padding:40px 32px;border-bottom:1px solid #eee}section h2{margin:0 0 12p
 @@SECTIES@@
 @@EXTRA@@
 </body></html>"""
+
+# Een formulierstap: weinig tekst, maar een kop, een vraag, drie keuzes (met verborgen native input, zoals veel
+# ontwerpsystemen) en twee knoppen. Dit is een volledige interface en moet slagen.
+_FIX_FORMULIERSTAP = """<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0;background:#fff7dd;font:18px Arial;color:#222;min-height:100vh}
+.stap{display:flex;justify-content:space-between;padding:32px 8vw}
+.stap b{width:44px;height:44px;border-radius:50%;background:#e6dfcc;display:inline-block;text-align:center;line-height:44px}
+.kaart{width:min(700px,90vw);margin:24px auto;background:#fff;padding:32px;box-sizing:border-box;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+.kaart h2{font:30px Georgia;margin:0 0 16px}.kaart label{display:flex;align-items:center;gap:10px;padding:12px 0;font-size:20px}
+.kaart input{position:absolute;opacity:0;width:1px;height:1px}.kaart i{width:22px;height:22px;border:2px solid #333;border-radius:50%;display:inline-block}
+.knoppen{display:flex;justify-content:space-between;margin-top:28px}.knoppen button{padding:14px 24px;font-size:18px;border:2px solid #111;background:#fff}
+.knoppen .p{background:#111;color:#fff}</style></head><body>
+<div class="stap"><b>1</b><b>2</b><b>3</b><b>4</b><b>5</b></div>
+<div class="kaart"><h2>Premie berekenen</h2><p>Wie wil je verzekeren?</p>
+<label><input type="radio" name="w"><i></i> Mijzelf</label><label><input type="radio" name="w"><i></i> Iemand anders</label>
+<label><input type="radio" name="w"><i></i> Mijzelf en iemand anders</label>
+<div class="knoppen"><button>Terug naar start</button><button class="p">Volgende vraag</button></div></div>
+</body></html>"""
+# Dezelfde formulierstap als webcomponent (zoals bij a.s.r.): de keuzerondjes zijn helperelementen met
+# role="radio" zonder afmeting in een shadow-DOM; alleen de toegankelijkheidsboom ziet ze.
+_FIX_FORMULIERSTAP_SHADOW = _FIX_FORMULIERSTAP.split("<label>")[0] + """
+<x-keuze>Mijzelf</x-keuze><x-keuze>Iemand anders</x-keuze><x-keuze>Mijzelf en iemand anders</x-keuze>
+<div class="knoppen"><button>Terug naar start</button><button class="p">Volgende vraag</button></div></div>
+<script>customElements.define('x-keuze', class extends HTMLElement {
+  constructor() { super(); const s = this.attachShadow({mode: 'open'});
+    s.innerHTML = '<style>:host{display:flex;align-items:center;gap:10px;padding:12px 0;font-size:20px}' +
+      'i{width:22px;height:22px;border:2px solid #333;border-radius:50%;display:inline-block}</style>' +
+      '<div role="radio" tabindex="0" style="position:absolute;width:0;height:0;overflow:hidden"></div><i></i><slot></slot>'; } });
+</script></body></html>"""
+# Een titel met een paar links (zoals een schaarse Notion-pagina) en alleen een zoekveld: geen substantieel scherm.
+_FIX_TITEL_MET_LINKS = """<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Notion Official</title>
+<style>body{margin:0;font:16px Arial;color:#222}.p{width:min(620px,90vw);margin:120px auto}h1{font-size:34px}
+a{display:block;padding:10px 0;border-bottom:1px solid #eee;color:#222;text-decoration:none}</style></head><body>
+<div class="p"><h1>Notion Official</h1><a href="#">What's New?</a><a href="#">Careers at Notion</a><a href="#">Notion Community</a>
+<a href="#">Media Kit</a><a href="#">Responsible Disclosure Policy</a><p>Got more questions? Message us in the app or email us.</p></div>
+<input type="search" placeholder="Search" style="position:fixed;top:8px;right:8px"></body></html>"""
 _ALINEA = "De verzekeringsadviseur beoordeelt het dossier van de klant en legt de dekking van de polis uit in eenvoudige taal voor het gesprek. " * 3
 _SECTIES = "".join(f"<section><h2>Onderdeel {i}</h2><p>{_ALINEA}</p></section>" for i in range(1, 9))
 _FIXTURES: dict[str, tuple[str, bool, str | None]] = {
@@ -1517,6 +1813,14 @@ _FIXTURES: dict[str, tuple[str, bool, str | None]] = {
     "fix_cookiewall_met_werkende_knop": (
         '<div id="w" class="wall"></div><div id="d" class="dlg"><h3>Wij gebruiken cookies</h3><p>Accepteer alle cookies of stel je voorkeuren in.</p>'
         '<button onclick="document.getElementById(\'w\').remove();document.getElementById(\'d\').remove()">Alles accepteren</button><button>Instellen</button></div>',
+        True, "geklikt"),
+    # regressie (Univé): de keuzeknoppen zijn <a>-elementen zonder href en dus zonder knop- of linkrol
+    "fix_cookiewall_a_zonder_href": (
+        '<div id="w" class="wall"></div><div id="d" class="dlg"><h3>Cookies op voorbeeld.nl</h3><p>Wij gebruiken functionele en '
+        'analytische cookies. Kies hieronder.</p>'
+        '<a style="display:inline-block;padding:12px 20px;background:#0a58ca;color:#fff;cursor:pointer;margin-right:8px" '
+        'onclick="document.getElementById(\'w\').remove();document.getElementById(\'d\').remove()">Accepteer alle cookies</a>'
+        '<a style="display:inline-block;padding:12px 20px;background:#0a58ca;color:#fff;cursor:pointer">Weiger alle cookies</a></div>',
         True, "geklikt"),
     "fix_cookiewall_kapotte_knop": (
         '<div class="wall cookie-overlay"></div><div class="dlg cookie-consent"><h3>Wij gebruiken cookies</h3><p>Accepteer alle cookies of stel je voorkeuren in.</p>'
@@ -1542,10 +1846,26 @@ _FIXTURES: dict[str, tuple[str, bool, str | None]] = {
         'onclick="document.getElementById(\'w\').remove();document.getElementById(\'e\').remove()">x</button>'
         '<h3>Log in om verder te gaan</h3><p>Voor deze pagina heb je een account nodig.</p><button>Inloggen</button></div>',
         False, "blokkerende_overlay_dom"),
+    # pop-up ZONDER role="dialog" (zoals een nieuwsbriefvenster) met een sluitknop: mag gesloten worden
+    "fix_nieuwsbrief_zonder_dialoogrol": (
+        '<div id="w" class="wall"></div><div id="e" class="dlg"><button aria-label="Close" style="float:right;background:#eee;color:#222" '
+        'onclick="document.getElementById(\'w\').remove();document.getElementById(\'e\').remove()">x</button>'
+        '<h3>Blijf op de hoogte</h3><p>Ontvang maandelijks productnieuws in je inbox.</p><label>E-mail <input></label><button>Houd mij op de hoogte</button></div>',
+        True, "gesloten"),
+    # zelfde vorm maar dan een loginmuur: mag NIET gesloten worden
+    "fix_loginmuur_zonder_dialoogrol": (
+        '<div id="w" class="wall"></div><div id="e" class="dlg"><button aria-label="Close" style="float:right;background:#eee;color:#222" '
+        'onclick="document.getElementById(\'w\').remove();document.getElementById(\'e\').remove()">x</button>'
+        '<h3>Log in om verder te lezen</h3><p>Dit artikel is alleen voor abonnees.</p><button>Inloggen</button></div>',
+        False, "blokkerende_overlay_dom"),
     "fix_access_denied": ("", False, "toegang_geweigerd"),
     "fix_leeg": ("", False, "bijna_leeg"),
     # regressie: schaarse pagina (titel + paar regels, ~230 tekens) is geen substantieel scherm
     "fix_te_weinig_tekst": ("", False, "te_weinig_tekst"),
+    "fix_titel_met_links": ("", False, "te_weinig_tekst"),
+    # regressie (a.s.r.-premiecalculator, stap 1): ~130 tekens maar wel keuzes en knoppen = een volledige interface
+    "fix_formulierstap_weinig_tekst": ("", True, "geen_banner"),
+    "fix_formulierstap_shadow_dom": ("", True, "geen_banner"),
     # regressie: alternatieve platte-tekstweergave (bijvoorbeeld een markdown 'machineversie')
     "fix_platte_tekst": ("", False, "geen_html_pagina"),
     # regressie: Stripe laadt op elke pagina een ONZICHTBARE hCaptcha-iframe; dat is geen botmuur
@@ -1555,6 +1875,16 @@ _FIXTURES: dict[str, tuple[str, bool, str | None]] = {
     "fix_zichtbare_captcha": (
         '<div style="position:absolute;top:120px;left:40px"><iframe src="about:blank#captcha" style="width:300px;height:80px" title="captcha"></iframe></div>',
         False, "botmuur_of_captcha"),
+    # regressie (Ramp): een vaste kopbalk met 'Partners' en 'Management' is geen cookiebanner. De eerste versie
+    # zocht 'manage' als deelstring en 'partners' als cookiewoord, en keurde de pagina daarom af.
+    "fix_vaste_kopbalk_met_partners": (
+        '<div style="position:fixed;top:0;left:0;right:0;z-index:50;background:#fff;padding:14px 32px;'
+        'border-bottom:1px solid #ddd">New: AI Token Spend Management - see, understand and control your AI '
+        'bill. Products Partners Solutions Pricing Sign in</div>', True, "geen_banner"),
+    # ... maar een korte cookiebalk met 'partners' EN een accepteerknop blijft er een
+    "fix_cookiebalk_met_partners_zonder_cookiewoord": (
+        '<div id="b" class="rand"><span>Wij en onze partners gebruiken gegevens om advertenties te personaliseren.</span> '
+        '<button onclick="document.getElementById(\'b\').remove()">Accepteren</button></div>', True, "geklikt"),
 }
 
 
@@ -1578,6 +1908,12 @@ def _zelftest_browser() -> list[tuple[str, bool, str]]:
                     html = _FIX_BASIS.replace("@@SECTIES@@", "<section><h2>Onderdeel 1</h2><p>Een korte alinea met wat uitleg over "
                                               "het dossier van de klant en de polis, niet meer dan een paar regels tekst.</p></section>"
                                               ).replace("@@EXTRA@@", "")
+                elif naam == "fix_titel_met_links":
+                    html = _FIX_TITEL_MET_LINKS
+                elif naam == "fix_formulierstap_weinig_tekst":
+                    html = _FIX_FORMULIERSTAP
+                elif naam == "fix_formulierstap_shadow_dom":
+                    html = _FIX_FORMULIERSTAP_SHADOW
                 else:
                     html = _FIX_BASIS.replace("@@SECTIES@@", _SECTIES).replace("@@EXTRA@@", extra)
                 if naam == "fix_platte_tekst":
@@ -1596,7 +1932,11 @@ def _zelftest_browser() -> list[tuple[str, bool, str]]:
                                         vraag_url="about:blank", cookies=cookies)
                 gelukt = res["geladen_ok"] == verwacht_ok
                 if naam.startswith("fix_c") or naam in ("fix_schoon", "fix_onzichtbare_captcha_iframe",
-                                                        "fix_enquete_popup_met_sluitknop"):
+                                                        "fix_enquete_popup_met_sluitknop",
+                                                        "fix_nieuwsbrief_zonder_dialoogrol",
+                                                        "fix_vaste_kopbalk_met_partners",
+                                                        "fix_formulierstap_weinig_tekst",
+                                                        "fix_formulierstap_shadow_dom"):
                     gelukt = gelukt and cookies["actie"] == verwacht
                 if not verwacht_ok:
                     gelukt = gelukt and verwacht in res["afkeurredenen"]
@@ -1625,7 +1965,7 @@ def _zelftest_browser() -> list[tuple[str, bool, str]]:
 
 
 def zelftest(met_browser: bool = False) -> int:
-    resultaten = _zelftest_beeld() + _zelftest_tekst()
+    resultaten = _zelftest_beeld() + _zelftest_tekst() + _zelftest_samenvoegen() + _zelftest_herbouw()
     if met_browser:
         resultaten += _zelftest_browser()
     mislukt = 0
