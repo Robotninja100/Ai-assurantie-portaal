@@ -38,6 +38,58 @@ Vier lagen dwingen dat af:
 Alles reproduceerbaar via de scrapers in `scripts/`. Het Kifid-corpus is klein, scheef naar 2026 en
 naar afwijzingen, en alleen Geschillencommissie: nooit gebruiken voor uitspraken over slagingskansen.
 
+## Opnamen voor de blinde meetlat
+
+De meetlat legt onze schermen blind naast echte interfaces. Wat daarvoor op schijf staat, ligt in
+`renders/`; de PNG's staan **niet** in git en zijn te herleiden met de scripts.
+
+| Map | Inhoud | Script | Manifestvorm |
+|---|---|---|---|
+| `renders/comps/` | internationale echte interfaces en marketingpagina's | `capture_comps.py` | lijst van opnamerecords |
+| `renders/comps_nl/` | Nederlandse financiële en administratieve pagina's | `capture_comps_nl.py` | object met `comps` en `overgeslagen` |
+| `renders/decoy/` | vier zelfgemaakte assurantie-backofficeschermen (`zeer_zwak` tot `redelijk`) | `maak_decoy.py` | object met `decoys` en `bestanden` |
+| `renders/anker/` | plafondanker: echte UI van uitzonderlijke kwaliteit (positieve controle) | `capture_anker.py` | object met `ankers` en `bestanden` |
+
+**Schema van een opnamerecord** (volledig in de docstring van `scripts/capture_controle.py`): `bestand`,
+`bron_naam`, `viewport_naam` (`desktop`/`mobile`), `klasse` (`product_ui` | `marketing` | `decoy` |
+`anker`), `soort_scherm` (bijvoorbeeld `app`, `dashboard`, `zoekresultaten`, `docs`, `productpagina`),
+`domein` (`nl_financieel` | `internationaal` | `decoy` | `anker`), `taal` (`nl` | `en`),
+`geladen_ok` (bool), `afkeurredenen`, `controle` (de meetwaarden), `wat_het_toont`, en bij decoys
+`kwaliteit` en `bewuste_zwaktes`. Alle vier de manifesten delen dit record; een lezer gebruikt
+`lees_opnames(pad)` uit `capture_controle.py` en filtert op `geladen_ok`.
+
+- **`klasse` is streng.** `product_ui` is een scherm waarin je iets opzoekt of doet met echte bediening
+  (app, dashboard, dataviewer, register met zoekveld, filters en resultaten). `marketing` is een pagina om
+  te informeren, te verkopen of naar een login te leiden (homepage, prijzen, productpagina, vergelijker-
+  landing met invulwidget, inlogpoort), ook als er een mockup, screenshot of zoekveld in zit: een mockup
+  is een illustratie en geen bruikbare interface. Documentatie-interfaces zijn echte UI maar geen
+  bedieningsscherm; ze staan als `product_ui` met `soort_scherm: "docs"`, zodat een strikte ronde ze kan
+  uitsluiten.
+
+- **Vier manifestvormen, één leesfunctie.** `comps`: een lijst opnamerecords. `comps_nl`: een object met
+  `comps` (per bron `bestanden.desktop` en `bestanden.mobile`, met de oude alias `file`) en `overgeslagen`
+  (bronnen zonder PNG, met reden). `decoy` en `anker`: een object met `bestanden` (lijst opnamerecords) en
+  beschrijvende velden (`decoys`, `ankers`, `motivatie`). Wie niet zelf wil uitpakken:
+  ```python
+  import sys; sys.path.insert(0, "scripts")
+  from capture_controle import lees_opnames
+  records = [r for r in lees_opnames("renders/decoy/manifest.json") if r["geladen_ok"] and r["bestand"]]
+  ```
+  De object-manifesten dragen dezelfde leeswijzer in het veld `leesvoorbeeld`.
+- **`geladen_ok` volgt uit een meting, niet uit de bedoeling van de opnemer.** Elke PNG wordt na afloop
+  gecontroleerd op te weinig inkt of tekst, grote lege banden, een cookiewall of modal (in het beeld én in
+  de DOM), foutpagina's, botmuren en captcha's. Afgekeurde PNG's staan in `<map>/_afgekeurd/` en blijven
+  met reden in het manifest.
+- **`wat_het_toont` beschrijft wat is vastgelegd, niet wat het bedrijf verkoopt.** Het is het oordeel van de
+  opnemer na inspectie (`geinspecteerd_op`). Een bewering over cookies staat alleen in `controle.cookies`
+  en alleen als de overlay daarna gemeten weg was.
+- **Er is geen echte vertegenwoordiger van een ingelogd Nederlands assurantie-backoffice.** Dat soort
+  software zit achter een login of demo-aanvraag. Het veld `dekking_categorie` zegt dat in elk manifest.
+- `python3 scripts/capture_controle.py --zelftest --met-browser` test de controle op synthetische en
+  Chromium-fixtures; `--valideer renders/*/manifest.json` controleert het schema; `--controleer <map>`
+  toont de meetwaarden per PNG. De capture-scripts hebben `--alleen-manifest` om het manifest zonder
+  netwerk te herberekenen.
+
 ## Draaien
 
 ```bash

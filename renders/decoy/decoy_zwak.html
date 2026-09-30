@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Polissysteem - Nieuwe polis invoeren</title>
+<!--
+  DECOY "zwak": een volgepropt invoerformulier met tabbladen. Bewust slecht ontworpen (geen hierarchie,
+  inconsistente labels en veldbreedtes, verspreide knoppen), maar leesbaar en functioneel.
+  Zie scripts/maak_decoy.py voor de lijst met ingebouwde zwaktes.
+-->
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: Verdana, Geneva, sans-serif; font-size: 12px; color: #222; background: #eef0f3; margin: 0; }
+  a { color: #24478f; }
+  #top { background: #3b5998; color: #fff; padding: 7px 12px 8px 12px; font-size: 12px; }
+  #top .rechts { float: right; }
+  #top a { color: #fff; margin-left: 10px; }
+  .kruimel { padding: 5px 12px 3px 14px; font-size: 11px; color: #666; }
+  .melding { margin: 4px 12px 6px 12px; padding: 6px 8px 6px 8px; background: #fff3cd; border: 1px solid #e0c060; font-size: 12px; color: #664d03; }
+  .titelrij { margin: 6px 12px 4px 12px; overflow: hidden; }
+  .titelrij h1 { font-size: 14px; margin: 0; font-weight: bold; display: inline; }
+  .titelrij .knop { float: right; }
+
+  .tabs { margin: 0 12px 0 12px; border-bottom: 1px solid #999; padding-left: 4px; }
+  .tabs a { display: inline-block; padding: 4px 9px 4px 9px; border: 1px solid #bbb; border-bottom: 0; background: #dcdcdc; color: #333; font-size: 12px; text-decoration: none; margin-right: 2px; }
+  .tabs a.kort { padding: 4px 5px 4px 5px; }
+  .tabs a.lang { padding: 4px 16px 4px 16px; }
+  .tabs a.actief { background: #fff; font-weight: bold; padding-bottom: 5px; margin-bottom: -1px; }
+
+  .paneel { margin: 0 12px 8px 12px; background: #fff; border: 1px solid #999; border-top: 0; padding: 8px 8px 4px 8px; overflow: hidden; }
+  .kol { float: left; margin-right: 2%; }
+  .k1 { width: 31%; } .k2 { width: 34%; } .k3 { width: 31%; margin-right: 0; }
+
+  fieldset { border: 1px solid #aaa; margin: 0 0 9px 0; padding: 5px 6px 6px 6px; min-width: 0; }
+  legend { font-size: 12px; font-weight: bold; color: #333; padding: 0 3px 0 3px; }
+  fieldset.b legend { font-style: italic; font-weight: normal; color: #444; }
+  fieldset.c legend { text-transform: uppercase; font-size: 11px; letter-spacing: 1px; }
+  fieldset.d { border: 2px solid #777; }
+
+  .rij { margin: 0 0 4px 0; overflow: hidden; }
+  .rij label { display: block; font-size: 11px; color: #555; margin-bottom: 1px; }
+  .rij.inline label { display: inline-block; width: 84px; text-align: right; margin: 0 4px 0 0; }
+  .rij.groot { margin-bottom: 11px; }
+  input[type=text], select, textarea { font-family: inherit; font-size: 12px; border: 1px solid #999; padding: 2px 3px 2px 3px; background: #fff; color: #222; }
+  select { padding: 1px 1px 1px 1px; }
+  .w40 { width: 40px; } .w70 { width: 70px; } .w95 { width: 95px; } .w130 { width: 130px; } .w175 { width: 175px; } .w190 { width: 190px; } .wvol { width: 96%; }
+  .v1 label:after { content: " *"; color: #c00; }
+  .v2 label:before { content: "* "; color: #c00; font-weight: bold; }
+  .v3 label:after { content: " (verplicht)"; color: #a00; font-size: 10px; }
+  .hulp { font-size: 10px; color: #6f6f6f; margin-left: 4px; }
+  .radio { font-size: 12px; margin-right: 8px; }
+  .clausules label { display: block; font-size: 11px; margin: 0 0 2px 0; color: #222; }
+
+  table.dek { width: 100%; border-collapse: collapse; margin-bottom: 6px; }
+  table.dek th { font-size: 10px; text-align: left; color: #444; padding: 1px 2px 1px 2px; font-weight: normal; }
+  table.dek td { padding: 1px 2px 1px 0; }
+  table.dek input { width: 100%; }
+
+  .knop { font-family: inherit; font-size: 12px; padding: 3px 10px 3px 10px; border: 1px solid #666; background: #e8e8e8; color: #222; margin-right: 4px; cursor: pointer; }
+  .knop.blauw { background: #3b5998; color: #fff; border-color: #2b4278; }
+  .knop.breed { padding: 3px 22px 3px 22px; }
+  .onderbalk { margin: 0 12px 10px 12px; padding: 6px 0 0 0; }
+  .voet { margin: 6px 12px 10px 12px; font-size: 10px; color: #6f6f6f; }
+
+  @media (max-width: 700px) {
+    .kol, .k1, .k2, .k3 { float: none; width: 100%; margin-right: 0; }
+    #top .rechts { float: none; display: block; margin-top: 3px; }
+    #top a { margin: 0 8px 0 0; }
+    .titelrij .knop { float: none; margin-top: 4px; }
+    .tabs a { margin-bottom: 2px; border-bottom: 1px solid #bbb; }
+    .rij.inline label { width: 78px; }
+    .wvol { width: 100%; }
+    .knop { margin-bottom: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="top">
+  <span class="rechts"><a href="#">Help</a><a href="#">Mijn instellingen</a><a href="#">Afmelden (jdevries)</a></span>
+  Polissysteem 3.1 &nbsp;|&nbsp; Kantoor Zwolle
+</div>
+<div class="kruimel">Start &gt; Polissen &gt; Nieuw &gt; Algemeen</div>
+<div class="melding"><b>Let op:</b> het BSN-veld is verplicht voor levensverzekeringen. Controleer alle gegevens voordat u opslaat. Velden met een * zijn verplicht.</div>
+
+<div class="titelrij"><h1>Nieuwe polis invoeren</h1> <input type="button" class="knop" value="Annuleren"></div>
+
+<div class="tabs">
+  <a href="#" class="actief">Algemeen</a><a href="#">Dekking</a><a href="#" class="kort">Premie</a><a href="#" class="lang">Clausules</a><a href="#">Documenten</a><a href="#" class="kort">Historie</a><a href="#">Notities</a><a href="#" class="lang">Machtiging</a><a href="#">Provisie</a>
+</div>
+
+<div class="paneel">
+  <div class="kol k1">
+    <fieldset>
+      <legend>Relatie</legend>
+      <div class="rij v1"><label>Zoek relatie</label><input type="text" class="w130" value="Haverkamp"> <input type="button" class="knop" value="Zoeken"></div>
+      <div class="rij v1"><label>Naam</label><input type="text" class="wvol" value="M. Haverkamp"></div>
+      <div class="rij"><label>Straat en huisnummer</label><input type="text" class="w130" value="Hoogstraat"> <input type="text" class="w40" value="14b"></div>
+      <div class="rij inline v2"><label>Postcode</label><input type="text" class="w70" value="8011 AB"> <input type="text" class="w95" value="Zwolle"></div>
+      <div class="rij inline"><label>Telefoon</label><input type="text" class="w95" value="038-4211234"></div>
+      <div class="rij inline v3"><label>E-mail</label><input type="text" class="w190" value="m.haverkamp@example.nl"></div>
+      <div class="rij"><label>Geboortedatum <span class="hulp">(dd-mm-jjjj)</span></label><input type="text" class="w95" value="04-11-1978"></div>
+    </fieldset>
+    <fieldset class="b">
+      <legend>Maatschappij en product</legend>
+      <div class="rij v1"><label>Maatschappij</label><select class="w190"><option>Hollandia Schade</option><option>Noordster</option><option>De Waterlinie</option></select></div>
+      <div class="rij v1"><label>Product</label><select class="w175"><option>Autoverzekering WA+</option><option>Inboedel</option><option>Opstal</option></select></div>
+      <div class="rij"><label>Polisvorm</label><span class="radio"><input type="radio" name="pv" checked> Individueel</span><span class="radio"><input type="radio" name="pv"> Collectief</span></div>
+      <div class="rij inline"><label>Collectief nr.</label><input type="text" class="w70" value=""></div>
+      <div class="rij"><label><input type="checkbox"> Nieuwe relatie aanmaken indien niet gevonden</label></div>
+    </fieldset>
+  </div>
+
+  <div class="kol k2">
+    <fieldset class="c">
+      <legend>Looptijd</legend>
+      <div class="rij inline v1"><label>Ingangsdatum</label><input type="text" class="w95" value="01-10-2026"></div>
+      <div class="rij inline"><label>Einddatum</label><input type="text" class="w95" value=""><span class="hulp">leeg = doorlopend</span></div>
+      <div class="rij inline v2"><label>Prolongatie</label><input type="text" class="w95" value="01-10-2027"></div>
+      <div class="rij inline"><label>Betaaltermijn</label><select class="w95"><option>Maandelijks</option><option>Kwartaal</option><option>Jaarlijks</option></select></div>
+      <div class="rij inline"><label>Incasso</label><span class="radio"><input type="radio" name="ic" checked> Automatisch</span><span class="radio"><input type="radio" name="ic"> Nota</span></div>
+      <div class="rij inline"><label>IBAN</label><input type="text" class="w175" value="NL91 ABNA 0417 1643 00"></div>
+    </fieldset>
+    <fieldset>
+      <legend>Dekking</legend>
+      <table class="dek">
+        <tr><th>Rubriek</th><th>Som</th><th>E.R.</th><th>Premie</th></tr>
+        <tr><td><input type="text" value="WA"></td><td><input type="text" value="1.250.000"></td><td><input type="text" value="0"></td><td><input type="text" value="18,20"></td></tr>
+        <tr><td><input type="text" value="Casco"></td><td><input type="text" value="21.400"></td><td><input type="text" value="250"></td><td><input type="text" value="31,10"></td></tr>
+        <tr><td><input type="text" value="Inzittenden"></td><td><input type="text" value="10.000"></td><td><input type="text" value="0"></td><td><input type="text" value="2,80"></td></tr>
+        <tr><td><input type="text" value="Rechtsbijstand"></td><td><input type="text" value="-"></td><td><input type="text" value="0"></td><td><input type="text" value="4,95"></td></tr>
+      </table>
+      <div class="rij groot"><input type="button" class="knop blauw" value="Berekenen"> <span class="hulp">Totaal per maand: EUR 57,05 (incl. 21% assurantiebelasting niet van toepassing)</span></div>
+    </fieldset>
+    <fieldset class="d">
+      <legend>Kenteken</legend>
+      <div class="rij inline"><label>Kenteken</label><input type="text" class="w95" value="12-ABC-3"> <input type="button" class="knop" value="RDW-check"></div>
+      <div class="rij inline"><label>Merk / type</label><input type="text" class="w130" value="Volkswagen Golf"></div>
+    </fieldset>
+  </div>
+
+  <div class="kol k3">
+    <fieldset class="b">
+      <legend>Clausules</legend>
+      <div class="clausules">
+        <label><input type="checkbox" checked> 1101 Meeverzekerde partner</label>
+        <label><input type="checkbox"> 1102 Buitenland dekking uitgebreid</label>
+        <label><input type="checkbox" checked> 1207 Nieuwwaarderegeling 12 mnd</label>
+        <label><input type="checkbox"> 1208 Nieuwwaarderegeling 24 mnd</label>
+        <label><input type="checkbox"> 1310 Gebruik voor werk</label>
+        <label><input type="checkbox"> 1311 Zakelijk gebruik</label>
+        <label><input type="checkbox" checked> 1405 Schadevrije jaren behouden</label>
+        <label><input type="checkbox"> 1406 Bonus-malus overdracht</label>
+        <label><input type="checkbox"> 1501 Accessoires</label>
+        <label><input type="checkbox"> 1502 Audio en navigatie</label>
+        <label><input type="checkbox"> 1601 Hulpverlening binnenland</label>
+        <label><input type="checkbox" checked> 1602 Hulpverlening buitenland</label>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Opmerkingen</legend>
+      <div class="rij"><textarea class="wvol" rows="4">Klant wil per 01-10 overstappen van vorige maatschappij. Royementsbewijs nog opvragen.</textarea></div>
+      <div class="hulp">Maximaal 500 tekens. Opmerkingen zijn zichtbaar voor alle medewerkers van het kantoor.</div>
+    </fieldset>
+    <fieldset class="c">
+      <legend>Provisie</legend>
+      <div class="rij inline"><label>Percentage</label><input type="text" class="w40" value="12,5"> %</div>
+      <div class="rij inline"><label>Afspraak</label><select class="w130"><option>Standaard tarief</option><option>Afwijkend</option></select></div>
+      <div class="rij"><input type="button" class="knop" value="Opslaan"> <input type="button" class="knop" value="Wissen"></div>
+    </fieldset>
+  </div>
+</div>
+
+<div class="onderbalk">
+  <input type="button" class="knop" value="Opslaan">
+  <input type="button" class="knop breed" value="Opslaan en sluiten">
+  <input type="button" class="knop" value="Opslaan en nieuw">
+  <input type="button" class="knop" value="Annuleren">
+  <input type="button" class="knop blauw" value="Afdrukken">
+</div>
+<div class="voet">Polissysteem 3.1.7 &middot; Laatste wijziging 28-09-2026 14:12 door jdevries &middot; <a href="#">Privacy</a> &middot; <a href="#">Support</a></div>
+
+</body>
+</html>

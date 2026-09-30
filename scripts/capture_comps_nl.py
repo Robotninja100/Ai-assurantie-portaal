@@ -1,481 +1,545 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
-Vastleggen van Nederlandse financiele/verzekerings-interfaces als comps.
+capture_comps_nl.py - Nederlandse financiele/administratieve pagina's vastleggen als comps.
 
-Doel: een EERLIJKE meetlat. We kiezen daarom pagina's met echte
-interface-elementen (formulieren, tabellen, stappenflows, resultaatlijsten)
-van partijen die in NL als goed ontworpen gelden - geen stromannen.
+Doel: een EERLIJKE meetlat voor het domein waarin het product valt. Er is publiek geen
+enkel ingelogd Nederlands assurantie-backoffice te vinden (dat zit achter een login); wat
+wel publiek is (zoek- en registerapplicaties, rekentools, comparison-flows, marketing) wordt
+vastgelegd en per bron GECLASSIFICEERD als `product_ui` of `marketing`. Het manifest zegt dat
+plat in `dekking_categorie`.
 
 Twee viewports per bron:
   desktop  1440x900, deviceScaleFactor 2, full page
   mobile    390x844, deviceScaleFactor 2, full page
 
-Output: renders/comps_nl/<slug>-desktop-1440x900.png
-        renders/comps_nl/<slug>-mobile-390x844.png
-        renders/comps_nl/manifest.json
+Uitvoer: renders/comps_nl/<slug>-desktop-1440x900.png
+         renders/comps_nl/<slug>-mobile-390x844.png
+         renders/comps_nl/manifest.json  (object met "comps" en "overgeslagen")
 
-Gebruik: python3 capture_comps_nl.py [--only slug,slug] [--out DIR]
+Wat er sinds de meetlat-audit anders is
+---------------------------------------
+* Naharde opnamecontrole per PNG (scripts/capture_controle.py): `geladen_ok`, `controle`,
+  afkeurredenen. Afgekeurde PNG's gaan naar renders/comps_nl/_afgekeurd/.
+* De cookieafhandeling meet voor en na; het manifest zegt alleen 'geklikt' als de overlay
+  daarna aantoonbaar weg was.
+* `ignore_https_errors` en de stealth-vlag `AutomationControlled` zijn verwijderd:
+  certificaatverificatie blijft AAN en er wordt geen botdetectie omzeild.
+* Hosts die bots blokkeren of die de proxy weigert (403/407) worden overgeslagen en gemeld.
+* Geen account, geen login, geen voorwaarden accepteren. Alleen een zoekopdracht in een
+  publiek zoekveld, waar dat in `steps` staat.
+
+Gebruik: python3 scripts/capture_comps_nl.py [--only slug,slug] [--alleen-manifest] [--out DIR]
 """
-import argparse, json, os, sys, datetime, traceback
+import argparse
+import json
+import sys
+import time
+from pathlib import Path
 
-from playwright.sync_api import sync_playwright
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import capture_controle as cc  # noqa: E402
 
-CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
-PROXY = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy")
+ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_OUT = ROOT / "renders" / "comps_nl"
 
-UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36")
+DEKKING = ("GEEN echte vertegenwoordiger van een ingelogd Nederlands assurantie-backoffice "
+           "beschikbaar: dat soort software zit achter een login of demo-aanvraag en is publiek "
+           "niet vast te leggen zonder account. Verkend op 2026-09-29 (alleen de openbare pagina's geladen, "
+           "niets ingevuld): Nmbrs (gratis proefperiode = registratie; demo op aanvraag), ANVA (live demo "
+           "op aanvraag, formulier met reCAPTCHA), Faster Forward/Blinqx (demo op aanvraag, reCAPTCHA) en "
+           "AFAS (geen openbare demo-link op de homepage); Exact Online, Moneybird en e-Boekhouden hebben "
+           "publiek alleen marketing- en prijspagina's. Wat hier staat zijn publiek toegankelijke "
+           "Nederlandse pagina's: zoek-/registerapplicaties, de eerste stap van publieke offerteformulieren "
+           "van verzekeraars en een documentlezer (product_ui; consumentenschermen, geen backoffice) en "
+           "marketing- of informatiepagina's van Nederlandse financiele partijen (marketing).")
+DOEL = ("Opnamen van publiek toegankelijke Nederlandse financiele en administratieve pagina's, "
+        "per bron geclassificeerd (product_ui | marketing). Bedoeld als NL-domeinmaatstaf, met de "
+        "kanttekening in dekking_categorie.")
 
-# ---------------------------------------------------------------- targets
-# categorie: vergelijker | verzekeraar | zakelijk-financieel | overheid
-TARGETS = [
-    dict(slug="independer-autoverzekering-vergelijken",
-         name="Independer - autoverzekering vergelijken (aanvraagflow, stap 1)",
-         cat="vergelijker",
-         url="https://www.independer.nl/autoverzekering/intro.aspx",
-         ui="stappenflow met invoerformulier (kenteken, postcode), voortgangsindicator"),
-    dict(slug="independer-zorgverzekering-vergelijken",
-         name="Independer - zorgverzekering vergelijken",
-         cat="vergelijker",
-         url="https://www.independer.nl/zorgverzekering/intro.aspx",
-         ui="keuzeformulier + vergelijkingsstart"),
-    dict(slug="poliswijzer-autoverzekering",
-         name="Poliswijzer - autoverzekeringen vergelijken",
-         cat="vergelijker",
-         url="https://www.poliswijzer.nl/autoverzekering",
-         ui="vergelijkformulier en productoverzicht"),
-    dict(slug="pricewise-zorgverzekering",
-         name="Pricewise - zorgverzekering vergelijken",
-         cat="vergelijker",
-         url="https://www.pricewise.nl/zorgverzekering/",
-         ui="vergelijker-invoer, premie-overzicht"),
-    dict(slug="verzekeringskaarten-overzicht",
-         name="Verzekeringskaarten.nl (Verbond van Verzekeraars) - kaartenoverzicht",
-         cat="vergelijker",
-         url="https://www.verzekeringskaarten.nl/",
-         ui="zoek + resultaatlijst van gestandaardiseerde verzekeringskaarten"),
-    dict(slug="centraalbeheer-autoverzekering",
-         name="Centraal Beheer - autoverzekering premie berekenen",
-         cat="verzekeraar",
-         url="https://www.centraalbeheer.nl/verzekeringen/autoverzekering",
-         ui="premieberekening-formulier, dekkingstabel"),
-    dict(slug="asr-orv-premie-berekenen",
-         name="a.s.r. - overlijdensrisicoverzekering premie berekenen",
-         cat="verzekeraar",
-         url="https://www.asr.nl/verzekeringen/levensverzekeringen/"
-             "overlijdensrisicoverzekering/premie-berekenen",
-         ui="premieberekening-formulier met invoervelden en uitkomst"),
-    dict(slug="asr-autoverzekering",
-         name="a.s.r. - autoverzekering",
-         cat="verzekeraar",
-         url="https://www.asr.nl/verzekeringen/autoverzekering",
-         ui="dekkingskeuze en premieblok"),
-    dict(slug="klaverblad-autoverzekering",
-         name="Klaverblad - autoverzekering",
-         cat="verzekeraar",
-         url="https://www.klaverblad.nl/autoverzekering",
-         ui="dekkingsoverzicht en aanvraagstart"),
-    dict(slug="eboekhouden-prijzen",
-         name="e-Boekhouden.nl - prijzen/pakketten",
-         cat="zakelijk-financieel",
-         url="https://www.e-boekhouden.nl/prijzen",
-         ui="pakket- en tarieventabel"),
-    dict(slug="exact-online",
-         name="Exact Online - boekhoudsoftware",
-         cat="zakelijk-financieel",
-         url="https://www.exact.com/nl/software/exact-online",
-         ui="productinterface-schermen en pakketvergelijking"),
-    dict(slug="exact-boekhouden",
-         name="Exact - boekhouden (pakketten)",
-         cat="zakelijk-financieel",
-         url="https://www.exact.com/nl/producten/boekhouden",
-         ui="pakketoverzicht met vergelijkingstabel"),
-    dict(slug="kifid-klacht-indienen",
-         name="Kifid - ik heb een klacht (stappenflow)",
-         cat="overheid",
-         url="https://www.kifid.nl/ik-heb-een-klacht/",
-         ui="stappenuitleg van de klachtprocedure"),
-    dict(slug="zorgwijzer-vergelijken",
-         name="Zorgwijzer - zorgverzekering vergelijken",
-         cat="vergelijker",
-         url="https://www.zorgwijzer.nl/vergelijken",
-         ui="vergelijkformulier met dekkingsopties en premielijst"),
-    dict(slug="geld-nl-autoverzekering",
-         name="Geld.nl - autoverzekering vergelijken",
-         cat="vergelijker",
-         url="https://www.geld.nl/autoverzekering",
-         ui="vergelijker-invoer en premie-overzicht"),
-    dict(slug="overstappen-zorgverzekering",
-         name="Overstappen.nl - zorgverzekering vergelijken",
-         cat="vergelijker",
-         url="https://www.overstappen.nl/zorgverzekering/",
-         ui="vergelijkformulier en resultaatlijst"),
-    dict(slug="digid-startscherm",
-         name="DigiD - startscherm/inlogportaal",
-         cat="overheid",
-         url="https://www.digid.nl/",
-         ui="overheidsportaal met inlog- en actiekaarten"),
-    dict(slug="interpolis-autoverzekering",
-         name="Interpolis - autoverzekering",
-         cat="verzekeraar",
-         url="https://www.interpolis.nl/autoverzekering",
-         ui="premie-invoer, dekkingskeuze"),
-    dict(slug="nn-autoverzekering",
-         name="Nationale-Nederlanden - autoverzekering",
-         cat="verzekeraar",
-         url="https://www.nn.nl/particulier/schadeverzekeringen/autoverzekering.htm",
-         ui="productpagina met dekkingstabel en premieblok"),
-    dict(slug="anwb-autoverzekering",
-         name="ANWB - autoverzekering",
-         cat="verzekeraar",
-         url="https://www.anwb.nl/verzekeringen/autoverzekering",
-         ui="premie-calculator, dekkingsvergelijking"),
-    dict(slug="moneybird-prijzen",
-         name="Moneybird - prijzen/pakketten",
-         cat="zakelijk-financieel",
-         url="https://www.moneybird.nl/prijzen",
-         ui="prijstabel met pakketvergelijking"),
-    dict(slug="moneybird-facturen",
-         name="Moneybird - facturatie (productinterface)",
-         cat="zakelijk-financieel",
-         url="https://www.moneybird.nl/facturen",
-         ui="interface-schermen van facturatiesoftware"),
-    dict(slug="rabobank-zakelijke-rekening",
-         name="Rabobank - zakelijke betaalrekening",
-         cat="zakelijk-financieel",
-         url="https://www.rabobank.nl/zakelijk/betalen/zakelijke-rekening",
-         ui="pakketvergelijking met tarieventabel"),
-    dict(slug="ing-zakelijke-rekening",
-         name="ING - zakelijke rekening",
-         cat="zakelijk-financieel",
-         url="https://www.ing.nl/zakelijk/betalen/zakelijke-rekening",
-         ui="productvergelijking, tarieven"),
-    dict(slug="kvk-zoeken-resultaten",
-         name="KvK Handelsregister - zoekresultaten",
-         cat="overheid",
-         url="https://www.kvk.nl/zoeken/",
-         ui="zoekformulier met filters en resultaatlijst",
-         steps=[{"fill": "input[type='search'], input[name='q'], "
-                         "input[placeholder*='Zoek']", "value": "assurantie"},
-                {"press": "Enter"},
-                {"wait": 3500}]),
-    dict(slug="kifid-uitspraken-register",
-         name="Kifid - uitsprakenregister (zoek + resultaten)",
-         cat="overheid",
-         url="https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/",
-         ui="facetzoeker met filters en resultaatlijst"),
-    dict(slug="mijnpensioenoverzicht",
-         name="Mijnpensioenoverzicht.nl - inlog/startscherm",
-         cat="overheid",
-         url="https://www.mijnpensioenoverzicht.nl/",
-         ui="DigiD-inlogscherm, overheidshuisstijl"),
-    dict(slug="mijnoverheid-inloggen",
-         name="MijnOverheid - inlogscherm",
-         cat="overheid",
-         url="https://mijn.overheid.nl/",
-         ui="DigiD-inlog, Rijkshuisstijl"),
-    dict(slug="belastingdienst-zakelijk-btw",
-         name="Belastingdienst zakelijk - btw-aangifte",
-         cat="overheid",
-         url="https://www.belastingdienst.nl/wps/wcm/connect/nl/btw/btw",
-         ui="overheidsinformatie-interface met navigatie/tabellen"),
+# ---------------------------------------------------------------- bronnen
+# cat: vergelijker | verzekeraar | zakelijk-financieel | overheid | register | data
+# `klasse`, `soort_scherm`, `wat_het_toont` (en `interface_elementen`) zijn het OORDEEL van de
+# opnemer na het bekijken van de opname; ontbreken ze, dan telt de bron niet mee.
+TARGETS: list[dict] = [
+    dict(slug="independer-autoverzekering-vergelijken", name="Independer - autoverzekering vergelijken",
+         cat="vergelijker", url="https://www.independer.nl/autoverzekering/intro.aspx"),
+    dict(slug="independer-zorgverzekering-vergelijken", name="Independer - zorgverzekering vergelijken",
+         cat="vergelijker", url="https://www.independer.nl/zorgverzekering/intro.aspx"),
+    dict(slug="poliswijzer-autoverzekering", name="Poliswijzer - autoverzekeringen vergelijken",
+         cat="vergelijker", url="https://www.poliswijzer.nl/autoverzekering"),
+    dict(slug="pricewise-zorgverzekering", name="Pricewise - zorgverzekering vergelijken",
+         cat="vergelijker", url="https://www.pricewise.nl/zorgverzekering/"),
+    dict(slug="verzekeringskaarten-overzicht", name="Verzekeringskaarten.nl (verwijst naar de homepage van het Verbond van Verzekeraars)",
+         cat="vergelijker", url="https://www.verzekeringskaarten.nl/"),
+    dict(slug="centraalbeheer-autoverzekering", name="Centraal Beheer - autoverzekering",
+         cat="verzekeraar", url="https://www.centraalbeheer.nl/verzekeringen/autoverzekering"),
+    dict(slug="asr-orv-premie-berekenen", name="a.s.r. - overlijdensrisicoverzekering premie berekenen",
+         cat="verzekeraar", wait_ms=4000,
+         url="https://www.asr.nl/verzekeringen/levensverzekeringen/overlijdensrisicoverzekering/premie-berekenen",
+         # alleen doorklikken naar de eerste stap van de publieke rekentool; er wordt niets ingevuld of verzonden
+         # (de eerdere CSS-selector `button:has-text(...)` vond de knop niet, de rol-gebaseerde klik wel)
+         steps=[{"klik_tekst": "Start berekening"}, {"wait": 5000}]),
+    dict(slug="asr-autoverzekering", name="a.s.r. - autoverzekering",
+         cat="verzekeraar", url="https://www.asr.nl/verzekeringen/autoverzekering"),
+    dict(slug="klaverblad-autoverzekering", name="Klaverblad - autoverzekering",
+         cat="verzekeraar", url="https://www.klaverblad.nl/autoverzekering"),
+    dict(slug="eboekhouden-prijzen", name="e-Boekhouden.nl - prijzen/pakketten",
+         cat="zakelijk-financieel", url="https://www.e-boekhouden.nl/prijzen"),
+    dict(slug="exact-online", name="Exact Online - boekhoudsoftware",
+         cat="zakelijk-financieel", url="https://www.exact.com/nl/software/exact-online"),
+    dict(slug="exact-boekhouden", name="Exact - boekhouden (pakketten)",
+         cat="zakelijk-financieel", url="https://www.exact.com/nl/producten/boekhouden"),
+    dict(slug="kifid-klacht-indienen", name="Kifid - ik heb een klacht",
+         cat="overheid", url="https://www.kifid.nl/ik-heb-een-klacht/"),
+    dict(slug="zorgwijzer-vergelijken", name="Zorgwijzer - zorgverzekering vergelijken",
+         cat="vergelijker", url="https://www.zorgwijzer.nl/vergelijken"),
+    dict(slug="geld-nl-autoverzekering", name="Geld.nl - autoverzekering vergelijken",
+         cat="vergelijker", url="https://www.geld.nl/autoverzekering"),
+    dict(slug="overstappen-zorgverzekering", name="Overstappen.nl - zorgverzekering vergelijken",
+         cat="vergelijker", url="https://www.overstappen.nl/zorgverzekering/"),
+    dict(slug="digid-startscherm", name="DigiD - startpagina",
+         cat="overheid", url="https://www.digid.nl/"),
+    dict(slug="interpolis-autoverzekering", name="Interpolis - autoverzekering",
+         cat="verzekeraar", url="https://www.interpolis.nl/autoverzekering"),
+    dict(slug="nn-autoverzekering", name="Nationale-Nederlanden - autoverzekering",
+         cat="verzekeraar", url="https://www.nn.nl/particulier/schadeverzekeringen/autoverzekering.htm"),
+    dict(slug="anwb-autoverzekering", name="ANWB - autoverzekering",
+         cat="verzekeraar", url="https://www.anwb.nl/verzekeringen/autoverzekering"),
+    dict(slug="moneybird-prijzen", name="Moneybird - prijzen/pakketten",
+         cat="zakelijk-financieel", url="https://www.moneybird.nl/prijzen"),
+    dict(slug="moneybird-facturen", name="Moneybird - facturatie",
+         cat="zakelijk-financieel", url="https://www.moneybird.nl/facturen"),
+    dict(slug="rabobank-zakelijke-rekening", name="Rabobank - zakelijke betaalrekening",
+         cat="zakelijk-financieel", url="https://www.rabobank.nl/zakelijk/betalen/zakelijke-rekening"),
+    dict(slug="ing-zakelijke-rekening", name="ING - zakelijke rekening",
+         cat="zakelijk-financieel", url="https://www.ing.nl/zakelijk/betalen/zakelijke-rekening"),
+    dict(slug="kvk-zoeken-resultaten", name="KvK Handelsregister - zoekresultaten",
+         cat="overheid", url="https://www.kvk.nl/zoeken/",
+         steps=[{"fill": "input[type='search'], input[name='q'], input[placeholder*='Zoek']",
+                 "value": "assurantie"},
+                {"press": "Enter"}, {"wait": 3500}]),
+    dict(slug="kifid-uitspraken-register", name="Kifid - uitsprakenregister",
+         cat="overheid", url="https://www.kifid.nl/kifid-kennis-en-uitspraken/uitspraken/"),
+    dict(slug="mijnpensioenoverzicht", name="Mijnpensioenoverzicht.nl - startpagina",
+         cat="overheid", url="https://www.mijnpensioenoverzicht.nl/"),
+    dict(slug="mijnoverheid-inloggen", name="MijnOverheid - startpagina",
+         cat="overheid", url="https://mijn.overheid.nl/"),
+    dict(slug="belastingdienst-zakelijk-btw", name="Belastingdienst - btw",
+         cat="overheid", url="https://www.belastingdienst.nl/wps/wcm/connect/nl/btw/btw"),
+    # --- toegevoegd na de audit: publieke zoek-/register-/dataapplicaties (geen account, geen login) ---
+    dict(slug="afm-register-financiele-dienstverleners",
+         name="AFM - register financiele dienstverleners (zoeken)", cat="register",
+         url="https://www.afm.nl/nl-nl/sector/registers/vergunningenregisters/financiele-dienstverleners",
+         wait_ms=4000,
+         steps=[{"fill": "#inputKeywords", "value": "assurantie"}, {"click": "#btn-search-register"},
+                {"wait": 5000}]),
+    dict(slug="rechtspraak-uitspraken-zoeken", name="Rechtspraak.nl - zoeken in uitspraken", cat="register",
+         url="https://uitspraken.rechtspraak.nl/", wait_ms=4000,
+         steps=[{"fill": "#zoekterm", "value": "assurantietussenpersoon"}, {"press": "Enter"}, {"wait": 5000}]),
+    dict(slug="data-overheid-datasets", name="data.overheid.nl - datasets zoeken", cat="data",
+         url="https://data.overheid.nl/datasets", wait_ms=4000),
+    dict(slug="cbs-statline-kerncijfers-wijken", name="CBS StatLine - Kerncijfers wijken en buurten", cat="data",
+         url="https://opendata.cbs.nl/statline/#/CBS/nl/dataset/83765NED/table", wait_ms=10000),
+    dict(slug="wetten-overheid-wft", name="wetten.overheid.nl - Wet op het financieel toezicht", cat="overheid",
+         url="https://wetten.overheid.nl/BWBR0020368/", wait_ms=6000),
+    # --- publieke offerteformulieren van verzekeraars: alleen de EERSTE stap, niets ingevuld of verzonden ---
+    dict(slug="asr-autoverzekering-afsluiten", name="a.s.r. - autoverzekering afsluiten (stap 1: Je situatie)",
+         cat="verzekeraar", url="https://www.asr.nl/autoverzekering/afsluiten", wait_ms=5000),
+    dict(slug="ohra-autoverzekering-berekenen", name="OHRA - autoverzekering berekenen",
+         cat="verzekeraar", url="https://www.ohra.nl/autoverzekering/berekenen", wait_ms=5000),
+    dict(slug="unive-autoverzekering-berekenen", name="Univé - autoverzekering premie berekenen",
+         cat="verzekeraar", url="https://www.unive.nl/autoverzekering", wait_ms=4000,
+         steps=[{"klik_tekst": "Bereken je premie"}, {"wait": 7000}]),
+    # FBTO en Klaverblad zijn verkend en bewust weggelaten: de FBTO-flow toont zonder invoer alleen een introscherm
+    # (en na de doorklik een blanco pagina); de Klaverblad-calculator rendert leeg (alleen kop en zijblok).
+    # --- in de verkenning geweigerd of geblokkeerd: NIET opnieuw geladen, niet omzeild, wel gemeld ---
+    dict(slug="dnb-openbaar-register", name="DNB - openbaar register", cat="register",
+         url="https://www.dnb.nl/openbaar-register/",
+         overslaan="verkenning: eerste lading HTTP 200, tweede lading 'Access Denied' (WAF); niet opnieuw geprobeerd of omzeild"),
+    dict(slug="woz-waardeloket", name="WOZ-waardeloket", cat="overheid",
+         url="https://www.wozwaardeloket.nl/",
+         overslaan="verkenning: HTTP 403; niet omzeild"),
+    dict(slug="kadaster-bag-viewer", name="Kadaster - BAG Viewer", cat="overheid",
+         url="https://bagviewer.kadaster.nl/lvbag/bag-viewer/",
+         overslaan="verkenning: HTTP 403; niet omzeild"),
+    dict(slug="cbs-dashboard-economie", name="CBS - dashboard economie", cat="overheid",
+         url="https://www.cbs.nl/nl-nl/visualisaties/dashboard-economie",
+         overslaan="verkenning: net::ERR_SSL_VERSION_OR_CIPHER_MISMATCH (server accepteert het TLS 1.2-profiel van "
+                   "deze proxy niet); certificaatverificatie niet uitgezet, niet omzeild"),
 ]
 
-# ------------------------------------------------------- cookie handling
-ACCEPT_TEXTS = [
-    "Akkoord", "Accepteer",
-    "Alles accepteren", "Accepteer alles", "Alle cookies accepteren",
-    "Accepteren", "Akkoord", "Ik ga akkoord", "Ja, ik accepteer",
-    "Cookies accepteren", "Accepteer cookies", "Alles toestaan",
-    "Alle cookies toestaan", "Sta alles toe", "Doorgaan", "Begrepen",
-    "Accept all", "Allow all", "Accept",
-]
+for _t in TARGETS:
+    _t.setdefault("id", _t["slug"])
+    _t.setdefault("bron_naam", _t["name"])
+    _t.setdefault("domein", "nl_financieel")
+    _t.setdefault("taal", "nl")
+    _t.setdefault("dekking_categorie", DEKKING)
+    _t.setdefault("categorie", _t["cat"])
 
-HIDE_CSS = """
-#onetrust-consent-sdk, #onetrust-banner-sdk, .onetrust-pc-dark-filter,
-#CybotCookiebotDialog, #CybotCookiebotDialogBodyUnderlay,
-#didomi-host, .didomi-popup-open, #didomi-popup, #didomi-notice,
-#usercentrics-root, #usercentrics-cmp-ui, [id^="usercentrics"],
-.cookie-banner, .cookiebanner, .cookie-consent, .cookie-notice,
-#cookie-banner, #cookiebar, #cookie-bar, #cookie-consent, #cookieConsent,
-[class*="CookieBanner"], [class*="cookie-wall"], [id*="cookiewall"],
-.cc-window, .cc-banner, #cmpbox, #cmpbox2, .qc-cmp2-container,
-#sp_message_container_1, [id^="sp_message_container"],
-.privacy-banner, .consent-modal, [aria-label*="ookie"],
-.modal-backdrop, .cookie-overlay { display:none !important; }
-"""
-
-# Alleen toepassen als de pagina echt scroll-locked is (cookiewall-gedrag).
-# Blind forceren breekt sites die met een eigen scroll-container werken:
-# full_page rekent dan een verkeerde hoogte uit en de shot wordt afgekapt.
-UNLOCK_JS = """() => {
-  const el = [document.documentElement, document.body];
-  let locked = false;
-  for (const e of el) {
-    const cs = getComputedStyle(e);
-    if (cs.overflow === 'hidden' || cs.overflowY === 'hidden' ||
-        cs.position === 'fixed') locked = true;
-  }
-  if (locked) {
-    const st = document.createElement('style');
-    st.textContent =
-      'html,body{overflow:visible !important;position:static !important;' +
-      'height:auto !important;}';
-    document.head.appendChild(st);
-  }
-  return locked;
-}"""
-
-# animaties uit -> stabielere full-page shots
-FREEZE_CSS = """
-*, *::before, *::after {
-  animation-duration: 0s !important; animation-delay: 0s !important;
-  transition-duration: 0s !important; transition-delay: 0s !important;
-  scroll-behavior: auto !important;
+# ---------------------------------------------------------------------------
+# Oordeel van de opnemer na het bekijken van de opnames (desktop en mobiel), 2026-09-29.
+#   product_ui  scherm waarin je iets opzoekt of doet met echte bediening (zoekveld + filters + resultaten,
+#               register, dataviewer, documentlezer). De titel van de site zegt niets: het gaat om wat IN
+#               BEELD staat.
+#   marketing   pagina om te informeren, te verkopen of naar een login te leiden (homepage, prijzen,
+#               productpagina, vergelijker-landing met een invulwidget, inlogpoort), ook als er een
+#               formulier of zoekveld in zit.
+# Er is geen ingelogd Nederlands assurantie- of boekhoud-backoffice publiek vast te leggen; dat staat in
+# `dekking_categorie`. `soort_scherm` maakt het onderscheid binnen de klassen filterbaar. De tekst beschrijft
+# wat er in beeld staat, ook bij afgekeurde opnames. Bronnen zonder oordeel zijn niet geinspecteerd.
+# ---------------------------------------------------------------------------
+GEINSPECTEERD_OP = "2026-09-29"
+BEOORDELING: dict[str, dict] = {
+    "poliswijzer-autoverzekering": dict(klasse="marketing", soort_scherm="vergelijker_landing", wat_het_toont=(
+        "Poliswijzer, 'Autoverzekering vergelijken 2026': groene landingspagina met een invulwidget (kenteken, "
+        "geboortedatum, postcode, huisnummer, kilometers, schadevrije jaren, knop 'Vergelijk verzekeringen'), "
+        "voordelenlijst, 'Top 5'-tabellen met verzekeraarslogo's en premies en klantreviews. Landing met "
+        "formulier; de resultaatpagina van de vergelijker is niet vastgelegd.")),
+    "pricewise-zorgverzekering": dict(klasse="marketing", soort_scherm="vergelijker_landing", wat_het_toont=(
+        "Pricewise, 'Informatie over de zorgverzekering': blauwe kop, invulwidget (geslacht, geboortedatum, "
+        "postcode, gezinsleden, knop 'Check je voordeel') en daaronder lopende uitleg met een zijblok 'Onze "
+        "zekerheid'. Informatie- en landingspagina; geen resultaten.")),
+    "verzekeringskaarten-overzicht": dict(klasse="marketing", soort_scherm="organisatie_homepage", wat_het_toont=(
+        "Homepage van het Verbond van Verzekeraars (verzekeringskaarten.nl verwijst hierheen): fotohero 'De "
+        "brancheorganisatie van verzekeraars', drie doorklikblokken (Data analytics, Zelfreguleringsoverzicht, Wat "
+        "we voor leden doen) en een donker nieuwsblok. Organisatiehomepage, geen toepassing.")),
+    "asr-orv-premie-berekenen": dict(klasse="product_ui", soort_scherm="formulier", wat_het_toont=(
+        "a.s.r., stap 1 'Premie berekenen' van de publieke overlijdensrisico-premiecalculator (alleen doorgeklikt "
+        "via 'Start berekening'; niets ingevuld of verzonden): flowkop met logo en vijfstaps-voortgang (Premie "
+        "berekenen, Gegevens en iDIN check, Extra vragen, Samenvatting, Akkoord), een formulierkaart met "
+        "'1 van 4'-voortgangsbalk, de vraag 'Wie wil je verzekeren?' met drie keuzerondjes (Mijzelf, Iemand anders, "
+        "Mijzelf en iemand anders) en de knoppen 'Terug naar start' en 'Volgende vraag'; op mobiel overlapt de "
+        "zwevende chatknop de knoppen deels. Weinig tekst, maar een volledige en echte formulierstap van een "
+        "Nederlandse verzekeraar (geen backoffice).")),
+    "asr-autoverzekering": dict(klasse="marketing", soort_scherm="productpagina", wat_het_toont=(
+        "a.s.r., productpagina autoverzekering: hero met illustratie, kop 'Autoverzekering', knop 'Bereken je "
+        "premie', snelkoppelingen (Inloggen, Schade melden, Service en contact, Groene kaart) en drie "
+        "dekkingskaarten (WA, WA + Casco beperkt, WA + Casco allrisk).")),
+    "klaverblad-autoverzekering": dict(klasse="marketing", soort_scherm="productpagina", wat_het_toont=(
+        "Klaverblad, productpagina autoverzekering: fotohero met blok 'De Klaverblad Autoverzekering', "
+        "waarderingsbadge 8,6, knoppen 'Ontvang passend advies' en 'Bereken uw premie', daarna uitleg over drie "
+        "dekkingsvarianten (WA, WA+ beperkt casco, WA+ volledig casco).")),
+    "eboekhouden-prijzen": dict(klasse="marketing", soort_scherm="prijzenpagina", wat_het_toont=(
+        "e-Boekhouden.nl, 'Prijzen voor ondernemers': aanbiedingsblok '15 maanden GRATIS', pakketkaarten (ZZP "
+        "Pakket, Standaard, Standaard + Facturen) met maandprijzen en actieknoppen, en een vergelijkingstabel van "
+        "functies. Prijspagina van boekhoudsoftware; geen bedieningsscherm.")),
+    "exact-online": dict(klasse="marketing", soort_scherm="productpagina", wat_het_toont=(
+        "Exact Online, productpagina: kop 'Exact Online biedt compleet inzicht in je onderneming', foto met "
+        "laptop, klantlogo's, fotostrook en een strook met kleine productschermen. Marketingpagina; de "
+        "productschermen zijn illustraties.")),
+    "exact-boekhouden": dict(klasse="marketing", soort_scherm="productpagina", wat_het_toont=(
+        "Exact, pagina 'Boekhouden': kop 'Het meest complete boekhoudprogramma', foto, kernpunten, knoppen 'Probeer "
+        "30 dagen gratis' en 'of bekijk de demo', klantlogo's en een strook met kleine productafbeeldingen. "
+        "Marketingpagina.")),
+    "kifid-klacht-indienen": dict(klasse="marketing", soort_scherm="informatiepagina", wat_het_toont=(
+        "Kifid, 'Ik heb een klacht': informatiepagina met fotohero, kop 'Een financiele klacht? Kifid kan in veel "
+        "gevallen helpen', zes doorklikblokken (Sneltest, Klachtbehandeling, Reglementen, Klachtformulier, "
+        "Uitsprakenregister, Dienstverlenersregister) en hoofdmenu. Het klachtformulier zelf is niet "
+        "vastgelegd.")),
+    "zorgwijzer-vergelijken": dict(klasse="marketing", soort_scherm="afbeelding_zonder_pagina", wat_het_toont=(
+        "Geen pagina: de server leverde een JPG-afbeelding (kleine vergelijkingstabel met drie aanbieders, "
+        "gecentreerd op een zwarte achtergrond) in plaats van een HTML-pagina. Afgekeurd.")),
+    "geld-nl-autoverzekering": dict(klasse="marketing", soort_scherm="vergelijker_landing", wat_het_toont=(
+        "Geld.nl, 'Autoverzekering: zorgeloos de weg op': lange tekstpagina met een zijblok 'Autoverzekering "
+        "vergelijken' (kentekenveld en knop 'Start vergelijken'), linkenlijsten en veel lopende uitleg.")),
+    "overstappen-zorgverzekering": dict(klasse="marketing", soort_scherm="vergelijker_landing", wat_het_toont=(
+        "Overstappen.nl, 'Zorgverzekering vergelijken 2026': groene landing met kikker-illustratie, "
+        "invulwidget (postcode, geboortedatum, geslacht, knop 'Vergelijk zorgverzekeringen'), Trustpilot-score "
+        "en nieuwsartikelen.")),
+    "digid-startscherm": dict(klasse="marketing", soort_scherm="inlogpoort", wat_het_toont=(
+        "DigiD.nl, startpagina: storingsmelding 'Inlogproblemen met de DigiD app?', oranje hero 'Laat zien wie je "
+        "bent' met knoppen Aanvragen en Activeren, blokken 'Machtigen' en 'Code ontvangen' en 'Manieren van "
+        "inloggen'. Informatie- en toegangspagina; er wordt niet ingelogd.")),
+    "interpolis-autoverzekering": dict(klasse="marketing", soort_scherm="productpagina", wat_het_toont=(
+        "Interpolis, productpagina autoverzekering: fotohero met kaart 'Interpolis Autoverzekeringen', "
+        "prijsbadge, snelkoppelingen (Ruitschade, Autoschade, Zelf regelen) en drie dekkingskaarten.")),
+    "anwb-autoverzekering": dict(klasse="marketing", soort_scherm="productpagina", wat_het_toont=(
+        "ANWB, productpagina autoverzekering: hero met foto, waardering 8,2/10, kernpunten, knop 'Kies je "
+        "autoverzekering', gele sectie met twee varianten (Veilig Rijden, Reguliere autoverzekering) en "
+        "uitlegtekst.")),
+    "moneybird-prijzen": dict(klasse="marketing", soort_scherm="prijzenpagina", wat_het_toont=(
+        "Moneybird, prijzenpagina: kop 'Betaal alleen voor wat je nodig hebt', jaar/maand-schakelaar en "
+        "pakketkaarten Start, Groei en Compleet met kenmerklijsten en knoppen. Prijspagina van "
+        "boekhoudsoftware.")),
+    "moneybird-facturen": dict(klasse="marketing", soort_scherm="productpagina", wat_het_toont=(
+        "Moneybird, pagina 'Facturen': fotohero 'Slimme facturen. Professionele uitstraling.', "
+        "kernboodschap 'Binnen 2 minuten professionele facturen' en drie kaarten met kleine "
+        "productafbeeldingen (huisstijl, factuur, workflow). Marketingpagina; de afbeeldingen zijn "
+        "illustraties.")),
+    "kvk-zoeken-resultaten": dict(klasse="product_ui", soort_scherm="zoekresultaten", wat_het_toont=(
+        "KvK Handelsregister, pagina 'Zoeken' met de zoekterm 'assurantie': zoekveld met spraakknop, "
+        "filterchips (Alles, Handelsregister, Advies en inspiratie, Alle filters), '1434 resultaten' en "
+        "resultaatkaarten (bedrijfsnaam, KvK-nummer, vestigingsnummer, adres, knop 'Bestel nu'). Echte "
+        "zoektoepassing; publiek, zonder inlog.")),
+    "kifid-uitspraken-register": dict(klasse="product_ui", soort_scherm="zoekresultaten", wat_het_toont=(
+        "Kifid, Uitsprakenregister: links een zoekveld ('Zoek binnen uitspraken') en filtergroepen (categorie, "
+        "instantie, periode), rechts '14810 uitspraken' met sorteermenu en uitspraakkaarten (tegen wie, datum, "
+        "samenvatting, 'Lees verder', knop 'Bekijk volledige uitspraak (PDF)'). Echte zoektoepassing; publiek, "
+        "zonder inlog.")),
+    "mijnpensioenoverzicht": dict(klasse="marketing", soort_scherm="inlogpoort", wat_het_toont=(
+        "Mijnpensioenoverzicht.nl, startpagina: fotohero 'Bekijk uw verwachte pensioen', inlogknoppen (DigiD, "
+        "eIDAS) en zes nieuws- en uitlegkaarten. Toegangs- en informatiepagina; er wordt niet ingelogd.")),
+    "mijnoverheid-inloggen": dict(klasse="marketing", soort_scherm="inlogpoort", wat_het_toont=(
+        "MijnOverheid, startpagina: blauwe pagina met een onderhoudsmelding in een klein carrouselblok "
+        "(niet schermvullend), knop 'Inloggen met DigiD' en uitleg 'Wat kunt u met MijnOverheid?' "
+        "(Berichtenbox, Uw gegevens). Toegangspagina; er wordt niet ingelogd.")),
+    "belastingdienst-zakelijk-btw": dict(klasse="marketing", soort_scherm="informatiepagina", wat_het_toont=(
+        "Belastingdienst, onderwerp 'Btw (omzetbelasting)': fotohero, vier snelle blokken (aangifte, "
+        "naheffingsaanslag, btw-nummer, post) en lange linklijsten per onderwerp. Informatiepagina zonder "
+        "bediening.")),
+    "afm-register-financiele-dienstverleners": dict(klasse="product_ui", soort_scherm="zoekresultaten",
+                                                    wat_het_toont=(
+        "AFM, 'Register financiele dienstverleners': bovenaan een uitlegpagina met zijnavigatie (ongeveer de "
+        "eerste 1400 css-px), daaronder het paneel 'Doorzoek de registers' met zoekterm 'assurantie', "
+        "exportlinks (CSV, XML), '653 resultaten' en een tweekoloms resultatentabel (statutaire naam, "
+        "handelsnaam) met paginering. Echte registertoepassing; publiek, zonder inlog.")),
+    "rechtspraak-uitspraken-zoeken": dict(klasse="product_ui", soort_scherm="zoekresultaten", wat_het_toont=(
+        "Rechtspraak.nl, uitspraken zoeken met de zoekterm 'assurantietussenpersoon': donkere kop met "
+        "themafoto, links 'Opnieuw zoeken', 'Huidige zoekopdracht', 'Verfijn zoekopdracht' en inklapbare "
+        "filters, rechts 'Resultaten (1657)' met knoppen 'Compacte weergave' en 'Print', sorteermenu en "
+        "resultaatkaarten (ECLI, datum uitspraak en publicatie, rechtsgebied, inhoudsindicatie). Echte "
+        "zoektoepassing; publiek, zonder inlog.")),
+    "data-overheid-datasets": dict(klasse="product_ui", soort_scherm="zoekresultaten", wat_het_toont=(
+        "data.overheid.nl, 'Datasets': zoekbalk, uitklapbare filtergroepen links (status, toegang, data-eigenaar, "
+        "hoogwaardige dataset, thema, classificatie, groep, ...), '20.611 datasets' met sorteermenu, paginering "
+        "en datasetkaarten (titel, beschrijving, data-eigenaar, bijgewerkt, thema, links Informatie en "
+        "Databronnen). Echte catalogus- en zoektoepassing; publiek, zonder inlog.")),
+    "cbs-statline-kerncijfers-wijken": dict(klasse="product_ui", soort_scherm="dataviewer", wat_het_toont=(
+        "CBS StatLine, tabel 'Kerncijfers wijken en buurten 2017': werkbalk (info, delen, downloaden, "
+        "tabel- en grafiekweergave), een lichtblauwe hint over het slepen van variabelen en een zeer dichte "
+        "statistiektabel met regio-kolommen en tientallen rijen. Echte datatoepassing; publiek, zonder "
+        "inlog.")),
+    "asr-autoverzekering-afsluiten": dict(klasse="product_ui", soort_scherm="formulier", wat_het_toont=(
+        "a.s.r., stap 1 'Je situatie' van de publieke aanvraagflow autoverzekering (direct geladen; niets "
+        "ingevuld of verzonden): flowkop met vijfstaps-voortgang (Je situatie, Kies je dekking, Je gegevens, Tot "
+        "slot, Samenvatting), formulierkaart 'De auto die je wil verzekeren' met kentekenveld, keuze 'Weet je het "
+        "aantal schadevrije jaren?' (Ja/Nee), 'Regelmatige bestuurder' (select) en 'Je gegevens' (kilometers per "
+        "jaar, geboortedatum, postcode, huisnummer, toevoeging), een zijkaart 'Waarom onze verzekering?' met drie "
+        "voordelen en een zwevende chatknop. Echt offerteformulier van een Nederlandse verzekeraar (geen "
+        "backoffice).")),
+    "ohra-autoverzekering-berekenen": dict(klasse="product_ui", soort_scherm="formulier", wat_het_toont=(
+        "OHRA, pagina 'Autoverzekering berekenen' (direct geladen; niets ingevuld of verzonden): blauwe "
+        "navigatiebalk, een promotieblok met illustratie ('1 jaar 10% korting') en daaronder de formulierkaarten "
+        "'Je auto' (kentekenveld, vinkje 'Mijn kenteken is (nog) niet bekend', uitvoering), 'Je gegevens' "
+        "(postcode, geboortedatum), 'Gegevens auto' (schadevrije jaren, kilometers per jaar), 'Regelmatige "
+        "bestuurder' en 'Collectief voordeel' (werkgever, actiecode), met een zijkolom 'Een autoverzekering die "
+        "precies bij je past' en een zwevende chatknop. Echt offerteformulier van een Nederlandse verzekeraar "
+        "(geen backoffice); de bovenste helft van het eerste scherm is een promotiebanner.")),
+    "unive-autoverzekering-berekenen": dict(klasse="product_ui", soort_scherm="formulier", wat_het_toont=(
+        "Univé, stap 1 'Basisgegevens' van de premieberekening autoverzekering (doorgeklikt via 'Bereken je "
+        "premie'; niets ingevuld of verzonden): kop 'Uw autoverzekering', vijfstaps-voortgang (Basisgegevens, "
+        "Premie berekenen, Uw situatie, Uw gegevens, Bijna verzekerd), formulierkaart met kentekenveld, keuze "
+        "nieuw/tweedehands, 'Gegevens hoofdbestuurder' (Ikzelf/Mijn partner/Mijn kind/Iemand anders, "
+        "geboortedatum, postcode), de vraag naar een bestaande Univé-auto, 'Uw no-claim korting berekenen' "
+        "(schadevrije jaren) en de knop 'Volgende: premie berekenen', plus zijkaarten 'Vragen?' en 'De zekerheid "
+        "van Univé'. De keuzes 'Ikzelf' en 'Nee' staan standaard geselecteerd. Echt offerteformulier van een "
+        "Nederlandse verzekeraar (geen backoffice).")),
+    "wetten-overheid-wft": dict(klasse="product_ui", soort_scherm="document_lezer", wat_het_toont=(
+        "Wettenbank, 'Wet op het financieel toezicht': blauwe hoofdnavigatie, zoeklinks, inhoudsopgave met "
+        "uitklapbare delen links, regelingkop met actieknoppen (link, opslaan, print, download), "
+        "artikelblokken en daarna vrijwel uitsluitend lopende wettekst (de pagina is afgekapt op 10.000 "
+        "css-px; de hele wet is ruim 700.000 css-px lang). Echte documentlezer; publiek, zonder inlog.")),
 }
-"""
+for _t in TARGETS:
+    if _t["slug"] in BEOORDELING:
+        _t.update(BEOORDELING[_t["slug"]])
+        _t.setdefault("geinspecteerd_op", GEINSPECTEERD_OP)
 
 
-def dismiss_cookies(page, log):
-    """Probeer echt te klikken (nettere layout) en verberg daarna de rest."""
-    clicked = None
-    for frame in [page] + list(page.frames):
-        for txt in ACCEPT_TEXTS:
-            try:
-                btn = frame.get_by_role("button", name=txt, exact=False).first
-                if btn.count() and btn.is_visible(timeout=700):
-                    btn.click(timeout=2500, force=True)
-                    clicked = txt
-                    page.wait_for_timeout(900)
-                    break
-            except Exception:
-                continue
-        if clicked:
+def bestandsnaam(t: dict, vp: str) -> str:
+    return f"{t['slug']}-desktop-1440x900.png" if vp == "desktop" else f"{t['slug']}-mobile-390x844.png"
+
+
+def _kaart(t: dict) -> dict:
+    k = dict(t)
+    k["_concept"] = not t.get("wat_het_toont")
+    return k
+
+
+def maak_bron(t: dict, recs: dict[str, dict]) -> dict:
+    """Bronniveau-object met de per-viewport opnamerecords onder `bestanden`."""
+    d, m = recs.get("desktop"), recs.get("mobile")
+    hoofd = d or m or {}
+    bestanden = {}
+    for vp, r in recs.items():
+        r = dict(r)
+        r["file"] = r.get("bestand")                 # oude alias die het harnas leest
+        r["device_scale_factor"] = cc.DEVICE_SCALE
+        r["full_page"] = True
+        r["bytes"] = r.get("bestandsgrootte_bytes")
+        bestanden[vp] = r
+    ok = bool(recs) and all(r["geladen_ok"] for r in recs.values())
+    redenen = list(dict.fromkeys(c for r in recs.values() for c in r["afkeurredenen"]))
+    oms = t.get("wat_het_toont") or "NOG NIET GEINSPECTEERD"
+    return {
+        "slug": t["slug"], "id": t["slug"], "naam": t["name"], "bron_naam": t["bron_naam"],
+        "categorie": t["cat"], "bron_url": t["url"], "eind_url": hoofd.get("eind_url"),
+        "pagina_titel": hoofd.get("titel"), "http_status": hoofd.get("http_status"),
+        "vastgelegd_op": hoofd.get("vastgelegd_op"),
+        "klasse": t.get("klasse"), "domein": t["domein"], "taal": hoofd.get("taal") or t["taal"],
+        "soort_scherm": t.get("soort_scherm"), "toegang": t.get("toegang"),
+        "geladen_ok": ok, "afkeurredenen": redenen,
+        "wat_het_toont": oms, "interface_elementen": oms,
+        "geinspecteerd_op": t.get("geinspecteerd_op"),
+        "dekking_categorie": t["dekking_categorie"],
+        "bestanden": bestanden,
+        "notities": "; ".join(f"{vp}: {r['controle']['cookies']['beschrijving']}" for vp, r in recs.items()
+                              if r.get("controle", {}).get("cookies")),
+    }
+
+
+def leg_bron_vast(browser, t: dict, pauze: float) -> tuple[dict | None, dict | None]:
+    """(bron, overgeslagen). Precies een van beide is gevuld."""
+    kaart = _kaart(t)
+    if t.get("overslaan"):
+        return None, _overgeslagen(t, t["overslaan"], ["verkend_geweigerd"])
+    geblokkeerd = cc.host_geblokkeerd(t["url"])
+    if geblokkeerd:
+        return None, _overgeslagen(t, geblokkeerd, ["bekend_geblokkeerd"])
+    recs: dict[str, dict] = {}
+    for i, vp in enumerate(cc.VIEWPORT_NAMEN):
+        if i:
+            time.sleep(cc.PAUZE_TUSSEN_LADINGEN_S)
+        bestand = bestandsnaam(t, vp)
+        t0 = time.time()
+        raw = cc.leg_vast(browser, kaart, vp, OUT_DIR, bestand, wacht_ms=t.get("wait_ms", 3000),
+                          stappen=t.get("steps"), locale="nl-NL", accept_language="nl-NL,nl;q=0.9,en;q=0.6")
+        if not (OUT_DIR / bestand).exists():
+            reden = raw.get("fout") or "geen opname gemaakt"
+            code = "http_" + reden.split()[-1] if reden.startswith("HTTP") else "capture_mislukt"
+            print(f"SKIP {bestand:<60} {reden}", flush=True)
+            if not recs:                                     # al de eerste lading faalde: hele bron overslaan
+                return None, _overgeslagen(t, reden, [code])
+            # desktop is gelukt, mobiel niet: de goede opname blijft, mobiel krijgt een record zonder bestand
+            recs[vp] = cc.record_zonder_bestand(kaart=kaart, viewport_naam=vp, reden=reden, codes=[code])
             break
-    if not clicked:
-        # tweede poging: losse links/knoppen buiten de ARIA-rol
-        for txt in ACCEPT_TEXTS[:8]:
-            try:
-                el = page.locator(
-                    f"button:has-text('{txt}'), a:has-text('{txt}'), "
-                    f"[role='button']:has-text('{txt}')").first
-                if el.count() and el.is_visible(timeout=500):
-                    el.click(timeout=2000, force=True)
-                    clicked = txt
-                    page.wait_for_timeout(900)
-                    break
-            except Exception:
-                continue
-    try:
-        page.add_style_tag(content=HIDE_CSS)
-    except Exception:
-        pass
-    try:
-        if page.evaluate(UNLOCK_JS):
-            log.append("scroll-lock opgeheven")
-    except Exception:
-        pass
-    log.append(f"cookies: {'geklikt op ' + clicked if clicked else 'verborgen via CSS'}")
-    return clicked
+        rec = cc.bouw_record(kaart=kaart, viewport_naam=vp, bestand=bestand, map_pad=OUT_DIR, raw=raw)
+        rec["duur_s"] = round(time.time() - t0, 1)
+        recs[vp] = rec
+        print(f'{"OK  " if rec["geladen_ok"] else "AFK "} {rec["bestand"]:<60} '
+              f'{",".join(rec["afkeurredenen"]) or "schoon"}', flush=True)
+    return maak_bron(t, recs), None
 
 
-def run_steps(page, steps, log):
-    """Kleine stappenrunner om een echte formulier-/resultaatstaat te bereiken."""
-    for st in steps or []:
-        try:
-            if "fill" in st:
-                page.locator(st["fill"]).first.fill(st["value"], timeout=8000)
-            elif "click" in st:
-                page.locator(st["click"]).first.click(timeout=8000)
-            elif "press" in st:
-                page.keyboard.press(st["press"])
-            elif "wait" in st:
-                page.wait_for_timeout(st["wait"])
-            log.append("stap ok: " + json.dumps(st, ensure_ascii=False))
-        except Exception as e:
-            log.append(f"stap mislukt ({json.dumps(st, ensure_ascii=False)}): "
-                       f"{type(e).__name__}")
-    page.wait_for_timeout(1500)
+def _overgeslagen(t: dict, reden: str, codes: list[str]) -> dict:
+    return {"slug": t["slug"], "id": t["slug"], "naam": t["name"], "bron_naam": t["bron_naam"],
+            "url": t["url"], "categorie": t["cat"], "bestand": None, "geladen_ok": False,
+            "afkeurredenen": codes, "afkeurreden": reden, "reden": reden,
+            "klasse": None, "domein": t["domein"], "taal": None, "viewport_naam": "desktop",
+            "wat_het_toont": f"NIET VASTGELEGD: {reden}", "vastgelegd_op": cc.nu_iso(),
+            "dekking_categorie": t["dekking_categorie"],
+            "controle": {"schema": cc.SCHEMA_VERSIE, "controle_versie": cc.CONTROLE_VERSIE,
+                         "beeld": None, "overgeslagen": True}}
 
 
-def settle(page):
-    """Lazy-load triggeren en terug naar boven."""
-    try:
-        page.wait_for_load_state("networkidle", timeout=12000)
-    except Exception:
-        pass
-    try:
-        page.evaluate("""async () => {
-            const step = Math.round(window.innerHeight * 0.8);
-            let y = 0;
-            const max = () => document.body.scrollHeight;
-            while (y < max() && y < 30000) {
-                window.scrollTo(0, y); y += step;
-                await new Promise(r => setTimeout(r, 160));
-            }
-            window.scrollTo(0, 0);
-            await new Promise(r => setTimeout(r, 400));
-        }""")
-    except Exception:
-        pass
-    page.wait_for_timeout(800)
+def herbouw_bron(t: dict, vorig: dict) -> tuple[dict | None, dict | None]:
+    """--alleen-manifest: uit opgeslagen feiten + PNG's, zonder netwerk."""
+    for s in vorig.get("overgeslagen", []):
+        if s.get("slug") == t["slug"]:
+            reden = s.get("reden") or s.get("afkeurreden") or "overgeslagen"
+            nieuw = _overgeslagen(t, reden, s.get("afkeurredenen") or ["capture_mislukt"])
+            if s.get("vastgelegd_op"):
+                nieuw["vastgelegd_op"] = s["vastgelegd_op"]      # een herbouw verandert het tijdstip van de vaststelling niet
+            return None, nieuw
+    oud = next((c for c in vorig.get("comps", []) if c["slug"] == t["slug"]), None)
+    if oud is None:
+        return None, None
+    kaart = _kaart(t)
+    recs = {}
+    for vp, r in (oud.get("bestanden") or {}).items():
+        b = bestandsnaam(t, vp)
+        if not (OUT_DIR / b).exists() and not (OUT_DIR / cc.AFGEKEURD_MAP / b).exists():
+            recs[vp] = r                                     # was overgeslagen (geen PNG): regel behouden
+            continue
+        recs[vp] = cc.bouw_record(kaart=kaart, viewport_naam=vp, bestand=b,
+                                  map_pad=OUT_DIR, raw=cc.raw_uit_record(r))
+    return maak_bron(t, recs), None
 
 
-def shoot(browser, target, viewport, dsf, path, is_mobile, log):
-    ctx = browser.new_context(
-        viewport=viewport, device_scale_factor=dsf,
-        is_mobile=is_mobile, has_touch=is_mobile,
-        user_agent=UA, locale="nl-NL", timezone_id="Europe/Amsterdam",
-        ignore_https_errors=True,
-        extra_http_headers={"Accept-Language": "nl-NL,nl;q=0.9,en;q=0.6"},
-    )
-    ctx.set_default_timeout(30000)
-    page = ctx.new_page()
-    try:
-        resp = page.goto(target["url"], wait_until="domcontentloaded", timeout=45000)
-        status = resp.status if resp else None
-        if status and status >= 400:
-            raise RuntimeError(f"HTTP {status}")
-        page.wait_for_timeout(1500)
-        dismiss_cookies(page, log)
-        try:
-            page.add_style_tag(content=FREEZE_CSS)
-        except Exception:
-            pass
-        run_steps(page, target.get("steps"), log)
-        settle(page)
-        # Sommige CMP's verschijnen pas na een paar seconden of na scrollen.
-        dismiss_cookies(page, log)
-        try:
-            page.add_style_tag(content=HIDE_CSS)
-        except Exception:
-            pass
-        title = (page.title() or "").strip()
-        body = (page.inner_text("body")[:3000] if page.locator("body").count()
-                else "")
-        for bad in ("Werk aan de winkel", "even niet bereikbaar",
-                    "Access Denied", "Pardon Our Interruption",
-                    "Even geduld", "verify you are human",
-                    "Je browser wordt gecontroleerd"):
-            if bad.lower() in body.lower():
-                raise RuntimeError(f"blokkade-/onderhoudspagina ({bad!r})")
-        final_url = page.url
-        page.screenshot(path=path, full_page=True, animations="disabled")
-        return dict(status=status, title=title, final_url=final_url,
-                    bytes=os.path.getsize(path))
-    finally:
-        ctx.close()
-
-
-def main():
+def main() -> int:
+    global OUT_DIR
     ap = argparse.ArgumentParser()
-    ap.add_argument("--out", default="/home/user/Ai-assurantie-portaal/renders/comps_nl")
+    ap.add_argument("--out", default=str(DEFAULT_OUT))
     ap.add_argument("--only", default="")
+    ap.add_argument("--alleen-manifest", action="store_true", help="geen netwerk: herbereken het manifest")
+    ap.add_argument("--pauze", type=float, default=4.0, help="seconden pauze tussen bronnen")
     args = ap.parse_args()
-    out = os.path.abspath(args.out)
-    os.makedirs(out, exist_ok=True)
+    OUT_DIR = Path(args.out).resolve()
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
     only = {s.strip() for s in args.only.split(",") if s.strip()}
-    targets = [t for t in TARGETS if not only or t["slug"] in only]
-
-    comps, skipped = [], []
-    launch = dict(executable_path=CHROME, headless=True,
-                  args=["--no-sandbox", "--disable-dev-shm-usage",
-                        "--disable-blink-features=AutomationControlled",
-                        "--hide-scrollbars", "--force-color-profile=srgb",
-                        # De agent-proxy verbreekt TLS1.3-tunnels van Chromium
-                        # (ws_closed_mid_exchange). TLS1.2 werkt wel.
-                        "--ssl-version-max=tls1.2",
-                        "--disable-features=EncryptedClientHello,UseDnsHttpsSvcb,"
-                        "UseDnsHttpsSvcbAlpn"])
-    if PROXY:
-        launch["proxy"] = {"server": PROXY}
-
-    with sync_playwright() as pw:
-        browser = pw.chromium.launch(**launch)
-        for t in targets:
-            log = []
-            d_path = os.path.join(out, f"{t['slug']}-desktop-1440x900.png")
-            m_path = os.path.join(out, f"{t['slug']}-mobile-390x844.png")
-            try:
-                d = shoot(browser, t, {"width": 1440, "height": 900}, 2,
-                          d_path, False, log)
-                m = shoot(browser, t, {"width": 390, "height": 844}, 2,
-                          m_path, True, log)
-                comps.append(dict(
-                    slug=t["slug"], naam=t["name"], categorie=t["cat"],
-                    bron_url=t["url"], eind_url=d["final_url"],
-                    pagina_titel=d["title"],
-                    interface_elementen=t["ui"],
-                    http_status=d["status"],
-                    vastgelegd_op=datetime.datetime.now(
-                        datetime.timezone.utc).isoformat(timespec="seconds"),
-                    bestanden={
-                        "desktop": dict(
-                            file=os.path.basename(d_path),
-                            viewport="1440x900", device_scale_factor=2,
-                            full_page=True, bytes=d["bytes"]),
-                        "mobile": dict(
-                            file=os.path.basename(m_path),
-                            viewport="390x844", device_scale_factor=2,
-                            full_page=True, bytes=m["bytes"]),
-                    },
-                    notities="; ".join(log),
-                ))
-                print(f"OK   {t['slug']}  ({d['bytes']//1024}kB / {m['bytes']//1024}kB)",
-                      flush=True)
-            except Exception as e:
-                for p in (d_path, m_path):
-                    if os.path.exists(p) and os.path.getsize(p) < 4000:
-                        os.remove(p)
-                reden = f"{type(e).__name__}: {str(e).splitlines()[0][:200]}"
-                skipped.append(dict(slug=t["slug"], naam=t["name"],
-                                    url=t["url"], reden=reden))
-                print(f"SKIP {t['slug']}  {reden}", flush=True)
-        browser.close()
-
-    manifest = dict(
-        set="comps_nl",
-        doel=("Eerlijke meetlat: beste publiek toegankelijke Nederlandse "
-              "financiele/verzekerings-interfaces met echte interface-elementen "
-              "(formulieren, tabellen, stappenflows, resultaatlijsten)."),
-        gegenereerd_op=datetime.datetime.now(
-            datetime.timezone.utc).isoformat(timespec="seconds"),
-        generator="scripts/capture_comps_nl.py (Playwright/Chromium 1194)",
-        viewports=dict(
-            desktop=dict(width=1440, height=900, device_scale_factor=2, full_page=True),
-            mobile=dict(width=390, height=844, device_scale_factor=2, full_page=True)),
-        cookie_afhandeling=("Consent-knop geklikt waar mogelijk; anders bekende "
-                            "CMP-containers via CSS verborgen en scroll-lock opgeheven."),
-        aantal_comps=len(comps),
-        aantal_bestanden=len(comps) * 2,
-        comps=comps,
-        overgeslagen=skipped,
-    )
-    mpath = os.path.join(out, "manifest.json")
-    if os.path.exists(mpath):
+    todo = [t for t in TARGETS if not only or t["slug"] in only]
+    mpath = OUT_DIR / "manifest.json"
+    vorig = {}
+    if mpath.exists():
         try:
-            prev = json.load(open(mpath, encoding="utf-8"))
-            done = {c["slug"] for c in comps}
-            merged = [c for c in prev.get("comps", []) if c["slug"] not in done]
-            merged += comps
-            merged.sort(key=lambda c: (c["categorie"], c["slug"]))
-            comps = merged
-            fail = {x["slug"] for x in skipped}
-            ok = {c["slug"] for c in comps}
-            skipped = ([x for x in prev.get("overgeslagen", [])
-                        if x["slug"] not in fail and x["slug"] not in ok]
-                       + [x for x in skipped if x["slug"] not in ok])
-            manifest["comps"] = comps
-            manifest["overgeslagen"] = skipped
-            manifest["aantal_comps"] = len(comps)
-            manifest["aantal_bestanden"] = len(comps) * 2
-        except Exception as e:
-            print("waarschuwing: kon oude manifest niet mergen:", e)
-    with open(mpath, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, ensure_ascii=False, indent=2)
-    print(f"\n{len(comps)} comps, {len(comps)*2} bestanden -> {mpath}")
-    print(f"{len(skipped)} overgeslagen")
+            vorig = json.loads(mpath.read_text(encoding="utf-8"))
+        except Exception:
+            vorig = {}
+
+    bronnen: dict[str, dict] = {c["slug"]: c for c in vorig.get("comps", [])}
+    skipped: dict[str, dict] = {s["slug"]: s for s in vorig.get("overgeslagen", [])}
+    if args.alleen_manifest:
+        for t in todo:
+            b, s = herbouw_bron(t, vorig)
+            _verwerk(t, b, s, bronnen, skipped)
+    else:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as pw:
+            browser = cc.start_browser(pw)
+            for n, t in enumerate(todo):
+                if n:
+                    time.sleep(args.pauze)
+                b, s = leg_bron_vast(browser, t, args.pauze)
+                _verwerk(t, b, s, bronnen, skipped)
+            browser.close()
+
+    volgorde = {t["slug"]: i for i, t in enumerate(TARGETS)}
+    comps = sorted((c for c in bronnen.values() if c["slug"] in volgorde), key=lambda c: volgorde[c["slug"]])
+    overgeslagen = sorted((s for s in skipped.values() if s["slug"] in volgorde), key=lambda s: volgorde[s["slug"]])
+    n_files = sum(len(c["bestanden"]) for c in comps)
+    n_ok = sum(1 for c in comps for r in c["bestanden"].values() if r["geladen_ok"])
+    manifest = {
+        "set": "comps_nl",
+        "schema_versie": cc.SCHEMA_VERSIE,
+        "doel": DOEL,
+        "dekking_categorie": DEKKING,
+        "gegenereerd_op": cc.nu_iso(),
+        "generator": "scripts/capture_comps_nl.py (Playwright/Chromium 1194) + scripts/capture_controle.py",
+        "viewports": {"desktop": {"width": 1440, "height": 900, "device_scale_factor": 2, "full_page": True},
+                      "mobile": {"width": 390, "height": 844, "device_scale_factor": 2, "full_page": True}},
+        "cookie_afhandeling": ("Alleen als de DOM een blokkerende overlay toont: eerst klikken, dan bekende "
+                               "containers met CSS verbergen, dan consent-overlays met JS verbergen. "
+                               "Per opname staat in controle.cookies wat er GEMETEN is gebeurd; een bewering "
+                               "als 'geklikt' staat er alleen als de overlay daarna aantoonbaar weg was."),
+        "leesvoorbeeld": cc.leesvoorbeeld(
+            "manifest['comps'] = lijst bronnen; per bron manifest['comps'][i]['bestanden']['desktop'|'mobile'] is een "
+            "opnamerecord (oude alias 'file'); bronnen die niet zijn vastgelegd staan in manifest['overgeslagen'] "
+            "(bestand null, met reden)"),
+        "aantal_comps": len(comps),
+        "aantal_bestanden": n_files,
+        "aantal_geladen_ok": n_ok,
+        "comps": comps,
+        "overgeslagen": overgeslagen,
+    }
+    cc.schrijf_json(mpath, manifest)
+    print(f"\n{len(comps)} bronnen, {n_files} bestanden ({n_ok} geladen_ok) -> {mpath}")
+    print(f"{len(overgeslagen)} overgeslagen")
+    for c in comps:
+        for vp, r in c["bestanden"].items():
+            if not r["geladen_ok"]:
+                print(f"  afgekeurd: {c['slug']:<42} {vp:<8} {r.get('afkeurreden', '')}")
+    return 0
+
+
+def _verwerk(t: dict, b: dict | None, s: dict | None, bronnen: dict, skipped: dict) -> None:
+    if b is not None:
+        bronnen[t["slug"]] = b
+        skipped.pop(t["slug"], None)
+    elif s is not None:
+        skipped[t["slug"]] = s
+        bronnen.pop(t["slug"], None)
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
